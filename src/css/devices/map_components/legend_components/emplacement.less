@@ -1,0 +1,76 @@
+.emplacement_legend{
+	margin-bottom: 16px;
+	.title{
+		padding: 0 36px 0 16px;
+		line-height: 34px;
+		display: block;
+		font-size: 16px;
+		color: #55555d;
+		img{
+			height: 12px;
+			width: 12px;
+			position: relative;
+			top: 1px;
+			margin-right: 6px;
+			margin-left: 4px;
+		}
+	}
+	.content{
+		position: relative;
+		&:before{
+			content: '';
+			display: inline-block;
+			position: absolute;
+			left: 26px;
+			bottom: 0;
+			height: ~ "calc(100% + 4px)";
+			width: 1px;
+			background-color: #e5e5e6;
+		}
+		h4{
+	    color: #00475d;
+	    max-width: 234.52px;
+			margin: 0 16px 0 27px;
+	    position: relative;
+	    font-weight: 700;
+	    font-size: 14px;
+	    line-height: 32px;
+	    padding-left: 23px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+	    &:before{
+				position: absolute;
+				content: '';
+				width: 13px;
+				height: 1px;
+				background-color: #e5e5e6;
+				left: 0;
+				bottom: 0;
+			}
+
+			&:after{
+				content: '';
+				position: absolute;
+				width: ~ "calc(100% + 23px)";
+				height: 1px;
+				background-color: #ccccce;
+				left: 23px;
+				bottom: 0;
+			}
+			.legendPopup{
+				li{
+					color:#fff;
+					trasition: color .1s;
+					padding: 0 10px;
+					cursor: pointer;
+					&.active{
+						color:#00b8c7;
+						font-weight: 700;
+					}
+				}
+			}
+		}	
+	}
+	
+}

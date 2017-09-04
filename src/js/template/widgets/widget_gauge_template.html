@@ -1,0 +1,25 @@
+<%if(!fetchModel){%>
+<div class='widget'>
+  <div class="botons">
+    <span class="tooltipIcon realTime">
+      <div class="text"><span><%= __('Ahora') %><span></span></span></div>
+    </span>
+  </div>
+  <h4 class="mb20"><%= __(metaData.name) %></h4>
+
+  <div class='co_chart'>
+    <div class='chart'></div>
+    <div class='co_value'>
+      <p class='value'><%= m.var_value == 'null' ? App.nbf(null) : App.nbf(m.var_value) %><span><%= metaData.units%></span></p>
+      <!--<p class='time'><%= __('Hace') %> <%= App.nextTimeMinutes(m.timeinstant) %> <%= __('min') %></p>-->
+    </div>
+  </div>
+</div>
+<%}else{%>
+  <div class='co_chart mt40'>
+    <div class='chart'></div>
+    <div class='co_value'>
+      <p class='value'></p>
+    </div>
+  </div>
+<%}%>

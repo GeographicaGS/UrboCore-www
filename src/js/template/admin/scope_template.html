@@ -1,0 +1,119 @@
+<div class="admin">
+  <div class="container list">
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="underlined"><%= __('Datos del Ámbito') %></h1>
+      </div>
+    </div>
+    <% if (scope.name){ %>
+    <div class="row">
+      <form class="scopeInfo">
+        <div class="col-md-6">
+          <div class="row">
+            <label for="name"><%= __('Nombre') %></label>
+            <input id="name" type="text" value="<%= scope.name %>" readonly>
+            <div class="edit"></div>
+          </div>
+        <% if(!scope.multi){ %>
+          <div class="row">
+            <label for="lat"><%= __('Latitud') %></label>
+            <input id="lat" type="number" value="<%= scope.location[0] %>" readonly>
+            <div class="edit"></div>
+          </div>
+            <div class="row">
+            <label for="lon"><%= __('Longitud') %></label>
+            <input id="lon" type="number" value="<%= scope.location[1] %>" readonly>
+            <div class="edit"></div>
+          </div>
+          <div class="row">
+            <label for="zoom"><%= __('Zoom') %></label>
+            <input id="zoom" type="number" value="<%= scope.zoom %>" readonly>
+            <div class="edit"></div>
+          </div>
+          <div class="row">
+            <label for="dbschema"><%= __('Almacén de datos') %></label>
+            <input id="dbschema" type="text" value="<%= scope.dbschema %>" readonly/>
+            <div class="edit"></div>
+          </div>
+          <% }else{ %>
+            <div class="row">
+              <label for="scopes"></label>
+              <p>
+              <% _.each(scope.children, function(child){ %>
+                <span><%= child.name %> </span>
+              <% }); %>
+              </p>
+            </div>
+          <% } %>
+        </div>
+        <div class="col-md-6">
+          <div class="row merged align-right">
+            <% if(scope.status === 0){ %>
+              <a href="#" class="button publish" data-scope="<%= scope.id %>"><%= __('Publicar') %></a>
+            <% }else{ %>
+              <a href="#" class="button unpublish" data-scope="<%= scope.id %>"><%= __('Despublicar') %></a>
+            <% } %>
+          </div>
+          <div class="row vertical align-right">
+            <a href="#" class="button empty permission"><%= __('Permisos del ámbito') %></a>
+            <a href="#" class="button empty delete" data-scope="<%= scope.id %>"><%= __('Eliminar') %></a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <div class="tableList">
+          <% if(!scope.multi){ %>
+            <h2><%= __('Selecciona verticales') %></h2>
+            <ul class="list">
+              <% var excluded = ['watering','tourism']
+                catalog.each(function(category){
+                if(excluded.indexOf(category.get('id')) === -1){ %>
+              <li>
+                <span class="listItem category" data-category="<%= category.get('id') %>">
+                  <!-- <input id="<%= category.get('id') %>" type="checkbox" <%= scope.categories.where({id: category.get('id')}).length > 0 ? 'checked="checked"':'' %>> -->
+                  <input id="<%= category.get('id') %>" type="checkbox" <%= scope.categories.where({id: category.get('id')}).length > 0 ? 'checked="checked"':'' %>>
+                  <label for="<%= category.get('id') %>" class="icon <%= category.get('id') %>"><%= category.get('name') %></label>
+                  <a href="/admin/scope/<%= scope.id %>/<%= category.get('id') %>" jslink class="containerEditAndDelete"><%= __('Editar') %></a>
+                  <span class="onlyOnHover">&nbsp;|&nbsp;</span>
+                  <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
+                </span>
+              </li>
+              <% } }); %>
+            </ul>
+          <% }else{ %>
+            <h2><%= __('Ámbitos') %></h2>
+            <ul class="list">
+              <% scope.childs.each(function(child){ %>
+              <li class="listItem scope">
+                <div class="bold blue edit link">
+                  <a href="/admin/scope/<%= child.get('id') %>" jslink><%= child.get('name') %></a>
+                </div>
+                <div class="noOverflow">
+                  <% if(child.get('users')){ %>
+                    <span class="circular"><%= child.get('users').length %></span>
+                    <% _.each(child.get('users'), function(user,idx,list){ %>
+                      <%= user.name + ' ' + user.surname %>
+                      <% idx >= (list.length - 1) ? ', ':'' %>
+                    <% }) %>
+                  <% } %>
+                </div>
+                <div>
+                  <span class="onlyOnHover edit link" data-scope="<%= child.get('id') %>"><%= __('Editar') %></span>
+                  <span class="onlyOnHover grey">|</span>
+                  <span class="onlyOnHover remove" data-scope="<%= child.get('id') %>"><%= __('Eliminar') %></span>
+                </div>
+              </li>
+              <% }); %>
+            </ul>
+            <a href="#" class="button empty newScope"><%= __('Añadir nuevo ámbito') %></a>
+          <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>

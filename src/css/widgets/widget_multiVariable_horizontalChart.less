@@ -1,0 +1,26 @@
+.widget_multiVariable_horizontalChart{
+	.wrapper_chart{
+		height: 100%;
+	}
+	.chart{
+		
+		transform: translateY(-33px);
+		height: ~ "calc(100% + 30px)";
+
+		.nv-x,.nv-groups{
+			text{
+				font-weight: 600;
+				fill:#fff;
+			}
+		}
+
+		&.orientTop{
+			.nv-y.nv-axis.nvd3-svg{
+				transform: translate(0,0);
+			}
+			.nv-y .nv-zeroLine{
+				transform: rotate(180deg);
+			}
+		}
+	}
+}

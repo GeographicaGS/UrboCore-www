@@ -1,0 +1,30 @@
+<div class="correlation">
+	<div class="data_list">
+		<% _.each(model.data.toJSON(),function(d){%>
+			<div class="data" style="<%=d.threshold ? 'border-left: 4px solid' + d.threshold +';':''%>">
+				<h3><%=d.title%></h3>
+				<%if(d.unit){%>
+					<div>
+						<h2><%=d.value%></h2>
+						<h4><%=d.unit%></h5>
+					</div>
+				<%}else{%>
+					<h2><%=d.value%></h2>
+				<%}%>
+			</div>
+		<%})%>
+	</div>
+
+	 <div class="info">
+	 	<%if(model.prediction && model.recommendations){%>
+			<h3><%=__('Predicción')%> <span> · <%=__('recomendación')%></span></h3>
+			<ul>
+				<li><%=model.prediction%><br></li>
+			<% _.each(model.recommendations.toJSON(),function(r){%>
+				<li class="recom"><%=r.title%></li>
+			<%})%>
+			</ul>
+			<a class="read_more hide" href="#"><%=__('Seguir leyendo')%></a>
+		<%}%>
+	</div>
+</div>

@@ -1,0 +1,39 @@
+<div id="category_list">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="title_page">
+          <% if(categories){ %>
+            <%=categories.length%> <%= categories.length === 1 ? __('vertical') : __('verticales') %>
+          <% } %>
+        </h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 content">
+        <%_.each(categories, function(s){%>
+          <% var link = '/' + scope + '/' + s.id + '/dashboard';  %>
+          <a jslink href="<%=link%>">
+            <div class="box fullicon <%=s.id%>">
+              <div class="header">
+                <span><%= __(s.name) %></span>
+              </div>
+              <div class="content_top">
+                <span class="img <%=s.id%>Icon <%=s.id%>Color" width="200" height="200"></span>
+                <!-- <img src='' class="img <%=s.id%>Icon <%=s.id%>Color" width="128" height="128"></img> -->
+              </div>
+
+              <div class="content_bottom">
+                <!-- <hr class="separatorBottomBox"/> -->
+
+              </div>
+            </div>
+          </a>
+        <%});%>
+      </div>
+    </div>
+
+  </div>
+</div>

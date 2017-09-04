@@ -1,0 +1,57 @@
+<div class="admin">
+  <div class="container flex box">
+    <div class="row">
+      <div class="col-md-10 header">
+        <%= __('Listado de Ámbitos') %>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="button empty newScope">
+          <!-- <img src="/img/SC_ic_usuario-nuevo.svg"> -->
+          <span><%= __('Nuevo ámbito') %></span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 content">
+        <div class="tableList">
+          <div class="header">
+            <span></span>
+            <span><%= __('Nombre del ámbito') %></span>
+            <span><%= __('Verticales') %></span>
+            <span><%= __('Usuarios') %></span>
+            <span></span>
+        </div>
+          <ul class="list">
+            <% _.each(scopes, function(scope){ %>
+            <li class="">
+              <div><%= scope.multi? '<img src="/img/SC_ic_ambito-contador.svg">':'' %></div>
+              <div>
+                <span class="bold blue edit link" data-scope="<%= scope.id %>"><%= scope.name %></span>
+              </div>
+              <div>
+                <% _.each(scope.categories, function(category){ %>
+                  <div class="rectangleIcon <%= category.id %>"></div>
+                <% })%>
+              </div>
+              <div class="noOverflow">
+                <% if(scope.users){ %>
+                  <span class="circular"><%= scope.users.length %></span>
+                  <% _.each(scope.users, function(user,idx,list){ %>
+                    <%= user.name + ' ' + user.surname %>
+                    <% idx >= (list.length - 1) ? ', ':'' %>
+                  <% }) %>
+                <% } %>
+              </div>
+              <div>
+                <span class="onlyOnHover edit link" data-scope="<%= scope.id %>"><%= __('Editar') %></span>
+                <span class="onlyOnHover grey">|</span>
+                <span class="onlyOnHover remove" data-scope="<%= scope.id %>"><%= __('Eliminar') %></span>
+              </div>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

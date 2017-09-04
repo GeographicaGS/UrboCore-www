@@ -1,0 +1,14 @@
+<div class="widget reduced button_link">
+	<div class="widget_header main">
+		<h3><%= m.category %></h3>
+		<h4><%= m.title %></h4>
+	</div>
+	<div class="widget_content">
+		<div class="icons">
+			<% _.each(m.icons, function(iconSrc){ %>
+				<img src="/img/<%= iconSrc %>"/>
+			<% }) %>
+		</div>
+		<a class="button small" href="<%= m.buttonLink %>" <%= m.isExternalLink ? 'target="_blank"': 'jslink'%> ><%= m.buttonText %><%= m.isExternalLink ? ' <img src="/img/SC_ic-bt_ext.svg">': ''%></a>
+	</div>
+</div>

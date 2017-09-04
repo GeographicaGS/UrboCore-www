@@ -1,0 +1,66 @@
+<div class="popup">
+  <div class="header">
+    <h3><%=__(name)%></h3>
+    <span><%=device_id%></span>
+  </div>
+  <div class="scrollableContent">
+    <%
+    var metadata = App.Utils.toDeepJSON(App.mv().getVariable(variable_id));
+
+    _.each(values,function (d,i){
+      var thresholds;
+      if(metadata){
+        thresholds = metadata.var_thresholds;
+      }
+      if(thresholds){
+        var varRange = {
+          'min':parseFloat(thresholds[0]),
+          'warning':parseFloat(thresholds[1]),
+          'error':parseFloat(thresholds[2]),
+          'max':parseFloat(thresholds[3])
+        };
+      }
+      var alertClass="";
+      if(varRange){
+        if(metadata && metadata.reverse){
+          if(d.value <= varRange.error){
+            alertClass = 'error';
+          }else if(d.value <= varRange.warning){
+            alertClass = 'warning';
+          }
+
+        }else{
+          if(d.value >= varRange.error){
+            alertClass = 'error';
+          }else if(d.value >= varRange.warning){
+            alertClass = 'warning';
+          }
+        }
+      }%>
+      <div class="content <%=alertClass%>">
+        <p class="variable"><%= __(d.name) %></p>
+        <p class="value alert_0 <%= d.class %>">
+          <% if(d.icon){ %>
+            <span class="<%= d.icon %>"></span>
+          <% } %>
+          <%= App.nbf(d.value)%>
+          <span class="measure alert_0"><%= d.units ? d.units : '' %></span>
+          <% if(d.flag == 1){ %>
+            <span class="flag <%= d.flag_class %>"><%= d.flag_text %></span>
+          <% } %>
+        </p>
+        <%= d.datetime ? '<p class="date">' + d.datetime + '</p>':'' %>
+      </div>
+    <% }); %>
+    <% if (date_start && date_finish) { %>
+      <div class="content">
+        <p class="date"><%= date_start %> - <%= date_finish %></p>
+      </div>
+    <% } %>
+  </div>
+  <% if(!disable_button){ %>
+  <div class="footer">
+    <a jslink class="more" href="/<%=scope%>/<%=entity_id%>/<%=device_id%>"><%= __('Ver') %> <%= button_label ? button_label : __('sensor') %></a>
+  </lang>
+  <% } %>
+</div>

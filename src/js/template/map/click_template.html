@@ -1,0 +1,34 @@
+<div class="popupMap">
+  <div class="header">
+    <p class="category"><%= data.title %></p>
+    <% if (data.subtitle) {%>
+    <h3><%= data.subtitle  %></h3>
+    <% } %>
+    <p class="time">
+      <%if(data.time == 'now'){%>
+        <%=__('Ahora')%>
+      <%}else{%>
+        <%=App.formatDate(App.ctx.getDateRange().start) + ' - ' + App.formatDate(App.ctx.getDateRange().finish)%>
+      <%}%>
+    </p>
+  </div>
+  <div class="content scrollable">
+    <%_.each(data.data,function(d){ %>
+    <div class="variable">
+      <div class="data">
+        <h4><%= d.title %></h4>
+        <p class="value"><%= d.value %>
+          <% if (d.units) { %>
+          <span class="unit"><%= d.units %></span>
+          <% } %>
+        </p>
+      </div>
+    </div>
+    <% });%>
+  </div>
+  <% if (data.link) { %>
+    <div class="footer">
+      <a class="more" jslink href="<%=data.link%>"><%= data.link_title ? data.link_title : data.link %></a>
+    </div>
+  <% } %>
+</div>

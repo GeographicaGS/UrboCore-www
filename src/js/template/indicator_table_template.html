@@ -1,0 +1,58 @@
+<div class="table <%=m.get('css_class')%>">
+	<%if(m.get('csv')){%>
+		<button class="button empty up"><%= __('Descargar CSV') %></button>
+	<%}%>
+   <table>
+      <tbody>
+         <tr>
+         	<%_.each(m.get('columns_format'),function(c,i){%>
+         		<th class="<%=c.css_class%>"><%=c.title%></th>
+         	<%})%>
+         </tr>
+
+         <%_.each(elements,function(el,i){
+            if(i!=0){
+          %>
+         		<tr>
+         			<%_.each(m.get('columns_format'),function(c,i){%>
+         				<td class="<%= typeof c.css_class === "function" ? c.css_class(el):c.css_class%>"><%= c.formatFN ? c.formatFN(el[i]) :el[i]%></td>
+         			<%})%>
+         		</tr>
+     		 <% }
+        })%>
+      </tbody>
+
+
+      <% 
+        if(elements[elements.length - 1]){
+          var el = elements[0];
+      %>
+        <tfoot>
+          <tr class="spacer"><td></td></tr>
+          <tr class="general">
+            <%_.each(m.get('columns_format'),function(c,key){%>
+              <% switch(key){
+                case 'name': %>
+                  <td>
+                    <strong><%= c.formatFN ? c.formatFN(el[key]) :el[key] %> </strong>
+                    <span class="flag <%= c.class_flag(el['value']) %>"><%= c.flag(el['value']) %></span>
+                  </td>
+                <% break;
+                case 'value': %>
+                  <td><strong><%= c.formatFN ? c.formatFN(el[key]) :el[key] %></strong></td>
+                <% break;
+                default: %>
+                  <td><%= c.formatFN ? c.formatFN(el[key]) :el[key] %></td>
+              <% } %>
+            <%})%>
+          </tr>
+        </tfoot>
+      <% } %>
+   </table>
+</div>
+
+<div class="tableLegend">
+  <p><strong><%= __('Penalización') %></strong> [valor &le; 80: <em><%= __('p. máxima') %></em> | 80 &lt; <%= __('valor') %> &le; 90: <em><%= __('p. progresiva') %></em>] <span class="icon circle bad"></span></p>
+  <p><strong><%= __('Sin penalización') %></strong> [90 &lt; <%= __('valor') %> &le; 95] <span class="icon circle moderate"</p>
+  <p><strong><%= __('Bonificación') %></strong> [95 &lt; <%= __('valor') %> &lt; 100: <em><%= __('b. progresiva') %></em> | <%= __('valor') %> = 100: <em><%= __('b. máxima') %></em>] <span class="icon circle good"></span></p>
+</div>

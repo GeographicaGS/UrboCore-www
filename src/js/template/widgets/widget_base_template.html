@@ -1,0 +1,86 @@
+<%if(link){%>
+  <a jslink href="<%=link%>" class="noOutline">
+<%}%>
+<div class="widget active <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+  <div class='botons'>
+    <% if (timeMode=='now') {%>
+      <span class='tooltipIcon realTime'>
+        <div class='text'>
+          <span><%=__('Ahora')%></span>
+        </div>
+      </span>
+    <% } else if (timeMode=='historic') { %>
+      <%=_.template( $('#widgets-widget_date_template').html())() %>
+    <% } %>
+    <% if (infoTemplate) {%>
+      <span class='tooltipIcon info'><div class='text'><span><%=__('Más info')%></span></div></span>
+      <span class='tooltipIcon close hide'></span>
+    <% } %>
+
+    <% if((!embed && !link) || extraMenu) { %>
+
+      <% if(exportable || publishable || extraMenu) { %>
+
+        <span class='tooltipIcon'>
+          <div class="popup_widget actions" href="#">
+            <div class="exportsel">
+              <ul>
+                <% if(exportable) { %>
+                  <li data-export="csv" class="iconAction download selected">
+                      <%=__('Descargar datos')%> (CSV)
+                  </li>
+                <% } %>
+
+                <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) { %>
+                  <% if(publishable) {%>
+                    <li data-export="publish" class="iconAction exportable <%= !exportable ? 'selected':'' %>">
+                      <%=__('Publicar widget')%>
+                    </li>
+                  <% } %>
+                <% } %>
+
+                <% if (extraMenu && extraMenu.length) { %>
+                  <% _.each(extraMenu, function(elem, idx){ %>
+                    <li id="<%= elem.id %>" class="textAction <%= elem.class %>"><%= elem.title %></li>
+                  <% }) %>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </span>
+
+      <% } %>
+
+    <% } %>
+
+
+
+
+  </div>
+  <div class="widget_header main">
+    <div class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>">
+      <% if(category){%>
+        <h3><%=category%></h3>
+      <%}%>
+      <%if(correlationIcon){%>
+        <img src="/img/<%=correlationIcon%>">
+      <%}%>
+      <%=title%>
+      <span><%=correlationTitle%></span>
+    </div>
+  </div>
+  <div class="widget_content"></div>
+  <% if (infoTemplate) {%>
+    <div class='info_container hide'>
+      <div class='info_content'><%= infoTemplate()%></div>
+    </div>
+  <% } %>
+
+
+<%if(link){%>
+  <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
+  </div>
+  </a>
+<%}else{%>
+  </div>
+<%}%>

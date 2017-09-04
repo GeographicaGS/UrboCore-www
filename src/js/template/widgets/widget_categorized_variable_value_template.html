@@ -1,0 +1,36 @@
+<div class="widget <%= cssClass %>">
+  <h5><%= category %></h5>
+  <h4><%= title %></h4>
+
+  <div class="date_tooltip">
+		<button></button>
+		<div class="date">
+			<span><%=App.formatDate(App.ctx.get('start'))%></span>
+			<span><%=App.formatDate(App.ctx.get('finish'))%></span>
+		</div>
+	</div>
+
+  <div class="co_chart">
+    <% _.each(elements, function(elem){ %>
+    <div class="co_value textleft">
+      <p class="title <%= util.iconFunc ? 'withIcon':'' %>">
+        <%= util.iconFunc ? '<span class="'+ util.iconFunc(elem.id) +'"></span>' : '' %>
+        <%= util.titleFunc ? util.titleFunc(elem.id) : elem.id %>
+      </p>
+      <p class="value">
+        <%= util.dataFunc ? util.dataFunc(elem.value) : elem.value %>
+        <% if(elem.unit){ %>
+          <span class="unit"><%= elem.unit %></span>
+        <% }else if(util){ %>
+          <span class="unit"><%= unit %></span>
+        <% } %>
+      </p>
+      <% if(elem.fluctuation){ %>
+        <span class="fluctuation <%= elem.fluctuation >= 0 ? 'higher' : 'lower' %>">
+          <%= Math.abs(elem.fluctuation) %>
+        </span>
+      <% } %>
+    </div>
+    <% }) %>
+  </div>
+</div>

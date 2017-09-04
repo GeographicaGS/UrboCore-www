@@ -1,0 +1,353 @@
+.multiselector{
+  color:#00475d;
+  position: relative;
+
+  &:hover{
+    &:after{
+      background-color: @blue;
+    }
+  }
+
+  &.active{
+    &:after{
+      background-color: @blue;
+    }
+    h4.toggler{
+      &:after {
+        content: url('/img/SC_icpanel_menos.svg');
+      }
+    }
+    .legendInline{
+      max-height: 75vh;
+      padding: 5px 5px 10px 45px;
+    }
+  }
+  // &:before{
+  //   content: '';
+  //   display: inline-block;
+  //   position: absolute;
+  //   left: 26px;
+  //   bottom: 0;
+  //   height: ~ "calc(100% + 11px)";
+  //   width: 1px;
+  //   background-color: #e5e5e6;
+  // }
+  h4{
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 234.52px;
+    margin: 0 16px 0 27px;
+    padding-left: 23px;
+    position: relative;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 32px;
+
+    &.active{
+      &:after{
+        background-color: #00465c;
+      }
+    }
+
+    &:before{
+      position: absolute;
+      content: '';
+      width: 13px;
+      height: 1px;
+      background-color: #e5e5e6;
+      left: 0;
+      bottom: 0;
+    }
+
+    &:after{
+      content: '';
+      position: absolute;
+      width: ~ "calc(100% + 23px)";
+      height: 1px;
+      background-color: #ccccce;
+      left: 23px;
+      bottom: 0;
+    }
+
+    span{
+      font-weight: 400;
+    }
+    ul.legendPopup{
+      li{
+        color: #97a1a7;
+        transition: color .1s;
+        &:last-child{
+          border: none;
+        }
+        &.active{
+          color:#00b8c7;
+          input[type="checkbox"]{
+            opacity: 1;
+          }
+        }
+        input[type="checkbox"]{
+          margin: 0 10px;
+          width: 14px;
+          height: 14px;
+          opacity: .2;
+        }
+      }
+    }
+  }
+
+  // FROM categories_list.less It looks like @raul @neokore style
+  &:before, &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 1px;
+    bottom: 0;
+  }
+
+  &:before {
+    width: 13px;
+    height: calc(~'100% + 16px');
+    background-color: transparent;
+    border-color: @lightgrey;
+    border-style: solid;
+    border-width: 0 0 1px 1px;
+    left: 26px;
+    z-index: -1;
+  }
+
+  &:after {
+    // width: calc(~'100% + 23px');
+    width: ~ "calc(100% - 66px)";
+    left: 48px;
+    background-color: @grey2;
+  }
+  .legendInline {
+    padding: 0 5px 0 45px;
+    max-height: 0;
+    transition: max-height .25s linear, padding .25s linear;
+    overflow-y: hidden;
+
+    li {
+      font-size: 14px;
+      line-height: 32px;
+      .noselect;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding-right: 12px;
+
+      input[type=checkbox] {
+        vertical-align: bottom;
+        height: 32px;
+        position: relative;
+        top: 1px;
+        margin-right: 5px;
+      }
+
+      .icon {
+        display: inline-block;
+        height: 26px;
+        width: 26px;
+        margin-right: 5px;
+
+        & + input[type=checkbox]{
+          display: none;
+        }
+      }
+
+      .name {
+        flex: 1 1 auto;
+      }
+
+      .count {
+        color: @grey4;
+        margin-left: 10px;
+
+        strong {
+          color: @greyDark;
+        }
+      }
+
+      &.disabled {
+        color: @grey3;
+      }
+    }
+  }
+
+  h4.toggler {
+    max-width: none;
+    text-transform: capitalize;
+
+    &:before {
+      content: none;
+    }
+
+    &:after {
+      content: url('/img/SC_icpanel_mas.svg');
+      width: auto;
+      height: auto;
+      left: auto;
+      right: 0;
+      background-color: transparent;
+      color: @turquoise;
+      font-size: 1.2em;
+    }
+
+    // &.active{
+    //   &:after {
+    //     content: '-';
+    //   }
+    //   & + .legendInline {
+    //     max-height: 75vh;
+    //     padding: 5px 5px 10px 45px;
+    //   }
+    // }
+
+  }
+
+}
+
+.filter{
+  .shadow_std;
+  position: absolute;
+  top: 55px;
+  left: 10px;
+  background-color: white;
+  // padding: 10px;
+  width: 320px;
+  z-index: 4;
+  border: 1px solid @grey4;
+  border-radius: 2px;
+  transition: width .25s linear;
+
+  &.compact{
+    width: 36px;
+    height: 36px;
+    h3{
+      font-size: 0;
+      min-width: 36px;
+      &:before{
+        content: url('/img/SC_ic_ajustes.svg');
+      }
+      &:after{
+        opacity: 0;
+        transition-delay: 0s;
+      }
+    }
+    .list_elements{
+      max-height: 0;
+      opacity: 0;
+    }
+  }
+
+  h3{
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    color:@turquoise;
+    padding: 16px 0 6px 44px;
+    line-height: 12px;
+    cursor: pointer;
+    min-width: 260px;
+    position: relative;
+    &:before{
+      content: url('/img/SC_ic_ajustes2.svg');
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      transition: top .15s linear, left .15s linear;
+    }
+    &:after{
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 6px 4px 0;
+      border-color: #3d3b3c transparent transparent transparent;
+      position: relative;
+      top: 3px;
+      float: right;
+      margin-right: 21px;
+      border-radius: 2px;
+      transition: opacity .25s linear;
+      transition-delay: .25s;
+      transform: rotate(-180deg);
+    }
+  }
+
+  .list_elements{
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height .25s linear, opacity .1s linear;
+    .element{
+      .header{
+        .title{
+          display: block;
+          height: 100%;
+          background-color: @white;
+          line-height: 34px;
+          color:@greyDark;
+          padding: 0 36px 0 16px;
+          img{
+            width: 26px;
+            height: 26px;
+            position: relative;
+            top: 7px;
+            margin-right: 6px;
+          }
+        }
+      }
+
+      .content{
+
+        opacity: 1;
+        transition: opacity 0.25s;
+
+        &.notshown {
+            height: 0px;
+            opacity: 0;
+            transition: opacity 0.25s, height 0.25s linear 1s;
+        }
+
+      }
+
+      // &.multiContent{
+      //   .multiselector{
+      //     margin-bottom: 0;
+      //     &:after{
+      //       display: none;
+      //     }
+      //     .legendInline{
+      //       margin-right: 10px;
+      //       &:after{
+      //         content: '';
+      //         display: block;
+      //         width: 100%;
+      //         height: 1px;
+      //         background-color: @blue;
+      //         position: relative;
+      //         top: 10px;
+      //       }
+      //     }
+      //   }
+      // }
+    }
+  }
+
+
+  .dumps{
+    .containers{
+      .containersTypes{
+        li[data-id]{
+          cursor: pointer;
+          &:not([selected]){
+            color: #888;
+          }
+        }
+      }
+    }
+  }
+}

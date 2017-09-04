@@ -1,0 +1,336 @@
+.export-form {
+  // border-bottom: 1px solid @grey2;
+  // border-top: 1px solid @grey2;
+
+  // margin-left: 0px;
+  // margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+  .separator {
+    border-bottom: 1px solid @grey2;
+    margin-bottom: 5px;
+  }
+
+
+  .popup_title {
+    margin-top: 10px;
+    color: @grey4;
+    .font(semibold);
+    font-size: 13px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 15px;
+
+    .pub {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .add {
+      padding-left: 0px;
+      padding-right: 0px;
+      .noselect;
+      display: block;
+      .font(bold);
+      color: @turquoise;
+      cursor: pointer;
+      font-size: 11px;
+      vertical-align: text-bottom;
+      // height: 22px;
+      // width: 22px;
+      // border: 1px solid @turquoise;
+      // border-radius: 11px;
+
+    }
+  }
+
+  .popup_middle {
+    margin: 0px;
+
+    .published {
+      padding-left: 15px;
+      padding-right: 15px;
+      opacity: 1;
+      max-height: 200px;
+      transition: opacity @transitionTimeFast @transitionFuncStandard @transitionTimeFast, max-height @transitionTimeFast @transitionFuncStandard @transitionTimeFast;
+
+
+
+      &:hover {
+        background-color: @lightBlue;
+      }
+
+      &.unpublished {
+        opacity: 0;
+        max-height: 0px;
+      }
+
+      input.iframeLink {
+        color: @grey3;
+        font-size: 12px;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        border: 1px solid @greyLight2;
+        margin-bottom: 10px;
+
+        &:after {
+          padding-left: -30px;
+          content: "COPIAR";
+          color: @turquoise;
+          text-transform: uppercase;
+        }
+      }
+
+    .data {
+      border-top: 1px solid @greyLight2;
+      padding-top: 5px;
+      padding-bottom: 10px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+
+    }
+
+
+
+
+
+    .w-name {
+      color: @turquoise;
+      font-size: 18px;
+      .font(light);
+    }
+    .w-date {
+      color: @grey3;
+    }
+    .w-action {
+      position: relative;
+      .noselect;
+      display: block;
+      .font(bold);
+      color: red;
+      cursor: pointer;
+      font-size: 11px;
+      vertical-align: bottom;
+      // height: 22px;
+      // width: 22px;
+      // border: 1px solid @grey3;
+      // border-radius: 11px;
+
+    }
+
+    .first {
+      border-top: 1px solid @greyLight2;
+      background-color: @greyLighter;
+      opacity: 1px;
+      max-height: 300px;
+      padding-left: 16px;
+      padding-right: 16px;
+
+      &.inactive {
+        max-height: 0px;
+        opacity: 0px;
+        transition: opacity @transitionTimeFast @transitionFuncStandard @transitionTimeFast, max-height @transitionTimeFast @transitionFuncStandard;
+      }
+
+      input.widget_name {
+        .font(semibolditalic);
+        font-size: 18px;
+        border-style: none;
+        color: @greyDark;
+        background-color: inherit;
+        height: 36px;
+        width: 100%;
+        line-height: 36px;
+        padding-botom: 12px;
+        padding-top: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      input.widget_desc {
+        .font(semibolditalic);
+        border-style: none;
+        color: @greyDark;
+        background-color: inherit;
+        font-size: 14px;
+        height: 30px;
+        width: 100%;
+        line-height: 20px;
+        margin-bottom: 10px;
+        padding-botom: 10px;
+        padding-top: 5px;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .widget_button {
+        height: 30px;
+        line-height: 20px;
+        margin-left: 16px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding-botom: 5px;
+        padding-top: 5px;
+      }
+
+      button.publish {
+        text-transform: uppercase;
+        background-color: @turquoise;
+        color: white;
+        .font(bold);
+        border-top: 1px solid @greyLight2;
+        font-size: 12px;
+        padding-left: 16px;
+        padding-right: 10px;
+        margin-right: 10px;
+        line-height: 16px;
+        padding-botom: 5px;
+        padding-top: 5px;
+      }
+
+      .publish_note {
+        color: @grey3;
+        .font(semibold);
+        font-size: 13px;
+      }
+    }
+  }
+
+  .popup_footer {
+    border-top: 1px solid @greyLight2;
+    color: @grey3;
+    .font(semibold);
+    padding-top: 10px;
+    font-size: 12px;
+  }
+
+  .form-group {
+    margin-bottom:5px;
+  }
+  input.form-control {
+    // display:table-cell;
+    height:35px;
+    background-color:@greyLighter;
+    border: 1px solid @greyLight2;
+    padding: 0 5px;
+    color:@greyDark;
+
+    &[disabled=disabled] {
+      opacity: .3;
+    }
+
+
+  }
+  @media (min-width: 768px) {
+    .form-horizontal .control-label {
+      text-align: right;
+      margin-bottom: 0;
+      padding-top: 7px;
+    }
+  }
+  .control-label {
+    color:@greyBluish;
+    font-size:14px;
+    margin-top:5px;
+    .noselect;
+
+    &[disabled=disabled] {
+      opacity: .3;
+    }
+  }
+  .form-check {
+    padding:4px 0 9px;
+  }
+  .form-check-label {
+    font-size:14px;
+    color:@greyDark;
+    .noselect;
+  }
+
+  .alignRight {
+    text-align:right;
+  }
+
+
+}
+
+
+.pmodal {
+  max-height: ~ "calc(100vh - 24%)";
+  display: none;
+  position: fixed;
+  top: 12%;
+  left: 50%;
+  width: 45%;
+  min-width: 550px;
+  min-height: 500px;
+  transform: translateX(-50%);
+  padding: 0px;
+  background: @white;
+  z-index:1002;
+  overflow: auto;
+
+  .upper_padding {
+    padding-left: 15px;
+    padding-top: 15px;
+    padding-right: 15px;
+  }
+
+  .bottom_padding {
+    padding-left: 15px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+  }
+
+
+  .modalContent {
+    margin: 0px;
+  }
+
+  .shadow_std;
+  .header {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color:@blue;
+
+    &.publish {
+      .font(semibold);
+      vertical-align: bottom;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+  }
+
+  .subheader {
+    color: @grey3;
+    text-align: left;
+    margin-bottom: 25px;
+  }
+
+  .exitText {
+    vertical-align: bottom;
+    color: @turquoise;
+    text-align: right;
+    text-transform: uppercase;
+    .font(semibold);
+    font-size: 14px;
+    padding-right: 15px;
+    cursor: pointer;
+  }
+
+  &.stretch {
+    min-width: 360px;
+    width: 360px;
+  }
+
+  &.autoWidth {
+    width: auto;
+  }
+}
+

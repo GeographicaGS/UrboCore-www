@@ -1,0 +1,184 @@
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+
+  &.circle {
+    display: inline-block;
+    background-color: @grey;
+    border-radius: 50%;
+
+    &.good {
+      background-color: @okColor;
+    }
+
+    &.moderate {
+      background-color: @warningColor;
+    }
+
+    &.bad {
+      background-color: @errorColor;
+    }
+
+    &.orange {
+      background-color: #f63;
+    }
+
+    &.outOfService {
+      background-color: #fc0;
+    }
+
+
+    &.empty {
+      border: 2px solid @grey;
+      background: none !important; // Because of inline styles!
+
+      &.good {
+        border-color: @okColor;
+      }
+      &.moderate {
+        border-color: @warningColor;
+        &.shadow{
+          box-shadow: 0px 0px 6px 2px @warningColor;
+        }
+      }
+      &.bad {
+        border-color: @errorColor;
+      }
+    }
+
+    &.dashed {
+      border-style: dashed !important; // Because of inline styles!
+    }
+
+    &.dotted {
+      border-style: dotted !important; // Because of inline styles!
+    }
+  }
+
+  &.small {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.rectangleIcon {
+  width:10px;
+  height:10px;
+  float:left;
+  margin:0 5px 0 0;
+
+}
+
+.icon {
+  &.admin {
+    &.category {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        border: 1px solid @white;
+        margin-right: 18px;
+
+        background-color: @blue;
+        background-image: url('/img/menuPanel/SC_ic_vertical_generico_activo.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 75%;
+      }
+    }
+
+    &.category.disabled {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        border: 1px solid @grey2;
+        margin-right: 18px;
+
+        background-color: transparent;
+        background-image: url('/img/menuPanel/SC_ic_vertical_generico.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 75%;
+      }
+    }
+
+    &.entity {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        margin-right: 18px;
+
+        background-image: url('/img/SC_ic_entidad_generico_activo.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+    }
+
+    &.entity.disabled {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        margin-right: 18px;
+
+        background-image: url('/img/SC_ic_entidad_generico.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+    }
+
+    &.donut {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        margin-right: 12px;
+        border: 3px solid @turquoise;
+        border-radius: 50%;
+      }
+    }
+
+    &.donut.disabled {
+      &:before {
+        content: "";
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        margin-right: 12px;
+        border: 3px solid @grey4;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &.toggle {
+    font-size: 0;
+
+    &.ic_map {
+      background-image: url(/img/SC_ic_mapview_0.svg);
+
+      &.selected {
+        background-image: url(/img/SC_ic_mapview_1.svg);
+      }
+    }
+
+    &.ic_grid {
+      background-image: url(/img/SC_ic_gridview_0.svg);
+
+      &.selected {
+        background-image: url(/img/SC_ic_gridview_1.svg);
+      }
+    }
+  }
+}

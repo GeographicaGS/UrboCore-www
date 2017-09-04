@@ -1,0 +1,8 @@
+<div class='tags'>
+  <%_.each(data, function(dato, index) { %>
+    <div class='btnLegend <%if(disabledList[dato.realKey]){%>inactive<%}%>' id="<%=dato.key%>" tag='<%=index%>' style="color:<%=colors[index]%>;border:1px solid <%=colors[index]%>">
+      <span class="icon circle" style="background-color:<%=colors[index]%>;border:1px solid <%=colors[index]%>"></span>
+      <span class="text first"><%=dato.key%></span>
+    </div>
+  <% });%>
+</div>

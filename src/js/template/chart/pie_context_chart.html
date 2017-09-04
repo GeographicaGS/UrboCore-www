@@ -1,0 +1,28 @@
+<div class="chartContent">
+
+  <div class="selectors">
+		<%if(m && m.currentStep){%>
+			<%=__('Periodo')%><a class="popup_widget step" href="#">
+        <span><%=App.stepToStr(m.currentStep.get('step'))%></span>
+				<div class="varsel">
+						<ul>
+              <% _.each(m.stepsAvailable, function(step){ %>
+                <li data-step="<%= step %>" class="
+                  <%= step == m.currentStep.get('step') ? 'selected':''%>
+                ">
+                  <%=App.stepToStr(step)%>
+                </li>
+              <% }) %>
+						</ul>
+				</div>
+			</a>
+		<%}%>
+	</div>
+
+	<svg class="chart pie with-transitions"></svg>
+  <!-- <div class="icon_container">
+    <img src="<%= m.img %>"/>
+  </div> -->
+	<div class="var_list"></div>
+
+</div>

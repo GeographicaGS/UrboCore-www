@@ -1,0 +1,27 @@
+<div class='tags textleft'>
+		<div class="btnLegend no_border">
+      <span class="text first"><strong><%=title%></strong></span>
+    </div>
+    <%
+
+    if(data) {
+      _.each(data, function(d) {%>
+  	    <div class="btnLegend no_border">
+  	      <span class="icon circle" style="background-color:<%=d.color%>;border: 2px solid <%=d.color%>"></span>
+  	      <%if(d.max){%>
+  	      	<span class="text first"><%=d.min%>-<%= d.max %></span>
+  	      <%}else{%>
+  	      	<span class="text first">><%=d.min%></span>
+  	      <%}%>
+  	    </div>
+      <%})
+    } else if(legendclass) { %>
+
+      <div class="btnLegend no_border inrow">
+        <span class="text height12"><%=__('Menos')%></span>
+        <div class="<%=legendclass%>"></div>
+        <span class="text height12"><%=__('Más')%></span>
+      </div>
+
+    <% } %>
+</div>

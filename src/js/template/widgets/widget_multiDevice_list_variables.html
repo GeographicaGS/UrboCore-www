@@ -1,0 +1,24 @@
+<div class='tags'>
+  <div class='btnLegend id="<%=variableSelected.variable.id%>"' style="color:<%=color%>;border:1px solid <%=color%>">
+    <span class="icon circle selectVar" style="background-color:<%=color%>;border:1px solid <%=color%>"></span>
+    <span class="text first"><%=variableSelected.variable.name%> - <%=App.getAggStr(variableSelected.agg).toUpperCase()%></span>
+  </div>
+
+  <%if(variables.length > 1) {%>
+    <span>
+			<a class="popup_widget variable" href="#">
+				<div class="varsel multiDevice">
+					<ul>
+            <%_.each(variables, function(variable) {%>
+							<li data-var="<%=variable.variable.id%>" data-agg="<%=variable.agg%>"
+                class="<%=variable.id == variableSelected.id ?
+                'selected':'changeVariable'%>">
+								<%=variable.variable.name%> - <%=App.getAggStr(variable.agg)%>
+              </li>
+            <%});%>
+					</ul>
+				</div>
+			</a>
+    </span>
+  <%}%>
+</div>

@@ -1,0 +1,30 @@
+<div id="dateSelector">
+	<div class="header">
+		<button class="range_selector">
+		</button>
+		<div class="date_wrapper">
+			<span><%= __('Desde') %></span>
+			<input type="text" class="date start">
+		</div>
+		<div class="date_wrapper">
+			<span><%= __('hasta') %></span>
+			<input type="text" class="date finish">
+		</div>
+	</div>
+	<div class="range_values">
+		<h3><%= __('Rango predefinidos') %></h3>
+		<ul>
+			<li data-unit="days" data-value="0"><%= __('Hoy') %></li>
+			<!-- <li days="-1"><%= __('Ayer') %></li> -->
+      <% if (!isHighRangeCtx) { %>
+  			<li data-unit="days" data-value="2"><%= __('Últimos 3 días') %></li>
+  			<li data-unit="days" data-value="6"><%= __('Últimos 7 días') %></li>
+  			<li data-unit="months" data-value="1"><%= __('Último mes') %></li>
+      <% } else { %>
+        <li data-unit="months" data-value="1"><%= __('Último mes') %></li>
+        <li data-unit="months" data-value="3"><%= __('Últimos 3 meses') %></li>
+  			<li data-unit="years" data-value="1"><%= __('Último año') %></li>
+      <% } %>
+		</ul>
+	</div>
+</div>

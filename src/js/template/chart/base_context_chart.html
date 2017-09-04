@@ -1,0 +1,23 @@
+<div class="chartContent">
+  <% if(m && m.currentStep && !m.hideStepControl){ %>
+    <div class="selectors">
+      <%=__('Periodo')%><a class="popup_widget step" href="#">
+        <span><%= App.stepToStr(m.currentStep) %></span>
+        <div class="varsel">
+            <ul>
+              <% _.each(m.stepsAvailable, function(step){ %>
+                <li data-step="<%= step %>" class="
+                  <%= step == m.currentStep ? 'selected':'' %>
+                ">
+                  <%= App.stepToStr(step) %>
+                </li>
+              <% }) %>
+            </ul>
+        </div>
+      </a>
+    </div>
+  <% } %>
+
+  <svg class="chart with-transitions"></svg>
+  <div class="var_list"></div>
+</div>

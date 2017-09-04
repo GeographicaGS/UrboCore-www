@@ -1,0 +1,43 @@
+<div class="dialog">
+  <div class="col-md-12 admin-form">
+    <form class="form_horizontal">
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" for="url"><%= __('URL') %>*</label>
+        <input class="col-sm-9 form-control" id="url" name="url" type="url" required <% if (m.url) { %>value="<%= m.url %>"<% } %> >
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" for="title"><%= __('Título') %>*</label>
+        <input class="col-sm-9 form-control" id="title" name="title" type="text" required <% if (m.title) { %>value="<%= m.title %>"<% } %> >
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" for="description"><%= __('Descripción') %></label>
+        <textarea class="col-sm-9 form-control" id="description" name="description"><% if (m.description) { %><%= m.description %><% } %></textarea>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 control-label" for="source"><%= __('Fuente') %></label>
+        <input class="col-sm-9 form-control" id="source" name="source" type="text"<% if (m.source) { %>value="<%= m.source %>"<% } %>>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 control-label"><%= __('Datos') %></label>
+        <div class="col-sm-9 form-check">
+          <label class="form-check-label">
+            <input id="datatype" name="datatype" type="radio" value="now" <% if (m.datatype && m.datatype === 'now' ) { %>checked<% } %> >
+            <%= __('Tiempo real (Ahora)') %>
+          </label>
+          <label class="form-check-label">
+            <input id="datatype" name="datatype" type="radio" value="historic"<% if (m.datatype && m.datatype === 'historic' ) { %>checked<% } %> >
+            <%= __('Histórico') %>
+          </label>
+        </div>
+      </div>
+    </form>
+    <div class="separator"></div>
+    <div class="buttons-row">
+      <div class="left-buttons">
+        <p class="note">(*) <%= __('Campos obligatorios') %></p>
+      </div>
+      <a href="#" class="button empty noBorder exitButton cancel"><%= __('Cancelar') %></a>
+      <a href="#" class="button save"><%= __('Aceptar') %></a>
+    </div>
+  </div>
+</div>

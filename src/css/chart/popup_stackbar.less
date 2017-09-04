@@ -1,0 +1,96 @@
+.nvtooltip.xy-tooltip{
+	background-color: @blue2;
+	padding: 10px 20px 10px 16px;
+	border-radius: 2px;
+	color: @white;
+  .shadow_std;
+  .font();
+  opacity: .00001;
+
+	h3 {
+    width: 100%;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid fade(@greyBluish, 20%);
+    border-radius: 0;
+		margin-bottom: 5px;
+    background-color: transparent;
+    color: @grey4;
+    .font(semibold);
+    font-size: 13px;
+    line-height: 12px;
+    text-align: left;
+
+    &.withTitle {
+      width: auto;
+    }
+
+    span {
+      text-transform: capitalize;
+      display: inline;
+    }
+	}
+
+	.element{
+		display: flex;
+    flex-direction: row;
+		align-items: center;
+
+		.color{
+			flex: 0 0 10px;
+			height: 10px;
+      border-radius: 50%;
+			margin-right: 10px;
+		}
+		span,a{
+			// white-space: nowrap;
+			// overflow: hidden;
+			// text-overflow: ellipsis;
+
+      &.key {
+        color: @greyBluish;
+        .font();
+        font-size: 14px;
+        line-height: 16px;
+        margin-left: 5px;
+        flex: 1 1 auto;
+        padding-right: 5px;
+      }
+
+      &.value {
+        color: @white;
+        .font(semibold);
+        font-size: 16px;
+        line-height: 16px;
+        flex: 0 0;
+        white-space: nowrap;
+      }
+
+      &.value_extra {
+        color: @white;
+        .font();
+        font-size: 16px;
+        line-height: 16px;
+        margin-left: 5px;
+      }
+		}
+		a{
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
+
+	span,a{
+		width: 100%;
+		display: block;
+		color:#fff;
+		font-size: 13px;
+		line-height: 16px;
+	}
+
+	span{
+		&.more{
+			margin-top: 10px;
+		}
+	}
+}

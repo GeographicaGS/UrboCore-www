@@ -1,0 +1,5 @@
+<li class="userPermission <%= added ? 'added':'' %>" data-user="<%= user.id %>">
+  <span><%= user.name + " " + user.surname %></span>
+  <a class="button empty noBorder add"><%= __('Añadir') %></a>
+  <a class="button empty noBorder remove <%= user.superadmin ? 'blocked':'' %>"><%= __('Añadido') %></a>
+</li>

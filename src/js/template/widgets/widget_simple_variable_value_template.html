@@ -1,0 +1,20 @@
+<div class="widget reduced">
+  <% if (m.category) { %>
+    <h5><%=m.category%></h5>
+  <% } %>
+  <h4><%=m.title%></h4>
+
+  <div class="date_tooltip">
+    <button></button>
+    <div class="date">
+      <span><%=App.formatDate(App.ctx.get('start'))%></span>
+      <span><%=App.formatDate(App.ctx.get('finish'))%></span>
+    </div>
+  </div>
+
+  <div class="co_chart">
+    <div class="co_value textleft">
+      <p class="value huge"><%= App.nbf(m.value) %></p>
+    </div>
+  </div>
+</div>

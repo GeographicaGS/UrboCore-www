@@ -1,0 +1,89 @@
+<div id="errorsServer">
+</div>
+<div id="user_form" class="user_form admin-form col-md-12">
+	<form class="form_horizontal">
+		<div class="form-group row">
+			<label for="inputName" class="col-sm-3 control-label"><%= __('Nombre') %></label>
+	    <div class="col-sm-9">
+	      <input type="text" class="form-control" id="inputName" name="name" value="<%=name%>">
+	    </div>
+		</div>
+		<div class="form-group row">
+			<label for="inputSurname" class="col-sm-3 control-label"><%= __('Apellidos') %></label>
+	    <div class="col-sm-9">
+	      <input type="text" class="form-control" id="inputSurname" name="surname" value="<%=surname%>">
+	    </div>
+		</div>
+		<div class="form-group row">
+			<label for="inputEmail" class="col-sm-3 control-label"><%= __('Email') %></label>
+	    <div class="col-sm-9">
+	      <input type="text" class="form-control" id="inputEmail" name="email" value="<%=email%>">
+	    </div>
+		</div>
+		<div class="form-group row">
+			<div class="col-md-3 col-md-offset-9 italic">
+				<div class="row">
+					<div class="col-md-8 control-label alignRight"><%= __('Superadmin') %></div>
+					<div class="onoffswitch col-md-4">
+						<input type="checkbox" name="superadmin" class="checkbox" id="onoffswitch1">
+						<label class="label" for="onoffswitch1">
+							<span class="inner"></span>
+							<span class="switch"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="separator"></div>
+
+		<% if(!ldap) { %>
+			<div class="changePasswordQuestion">
+				<div class="form-group row">
+					<div class="col-md-3 control-label">
+					</div>
+					<div class="col-md-4">
+						<div class="form-check">
+						  <label class="form-check-label">
+						    <input class="form-check-input changePassword" type="checkbox" value="">
+	              <%= __('Cambiar contraseña') %>
+						  </label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="changePasswordInputs">
+				<div class="form-group row oldPassword">
+					<label for="inputPasswordOld" class="col-sm-3 control-label"><%= __('Contraseña antigua') %></label>
+			    <div class="col-sm-9">
+			      <input type="password" class="form-control" id="inputPasswordOld" name="oldPassword">
+			    </div>
+				</div>
+				<div class="form-group row">
+					<label for="inputPassword1" class="col-sm-3 control-label"><%= __('Contraseña') %></label>
+			    <div class="col-sm-9">
+			      <input type="password" class="form-control" id="inputPassword1" name="password">
+			    </div>
+				</div>
+				<div class="form-group row">
+					<label for="inputPassword2" class="col-sm-3 control-label"><%= __('Repita contraseña') %></label>
+			    <div class="col-sm-9">
+			      <input type="password" class="form-control" id="inputPassword2" name="password2">
+			    </div>
+				</div>
+			</div>
+
+			<div class="separator"></div>
+		<% } %>
+
+	  <div class="form-group row">
+			<div class="col-sm-12 buttons-row">
+				<div class="deleteButton left-buttons">
+		      <button class="button empty"><%= __('Borrar usuario') %></button>
+		    </div>
+	      <button class="button empty noBorder exitButton"><%= __('Cancelar') %></button>
+      	<button type="submit" class="button"></button>
+	  </div>
+	</form>
+</div>

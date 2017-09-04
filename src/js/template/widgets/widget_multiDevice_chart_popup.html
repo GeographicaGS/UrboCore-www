@@ -1,0 +1,18 @@
+<div class="widget_multiVariable_chart_popup">
+	<%var indice = 0;%>
+	<%_.each(series,function(s, index){%>
+		<%if(s.key != 'avg') {%>
+			<%if(indice < 5) {%>
+				<div>
+					<h4 style="border-color: <%=s.color%>; color:<%=s.color%>"><%=s.key%></h4>
+					<span class="value"><%=App.nbf(s.value)%></span>
+				</div>
+			<%} else if (indice == 5){%>
+				<div>
+					<span class="value">...</span>
+				</div>
+			<%}%>
+			<%indice++;%>
+		<%}%>
+	<%})%>
+</div>

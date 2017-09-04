@@ -1,0 +1,18 @@
+<form>
+	<div class="header">
+		<div class="co_logos">
+      <img src="/img/urbo-logo_bicolorneg.svg" alt="Urbo">
+      <div class="sep"></div>
+      <img class="companyLogo" src="/img/<%= logo%>"
+        alt="Telefonica">
+    </div>
+		<h3 class="error"><%= __('Revise los campos en rojo') %></h3>
+	</div>
+	<div class="content">
+		<label><%= __('Correo electrónico') %></label>
+		<input type='text' name='email' placeholder="<%= __('Escriba un correo electrónico válido') %>"/>
+		<label><%= __('Contraseña') %></label>
+	  <input type='password' name='password' placeholder="<%= __('Inserte contraseña') %>"/>
+  	<input type='submit' value="<%= __('Iniciar sesión') %>" />
+	</div>
+</form>

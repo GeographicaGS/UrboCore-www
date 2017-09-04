@@ -1,0 +1,17 @@
+<div class="multiselector">
+  <h4 class="toggler"><%= show_title ? title + ' ' : ''%><span>(<%= current && options.length !== current.length ? current.length : __('Todos') %>)</span></h4>
+  <ul class="legendInline">
+    <li class="active hidden"><input class="all" type="checkbox" checked><%= __('Todos') %></li>
+    <%_.each(options,function(o){
+      var disabled = false;
+      if(current && _.indexOf(current, o.id) === -1) disabled = true;
+    %>
+      <li <%= disabled ? 'class="disabled"':'' %>>
+        <span class="checkbox <%= o.class %><%= disabled ? ' disabled':'' %>"></span>
+        <input type="checkbox" data-id="<%= o.id%>" <%= !disabled ? ' checked':'' %> >
+        <span class="name"><%= o.name %></span>
+        <span class="count"></span>
+      </li>
+    <%})%>
+  </ul>
+</div>

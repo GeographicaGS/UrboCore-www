@@ -1,0 +1,32 @@
+<div class='container'>
+
+    <div class='header' data-type='' >
+      <div class='row'>
+        <div class='col-md-8' >
+          <div class='deviceinfo'>
+            <h4 class='device_type'></h4>
+            <h3 class='device_name'></h3>
+          </div>
+        </div>
+        <div class='col-md-4'>
+
+          <!-- <a class='button'>Ver en el mapa</a> -->
+        </div>
+
+      </div>
+    </div>
+    <div class='nav_ctrl'>
+      <ul>
+        <li data-el='ctrl_lastdata' selected><%=__('Datos básicos')%></li>
+        <li data-el='ctrl_period'><%=__('Promedios')%></li>
+        <%if(entity != 'lighting.stcabinet' && entity != 'environment.airqualityobserved' && entity != 'environment.noiseobserved' && entity != 'environment.weatherobserved'){%>
+          <li data-el='ctrl_raw'><%=__('Datos brutos')%></li>
+        <%}%>
+        <%if(entity == 'watering.sosteco.solenoidvalve'){%>
+          <li data-el='ctrl_other'><%=__('Otros datos')%></li>
+        <%}%>
+      </ul>
+    </div>
+    <div class='ctrl_container'></div>
+
+</div>

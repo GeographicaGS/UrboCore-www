@@ -1,0 +1,16 @@
+<div class="widget reduced button_link background <%=m.titleLink ? 'link':'' %>">
+	<div class="widget_header main">
+		<h4><%= m.title %></h4>
+	</div>
+	<div class="widget_content">
+		<div class="background">
+			<img src="/img/<%=m.imgBackground%>"/>
+		</div>
+		<a class="button small" href="<%= m.buttonLink %>" <%= m.isExternalLink ? 'target="_blank"': 'jslink'%> ><%= m.buttonText %><%= m.isExternalLink ? ' <img src="/img/SC_ic-bt_ext.svg">': ''%></a>
+	</div>
+
+	<%if(m.titleLink){%>
+		<div class="viewMore"><%= __('Ver más en') %>&nbsp;<span><%=m.titleLink%></span></div>
+	<%}%>
+
+</div>

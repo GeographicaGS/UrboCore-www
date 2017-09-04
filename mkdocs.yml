@@ -1,0 +1,10 @@
+site_name: URBO Frontend
+pages:
+- Home: index.md
+- 'Generic Components':
+  - Popups: GenericComponents/Popups.md
+- 'Good Practices':
+  - Styles: Goodpractices/Styles.md
+- 'Widgets':
+  - 'PieChart widget': Widgets/PieChartWidget.md
+  - 'New schema': Widgets/NewSchema.md

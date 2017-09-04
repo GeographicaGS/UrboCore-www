@@ -1,0 +1,22 @@
+<div id="scope_list">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 header">
+				<button class="button hide"><%= __('Explorar mapa') %></button>
+				<h1 class="title_page"></h1>
+				<a href="#" class="goToVertical linkRight"><%= __('Otros verticales') %></a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 content">
+				<%_.each(correlations,function(c){%>
+					<a href="#" class="goToCorrelation">
+						<div class="box">
+							<span class="iconCorrelation"></span>
+						</div>
+					</a>
+				<%});%>
+			</div>
+		</div>
+	</div>
+</div>

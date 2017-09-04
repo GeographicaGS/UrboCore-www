@@ -1,0 +1,40 @@
+<table>
+  <%if(c){%>
+  <tr>
+    <th>Fecha</th>
+    <%
+    _.each(c.metadata.varname,function(d,i){
+      if(c.metadata.varagg[i] != "'NOAGG'"){
+    %>
+      <th> <%= d %></th>
+    <%
+      }
+    });
+  %>
+  </tr>
+
+  <%_.each(c.data,function(d){ %>
+    <tr>
+    <td>
+    <%
+    if (d.time.start && d.time.finish){
+      print(App.formatDateTime(d.time.start) + ' - ' + App.formatDateTime(d.time.finish));
+    }
+    else{
+      print(App.formatDateTime(d.time));
+    }
+    %>
+    </td>
+    <%_.each(d.vars,function(v,i){ %>
+      <%if(c.metadata.varagg[i] != "'NOAGG'"){%>
+        <td>
+          <span class='variable'> <%= App.nbf(v.value) %></span>
+          <span class='unit'> <%=c.metadata.varunits[i] != 'null' ? c.metadata.varunits[i]:''%></span>
+        </td>
+      <%}%>
+    <% }); %>
+    </tr>
+  <% }); %>
+<%}%>
+
+</table>

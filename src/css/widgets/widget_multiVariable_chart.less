@@ -1,0 +1,188 @@
+.widget_multiVariable_chart{
+  width: 100%;
+  // height: inherit;
+  min-height: 360px;
+
+  // TODO: Fix this hack
+  & > .widget {
+    width: 100%;
+  }
+
+  .selectors {
+    // padding-top:10px;
+  }
+  .xy-tooltip{
+    background-color: #003146;
+    color:#fff;
+    font-size: 13px;
+    border: none;
+    .legend-color-guide{
+      >div{
+        width: 6px;
+        height: 6px;
+      }
+    }
+  }
+  .chart{
+    width: 100%;
+    // margin-top: 20px;
+    padding-top: 0;
+    // height: 300px;
+    height: 280px;
+    transform: translateY(-10px);
+
+    &.normalized{
+      .nv-y{
+        text{
+          display: none;
+        }
+      }
+    }
+    .nv-focus{
+      .nv-x{
+        .nv-wrap{
+          transform: translateY(8px);
+        }
+        text{
+          font-weight: 700;
+        }
+      }
+    }
+    .nv-axisMax-y, .nv-axisMin-y{
+      opacity: 0;
+    }
+  }
+  .nv-interactiveGuideLine{
+    line{
+      stroke: #486771;
+    }
+  }
+
+  &.wFooter {
+    .selectors {
+      // top: 42px;
+    }
+
+    .chart {
+      // height: 260px;
+    }
+
+    .widget_footer {
+      color: #859ba4;
+      text-align: right;
+      font-size: 12px;
+    }
+  }
+
+  .popup_widget.multivarChart{
+    .noselect;
+    font-weight: 600;
+    color: #00b8c7;
+    margin-left: 5px;
+    position: relative;
+    text-transform: uppercase;
+    font-size: 13px;
+    &:after {
+      display:none;
+    }
+    .icon img {
+      width:12px;
+      height:12px;
+      vertical-align: top;
+      &.iconPopup {
+        margin-top:18px;
+      }
+      &.iconSelected {
+        margin-top:2px;
+        margin-right:4px;
+      }
+    }
+    &:hover{
+      .varsel{
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(-10px);
+      }
+    }
+    .varsel{
+      position: absolute;
+      right: 16px;
+      bottom:0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-5px);
+      transition: opacity .25s, transform .25s;
+      z-index: 4;
+      ul{
+        margin-top: 15px;
+        border: 1px solid #ccccce;
+        background-color: #fff;
+        width:150px;
+        position:absolute;
+        bottom:0;
+        li{
+          .noselect;
+          display: block;
+          padding: 0 15px;
+          height: 48px;
+          line-height: 48px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #97a1a7;
+          border-bottom: 1px solid #eee;
+          text-transform: uppercase;
+          text-align: left;
+          margin: 0;
+          cursor:pointer;
+          &.selected{
+            color: @turquoise;
+            // background-color:#bce3e6;
+            font-weight: 700;
+          }
+          &.disabled {
+            background-color: @grey2;
+            color:@grey;
+            pointer-events: none;
+            cursor:default;
+          }
+        }
+      }
+    }
+  }
+}
+
+.widget_multiVariable_chart_popup,
+.device_detail #raw .widget_multiVariable_chart_popup,
+.device_detail #period .widget_multiVariable_chart_popup {
+  // background-color: @blue;
+  // padding: 15px;
+
+  div{
+    margin-top: 25px;
+    &:first-child{
+      margin-top: 0;
+    }
+    h4{
+      border-bottom: 1px solid;
+      padding-bottom: 6px;
+      display: block;
+    }
+    h4, .value{
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 12px;
+    }
+    .value{
+      color:#fff;
+    }
+    .date{
+      font-size: 12px;
+      line-height: 12px;
+      color:#5c707c;
+    }
+    span{
+      display: block;
+      margin-top: 8px;
+    }
+  }
+}

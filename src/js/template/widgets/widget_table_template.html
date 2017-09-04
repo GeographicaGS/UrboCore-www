@@ -1,0 +1,26 @@
+<div class="table block <%=m.get('class')%>">
+  <%if(m.get('title')){%>
+    <h3><%=m.get('title')%></h3>
+    <h4>(datos desde <span><%=App.formatDate(App.ctx.getDateRange().start)%></span> hasta <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)</h4>
+    <%}%>
+    <button class="button empty">DESCARGAR CSV</button>
+    <table>
+    <tbody>
+      <tr>
+        <%_.each(m.get('columns'),function(c){%>
+          <th><%=c.formatTitle ? c.formatTitle(c.title):c.title%></th>
+          <%})%>
+        </tr>
+
+        <%_.each(elements,function(el){%>
+          <tr>
+            <%_.each(m.get('columns'),function(c){%>
+              <td><%= c.format ? c.format(el[c.key]) :el[c.key]%></td>
+              <%})%>
+            </tr>
+            <%})%>
+      </tbody>
+    </table>
+
+
+</div>

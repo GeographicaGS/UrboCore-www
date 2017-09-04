@@ -1,0 +1,35 @@
+{
+  "name": "urbocore-www",
+  "version": "0.1.0",
+  "description": "Urbo frontend",
+  "main": "build.js",
+  "scripts": {
+    "start": "node ./build.js",
+    "debug": "node ./build.js debug",
+    "builder-watcher": "nodemon -e js,css,less,html --ignore public build.js debug",
+    "test": "./node_modules/.bin/karma start",
+    "deploy": "node ./build.js && s3_website push",
+    "add-vertical": "echo 'Error: not implemented yet' && exit 1"
+  },
+  "author": "Geographica",
+  "license": "ISC",
+  "dependencies": {
+    "sting-builder": "1.0.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-karma": "^2.0.0",
+    "karma": "^1.4.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-read-json": "^1.1.0",
+    "karma-sinon-chai": "^1.2.4",
+    "mocha": "^3.2.0",
+    "po2json": "^0.4.5",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
+  }
+}

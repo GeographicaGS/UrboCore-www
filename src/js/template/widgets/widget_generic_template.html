@@ -1,0 +1,33 @@
+<div class="widget <%= m.url ? 'shadow':''%>">
+	<%if(m.url){%>
+		<a jslink href="<%=m.url%>">
+	<%}%>
+	<%if(m.date == undefined || m.date == true){%>
+		<div class="date_tooltip">
+			<button></button>
+			<div class="date">
+				<span><%=App.formatDate(App.ctx.get('start'))%></span>
+				<span><%=App.formatDate(App.ctx.get('finish'))%></span>
+			</div>
+		</div>
+	<%}%>
+
+	<%if(m.realTime) {%>
+		<div class="botons">
+			<span class='icon realTime'>
+				<div class='text'>
+					<span><%= __('Ahora') %><span>
+				</div>
+			</span>
+		</div>
+	<%}%>
+
+		<div class="widget_header main">
+			<h3><%=m.category%></h3>
+			<span><%=m.title%></span>
+		</div>
+		<div class="widget_content"></div>
+	<%if(m.url){%>
+		</a>
+	<%}%>
+</div>

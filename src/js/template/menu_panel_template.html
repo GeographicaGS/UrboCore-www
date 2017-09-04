@@ -1,0 +1,59 @@
+<div class="cities">
+  <div class="header">
+    <div class="searchToolBox">
+      <span class="iconSearch"></span>
+      <input type="text" placeholder="<%= __('Buscar ámbito') %>"/>
+    </div>
+  </div>
+  <div class="city_list">
+
+  </div>
+</div>
+<%if(scope_info){%>
+  <div class="scope_info">
+    <div class="header">
+      <div class="city">
+        <a href="#" class="linkToCities"><%=scope_info.name%></a>
+      </div>
+    </div>
+    <% if (
+      ['osuna','andalucia','guadalajara'].indexOf(scope_info.id)==-1 &&
+      scope_info.id !=='distrito_telefonica' &&
+      (
+        (scope_info.frames && scope_info.frames.length) ||
+        (App.auth != undefined  && App.auth.getUser() != undefined &&
+        App.auth.getUser().superadmin)
+      )
+    ) { %>
+      <a href="/<%= scope_info.id %>/frames/dashboard" jslink>
+        <div class="frames <%= sectionSelected == 'frames' ? 'selected':''%>">
+          <span><strong><%=__('Frames')%></strong></span>
+        </div>
+      </a>
+    <% } else if (scope_info.id ==='distrito_telefonica') { %>
+    <a href="/distrito_telefonica/correlations/dashboard" jslink>
+      <div class="concurrence <%= sectionSelected == 'correlations' ? 'selected':''%>">
+        <span><strong><%=__('Índice de correlaciones')%></strong>&nbsp;(2)</span>
+      </div>
+    </a>
+    <% } %>
+    <div class="vertical_list">
+        <%
+        _.each(scope_info.categories, function(c, index) {
+          if(index % 2 == 0 && index != 0) {
+            %>
+          <%}%>
+          <div class="element <%=c.id%> <% if(c.id === sectionSelected && scope_info.id == scopeLoaded){ %>selected<% } %>">
+            <div class="container_element">
+              <div class="icon_vertical">
+                <a href="#" class="img <%=c.id%>Color <%=c.id%>Icon linkToCategoryDashboard" data-category="<%=c.id%>"></a>
+              </div>
+              <% if(c.name){ %>
+              <div class="name"><%= c.name ? __(c.name) : c.id %></div>
+              <% } %>
+            </div>
+          </div>
+        <%})%>
+    </div>
+  </div>
+<%}%>

@@ -1,0 +1,56 @@
+<div id="user_list">
+  <div class="container box list">
+    <div class="row">
+      <div class="col-md-10 header"><%= __('Usuarios') %></div>
+      <div class="col-md-2">
+        <button type="submit" class="button empty newUser">
+          <img src="/img/SC_ic_usuario-nuevo.svg">
+          <span><%= __('Crear usuario') %></span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 content">
+        <div class="row headerList">
+            <div class="col-md-3"><%= __('Nombre y apellidos') %></div>
+            <div class="col-md-3"><%= __('Email') %></div>
+            <div class="col-md-4"><%= __('Ámbitos') %></div>
+        </div>
+        <% _.each(users,function(s){ %>
+            <div class="row userElementList" id="<%=s.id%>">
+              <div class="col-md-3 iconUser noOverflow">
+                <% if(s.superadmin){ %>
+                  <img src="/img/SC_ic_usuario-superadmin.svg">
+                <% }else{ %>
+                  <img src="/img/SC_ic_usuario.svg">
+                <% } %>
+                <span class="bold blue">
+                  <%= s.name %>
+                  <% if (s.surname){ %><%= s.surname %><% } %>
+                </span>
+                <% if(s.superadmin) { %>
+                  <span class="italic">(<%= __('superadmin') %>)</span>
+                <% } %>
+              </div>
+              <div class="col-md-3 noOverflow"><%= s.email %></div>
+              <div class="col-md-4 scopes noOverflow">
+                <span class="circular"><%= s.scopes ? s.scopes.length : '0' %></span>
+                <%
+                var index = 0;
+                _.each(s.scopes,function(scope){
+                  if(index != 0) { %>
+                    <span> · </span>
+                  <% } %>
+                  <span><%= scope %></span>
+                  <% index++;
+                }); %>
+              </div>
+              <div class='col-md-2 containerEditAndDelete' id="<%=s.id%>">
+                <span class="editUserElementList"><%= __('Editar') %></span>
+              </div>
+            </div>
+          <% }); %>
+      </div>
+    </div>
+  </div>
+</div>

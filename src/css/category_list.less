@@ -1,0 +1,192 @@
+#category_list{
+  padding-top: 10px;
+
+  .header{
+    margin-top: 20px;
+    .button{
+      float: left;
+    }
+    .linkRight {
+      position: absolute;
+      bottom: 0;
+      right:43px;
+      color:@turquoise;
+      font-weight: 600;
+    }
+    // h1{
+    //  margin-top: 11px;
+    // }
+  }
+  .content{
+    margin-top: 33px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .box{
+      &.fullicon {
+
+        background-repeat: no-repeat;
+        background-size: 48px;
+        background-position: center center;
+      }
+
+      transition: background-color .25s, box-shadow .25s;
+      &:hover{
+        box-shadow: 0 4px 12px 0 rgba(85, 85, 93, .7);
+      }
+      text-align: left;
+      width: 265px;
+      height: 265px;
+      background-color: @blue;
+      // float: left;
+      display: inline-block;
+      margin: 20px 20px 0 0;
+      border-radius: 2px;
+      padding: 0 16px;
+      position: relative;
+      vertical-align:top;
+      h3{
+        color:#a3b3ba;
+        text-transform: uppercase;
+        font-size: 12px;
+        line-height: 12px;
+        font-weight: 600;
+      }
+      .tool{
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+        display: none;
+        }
+        &:hover{
+          .tool{
+            display: block;
+          }
+        }
+      .header{
+        span {
+          color: #fff;
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 24px;
+          &:hover {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.25) 0, rgba(255,255,255,0.25) 100%);
+            background-repeat: repeat-x;
+            background-position: 0 100%;
+            background-size: 100% 2px;
+          }
+        }
+      }
+      .content{
+        text-align: left;
+        position: absolute;
+        bottom: 25px;
+        width: 233px;
+
+        .category{
+          span{
+            font-size: 14px;
+            line-height: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-block;
+
+            &:after{
+              content: '\00B7';
+              color:@grey2;
+              margin: 0 5px 0px 8px;
+            }
+            &:last-of-type{
+              &:after{
+                content: '';
+              }
+            }
+          }
+        }
+        .devices{
+          margin-top: 30px;
+          h4{
+            font-weight: 300;
+            font-size: 30px;
+            line-height: 12px;
+            color:#fff;
+            margin-top: 10px;
+          }
+        }
+      }
+      //Estilos nuevos para dashboard de Multiambitos
+      .content_top {
+        position:absolute;
+        bottom:126px;
+        .counter{
+          color:#00b8c7;
+          font-size: 14px;
+          &:before{
+            content: '';
+            height: 20px;
+            width: 20px;
+            display: inline-block;
+            background-size: 20px;
+            position: relative;
+            top: 5px;
+            margin-right: 7px;
+            background-image:url('/img/SC_ic_ambito-contador.svg');
+          }
+        }
+      }
+      .content_bottom{
+        position:absolute;
+        bottom:31px;
+        width:87%;
+        .categories_section {
+          overflow:hidden;
+          margin-top:6px;
+        }
+      }
+      .separatorBottomBox {
+        margin-top:10px;
+        margin-bottom:10px;
+        border-top:1px solid fade(@white, 10%);
+      }
+    }
+  }
+  .popup_widget {
+    font-weight:400;
+    font-size:15px;
+    text-transform: none;
+    color:@greyDark;
+    &.scope {
+      float:right;
+    }
+    .varsel ul {
+      width:143px;
+      color:@greyDark;
+      li {
+        height:38px;
+        line-height: 39px;
+        font-size:15px;
+        text-transform: none;
+        &.selected {
+          color:@greyDark;
+        }
+      }
+    }
+  }
+  .iconCorrelation {
+    background-image: url(/img/SC_ic_correlacion_blue.svg);
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 119px;
+    opacity:0.5;
+    left: 110px;
+    float: left;
+    background-size: 37px 22px;
+    background-position: center;
+  }
+}

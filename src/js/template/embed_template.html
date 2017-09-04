@@ -1,0 +1,62 @@
+<div class="export-form col-md-12">
+  <div class="popup_title">
+
+    <div class="col-xs-11 pub">
+      <%= collection.length ? __('Publicaciones') : __('Nueva publicación') %>
+    </div>
+    <% if(collection.length) { %>
+      <div class="col-xs-1 alignRight add uppercase">Añadir</div>
+    <% } %>
+  </div>
+
+  <div class="popup_middle">
+
+    <div class="first <%= collection.length ? 'inactive' : '' %>">
+      <div class="row">
+      <input type="text" name="name" class="widget_name" placeholder="<%=model.name%>"></input>
+      </div>
+      <div class="row">
+        <input type="text" name="description" class="widget_desc" placeholder="<%=__('Añadir nota aclaratoria (opcional)')%>"></input>
+      </div>
+      <div class="row">
+        <div class="widget_button">
+          <button class="publish" type="button"><%=__('Generar Widget')%></button>
+          <span class="publish_note"><%=__('para obtener el código HTML necesario')%></span>
+        </div>
+      </div>
+    </div>
+
+    <% if(collection.length){ %>
+
+      <div>
+        <% _.each(collection, function(m){
+
+          var linkUrl = window.location.origin + '/' + App.lang +
+            '/embed/v1/' + m.scope + '?classname=' + m.widget + '&access_token_public=' + encodeURI(m.token) + '&b=' + encodeURI(btoa(JSON.stringify(m.payload[0].data)));
+
+          var iframe = '<iframe width="100%" height="100%" frameborder="0" src="'+ linkUrl +'"></iframe>';
+
+        %>
+
+
+          <div class="published">
+            <div class="row data">
+                <div class="col-xs-8 nopadding w-name"><a target="_blank" href="<%=linkUrl%>"><%=m.name%></a></div>
+                <div class="col-xs-2 nopadding w-date alignRight"><%=App.formatDate(m.created_at)%></div>
+                <div class="col-xs-2 nopadding w-action alignRight uppercase" data-id="<%=m.id%>">Despublicar</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12"><input type="text" class="iframeLink" value='<%=iframe%>'></input></div>
+            </div>
+          </div>
+        <% }); %>
+
+      </div>
+
+    <% } %>
+
+  </div>
+  <div class="popup_footer bottom_padding">
+    <%= collection.length ? __('Copia y pega el código en tu blog o en el HTML de tu sitio web.') : '' %>
+  </div>
+</div>

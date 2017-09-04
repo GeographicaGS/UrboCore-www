@@ -1,0 +1,24 @@
+<div class="popup">
+	<!-- <a jslink class="close" href="/devices/<%=device.device_id%>"></a> -->
+	<!-- <a class="close" href="#"></a> -->
+	<div class="header">
+		<h3><%=device.entity_name%></h3>
+		<span><%=device.device_id%></span>
+	</div>
+	<%  _.each(device.lastdata,function (lastdata,i){
+		if (i>1) return true;
+	%>
+		<div class="content">
+			<%if(lastdata.var_value != null && lastdata.var_value != 'null'){%>
+			<p class="variable"><%=lastdata.var_name%></p>
+			<!-- <p class="value <%=alertTypes[lastdata.variable]%>"> -->
+			<p class="value alert_0">
+				<%=App.nbf(lastdata.var_value)%>
+				<span class="measure alert_0"><%=lastdata.var_units != 'null' ? lastdata.var_units : ''%></span>
+			</p>
+			<p class="date"><%=App.formatDateTime(device.timeinstant)%></p>
+			<%}%>
+		</div>
+	<% }); %>
+	<a jslink class="more" href="/<%=id%>/<%=device.entity_id%>/<%=device.device_id%>"><lang>Ver sensor<lang></a>
+</div>

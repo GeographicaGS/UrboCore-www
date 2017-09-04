@@ -1,0 +1,25 @@
+<div class="widget allWidth widget_multiVariable_horizontalChart">
+
+	<div class="date_tooltip">
+		<button></button>
+		<div class="date">
+			<span><%=App.formatDate(App.ctx.get('start'))%></span>
+			<span><%=App.formatDate(App.ctx.get('finish'))%></span>
+		</div>
+	</div>
+
+	<div class="selectors">
+		<%= __('Orden') %><a class="popup_widget" href="#"><%=m.order == 'asc' ? __('Ascendente') : __('Descendente') %>
+			<div class="varsel">
+					<ul>
+						<li data-order="asc" class="<%='asc' == m.order ? 'selected':''%>"><%= __('Ascendente') %></li>
+						<li data-order="desc" class="<%='desc' == m.order ? 'selected':''%>"><%= __('Descendente') %></li>
+					</ul>
+				</div>
+		</a>
+
+	</div>
+ 	<div class="wrapper_chart">
+		<svg class="chart"></svg>
+	</div>
+</div>

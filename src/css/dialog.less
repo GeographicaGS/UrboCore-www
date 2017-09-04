@@ -1,0 +1,47 @@
+.dialog {
+  .header {
+    h1 {
+      .font();
+      font-size: 18px;
+      line-height: 18px;
+      color: @blue;
+    }
+
+    h2 {
+      .font(bold);
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: .125em;
+      text-transform: uppercase;
+      color: @grey;
+    }
+  }
+
+  .content {
+    input.search {
+      width: 100%;
+      padding: 4px 15px;
+      border: none;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      background: @greyLighter;
+      outline: none;
+    }
+
+    .scrollableList {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .buttons-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      padding: 30px 10px 10px;
+
+      & > .button {
+        margin-left: 20px;
+      }
+    }
+  }
+}

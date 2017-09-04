@@ -1,0 +1,72 @@
+<div class="admin">
+  <div class="container list">
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="underlined"><%= __('Ficha de Vertical') %></h1>
+      </div>
+    </div>
+    <% if (scope.name){ %>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="elementTitle category <%= catalog.get('id') %>"><%= catalog.get('name') %></p>
+        <form class="categoryInfo">
+          <div class="row">
+            <label for="nodata"><%= __('Vertical sin datos') %></label>
+            <input id="nodata" type="checkbox" <%= catalog.get('nodata') ? 'checked="checked"' : '' %>">
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6 align-right">
+        <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos de vertical') %></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <h2><%= __('Selecciona entidades') %></h2>
+          <ul class="list entities">
+            <% catalog.get('entities').each(function(catEntity){ %>
+            <% if(catEntity.get('editable') || catEntity.get('mandatory')){ %>
+              <li>
+                <span class="listItem entity" data-entity="<%= catEntity.get('id') %>" data-mandatory="<%= catEntity.get('mandatory') %>">
+                  <!-- <input id="<%= catEntity.get('id') %>" type="checkbox" <%= category.entities.where({id: catEntity.get('id')}).length > 0 ? 'checked':'' %>> -->
+                  <input id="<%= catEntity.get('id') %>" type="checkbox" <%= category.entities.where({id: catEntity.get('id')}).length > 0 ? 'checked':'' %>>
+                  <label for="<%= catEntity.get('id') %>" class="icon <%= catEntity.get('id') %> varListToggle"><%= catEntity.get('name') %></label>
+                  <!-- <a href="#" class=""></a> -->
+                  <% if(!catEntity.get('mandatory')) { %>
+                    <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
+                  <% } %>
+                </span>
+                <ul class="list collapsed">
+                  <% catEntity.get('variables').each(function(catVar){ %>
+                  <% if(catVar.get('editable') || catVar.get('mandatory')){ %>
+                    <li>
+                      <span class="listItem variable"
+                        data-entity="<%= catEntity.get('id') %>"
+                        data-variable="<%= catVar.get('id') %>" >
+                        <!-- <input id="<%= catVar.get('id') %>" type="checkbox" <%= category.entities.length > 0 && category.entities.get(catEntity.get('id')) && category.entities.get(catEntity.get('id')).get('variables').where({id: catVar.get('id')}).length > 0 ? 'checked':'' %>> -->
+                        <input id="<%= catVar.get('id') %>" type="checkbox"
+                          <%=
+                            category.entities.length > 0 &&
+                            category.entities.get(catEntity.get('id')) &&
+                            category.entities.get(catEntity.get('id')).get('variables').where({id: catVar.get('id')}).length > 0
+                            ? (catVar.get('mandatory') ? 'disabled' : 'checked') :'' %> >
+                        <label for="<%= catVar.get('id') %>" class="icon <%= catVar.get('id') %>"><%= catVar.get('name') %></label>
+                        <a href="/admin/scope/<%= scope.id %>/<%= category.id %>/<%= catEntity.get('id') %>/<%= catVar.get('id') %>" jslink class="containerEditAndDelete"><%= __('Editar') %></a>
+                        <span class="onlyOnHover">&nbsp;|&nbsp;</span>
+                        <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
+                    </span>
+                    </li>
+                    <% } %>
+                  <% }); %>
+                </ul>
+              </li>
+            <% } %>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>

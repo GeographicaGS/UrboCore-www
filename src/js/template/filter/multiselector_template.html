@@ -1,0 +1,11 @@
+<h4><%= show_title ? title + ': ' : ''%><span>Todos</span>
+<ul class="legendPopup">
+	<li class="active"><input class="all" type="checkbox" checked>Todos</li>
+	<%_.each(options,function(o){%>
+		<li>
+			<input type="checkbox" data-id="<%= o.id%>" checked>
+			<%= o.name%>
+		</li>
+	<%})%>
+</ul>
+</h4>

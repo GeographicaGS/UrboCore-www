@@ -1,0 +1,38 @@
+<div id="user_info" class="user_form col-md-12">
+
+	<div class="form-group row">
+		<label for="inputName" class="col-sm-3 control-label"><%= __('Nombre') %></label>
+    <div class="col-sm-9"><%= name %></div>
+	</div>
+	<div class="form-group row">
+		<label for="inputSurname" class="col-sm-3 control-label"><%= __('Apellidos') %></label>
+    <div class="col-sm-9"><%= surname %></div>
+	</div>
+	<div class="form-group row">
+		<label for="inputEmail" class="col-sm-3 control-label"><%= __('Email') %></label>
+    <div class="col-sm-9"><%= email %></div>
+	</div>
+
+	<% if(superadmin) { %>
+		<div class="form-group row">
+	    <div class="col-sm-3">
+	    </div>
+			<div class="col-sm-9">
+					<img src="/img/SC_ic_usuario-superadmin.svg">
+					<span class="italic turquoise"><%= __('Superadmin') %></span>
+	    </div>
+		</div>
+	<% } %>
+
+	<div class="separator"></div>
+
+	<div class="form-group row">
+    <div class="col-sm-4">
+			<a href="admin/logs/user/<%=id%>" class='logslink' jslink><%= __('Ver registro de accesos') %></a>
+		</div>
+		<div class="col-sm-offset-4 col-sm-4" id="<%=id%>">
+			<button class="button empty noBorder editUser"><%= __('Editar datos') %></button>
+		</div>
+	</div>
+
+</div>

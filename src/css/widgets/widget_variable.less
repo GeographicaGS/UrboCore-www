@@ -1,0 +1,52 @@
+.coVariableWidget {
+  .majorInfo {
+    margin-top: 45px;
+    display: flex;
+    .data {
+      .font(extralight);
+      font-size: 72px;
+      color: @white;
+      line-height: 60px;
+    }
+    .dataContext {
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      justify-content: flex-end;
+      .units {
+        .font(light);
+        font-size: 36px;
+        color: @greyBluish;
+        line-height: 40px;
+      }
+      .coRefPerc {
+        .refPerc {
+          display: inline-block;
+          border-radius: 2px;
+          padding: 0px 5px 3px 5px;
+          span{
+            .font(semibold);
+            font-size: 14px;
+          }
+          &.higher {
+            background-color: @errorColor;
+            .triangle-up(#660000, 8px, 5px);
+            color: #660000;
+          }
+
+          &.lower {
+            background-color: @okColor;
+            .triangle-down(#006800, 8px, 5px);
+            color: #006800;
+          }
+        }
+      }
+    }
+  }
+  .extraInfo {
+    color: @greyBluish;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top:5px;
+  }
+}

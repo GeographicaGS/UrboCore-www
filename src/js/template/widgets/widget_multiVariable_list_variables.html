@@ -1,0 +1,25 @@
+<div class='tags'>
+  <%_.each(data, function(dato, index) {
+    %><div class='btnLegend <%if(disabledList[dato.realKey]){%>inactive<%}%>' id="<%=dato.realKey%>" tag='<%=index%>' style="color:<%=colors[index]%>;border:1px solid <%=colors[index]%>">
+        <span class="icon circle" style="background-color:<%=colors[index]%>;border:1px solid <%=colors[index]%>"></span>
+        <span class="text first"><%=__(dato.key)%></span>
+        <%if(currentAggs && currentAggs[dato.realKey]){
+    		%>
+  			<a <%if(disabledList[dato.realKey]){%> style='visibility:hidden' <%}%>' class="popup_widget agg multivarChart" href="#"><span class="icon"><img class="iconSelected" src="<%=App.getPictureAgg(currentAggs[dato.realKey])%>"/></span>
+  				<div class="varsel">
+  						<ul data-id="<%=dato.realKey%>">
+  							<%_.each(dato.aggs,function(v){%>
+  								<li data-agg="<%=v%>" class="<%=v == currentAggs[dato.realKey].toUpperCase() ? 'selected':''%>">
+                    <span class="icon">
+                      <img class="iconPopup" src="<%=App.getPictureAgg(v)%>"/>
+                    </span>
+                    <span class="text last"><%=App.getAggStr(v)%></span>
+                  </li>
+  							<%})%>
+  						</ul>
+  					</div>
+  			</a>
+    		<%}%>
+      </div><%
+  });%>
+</div>

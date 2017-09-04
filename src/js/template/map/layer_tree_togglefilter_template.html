@@ -1,0 +1,8 @@
+<div class="toggle_filter">
+	<div class="toggle">
+		<% _.each(items,function(el,idx){ %>
+			<a href="#" title="<%= el.name %>" data-filter="<%= el.id %>" class="<%= idx == 0 ? 'selected':'' %>"><span class="<%= el.class %> white"></span></a>
+		<% }) %>
+	</div>
+	<p><%= __('Datos por') %> <em><%= __('Contenedor') %></em></p>
+</div>

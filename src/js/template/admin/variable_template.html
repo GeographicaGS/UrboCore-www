@@ -1,0 +1,81 @@
+<div class="admin">
+  <div class="container list">
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="underlined"><%= __('Configurar vertical') %></h1>
+      </div>
+    </div>
+    <% if (scope && category && entity && variable){ %>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="elementTitle variable">
+          <span><%= variable.name %></span>
+          <%= entity.name %>
+        </p>
+      </div>
+      <div class="col-md-6 align-right">
+        <a href="#" class="button empty permission" data-variable="<%= variable.id %>"><%= __('Permisos de variable') %></a>
+      </div>
+    </div>
+    <% if (variable.var_thresholds && variable.var_thresholds.length > 1 && variable.var_thresholds[0] != null) { %>
+    <div class="box">
+      <div class="row">
+        <form class="vertical">
+          <div class="col-md-6">
+            <div class="row">
+              <label class="big good" for="good-high"><%= __('Correcto') %></label>
+              <span class="range">
+                <input id="good-low" type="number" value="<%= variable.reverse ? variable.var_thresholds[3] : variable.var_thresholds[0] %>" disabled>
+                <div class="edit"></div>
+                <span class="separator"> - </span>
+                <input id="good-high" type="number" value="<%= variable.reverse ? variable.var_thresholds[2] : variable.var_thresholds[1] %>" readonly>
+                <div class="edit"></div>
+                <span class="unit"><%= variable.units %></span>
+              </span>
+
+            </div>
+            <div class="row">
+              <label class="big warning" for="warning-high"><%= __('Aviso') %></label>
+              <span class="range">
+                <input id="warning-low" type="number" value="<%= variable.reverse ? variable.var_thresholds[2] : variable.var_thresholds[1] %>" disabled>
+                <div class="edit"></div>
+                <span class="separator"> - </span>
+                <input id="warning-high" type="number" value="<%= variable.reverse ? variable.var_thresholds[1] : variable.var_thresholds[2] %>" readonly>
+                <div class="edit"></div>
+                <span class="unit"><%= variable.units %></span>
+              </span>
+            </div>
+              <div class="row">
+              <label class="big error"><%= __('Alerta') %></label>
+              <span class="range">
+                <span class="separator"> <%= variable.reverse ? '<' : '>' %> </span>
+                <input id="alert" type="number" value="<%= variable.reverse ? variable.var_thresholds[1] : variable.var_thresholds[2] %>" disabled>
+                <div class="edit"></div>
+                <span class="unit"><%= variable.units %></span>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <% } else if (variable.var_thresholds && variable.var_thresholds.length === 1 && variable.var_thresholds[0] !== null) { %>
+      <div class="box">
+        <div class="row">
+          <form class="vertical">
+            <div class="col-md-6">
+              <div class="row">
+                <label class="big" for="good-high"><%= __('Valor') %></label>
+                <span class="range">
+                  <input id="good-high" type="number" value="<%= variable.var_thresholds[0] %>">
+                  <div class="edit"></div>
+                  <span class="unit"><%= variable.units %></span>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    <% } %>
+    <% } %>
+  </div>
+</div>

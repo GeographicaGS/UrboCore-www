@@ -1,0 +1,372 @@
+.chartContent {
+  // position: relative;
+
+  .var_list{
+    .tags {
+      text-align:center;
+    }
+    div.btnLegend{
+      font-size: 12px;
+      height: 20px;
+      border: 1px solid #587887;
+      padding-top:1px;
+      display:inline-table;
+      border-radius: 10px;
+      margin:5px;
+
+      &.no_border{
+        border: none;
+        margin-left: 0;
+        margin-right: 0;
+
+        &.inrow {
+          display: inline-flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-start
+        }
+      }
+
+      .text {
+        color: @white;
+        padding: 0 5px 0 2px;
+        cursor:pointer;
+        vertical-align: top;
+        .noselect;
+
+        &.height12 {
+          line-height: 12px;
+        }
+      }
+      .icon {
+        width:10px;
+        height:10px;
+        vertical-align:top;
+        margin: 3px 2px 0 5px;
+        border-radius: 50%;
+      }
+      &.inactive {
+        border-color: transparent;
+
+        .text {
+          color: @greyBluish;
+        }
+        .icon{
+          background-color:transparent !important;
+          border-color: @greyBluish !important;
+        }
+      }
+
+      .popup_widget {
+        &:after {
+          content: none;
+        }
+        & > .icon .iconSelected {
+          margin: 2px 6px 0 0;
+        }
+
+        .varsel {
+          bottom: -5px;
+          top: auto;
+          left: 0;
+          right: auto;
+          transform: translateY(-5px);
+          transition: opacity .25s,transform .25s;
+
+          &:hover {
+            transform: translateY(-10px);
+          }
+
+          ul {
+            width: 150px;
+
+              li {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+
+                .icon {
+                  flex: 0 0 12px;
+                  margin-right: 5px;
+                }
+              }
+          }
+          .text {
+            color: @greyBluish;
+          }
+
+          .selected .text {
+            color: @turquoise;
+          }
+        }
+      }
+    }
+  }
+
+  #dateSelector {
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .shadow_std;
+
+    .header {
+      background-color: fade(@turquoise, 25%);
+      border-color: fade(@white, 25%);
+
+      .range_selector {
+        border-right-color: fade(@white, 25%);
+
+        &:before{
+          background-image: url('/img/SC_ic_cal2.svg');
+        }
+      }
+
+      .date_wrapper {
+        span {
+          color: @grey4;
+        }
+
+        .date {
+          color: @turquoise;
+        }
+
+        &:first-of-type {
+          border-right-color: fade(@white, 25%);
+        }
+      }
+    }
+  }
+
+  .button {
+    transition: stroke .25s linear;
+    cursor: pointer;
+    &:not(.disabled):hover {
+      stroke: @turquoise;
+    }
+    &.disabled {
+      opacity: .5;
+    }
+  }
+
+  .forwardButton {
+    cursor: pointer;
+    transition: visibility .25s linear, opacity .25s ease-out;
+
+    rect {
+      stroke: fade(@turquoise,25%);
+      transition: stroke .25s linear;
+    }
+    text {
+      fill: @turquoise;
+      .font();
+      font-size: 14px;
+    }
+
+    &:hover {
+      rect {
+        stroke: @turquoise;
+      }
+    };
+
+    &.hide {
+      visibility: hidden;
+      opacity: .0001;
+      display: inline !important;
+    }
+  }
+
+  .nv-axis, .nv-groups {
+    transition: all 0.25s ease-out;
+  }
+
+  .nv-noData {
+    fill: @greyBluish;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 24px;
+    font-style: italic;
+  }
+
+  // Make simple bars slim.
+  // TODO: enable again when Stable Firefox supports transform-box property.
+  rect.discreteBar {
+    // transform: scale(.5,1) translateX(50%);
+    // transform-box: fill-box;
+  }
+
+  .nv-x .nvd3.nv-wrap.nv-axis{
+    text, foreignObject{
+      .font(semibold);
+      fill: #859ba4;
+      color: #859ba4;
+      font-size: 12px;
+      transform: translateY(5px);
+    }
+  }
+
+  .nvd3.nv-line .nvd3.nv-scatter .nv-groups .showLineDots .nv-point{
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    stroke-width: 2px;
+
+    &:hover {
+      stroke-width: 5px;
+    }
+  }
+
+  .nvd3.nv-scatter .nv-groups .nv-point{
+    fill-opacity: 1;
+    stroke-opacity: .7;
+    stroke: @blue2;
+
+    &.hover {
+      stroke-width: 7px;
+      stroke: inherit;
+    }
+  }
+
+  .nvd3.nv-stackedarea .nvd3.nv-scatter .nv-groups .nv-point{
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    stroke: @blue2;
+
+    &.hover {
+      stroke-width: 7px;
+      stroke: inherit;
+    }
+  }
+
+  // NOTICE: Disabled because of incompatibilities with ComparisonCharts
+  // &.showLineDots .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+  //   fill-opacity: 0;
+  //   stroke-opacity: 0;
+  //   stroke-width: 0;
+  //
+  //   &.hover {
+  //     fill-opacity: 1;
+  //     stroke-opacity: 1;
+  //
+  //     stroke-width: 5px;
+  //   }
+  // }
+
+  .dashed {
+    stroke-dasharray: 8;
+  }
+
+  .dotted {
+    stroke-dasharray: 2;
+  }
+
+  .thresholdLabel {
+    font-size: 12px;
+    fill: @grey4;
+    text-anchor: start;
+  }
+
+  .nvd3 .nv-groups path.nv-line {
+    stroke-width: 2px;
+  }
+
+  .multiChart {
+    // Hide bottom tick label
+    // .nv-y1.nv-axis .tick.zero text, .nv-y2.nv-axis .tick.zero text, .nv-axisMin-y text{
+    //   display: none !important;
+    //   opacity: 0 !important;
+    // }
+
+    // Hide interactiveLine
+    .nv-interactiveGuideLine {
+      display: none;
+    }
+  }
+
+  #chart_tooltip {
+    .nvtooltip.xy-tooltip;
+    transform: translate(calc(~'50% + 30px'), 30px);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity @transitionFuncAlternative @transitionTimeFast, visibility @transitionFuncAlternative @transitionTimeFast;
+
+    &.hidden {
+      opacity: .00001;
+      visibility: hidden;
+      display: block !important;
+    }
+  }
+}
+
+.chart {
+  &.pie {
+    .extraContent {
+      color: @white;
+      text-align: center;
+      .font();
+      font-size: 14px;
+      line-height: 14px;
+      word-wrap: break-word;
+      text-align:center;
+
+      span {
+        .font(semibold);
+      }
+    }
+
+    .nv-label text {
+      font-size: 14px;
+    }
+  }
+
+  //  D3 charts
+  &.d3 {
+    .font();
+
+    .axis {
+      shape-rendering: crispEdges;
+
+      text {
+        .font();
+        font-size: 12px;
+        fill: @grey4;
+      }
+
+      &.x-axis {
+        text {
+          .font(semibold);
+        }
+
+        path.domain {
+          display: inherit;
+          fill: none;
+          stroke: @grey4;
+          opacity: .5;
+        }
+      }
+
+      &.y-axis-1 .tick line {
+        stroke: @grey4;
+        opacity: .5;
+      }
+    }
+
+    .lineGroup {
+      path.line {
+        stroke-width: 2px;
+      }
+
+      circle.point {
+        // fill: transparent;
+        stroke: transparent;
+        stroke-width: 1px;
+        transition: fill .25s, stroke .25s, stroke-width .25s;
+
+        &:hover {
+          fill: inherit;
+          stroke: inherit;
+          stroke-width: 5px;
+        }
+      }
+    }
+  }
+}

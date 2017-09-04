@@ -1,0 +1,31 @@
+<div class="widget reduced">
+  <% if (m.category) { %>
+    <h5><%=m.category%></h5>
+  <% } %>
+  <h4><%=m.title%></h4>
+
+  <div class="date_tooltip">
+		<button></button>
+		<div class="date">
+			<span><%=App.formatDate(App.ctx.get('start'))%></span>
+			<span><%=App.formatDate(App.ctx.get('finish'))%></span>
+		</div>
+	</div>
+
+  <% var variable = App.Utils.toDeepJSON(App.mv().getVariable(m.id)); %>
+	<a class="popup_widget" href="#"><%=App.getAggStr(m.agg)%>
+		<div class="varsel">
+				<ul data-variable="h">
+					<%_.each(variable.var_agg,function(v){%>
+						<li data-agg="<%=v%>" class="<%=v == m.agg ? 'selected':''%>"><%=App.getAggStr(v)%></li>
+					<%})%>
+				</ul>
+			</div>
+	</a>
+
+  <div class="co_chart">
+    <div class="co_value textleft">
+      <p class="value"><%=App.nbf(m.value)%><span><%=variable.units%></span></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="table <%=m.get('css_class')%>">
+  <%if(m.get('csv')){%>
+    <button class="button empty up"><%= __('Descargar CSV') %></button>
+    <%}%>
+    <table>
+      <tbody>
+      <tr>
+        <%
+        var formats = m.get('columns_format');
+        _.each(formats,function(c,i){%>
+          <th class="<%=c.css_class%>"><%=c.title%></th>
+          <%})%>
+        </tr>
+        <%
+        if (!elements.length) { %>
+          <tr>
+            <td class="noDataMsg" colspan="<%= Object.keys(formats).length %>">
+              <span>No hay datos</span>
+            </td>
+          </tr>
+        <%
+        } 
+        _.each(elements,function(el){ %>
+          <tr>
+            <%_.each(formats,function(c,i){%>
+              <td class="<%= typeof c.css_class === "function" ? c.css_class(el):c.css_class%>"><%= c.formatFN ? c.formatFN(el[i]) :el[i]%></td>
+              <%})%>
+            </tr>
+        <%}); %>
+      </tbody>
+    </table>
+  <%
+  if (m.get('legend')) { 
+      print(m.get('legend'));
+  } %>
+</div>

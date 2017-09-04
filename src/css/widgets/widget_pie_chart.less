@@ -1,0 +1,76 @@
+.widget {
+  .pieChart_content {
+
+    .chart {
+  		padding:0;
+      height:295px;
+      position: absolute;
+      top:18px;
+      left:0;
+
+      .nv-slice {
+        path {
+          pointer-events: all;
+        }
+        &:hover path {
+          // opacity:0.5;
+        }
+      }
+
+      & + .var_list {
+        top: 0;
+      }
+  	}
+  }
+  .extra_info {
+    color:@lightgrey;
+    font-size:12px;
+    position: absolute;
+    bottom: 10px;
+    .icon.circle {
+      width:12px;
+      height:12px;
+      vertical-align:middle;
+      &.good{
+        color: @okColor;
+      }
+      &.regular{
+        color: @warningColor;
+      }
+      &.bad{
+        color: @errorColor;
+      }
+    }
+    .text_icon {
+      padding-left:4px;
+    }
+  }
+  .icon_container {
+    position:absolute;
+    top:155px;
+    left:158px;
+    img {
+      width:45px;
+      opacity:0.5;
+    }
+  }
+
+  svg image {
+    opacity: .5;
+  }
+}
+//Tooltip de las secciones del pieChart
+.containersTooltip {
+  padding:10px;
+  background-color:@blue;
+  color:@greyLighter;
+  .tooltip.icon.circle {
+    width:10px;
+    height:10px;
+    margin-top:4px;
+    vertical-align:top;
+  }
+  .text {
+    padding-left:5px;
+  }
+}

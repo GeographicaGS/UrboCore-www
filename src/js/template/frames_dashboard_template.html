@@ -1,0 +1,17 @@
+<div id="dashboard" class="container">
+	<div class="row">
+		<div class="col-sm-12 col-md-12">
+      <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) {%>
+      <a href="#" class="createFrame imageLink linkLeft">
+        <img src="/img/SM_anadir.svg">
+        <%= __('Añadir') %>
+      </a>
+      <% } %>
+			<h2 class="title_page"></h2>
+			<a href="#" class="goToVertical linkRight"><%= __('Otros verticales') %></a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-12 widgets"></div>
+	</div>
+</div>

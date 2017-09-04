@@ -1,0 +1,25 @@
+<div class="popup_stackbar popup_fixed">
+  <% if(data.value !== undefined){ %>
+    <h3 class="withTitle"><%= utils.xAxisFunction ? utils.xAxisFunction(data.value) : data.value %> · <span><%= data.point.id %></span></h3>
+  <% } %>
+	<% _.each(data.series, function(el){	%>
+		<div class="element">
+			<% if(el.color){ %><div class="icon circle color <%= el.cssClass %>" style="background-color: <%= el.color %>; border-color: <%= el.color %>"></div><% } %>
+      <span class="value">
+        <% if(el.yAxisFunction){ %>
+          <%= el.yAxisFunction(el.value) %>
+        <% }else if (utils.yAxisFunction){ %>
+          <%= utils.yAxisFunction(el.value) %>
+        <% }else{ %>
+          <%= App.nbf(el.value) %> <%= (el.realKey && App.mv().getVariable(el.realKey)) ? App.mv().getVariable(el.realKey).get('units') : '' %>
+        <% } %>
+      </span>
+      <% if(utils.total){ %>
+      <span class="value_extra">(<%= App.nbf(el.value / utils.total * 100) %>%)</span>
+      <% } %>
+      <span class="key">
+        <%= el.key ? __(el.key) : '' %>
+      </span>
+		</div>
+	<%})%>
+</div>

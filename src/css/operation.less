@@ -1,0 +1,21 @@
+.operation_panel {
+  .fill_height;
+
+  .data {
+    overflow-y: auto;
+    padding: 54px 0 0;
+    border-top: 1px solid @grey2;
+
+    &.expanded {
+      border-top: none;
+    }
+
+    & > *:last-child {
+      margin-bottom: 50px;
+    }
+  }
+
+  #search_map {
+    top: 10px;
+  }
+}

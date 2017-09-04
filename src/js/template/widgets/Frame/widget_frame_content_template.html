@@ -1,0 +1,7 @@
+<div class="frame">
+	<div class="url"><%= model.url %></div>
+  <div class="info">
+    <% if (model.source) {%><p><%= model.description %></p><% } %>
+    <% if (model.source) {%><p class="source"><%= __('Fuente') %>: <%= model.source %></p><% } %>
+  </div>
+</div>

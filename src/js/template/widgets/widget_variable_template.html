@@ -1,0 +1,27 @@
+<div class="coVariableWidget">
+
+  <div class="majorInfo" style="<%=(!max && !min) ? 'margin-top:55px;' : null%>">
+    <div class="data">
+      <%= App.nbf(value, {decimals: 0})%>
+    </div>
+    <div class="dataContext">
+      <% if (refPerc) { %>
+        <div class="coRefPerc">
+          <div class="refPerc <%= refPerc>0 ? 'higher' : 'lower' %>">
+            <span><%= App.nbf(Math.abs(refPerc), {decimals: 1})%> %</span>
+          </div>
+        </div>
+        <% } %>
+      <span class='units'><%= App.mv().getVariable(variable).get('units') %> </span>
+
+    </div>
+  </div>
+
+  <% if (max || min) { %>
+    <div class='extraInfo'>
+      <% if(max){ %> Max <%=max%> <% } %>
+      <% if(max && min) { %> · <% } %>
+      <% if(min){ %> Min <%=min%> <% } %>
+    </div>
+  <% } %>
+</div>

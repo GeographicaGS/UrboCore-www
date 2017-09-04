@@ -1,0 +1,10 @@
+<div id="spatial_filter_map">
+	<div class="button_filter <%=status ? 'active': ''%>"></div>
+	<% if (info) { %>
+	<div class="info">
+		<h3><%= __('Filtro') %> <i><%= __('Boundingbox') %></i></h3>
+		<p><%= __('Esto es un filtro espacial; sólo se mostrarán los datos de los dispositivos que estás viendo en el mapa') %>.</p>
+		<a href="#"><%= __('Entendido') %></a>
+	</div>
+	<% } %>
+</div>

@@ -1,0 +1,20 @@
+<div class="widget widget_multiVariable_chart">
+
+	<div class="date_tooltip">
+		<button></button>
+		<div class="date">
+			<span><%=App.formatDate(App.ctx.get('start'))%></span>
+			<span><%=App.formatDate(App.ctx.get('finish'))%></span>
+		</div>
+	</div>
+
+	<%if(options){%>
+		<div class="widget_header">
+			<h3><%=options.category ? options.category:''%></h3>
+			<span><%=options.title ? options.title:''%></span>
+		</div>
+	<%}%>
+
+	<svg class="chart with-transitions"></svg>
+	<div class="var_list"></div>
+</div>

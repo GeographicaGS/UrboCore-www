@@ -1,0 +1,65 @@
+<div class="popup">
+	<div class="header">
+		<h3><%=name%></h3>
+		<span><%=device_id%></span>
+	</div>
+	<div class="scrollableContent">
+	<%
+  	var metadata = App.mv();
+		_.each(lastdata,function (d,i) {
+      var mdVar = metadata.getVariable(d.var);
+      if (!mdVar)
+        return;
+      mdVar = mdVar.toJSON();
+			var units = mdVar.units;
+      var alertClass="";
+      var thresholds = mdVar.var_thresholds;
+      d.formatFN = d.formatFN || App.nbf;
+      if (thresholds){
+        var varRange = {
+          'min':parseFloat(thresholds[0]),
+          'warning':parseFloat(thresholds[1]),
+          'error':parseFloat(thresholds[2]),
+          'max':parseFloat(thresholds[3])
+        };
+
+        if(varRange){
+          if(mdVar.reverse){
+            if(d.value <= varRange.error){
+              alertClass = 'error';
+            }else if(d.value <= varRange.warning){
+              alertClass = 'warning';
+            }
+
+          }else{
+            if(d.value >= varRange.error){
+              alertClass = 'error';
+            }else if(d.value >= varRange.warning){
+              alertClass = 'warning';
+            }
+          }
+        }
+      }
+		%>
+		<div class="content <%=alertClass%>">
+      <p class="variable"><%= __(d.title ? d.title : mdVar.name)%></p>
+      <p class="value alert_0">
+        <%= d.formatFN(d.value)%>
+        <span class="measure alert_0"><%= units ? units : '' %></span>
+      </p>
+      <% if(i == lastdata.length - 1) { %><p class="date"><%=App.formatDateTime(timeinstant)%></p><% } %>
+
+		</div>
+	<% }); %>
+	</div>
+	<div class="footer">
+    <% var hideSensor = hideSensor || false;
+      if(!hideSensor){ %>
+		<%if(scope == 'osuna' && entity_id == 'watering.sosteco.solenoidvalve'){%>
+			<a jslink class="more" href="/<%=scope%>/<%=entity_id%>/<%=device_id%>/other"><%= __('Ver sensor') %></a>
+		<%}else{%>
+			<a jslink class="more" href="/<%=scope%>/<%=entity_id%>/<%=device_id%>"><%= __('Ver sensor') %></a>
+		<%}%>
+    <% } %>
+	</div>
+</div>

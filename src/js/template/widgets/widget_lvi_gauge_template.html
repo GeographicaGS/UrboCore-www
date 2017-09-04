@@ -1,0 +1,21 @@
+<div class='co_chart mt40'>
+  <% if(m.extra_info && data.penalty_bonus != null){ %>
+  <div class="extra_info">
+    <h6 class="<%= m.extra_info.class ? m.extra_info.class(data.value) : '' %>">
+      <span class="icon circle"></span>
+      <%= m.extra_info.flag ? m.extra_info.flag(data.value) : '' %>
+    </h6>
+    <p class="value">
+      <%= data.penalty_bonus > 0 ? '+':'' %>
+      <%= m.extra_info.format? m.extra_info.format(data.penalty_bonus) : data.penalty_bonus %>
+      <span class="unit"><%= m.extra_info.unit %></span>
+    </p>
+  </div>
+  <% } %>
+  <div class='chart'></div>
+  <div class='co_value'>
+    <p class='value'>
+    	<%= data.value == 'null' ? App.nbf(null) : App.nbf(data.value) %><span><%= metaData.units%></span>
+    </p>
+  </div>
+</div>

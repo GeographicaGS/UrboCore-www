@@ -1,0 +1,20 @@
+<li variable='<%= m.id %>' class='col-md-4'>
+  <div class='summary_block'>
+    <div class='co_variable'>
+      <span class='ico' style='background-color: <%= m.color %>'></span>
+      <span class='variable' data-type='<%= m.type%>'><%= __(m.name) %></span>
+      <a class="popup_widget" href='#'><%= App.getAggStr(m.current_agg) %>
+        <div class='varsel'>
+          <ul data-variable='<%= m.id %>'>
+          <% _.each(m.aggs,function(agg){ %>
+            <li data-agg='<%=agg%>' class='<%= m.current_agg==agg ? 'selected' : ''%>'><%= App.getAggStr(agg.toLocaleLowerCase()) %></li>
+          <% }); %>
+          </ul>
+        </div>
+      </a>
+    </div>
+
+    <span class='value'><%= App.nbf(m.value) %></span>
+    <span class='unit'><%=  m.units != 'null' ? m.units:'' %></span>
+  </div>
+</li>

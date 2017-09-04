@@ -1,0 +1,18 @@
+<div class="popup_stackbar popup_fixed">
+	<h3><%= title %></h3>
+	<%
+		var initColorPos = elements.length > 5 ? 5:elements.length-1;
+		for(var i=0; i<elements.length && i<5; i++){
+			var key = Object.keys(elements[i])[0];
+		%>
+		<div class="element"><div class="color" style="background-color: <%=colors.length == 1 ? colors[0] : m.get('legendColorFunc')(key) %>;"></div>
+			<span><%=App.reduceString(m.get('legendNameFunc')(key) + ':' + elements[i][key])%></span>
+			<!-- <a href="/<%=m.get('scope')%>/<%=m.get('entity_id')%>/<%=key%>">
+				<%=App.reduceString(key + ': ' + App.nbf(elements[i][key]))%>
+			</a> -->
+	</div>
+	<%}%>
+	<%if(elements.length > 5){%>
+		<span class="more">+ <%=elements.length - 5%> más</span>
+	<%}%>
+</div>

@@ -1,0 +1,36 @@
+<span class="ml15">
+  <% if (App.config.layout=='fiware') { %>
+  <a class="black" target="_blank" href="https://fiware.org">© FIWARE</a>
+  <% } else if (App.config.layout=='cedus') { %>
+  <a class="black cedusCopyright" target="_blank" href="http://www.cedus.eu">
+    This project has received funding from the EIT Digital © CEDUS.
+  </a>
+  <% } else { %>
+  <a class="black" target="_blank" href="https://www.telefonica.com">© Telefónica S.A.</a>
+  <% } %>
+  &nbsp;·&nbsp;
+  <a href="mailto:hello@geographica.gs"><%= __('Contacta') %></a>
+
+  <% if (App.config.layout=='basetheme') { %>
+    &nbsp;·&nbsp;
+    <a target="_blank" href="https://www.telefonica.com/es/aviso-legal"><%= __('Privacidad') %></a>
+    &nbsp;·&nbsp;
+    <a target="_blank" href="https://www.telefonica.com/es/politica-cookies"><%= __('Cookies') %></a>
+    &nbsp;·&nbsp;
+    <%= __('Todos los derechos reservados') %>
+  <% } %>
+
+  </span>
+  <!-- <span>D+D by  <a target="_blank" href="https://www.geographica.gs">Geographica</a>&nbsp;·&nbsp;Powered by <span class="logoFooter"></span> -->
+
+  <div class="mr15">
+    <span class="black">Powered by</span>
+    <img class="ml5 mr5" src="/img/SM_logo_footer_urbo.svg">&nbsp;·&nbsp;
+    <% if (App.config.layout !== 'cedus') { %>
+    <a target="_blank" href="https://carto.com/"><img class="ml5" src="/img/SM_logo-g_footer_carto.svg"></a>
+    <div class="logos"></div>
+    <span class="ml5 border black">Engineered by</span>  <a class="ml5 geo" target="_blank" href="https://www.geographica.gs">Geographica</a>
+    <% } else { %>
+      <a target="_blank" href="https://www.fiware.org/"><img class="ml5" src="/img/fiwaremaps_logo-azul.svg"></a>
+    <% } %>
+</div>

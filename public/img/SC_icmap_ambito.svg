@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+<circle opacity="0.1" enable-background="new    " cx="14" cy="14" r="14"/>
+<g>
+	<circle fill="#FFFFFF" cx="14" cy="14" r="13"/>
+</g>
+<g>
+	<circle fill="#003146" cx="14.16" cy="14.053" r="11"/>
+</g>
+<g>
+	<polygon fill="#FFFFFF" points="20,13 20,14 21,14 21,15 20,15 20,16 21,16 21,17 20,17 20,19 22,19 22,13 	"/>
+	<polygon fill="#FFFFFF" points="7,16 8,16 8,15 7,15 7,13.779 8,13.531 8,12.5 6,13 6,19 8,19 8,17 7,17 	"/>
+	<path fill="#FFFFFF" d="M9.999,15H12v2H9.999V15z M13,15h2v2h-2V15z M16,15h2v2h-2V15z M9.999,12H12v2H9.999V12z M13,12h2v2h-2V12z
+		 M16,12h2v2h-2V12z M9.999,9H12v2H9.999V9z M13,9h2v2h-2V9z M16,9h2v2h-2V9z M14,6L9,8v2v1.25v1.031V14v1v2v1v-1v2h9.998v-2v1v-1
+		v-2v-1v-1V8L14,6z"/>
+</g>
+</svg>

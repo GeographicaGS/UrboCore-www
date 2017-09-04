@@ -1,0 +1,280 @@
+.table{
+  background-color: #fff;
+  border: 1px solid @greyLight2;
+  padding: 15px;
+  border-radius: 5px;
+
+  transition: opacity .25s;
+
+  &.loading{
+    opacity: .2;
+  }
+
+  h3,h4{
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  h3{
+    color:#00475d;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  h4{
+    color:#97a1a7;
+    span{
+      color:#55555d;
+    }
+  }
+
+  .button{
+    float: right;
+    margin-top: -5px;
+    &.up{
+      margin-top: -50px;
+    }
+  }
+
+  table{
+    width: 100%;
+    counter-reset: section;
+
+    tr{
+      border-bottom: 1px solid @lightgrey;
+      &:first-child{
+        border-color: @greyLight2;
+      }
+      color: @grey;
+      th,td{
+        text-align: right;
+        height: 38px;
+        // line-height: 38px;
+        // padding: 0 10px;
+        line-height: 1.2em;
+        padding: 10px;
+      }
+      th{
+        color: @grey;
+        .font(semibold);
+        font-size: 12px;
+        text-transform: uppercase;
+
+        &:empty {
+          height: 0;
+        }
+      }
+      td{
+        font-size: 14px;
+        .variable{
+          color: @blue;
+        }
+        .unit{
+          color:#97a1a7;
+        }
+        &.counter{
+          &:before{
+            counter-increment: section;
+            content: counters(section,".") '.';
+            margin-right: 5px;
+          }
+        }
+        span.circle{
+          width: 10px;
+          height: 10px;
+          margin-left: 5px;
+        }
+      }
+      th,td{
+        .units{
+          font-weight: normal;
+          color: #bbb;
+          margin-left: 2px;
+        }
+        &.borderLeft{
+          border-left: 1px solid @lightgrey;
+        }
+        &.borderRight{
+          border-right: 1px solid @lightgrey;
+        }
+      }
+      th:first-child,td:first-child{
+        // width: 50%;
+        text-align: left;
+      }
+    }
+  }
+
+  &.watering{
+    tr{
+      th,td{
+        &:nth-of-type(2),&:nth-of-type(3){
+          text-align: left;
+        }
+      }
+      th{
+        color:#97a1a7;
+      }
+      td{
+        color:#00475e;
+        &:nth-of-type(3),span{
+          color:#55555d;
+        }
+      }
+    }
+  }
+
+  &.correlation{
+    tr{
+      th,td{
+        text-align: right;
+      }
+      td{
+        color:#00475e;
+        &:first-child,&:last-child{
+          color:#97a1a7;
+        }
+      }
+    }
+  }
+  &.consumption{
+    tr{
+      th,td{
+        &:nth-of-type(1),&:nth-of-type(2){
+          text-align: left;
+        }
+      }
+      td{
+        color:#00475e;
+        &:nth-of-type(3){
+          color:#97a1a7;
+        }
+      }
+    }
+  }
+
+  &.ranking{
+    tr{
+      th,td{
+        &:nth-of-type(1),&:nth-of-type(2){
+          text-align: left;
+        }
+      }
+      td{
+        color:#00475e;
+      }
+    }
+  }
+
+  &.waste {
+    td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+    }
+    span.icon {
+      display: inline-block;
+      height: 1em;
+      margin-left: 5px;
+      position: relative;
+      top: 2px;
+    }
+
+    .flag {
+      text-transform: uppercase;
+      margin-left: 5px;
+      font-size: 12px;
+      .font(semibold);
+
+      &.alert {
+        color: #f00;
+      }
+    }
+  }
+
+  &.efficiencyRanking{
+    td{
+      span{
+        &:after{
+          content: ' / ';
+          color:@grey;
+        }
+        &:last-child{
+          &:after{
+            content: '';
+          }
+        }
+      }
+    }
+  }
+
+  &.transparent {
+    background-color: inherit;
+    table {
+      td {
+        color: #fff;
+      }
+      td.counter {
+        color: #fff;
+        &:before {
+          color: #97a1a7;
+        }
+      }
+      tr {
+        border-bottom: 1px solid #30687a;
+      }
+    }
+  }
+
+  &.rankingWidget {
+    td {
+      padding: 0;
+    }
+
+    .counter {
+      width: 168px;
+      max-width: 168px;
+      padding-right: 10px;
+      // span {
+      //   .ellipsis;
+      // }
+    }
+    .intensity {
+      display: flex;
+      align-items: center;
+      .rankingBar {
+        border-radius: 2px;
+        width: 90px;
+        height: 11px;
+        position: relative;
+        background-color: #0d5166;
+        > div {
+          border-radius: 2px;
+          position: absolute;
+          background-color: @turquoise;
+          left: 0;
+          top: 0;
+          bottom: 0;
+        }
+      }
+      span {
+        .font(bold);
+        margin-left: 5px;
+      }
+    }
+  }
+
+  &.dark {
+    background-color: transparent;
+    border-color: @lightblue;
+
+    h3, h4 {
+      color: @white;
+    }
+
+    table tr {
+      color: @white;
+      border-color: @lightblue;
+    }
+  }
+}

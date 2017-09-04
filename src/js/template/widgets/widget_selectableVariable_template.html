@@ -1,0 +1,95 @@
+<%if(link){%>
+  <a jslink href="<%=link%>">
+<%}%>
+<div class="widget active <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+  <div class='botons'>
+    <% if (timeMode=='now') {%>
+      <span class='tooltipIcon realTime'><div class='text'><span><%=__('Ahora')%><span></div></span>
+    <% } else if (timeMode=='historic') { %>
+      <%=_.template( $('#widgets-widget_date_template').html())() %>
+    <% } %>
+    <% if (infoTemplate) {%>
+      <span class='tooltipIcon info'><div class='text'><span><%=__('Más info')%><span></div></span>
+      <span class='tooltipIcon close hide'></span>
+    <% } %>
+
+
+    <% if(!embed && !link) { %>
+
+      <% if(exportable || publishable) { %>
+
+        <span class='tooltipIcon'>
+          <a class="popup_widget actions" href="#">
+            <div class="exportsel">
+              <ul>
+                <% if(exportable) {%>
+                  <li data-export="csv" class="iconAction download selected">
+                      <%=__('Descargar datos')%> (CSV)
+                  </li>
+                <% } %>
+
+                <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) {%>
+                  <% if(publishable) {%>
+                    <li data-export="publish" class="iconAction exportable <%= !exportable ? 'selected':'' %>">
+                      <%=__('Publicar widget')%>
+                    </li>
+                  <% } %>
+                <% } %>
+
+              </ul>
+            </div>
+          </a>
+        </span>
+
+      <% } %>
+
+    <% } %>
+
+
+
+
+
+
+  </div>
+  <div class="widget_header main">
+    <div class="title">
+      <% if(category){%>
+        <h3><%=category%></h3>
+      <%}%>
+
+      <% if(selectableVariables.length){ %>
+        <a class="popup_widget variableSelector">
+          <% var selectedTitle = _.find(selectableVariables, function(item){
+            return item.id === currentVariable;
+          }) %>
+          <span><%= selectedTitle.title %></span>
+          <% if(!embed) { %>
+            <div class="varsel">
+              <ul>
+              <% _.each(selectableVariables,function(elem, idx){ %>
+                <li data-varid="<%= elem.id %>" class="<%= elem.id === currentVariable ? 'selected': ''%>"><%= elem.title %></li>
+              <% }); %>
+              </ul>
+            </div>
+          <% } %>
+        </a>
+      <% } %>
+
+      <%= title %>
+    </div>
+  </div>
+  <div class="widget_content"></div>
+  <% if (infoTemplate) {%>
+    <div class='info_container hide'>
+      <div class='info_content'><%= infoTemplate()%></div>
+    </div>
+  <% } %>
+
+
+<%if(link){%>
+  <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
+  </div>
+  </a>
+<%}else{%>
+  </div>
+<%}%>

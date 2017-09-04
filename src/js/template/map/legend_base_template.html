@@ -1,0 +1,21 @@
+<div class="mapLegend">
+  <div class="buttons">
+    <% if (opts.timeMode=='now') {%>
+      <span class="tooltipIcon realTime">
+        <div class="text">
+          <span><%= __('Ahora') %></span>
+        </div>
+      </span>
+    <% } else if (opts.timeMode=='historic') { %>
+      <%= _.template( $('#widgets-widget_date_template').html())() %>
+    <% } %>
+    <% if (opts.infoTemplate) { %>
+        <span class="tooltipIcon info" >
+          <div class="text">
+            <span><%= __('Click para ver más info') %></span>
+          </div>
+        </span>
+    <% } %>
+  </div>
+  <div class="legendContainer"></div>
+</div>

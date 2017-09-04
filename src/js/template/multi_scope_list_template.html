@@ -1,0 +1,80 @@
+<div id="scope_list">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 header">
+				<button class="button hide"><%= __('Explorar mapa') %></button>
+				<h1 class="title_page">
+					<% if(multi_scopes) { %>
+            <%= multi_scopes.length %> <%= multi_scopes.length === 1 ? __('Ámbito') : __('Ámbitos') %>
+          <% } %>
+				</h1>
+			</div>
+			<div class="selectors">
+				<a class="popup_widget scope" href="#"><%= App.scopeOptionsToStr(scopeOptionSelected) %>
+					<div class="varsel">
+							<ul>
+								<li data-scope="todos" class="<%='todos' == scopeOptionSelected ? 'selected':''%>"><%= App.scopeOptionsToStr('todos') %></li>
+								<li data-scope="unico" class="<%='unico' == scopeOptionSelected ? 'selected':''%>"><%= App.scopeOptionsToStr('unico') %></li>
+								<li data-scope="multi" class="<%='multi' == scopeOptionSelected ? 'selected':''%>"><%= App.scopeOptionsToStr('multi') %></li>
+							</ul>
+						</div>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 content">
+        <%_.each(multi_scopes,function(s){%>
+          <%
+            var numVerticals = undefined;
+            if(s.categories != undefined) {
+              numVerticals = s.categories.length;
+            }
+            var link = '';
+            if(s.multi) {
+              link = s.id + "/scope";
+            }else{
+              if(numVerticals == undefined) {
+                link = s.id + "/scope";
+              } else if(numVerticals == 1) {
+                link = s.id + "/dashboard";
+              } else if(numVerticals > 1) {
+                // Redirect multi categories scopes when coming from Scope List
+                link = s.id + "/categories/welcome";
+              }
+            }
+          %>
+					<a jslink href="<%=link%>">
+						<div class="box">
+							<div class="header">
+								<h3><%= s.multi ? __('MULTIÁMBITO') : __('ÁMBITO') %></h3>
+								<span><%=s.name%></span>
+							</div>
+							<div class="content_top">
+								<div class="counter_scopes">
+									<%if(s.multi) {%>
+										<div class="counter"><%=s.n_cities%> <%= __('Ámbitos') %></div>
+									<%}%>
+								</div>
+							</div>
+							<div class="content_bottom">
+								<div class="verticals">
+									<h3>
+                    <%if(s.categories != undefined){ %>
+                      <%=s.categories.length%> <%= s.categories.length === 1 ? __('vertical') : __('verticales') %>
+                    <% } %>
+                  </h3>
+									<div class="categories_section">
+										<%_.each(s.categories, function(category) {
+											%><span class="rectangleIcon <%=category%>"></span>
+										<%})%>
+									</div>
+								</div>
+								<hr class="separatorBottomBox"/>
+							</div>
+						</div>
+					</a>
+				<%});%>
+			</div>
+		</div>
+	</div>
+</div>

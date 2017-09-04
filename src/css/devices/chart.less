@@ -1,0 +1,132 @@
+#chart{
+	width: 100%;
+	min-height: 338px;
+	background-color: #00475d;
+	border-radius: 4px;
+	margin-bottom: 20px;
+
+	.loading{
+		padding: 10px;
+	    &:before{
+	      color: #fff;
+	    }
+  	}
+
+	.interactiveZone{
+		fill: transparent;
+	}
+
+	.guide{
+		stroke: #496771;
+	}
+
+	.grid{
+		line{
+	    stroke: #30687a;
+		}
+	}
+
+	.line{
+		fill: none;
+		stroke: #00d5e7;
+		stroke-width: 2px;
+		// &.type0{
+		// 	stroke:#00d5e7;
+   // 		}
+	  //   &.type1{
+		// 		stroke:#4e85b8;
+	  //   }
+	}
+
+	.circle{
+		// display: none;
+		// &.active{
+		// 	display: inherit;
+		// 	&.type0{
+		// 		fill:#00d5e7;
+	  //   }
+	  //   &.type1{
+		// 		fill:#4e85b8;
+	  //   }
+		// }
+	}
+
+	.axis.y, .axis.x{
+		text{
+			font-size: 12px;
+			fill: #859ba4;
+		}
+	}
+
+	.axis.x{
+		text{
+			font-weight: bold;
+		}
+	}
+
+	.domain{
+		fill:transparent;
+	}
+
+	.textRect{
+		fill:#003146;
+		// height: 78px;
+		width: 0;
+		&.active{
+			width: 159px;
+		}
+	}
+
+	.separator{
+  	width: 139px;
+  	height:1px;
+  	fill: #677983;
+  	display: none;
+  	&.active{
+			display: inherit;
+  	}
+  }
+
+	.variable{
+  	font-size: 14px;
+  	fill:#fff;
+  }
+
+  .separator,.variable, .circleTitle{
+  	cursor: pointer;
+  	&.type0{
+			fill:#00d5e7;
+    }
+    &.type1{
+			fill:#4e85b8;
+    }
+  }
+
+  .variblaTitle{
+  	font-size: 14px;
+  	fill:#587986;
+  	cursor: pointer;
+  }
+
+  .value{
+  	font-size: 14px;
+  	fill:#fff;
+  }
+  .date{
+  	font-size: 12px;
+  	fill:#5c707c;
+  }
+}
+
+.gauge{
+	.label{
+		font-size: 12px;
+		fill:#fff;
+	}
+	line{
+		stroke:#6f97a4;
+	}
+	.pointer{
+		fill:#fff;
+	}
+}

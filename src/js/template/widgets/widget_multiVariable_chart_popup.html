@@ -1,0 +1,9 @@
+<div class="widget_multiVariable_chart_popup">
+	<%_.each(series,function(s){%>
+		<div>
+			<h4 style="border-color: <%=s.color%>; color:<%=s.color%>"><%=__(s.key)%></h4>
+			<span class="value"><%=App.nbf(s.value)%> <%=App.mv().getVariable(s.realKey).get('units')%></span>
+			<span class="date"><%=App.formatDateTime(s.data.x)%></span>
+		</div>
+	<%})%>
+</div>

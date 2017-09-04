@@ -1,0 +1,16 @@
+www_builder:
+  build: .
+  volumes:
+    - .:/usr/src/app
+
+  command: npm run-script builder-watcher
+
+www:
+  image: geographica/nginx4dev:js
+  ports:
+    - "8085:80"
+
+  # Dev values
+  volumes:
+    - ./public:/usr/share/nginx/html
+    - .:/usr/share/nginx/html/src

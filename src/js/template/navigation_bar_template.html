@@ -1,0 +1,57 @@
+<% if (menu.showable && (scopeInfo || cities)) {%>
+<a href="#" class="navElement menu"></a>
+<div class="menuPanel">
+  <div class="container_menu_panel">
+  	<div id="menuPanel">
+    </div>
+  </div>
+</div>
+<div class="menuBg"></div>
+<%}%>
+
+<a href="#" class="navElement back"></a>
+<% if (breadcrumb) { %>
+  <ul>
+    <%_.each(breadcrumb.reverse(),function(d){ %>
+      <%if(!(d instanceof Array)){%>
+        <li><a jslink href="/<%=d.url%>"><%= d.title ? __(d.title) : d.title %></a></li>
+      <%}else{%>
+        <li>
+          <ul class="genericPopup">
+          <%
+          var current = '',
+              selected;
+          _.each(d,function(el,i){
+            selected = false;
+            if(el.selected == true){
+              selected = true;
+              current = el.title;
+            }
+            %>
+            <li class="<%= selected==true ? 'active':''%>">
+              <a jslink href="<%=el.url%>">
+                <%=__(el.title)%>
+                <%if(i==0){%>
+                <span> (<%= __('inicio') %>)</span>
+                <%}%>
+              </a>
+            </li>
+          <%})%>
+          </ul>
+            <div class="button empty dropdown" style="<%=App.getMetadata().getAdditionalInfo(section) ? 'background-color:' + App.getMetadata().getAdditionalInfo(section).colour:null%>">
+              <%if(App.getMetadata().getAdditionalInfo(section) && App.getMetadata().getAdditionalInfo(section).icon){%>
+                <div class="icon">
+                  <img src="/img/<%=App.getMetadata().getAdditionalInfo(section).icon%>">
+                </div>
+              <%}%>
+              <span><%=__(current)%></span>
+            </div>
+        </li>
+      <%}%>
+    <% });%>
+  <ul>
+<% } else { %>
+<ul>
+  <li><%= __('Cargando') %></li>
+</ul>
+<% } %>
