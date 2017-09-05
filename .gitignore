@@ -41,4 +41,7 @@ src/js/Config.js
 src/js/config.js
 config.yml
 
+src/verticals/*
+!src/verticals/.gitkeep
+
 site
