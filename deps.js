@@ -192,7 +192,7 @@ deps.JS = [
   srcJS + 'Router.js'
 ];
 
-deps.lessFile = src + 'css/styles.less';
+deps.lessFile = [ src + 'css/styles.less' ];
 
 if (typeof exports !== 'undefined') {
   exports.deps = deps;

@@ -14,8 +14,8 @@ const getDirectories = source =>
   readdirSync(source).map(name => join(source, name)).filter(isDirectory)
 const processDepsFile = (verticalDeps) => {
   deps.templateFolder = deps.templateFolder.concat(verticalDeps.templateFolder);
-  console.log(deps.templateFolder);
   deps.JS = deps.JS.concat(verticalDeps.JS);
+  deps.lessFile = deps.lessFile.concat(verticalDeps.lessFile);
 };
 
 const verticalsBasePath = './src/verticals/';
@@ -26,7 +26,6 @@ verticalFolders.forEach((dir) => {
   console.log(`    - ${dir}`);
   // Check deps file and process it
   const depsPath = './' + dir + '/deps.js';
-  console.log(depsPath);
   try {
     if (existsSync(depsPath)) {
       const verticalDeps = require(depsPath).deps;
