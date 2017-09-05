@@ -5,7 +5,7 @@ const { join } = require('path');
 const { lstatSync, readdirSync, existsSync } = require('fs');
 
 var debug = (process.argv.length == 3 && process.argv[2]=='debug') ? true : false;
-
+var extraResources = deps.extraResources || [];
 // Check extra verticals
 console.log('\nChecking extra verticals...');
 
@@ -16,6 +16,7 @@ const processDepsFile = (verticalDeps) => {
   deps.templateFolder = deps.templateFolder.concat(verticalDeps.templateFolder);
   deps.JS = deps.JS.concat(verticalDeps.JS);
   deps.lessFile = deps.lessFile.concat(verticalDeps.lessFile);
+  extraResources = extraResources.concat(verticalDeps.extraResources);
 };
 
 const verticalsBasePath = './src/verticals/';
@@ -45,5 +46,6 @@ sting.make({
   'deps' : deps,
   'outputPath' : './public',
   'outSourceMap' :  debug ? 'main.min.map' : null,
-  'compressHTML' : false
+  'compressHTML' : false,
+  'extraResources': extraResources
 });

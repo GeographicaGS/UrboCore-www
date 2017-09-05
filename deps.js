@@ -194,6 +194,8 @@ deps.JS = [
 
 deps.lessFile = [ src + 'css/styles.less' ];
 
+deps.extraResources = [];
+
 if (typeof exports !== 'undefined') {
   exports.deps = deps;
 }

@@ -44,4 +44,7 @@ config.yml
 src/verticals/*
 !src/verticals/.gitkeep
 
+public/verticals/*
+!public/verticals/.gitkeep
+
 site
