@@ -127,22 +127,6 @@
     return result ? element:null;
   }
 
-  metadata.prototype.getAdditionalInfo = function(id) {
-
-    var key = id.toLowerCase();
-    var additionalInfo = {id: id};
-
-    switch (key) {
-      // Categories
-      case 'frames': additionalInfo.colour = '#00b8c7'; additionalInfo.icon = 'SC_ic_embed_white.svg';
-        break;
-
-      default: additionalInfo = {colour: '#00b8c7'};
-    }
-
-    return additionalInfo;
-  }
-
   metadata.prototype.getCatalog = function(){
     return this._metadataCatalog;
   };
@@ -174,11 +158,23 @@
     return result ? element:null;
   }
 
-  metadata.prototype.getAditionalInfoEntity = function (entity_id) {
-    var idEntity = entity_id.toLowerCase();
-    var entityInfo = {id: entity_id};
+  metadata.prototype._additionalInfoCatalog = {
+    'frames': { colour: '#00b8c7', icon: 'SC_ic_embed_white.svg' }
+  };
 
-    return entityInfo;
+  metadata.prototype.getAdditionalInfo = function(id) {
+    var key = id.toLowerCase();
+    var additionalInfo = {
+      id: id,
+      colour: '#00b8c7'
+    };
+
+    var specificInfo = this._additionalInfoCatalog[key] || false;
+    if (specificInfo) {
+      additionalInfo = Object.assign(additionalInfo, specificInfo);
+    }
+
+    return additionalInfo;
   }
 
   metadata.prototype.createScope = function(data, options){
