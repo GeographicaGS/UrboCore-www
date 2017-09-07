@@ -187,7 +187,7 @@ App.Router = Backbone.Router.extend({
     var view = new App.View.Device({'model': model});
     App.showView(view.render());
   },
-  
+
   users: function(){
     // if(App.auth.getUser().superadmin) {
       App.showView(new App.View.UserList());

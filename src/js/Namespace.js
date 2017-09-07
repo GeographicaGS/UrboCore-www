@@ -9,8 +9,6 @@ App.View = {};
 App.View.Map = {};
 App.View.Map.Deprecated = {};
 App.View.Map.LayerTree = {};
-App.View.Map.LayerTree.Watering = {};
-App.View.Map.LayerTree.Waste = {};
 App.View.Map.LayerTree.Filters = {};
 
 App.View.Devices = {};

@@ -237,7 +237,7 @@ App.View.Dashboard = Backbone.View.extend({
         'buttonLink': 'http://www.mawisu2.com/mawisu2/',
         'buttonText': __('PLANIFICACIÓN TAREAS'),
         'isExternalLink': true,
-        'icons': ['issues/SC_ic_mova_widget-recogida.svg', 'issues/SC_ic_mova_widget-limpieza.svg']
+        'icons': ['../verticals/waste/img/issues/SC_ic_mova_widget-recogida.svg', '../verticals/waste/img/issues/SC_ic_mova_widget-limpieza.svg']
       });
 
       var wasteLinkWidget = new App.View.Widgets.ButtonLink({

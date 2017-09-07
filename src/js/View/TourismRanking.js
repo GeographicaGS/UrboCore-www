@@ -96,7 +96,7 @@ App.View.TourismRanking = Backbone.View.extend({
     },500);
 
     new L.Control.Zoom({ position: 'topright' }).addTo(this.map);
-    L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
     }).addTo(this.map);
 
     this.map.setView(this.scopeModel.get('location'), this.scopeModel.get('zoom'));

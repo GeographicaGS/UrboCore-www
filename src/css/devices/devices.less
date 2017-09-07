@@ -1,3 +1,16 @@
+.dataType(@type){
+  &[data-type='@{type}']{
+    .typeImageURL(@type);
+    .typeColor(@type);
+    h4{
+      background-color: @typeColor;
+    }
+    .deviceinfo{
+      background-image: url('../img/@{typeImageURL}');
+    }
+  }
+}
+
 .device_detail{
   padding: 20px 0;
   position: relative;
