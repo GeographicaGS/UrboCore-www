@@ -23,6 +23,7 @@ App.View.Admin = {};
 App.View.Filter = {};
 
 App.View.Panels = {};
+App.View.Panels.Correlations = {};
 App.View.Panels.Frames = {};
 
 App.Collection = {};
