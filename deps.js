@@ -162,6 +162,7 @@ deps.JS = [
   srcJS + 'Model/StatsUserModel.js',
 
   // Collections
+  srcJS + 'Collection/StaticVariablesCollection.js',
   srcJS + 'Collection/BaseCollection.js',
   srcJS + 'Collection/HistogramCollection.js',
   srcJS + 'Collection/Scope.js',
