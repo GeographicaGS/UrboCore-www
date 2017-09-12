@@ -8,9 +8,9 @@ deps.templateFolder = [srcJS + 'template'];
 deps.config = srcJS + 'Config.js';
 
 deps.JS = [
-  srcJS + 'lib/masonry.js',
+  // srcJS + 'lib/masonry.js',
   srcJS + 'lib/md5.js',
-  srcJS + 'lib/moment.js',
+  // srcJS + 'lib/moment.js',
   srcJS + 'lib/L.Map.Sync.js',
   srcJS + 'lib/leaflet.rotatedMarker.js',
 
