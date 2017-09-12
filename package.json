@@ -15,7 +15,9 @@
   "author": "Geographica",
   "license": "ISC",
   "dependencies": {
-    "sting-builder": "1.0.5"
+    "babel-preset-env": "^1.6.0",
+    "babili": "^0.1.4",
+    "sting-builder": "^1.2.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
