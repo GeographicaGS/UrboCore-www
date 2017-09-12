@@ -9,7 +9,8 @@
     "builder-watcher": "nodemon -e js,css,less,html --ignore public build.js debug",
     "test": "./node_modules/.bin/karma start",
     "deploy": "node ./build.js && s3_website push",
-    "install-vertical": "node ./install-vertical.js"
+    "install-vertical": "node ./install-vertical.js",
+    "update-vertical": "node ./update-vertical.js"
   },
   "author": "Geographica",
   "license": "ISC",

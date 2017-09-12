@@ -7,3 +7,9 @@ To install a new vertical you just need to execute:
 ```
 npm run-script install-vertical -- <vertical-source-path> <vertical-name>
 ```
+
+## Updating verticals
+The same way you can install a new vertical you can update it too executing:
+```
+npm run-script update-vertical -- <vertical-source-path> <vertical-name>
+```
