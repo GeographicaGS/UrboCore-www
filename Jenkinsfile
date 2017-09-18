@@ -64,9 +64,7 @@ node("docker") {
         if (currentBuild.result == "SUCCESS" && ["master", "dev"].contains(branch_name)) {
 
             stage "Deploying"
-
-            sh "/data/app/UrboCore-www/deploy.sh ${branch_name}"
-
+            sh "ansible urbo-frontend-production -a 'sh /data/app/UrboCore-www/deploy.sh ${branch_name}'"
 
         }
     }
