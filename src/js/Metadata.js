@@ -159,7 +159,8 @@
   }
 
   metadata.prototype._additionalInfoCatalog = {
-    'frames': { colour: '#00b8c7', icon: 'SC_ic_embed_white.svg' }
+    'frames': { colour: '#00b8c7', icon: 'SC_ic_embed_white.svg' },
+    'correlations': { colour: '#00b8c7', icon: 'SC_ic_correlacion_white.svg' }
   };
 
   metadata.prototype.getAdditionalInfo = function(id) {
