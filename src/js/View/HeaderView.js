@@ -31,7 +31,7 @@ App.View.HeaderView = Backbone.View.extend({
 
   render: function(){
     var logo;
-    
+
     switch(App.config.layout){
       case 'fiware':
         logo = 'fiwaremaps_logo.svg';
@@ -40,7 +40,7 @@ App.View.HeaderView = Backbone.View.extend({
         logo = 'fiware_zone_logo.png';
         break;
       case 'cedus':
-        logo = 'cedus_logo_cab.png';
+        logo = '../verticals/theme-cedus/img/cedus_logo_cab.png';
         break;
       default:
         logo = 'telefonica-logo_negativo.svg';

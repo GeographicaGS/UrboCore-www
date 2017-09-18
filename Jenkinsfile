@@ -65,7 +65,7 @@ node("docker") {
 
             stage "Deploying"
 
-            sh "/data/app/UrboCore-www/deploy_telefonica.sh ${branch_name}"
+            sh "/data/app/UrboCore-www/deploy.sh ${branch_name}"
 
 
         }
