@@ -2,7 +2,7 @@
 
 App.View.Map.Base = Backbone.View.extend({
   _popupTemplate: _.template( $('#map-entity_popup_template').html()),
-  clickTemplate: _.template( $('#map-click_template').html()),
+  clickTemplate: _.template( $('#map-click_carto_template').html()),
   hoverTemplate: _.template( $('#map-hover_template').html()),
 
   _layerGroups : {},
@@ -14,6 +14,9 @@ App.View.Map.Base = Backbone.View.extend({
       zoom: 16,
       timeMode: 'historic'
     },options);
+
+
+    this.mapHovers = [];
 
     _.bindAll(this,'_onMapMoved', '_onNamedMapCreated', '_onFeatureClick', '_onFeatureOver', '_onFeatureOut','_onClickedPopupOpen', '_onClickedPopupClose');
 
@@ -70,10 +73,25 @@ App.View.Map.Base = Backbone.View.extend({
     }).addTo(this.map);
 
     this.map.setView(this.options.center, this.options.zoom);
-
+    var _this = this;
     this.map.on('moveend', this._onMapMoved);
 
-    var _this = this;
+    // Custom Layers for named map
+    if(this.options.slug){
+      try {
+        var layers = App.mv().getCategory(this.options.id_category).toJSON().config.maps[this.options.slug];
+        layers.forEach(function(layer) {
+          _this._createCartoLayer(layer);
+        });
+
+
+      } catch(e) {
+        console.log(e.stack);
+      }
+
+    }
+
+
     setTimeout(function () {
        _this.map.invalidateSize();
     }, 100);
@@ -154,16 +172,16 @@ App.View.Map.Base = Backbone.View.extend({
 
   setLayerCursor: function(layer){
     //
-    var hovers = [], _this = this;
+    var _this = this;
     layer.bind('featureOver', function(e, latlon, pxPos, data, layer) {
-      hovers[layer] = 1;
-      if(_.any(hovers)) {
+      _this.mapHovers[layer] = 1;
+      if(_.any(_this.mapHovers)) {
         _this.$el.css('cursor', 'pointer');
       }
     });
     layer.bind('featureOut', function(m, layer) {
-      hovers[layer] = 0;
-      if(!_.any(hovers)) {
+      _this.mapHovers[layer] = 0;
+      if(!_.any(_this.mapHovers)) {
         _this.$el.css('cursor', 'auto');
       }
     });
@@ -183,7 +201,6 @@ App.View.Map.Base = Backbone.View.extend({
   },
 
   _onFeatureOver: function(e, pos, pixel, data, sublayer) {
-    this.$el.css('cursor', 'pointer');
     if(!this.map.hasLayer(this._popupHover) && !this.map.hasLayer(this._popup)){
       this._popupHover
         .setLatLng(pos)
@@ -198,7 +215,6 @@ App.View.Map.Base = Backbone.View.extend({
   },
 
   _onFeatureOut: function(e, pos, pixel, data) {
-    this.$el.css('cursor', 'auto');
     if(!this._clickedPopup)
       this.map.closePopup();
   },
@@ -231,7 +247,74 @@ App.View.Map.Base = Backbone.View.extend({
         } catch(e) {}
       })
     }, timeout || 20000);
+  },
+
+  _createCartoLayer(layer){
+    var sql = layer.sql;
+    var cartocss = layer.cartocss;
+    var interactivity = layer.interactivity.map(field => {
+      return field.field;
+    });
+
+    var cartotype = layer.cartotype || 'cartodb';
+    var sqlKey = (cartotype==='cartodb') ? 'sql': 'query';
+
+
+    var subLayer = [];
+    subLayer[sqlKey] = sql;
+    subLayer.cartocss = cartocss;
+    subLayer.interactivity = interactivity;
+
+    var options = {
+      type: cartotype,
+      user_name: this._username,
+      sublayers: [ subLayer ]
+    }
+
+    var _this = this;
+    cartodb.createLayer(
+      this.map,
+      options,
+      {https: true}
+    ).addTo(this.map)
+    .done((function(l){
+
+      var sublayer = l.getSubLayer(0);
+      this.setLayerCursor(sublayer);
+      sublayer.setInteraction(true);
+
+      sublayer.on('featureClick', (e, pos, pixel, o, layerIndex)  => {
+
+        e.preventDefault();
+
+        var header = layer.interactivity.filter( el => {
+          return el.header
+        })[0];
+
+        var content = layer.interactivity.filter( el => {
+          return el.title;
+        }).map( el => {
+          return { "title": el.title, "value": o[el.field] }
+        });
+
+        this._popup = this._popup || L.popup();
+        this._popup
+          .setLatLng(pos)
+          .setContent(this.clickTemplate({data: { data: content, title: header.header, subtitle: o[header.field] }}))
+          .openOn(this.map);
+
+
+      });
+
+
+
+
+    }).bind(this));
+
   }
+
+
+
 
 
 });
