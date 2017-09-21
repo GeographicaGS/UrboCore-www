@@ -58,22 +58,25 @@ node("docker") {
             // If in the future when we need to clean something of the real tests, this will be the place
             echo "Cleaning urbo-www/${build_name}"
 
+            if (currentBuild.result == "SUCCESS" && ["master", "dev"].contains(branch_name)) {
+
         stage "Deploying"
 
-            if (branch_name == "master") {
-                echo "Deploying master ..."
-                sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+                  if (branch_name == "master") {
+                      echo "Deploying master ..."
+                      sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
 
-            } else if (branch_name == "dev") {
-                echo "Deploying dev ..."
-                sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+                  } else if (branch_name == "dev") {
+                      echo "Deploying dev ..."
+                      sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
 
-            } else {
-                currentBuild.result = "FAILURE"
-                error_message = "Jenkinsfile error, deploying neither master nor staging nor dev"
+                  } else {
+                      currentBuild.result = "FAILURE"
+                      error_message = "Jenkinsfile error, deploying neither master nor staging nor dev"
 
-                echo "${error_message}"
-                error(error_message)
+                      echo "${error_message}"
+                      error(error_message)
+                  }
             }
 
     }
