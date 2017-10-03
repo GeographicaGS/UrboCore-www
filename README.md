@@ -13,3 +13,7 @@ The same way you can install a new vertical you can update it too executing:
 ```
 npm run-script update-vertical -- <vertical-source-path> <vertical-name>
 ```
+
+## License
+
+UrboCore WWW is licensed under Affero General Public License (GPL) version 3.
