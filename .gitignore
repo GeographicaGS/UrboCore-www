@@ -39,6 +39,9 @@ public/index.html
 
 src/js/Config.js
 src/js/config.js
+src/js/Config.dev.js
+src/js/Config.staging.js
+src/js/Config.production.js
 config.yml
 
 src/verticals/*
