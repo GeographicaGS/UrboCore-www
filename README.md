@@ -1,9 +1,12 @@
 # UrboCore WWW
 URBO's frontend application. This project is the HTML5 application of URBO solution for smart cities.
 
+Status **master** branch: [![Build Status](http://jenkins.geographica.gs/buildStatus/icon?job=UrboCore-www/master)](http://jenkins.geographica.gs/job/UrboCore-www/job/master/)
+
+Status **dev** branch: [![Build Status](http://jenkins.geographica.gs/buildStatus/icon?job=UrboCore-www/dev)](http://jenkins.geographica.gs/job/UrboCore-www/job/dev/)
 
 ## Introduction
-This is the code repository for Urbo Core WWW, the web frontend for the Urbo project.
+This is the code repository for URBO Core WWW, the web frontend for the URBO project.
 
 This repository provides the base code for the web frontend and needs to be complemented with pluggable verticals.
 
@@ -28,7 +31,7 @@ npm install
 ```
 docker-compose up www
 ```
-5. Install needed verticals as is explained in the [Installing verticals](#managing-pluggable-verticals) section.
+5. Install needed verticals as is explained in the [Managing pluggable verticals](#managing-pluggable-verticals) section.
 6. Build the production code as is explained in the [Building production code](#building-production-code) section.
 
 ### Managing pluggable verticals
