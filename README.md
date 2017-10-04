@@ -3,7 +3,7 @@ URBO's frontend application. This project is the HTML5 application of URBO solut
 
 
 ## Introduction
-This is the code repository for Urbo Core WWW, the web frontend for the [Urbo project]().
+This is the code repository for Urbo Core WWW, the web frontend for the Urbo project.
 
 This repository provides the base code for the web frontend and needs to be complemented with pluggable verticals.
 
