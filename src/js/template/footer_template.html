@@ -19,18 +19,23 @@
     &nbsp;·&nbsp;
     <%= __('Todos los derechos reservados') %>
   <% } %>
+</span>
 
-  </span>
-  <!-- <span>D+D by  <a target="_blank" href="https://www.geographica.gs">Geographica</a>&nbsp;·&nbsp;Powered by <span class="logoFooter"></span> -->
-
-  <div class="mr15">
+<div class="mr15">
+  <% if (App.config.layout !== 'cedus' && App.config.layout !== 'fiware_zone_andalucia') { %>
     <span class="black">Powered by</span>
     <img class="ml5 mr5" src="/img/SM_logo_footer_urbo.svg">&nbsp;·&nbsp;
-    <% if (App.config.layout !== 'cedus') { %>
     <a target="_blank" href="https://carto.com/"><img class="ml5" src="/img/SM_logo-g_footer_carto.svg"></a>
     <div class="logos"></div>
     <span class="ml5 border black">Engineered by</span>  <a class="ml5 geo" target="_blank" href="https://www.geographica.gs">Geographica</a>
-    <% } else { %>
-      <a target="_blank" href="https://www.fiware.org/"><img class="ml5" src="/img/fiwaremaps_logo-azul.svg"></a>
-    <% } %>
+  <% } else if (App.config.layout === 'cedus') { %>
+    <span class="black">Powered by</span>
+    <img class="ml5 mr5" src="/img/SM_logo_footer_urbo.svg">&nbsp;·&nbsp;
+    <a target="_blank" href="https://www.fiware.org/"><img class="ml5" src="/img/fiwaremaps_logo-azul.svg"></a>
+  <% } else if (App.config.layout === 'fiware_zone_andalucia') { %>
+    <img class="ml5 mr5 footer_fiware_andalucia" src="/img/../verticals/theme-fiware/img/logo-fiware-03.png">
+    <img class="ml5 mr5 footer_fiware_andalucia_tlf" src="/img/../verticals/theme-fiware/img/telefonica-logo.svg">
+    <img class="ml5 mr5 footer_fiware_andalucia_jda" src="/img/../verticals/theme-fiware/img/jda-logo.svg">
+    <span class="ml5 border black">Engineered by</span>  <a class="ml5 geo" target="_blank" href="https://www.geographica.gs">Geographica</a>
+  <% } %>
 </div>
