@@ -2327,7 +2327,7 @@ msgstr "bad"
 
 #: Environment.js:12
 msgid "muy malo"
-msgstr "very vad"
+msgstr "very bad"
 
 #: Environment.js:20
 msgid "Soleado"
