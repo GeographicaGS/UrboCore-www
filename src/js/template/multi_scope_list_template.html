@@ -40,6 +40,8 @@
               } else if(numVerticals > 1) {
                 // Redirect multi categories scopes when coming from Scope List
                 link = s.id + "/categories/welcome";
+              } else if (numVerticals === 0) {
+                link = s.id + "/frames/dashboard";
               }
             }
           %>
