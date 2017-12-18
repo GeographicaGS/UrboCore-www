@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -25,7 +25,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 	_template: _.template( $('#widgets-widget_gauge_template').html() ),
 
 	initialize: function(options) {
-		
+
 		this.options = _.defaults(options,{
 			fetchModel:false,
 			global:false
@@ -43,11 +43,11 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 	render: function(){
 		var _this = this;
 		var metaData = App.Utils.toDeepJSON(App.mv().getVariable(this.model.get('var_id')));
-		
+
 		this.$el.html(this._template({m: this.model.toJSON(), 'metaData':metaData, 'fetchModel':this.options.fetchModel}));
 
 		this.$el.addClass(this.model.get('className'));
-		
+
 		if(!this.options.fetchModel){
 			this._draw(metaData);
 		}else{
@@ -79,7 +79,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 		};
 
 		this.model.set('var_value',this.model.get('var_value') == 'null' ? varRange.min : parseFloat(this.model.get('var_value')));
-		
+
 		if(varRange['max'] < this.model.get('var_value'))
 			varRange['max'] = Math.ceil(this.model.get('var_value'));
 
@@ -206,7 +206,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 		;
 
 		var lines = svg.append('g').attr('transform', centerTx);
-		for (var i = varRange.min; i < varRange.max; i=i+((varRange.max-varRange.min)/30)) {
+		for (var i = varRange.min; i <= varRange.max; i=i+((varRange.max-varRange.min)/30)) {
 
 			var angle = (minAngle + (scale(i) * range)) - minAngle + (minAngle + 90)
 			var x = Math.cos(_this._deg2rad(angle)) * (-r) * 0.77;
@@ -255,13 +255,18 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 				.attr('fill','#fff');
 
 		if(this.model.get('var_value') != null && this.model.get('var_value') != undefined){
-			
+
 			var pointer = pg.append('path')
 										.attr('d', pointerLine)
 										.attr('transform', 'rotate(' + minAngle +')');
 
 			var newValue = this.model.get('var_value');
 			var ratio = scale(newValue);
+			if (ratio < 0) {
+				ratio = -0.01;
+			} else if (ratio > 1) {
+				ratio = 1.01;
+			}
 			var newAngle = minAngle + (ratio * range);
 			pointer.attr('transform', 'rotate(-110)')
 						.transition()
