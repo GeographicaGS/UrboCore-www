@@ -64,12 +64,12 @@ node("docker") {
             if (currentBuild.result == "SUCCESS" && ["master", "dev"].contains(branch_name)) {
 
               stage "Deploying"
-                  DOCKER_HUB = credentials("dockerhub")
-                  sh "docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PSW}"
+                withCredentials([[$class: 'UsernamePasswordMultiBinding',credentialsId: 'dockerhub',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                  sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                   sh "docker tag geographica/urbo_core_www geographica/urbo_core_www:${deploy_to}"
                   sh "docker push geographica/urbo_core_www:${deploy_to}"
-                  //sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+                  sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+                }
             }
-
     }
 }
