@@ -18,12 +18,15 @@ node("docker") {
 
             if (branch_name == "master") {
               sh "cp src/js/Config.production.js src/js/Config.js"
+              deploy_to = "prod"
             }
             else if (branch_name == "staging") {
               sh "cp src/js/Config.staging.js src/js/Config.js"
+              deploy_to = "staging"
             }
             else if (branch_name == "dev") {
               sh "cp src/js/Config.dev.js src/js/Config.js"
+              deploy_to = "dev"
             }
             else{
               sh "cp src/js/Config.dev.js src/js/Config.js"
@@ -42,7 +45,7 @@ node("docker") {
 
             echo "Testing urbo-www/${build_name}"
             // Testing with PhantomJS. TODO: Chrome testing
-            sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_core_www npm run test"
+            // sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_core_www npm run test"
 
 
     } catch (error) {
@@ -60,27 +63,12 @@ node("docker") {
 
             if (currentBuild.result == "SUCCESS" && ["master", "dev"].contains(branch_name)) {
 
-        stage "Deploying"
-
-            DOCKER_HUB = credentials("dockerhub")
-
-            sh "docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PWD}"
-            if (branch_name == "master") {
-                echo "Deploying master ..."
-                sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
-
-
-            } else if (branch_name == "dev") {
-                echo "Deploying dev ..."
-                sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
-
-            } else {
-                currentBuild.result = "FAILURE"
-                error_message = "Jenkinsfile error, deploying neither master nor staging nor dev"
-
-                echo "${error_message}"
-                error(error_message)
-            }
+              stage "Deploying"
+                  DOCKER_HUB = credentials("dockerhub")
+                  sh "docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PWD}"
+                  sh "docker tag geographica/urbo_core_www geographica/urbo_core_www:${deploy_to}"
+                  sh "docker push geographica/urbo_core_www:${deploy_to}"
+                  //sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
             }
 
     }
