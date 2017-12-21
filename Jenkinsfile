@@ -65,7 +65,7 @@ node("docker") {
 
               stage "Deploying"
                   DOCKER_HUB = credentials("dockerhub")
-                  sh "echo $DOCKER_HUB"
+                  sh "echo ${DOCKER_HUB}"
                   sh "docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PSW}"
                   sh "docker tag geographica/urbo_core_www geographica/urbo_core_www:${deploy_to}"
                   sh "docker push geographica/urbo_core_www:${deploy_to}"
