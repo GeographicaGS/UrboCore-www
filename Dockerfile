@@ -5,10 +5,7 @@ RUN sh -c 'echo deb http://dl.google.com/linux/chrome/deb/ stable main > /etc/ap
 RUN apt-get -y update && apt-get install -y ruby \
   openjdk-7-jre xvfb xfonts-100dpi \
   xfonts-75dpi xfonts-scalable xfonts-cyrillic \
-  xvfb x11-apps imagemagick google-chrome-stable
-
-RUN gem install s3_website
-RUN npm install -g nodemon mocha
+  xvfb x11-apps imagemagick google-chrome-stable && gem install s3_website && npm install -g nodemon mocha
 
 COPY test/xvfb /etc/init.d/
 RUN chmod +x /etc/init.d/xvfb && update-rc.d xvfb defaults

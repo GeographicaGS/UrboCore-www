@@ -30,7 +30,7 @@ node("docker") {
             }
 
             sh "git submodule init && git submodule update"
-            sh "docker build --pull=true -t geographica/urbo_www_builder ."
+            sh "docker build --pull=true -t geographica/urbo_core_www ."
 
         stage "Testing"
 
@@ -38,11 +38,11 @@ node("docker") {
              * Because still there are no tests, we only run the builder
              */
 
-            // sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --name urbo_www--${build_name} geographica/urbo_www_builder"
+            // sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --name urbo_www--${build_name} geographica/urbo_core_www"
 
             echo "Testing urbo-www/${build_name}"
             // Testing with PhantomJS. TODO: Chrome testing
-            sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_www_builder npm run test"
+            sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_core_www npm run test"
 
 
     } catch (error) {
@@ -62,21 +62,25 @@ node("docker") {
 
         stage "Deploying"
 
-                  if (branch_name == "master") {
-                      echo "Deploying master ..."
-                      sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+            DOCKER_HUB = credentials("dockerhub")
 
-                  } else if (branch_name == "dev") {
-                      echo "Deploying dev ..."
-                      sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+            sh "docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PWD}"
+            if (branch_name == "master") {
+                echo "Deploying master ..."
+                sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
 
-                  } else {
-                      currentBuild.result = "FAILURE"
-                      error_message = "Jenkinsfile error, deploying neither master nor staging nor dev"
 
-                      echo "${error_message}"
-                      error(error_message)
-                  }
+            } else if (branch_name == "dev") {
+                echo "Deploying dev ..."
+                sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
+
+            } else {
+                currentBuild.result = "FAILURE"
+                error_message = "Jenkinsfile error, deploying neither master nor staging nor dev"
+
+                echo "${error_message}"
+                error(error_message)
+            }
             }
 
     }
