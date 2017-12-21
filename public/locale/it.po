@@ -7064,3 +7064,9 @@ msgstr "Mobilità"
 
 msgid "Turismo"
 msgstr "Turismo"
+
+msgid "Muy buena"
+msgstr "Molto buona"
+
+msgid "Excelente"
+msgstr "Eccellente"

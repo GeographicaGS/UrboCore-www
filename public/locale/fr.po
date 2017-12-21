@@ -3504,3 +3504,9 @@ msgstr "Transport"
 
 msgid "Turismo"
 msgstr "Tourisme"
+
+msgid "Muy buena"
+msgstr "Très bonne"
+
+msgid "Excelente"
+msgstr "Excellent"
