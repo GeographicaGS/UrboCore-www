@@ -47,7 +47,7 @@ node("docker") {
 
             echo "Testing urbo-www/${build_name}"
             // Testing with PhantomJS. TODO: Chrome testing
-            // sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_core_www npm run test"
+            sh "docker run -i -e DISPLAY=:99 -e CHROME_BIN=chrome-browser --rm --name urbo_www--${build_name} geographica/urbo_core_www npm run test"
 
 
     } catch (error) {
