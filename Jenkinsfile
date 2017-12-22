@@ -11,7 +11,9 @@ node("docker") {
             sh "git rev-parse --short HEAD > .git/git_commit"
 
             branch_name = "${env.BRANCH_NAME}".replaceAll("/", "_")
-            git_commit = readFile(".git/git_commit").replace("\n", "").replace("\r", "")
+            // git_commit = readFile(".git/git_commit").replace("\n", "").replace("\r", "")
+            git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+
             build_name = "${branch_name}--${git_commit}"
 
             echo "Building urbo-www/${build_name}"
@@ -66,8 +68,8 @@ node("docker") {
               stage "Deploying"
                 withCredentials([[$class: 'UsernamePasswordMultiBinding',credentialsId: 'dockerhub',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                   sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                  sh "docker tag geographica/urbo_core_www geographica/urbo_core_www:${deploy_to}"
-                  sh "docker push geographica/urbo_core_www:${deploy_to}"
+                  sh "docker tag geographica/urbo_core_www geographica/urbo_core_www:${git_commit}"
+                  sh "docker push geographica/urbo_core_www:${git_commit}"
                   sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
                 }
             }
