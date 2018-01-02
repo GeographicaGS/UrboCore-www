@@ -38,7 +38,7 @@ App.View.Panels.Base = App.View.Container.extend({
     for (var i in options)
       this[i] = options[i];
 
-    this.panelList = new App.Collection[App.Utils.capitalizeFirstLetter(this.id_category)].PanelList(null,options);
+    this.panelList = new App.Collection[App.Utils.categoryToClassName(this.id_category)].PanelList(null,options);
     //this.panelList.fetch({scope: this.scopeModel.get('id')});
 
     this.category = this.scopeModel.get('categories').get(this.id_category);
