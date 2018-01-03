@@ -155,6 +155,7 @@ deps.JS = [
   // MAP
   srcJS + 'View/Map/BaseMapView.deprecated.js',
   srcJS + 'View/Map/BaseMapView.js',
+  srcJS + 'View/Map/MapboxGLMapView.js',
   srcJS + 'View/Map/BaseComparisonMapView.js',
   srcJS + 'View/Map/MapVectorPointsView.js',
   srcJS + 'View/Map/LayerTreeView.js',
