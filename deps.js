@@ -175,6 +175,7 @@ deps.JS = [
   srcJS + 'Model/DeviceModel.js',
   srcJS + 'Model/EntitiesCounterModel.js',
   srcJS + 'Model/UserModel.js',
+  srcJS + 'Model/Map/MapboxGLLayer.js',
   srcJS + 'Model/Metadata/Variable.js',
   srcJS + 'Model/Metadata/Entity.js',
   srcJS + 'Model/Metadata/Category.js',
