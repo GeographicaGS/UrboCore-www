@@ -25,74 +25,22 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   _ids: [],
   _idSource: '',
   _model: null,
-  legendConfig: null,
   dataSource: null,
   layers: [],
 
-  initialize: function(model, body, legend, map) {
+  initialize: function(model, body, map) {
     this._map = map;
     this._model = model;
-    this.legendConfig = legend;
-    this._mapEvents = {};
-    this._map.addSource(this._idSource, {
-      'type': 'geojson',
-      'data': {
-        "type": "FeatureCollection",
-        "features": []
-      },
-    });
-    this._map._layers = this._map._layers.concat(this._layersConfig());
-    this._map.addLayers(this._layersConfig());
     this.listenTo(this._model, 'change', this._success);
-    this.updateData(body);
-    this.addToLegend();
-  },
-
-  addToLegend: function() {
-    if (this.legendConfig) {
-      this._map.addToLegend(this.legendConfig);
-    }
-  },
-
-  updateData: function(body) {
-    this._model.clear();
     this._model.fetch({data: body});
   },
 
-  on: function(event, ids, callback) {
-    if(this._mapEvents[event] === undefined) {
-      this._mapEvents[event] = {};
-    }
-    if(ids.constructor === Array) {
-      ids.forEach(id => {
-        this._map._map.on(event,id,callback);
-        this._mapEvents[event][id] = callback;
-      });
-    }else {
-      this._map._map.on(event,ids,callback);
-      this._mapEvents[event][ids] = callback;      
-    }
-    return this;
+  updateData: function(body) {
+    this._model.fetch({data: body});
   },
-
-  offAll: function() {
-    _.each(this._mapEvents, function(childs,event) {
-      _.each(childs, function(callback, name) {
-        this._map._map.off(event,name,callback);
-      }.bind(this))
-    }.bind(this))
-  },
-
-  onClose: function() {
-    this.offAll();
-  },
-
   _success: function(change) {
-    this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
-    this._map.getSource(this._idSource).setData(this.dataSource);
-    this._map._sources.find(function(src) {
-      return src.id === this._idSource;
-    }.bind(this)).data = {'type': 'geojson', 'data': this.dataSource};
+    this.dataSource = change.changed;
+    this._map.addLayers(this._layersConfig());
     return change;
   },
 
