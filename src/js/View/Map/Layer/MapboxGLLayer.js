@@ -17,20 +17,36 @@
 // 
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
-
 'use strict';
 
-App.Model.Map.MapboxGLLayer = Backbone.Model.extend({
+App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
 
-  defaults: {
-    map: null,
-    ids: [],
-    idSource: '',
+  _map: null,
+  _ids: [],
+  _idSource: '',
+  _model: null,
+  dataSource: null,
+  layers: [],
+
+  initialize: function(model, body, map) {
+    this._map = map;
+    this._model = model;
+    this.listenTo(this._model, 'change', this._success);
+    this._model.fetch({data: body});
   },
 
-  initialize: function() {},
+  updateData: function(body) {
+    this._model.fetch({data: body});
+  },
+  _success: function(change) {
+    this.dataSource = change.changed;
+    this._map.addLayers(this._layersConfig());
+    return change;
+  },
 
-  addToMap: function(map) {
-    this.map = map;
+  _error: function() {
+    console.error("Error");
   }
+
+  
 });

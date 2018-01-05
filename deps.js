@@ -156,6 +156,7 @@ deps.JS = [
   srcJS + 'View/Map/BaseMapView.deprecated.js',
   srcJS + 'View/Map/BaseMapView.js',
   srcJS + 'View/Map/MapboxGLMapView.js',
+  srcJS + 'View/Map/MapboxGLBaseMapSelectorView.js',
   srcJS + 'View/Map/BaseComparisonMapView.js',
   srcJS + 'View/Map/MapVectorPointsView.js',
   srcJS + 'View/Map/LayerTreeView.js',
@@ -164,6 +165,8 @@ deps.JS = [
   srcJS + 'View/Map/LayerTreeFilters.js',
   srcJS + 'View/Map/LegendBaseMapView.js',
   srcJS + 'View/Map/ComparisonLegendMapView.js',
+  srcJS + 'View/Map/Layer/MapboxGLLayer.js',
+  
 
   // Models
   srcJS + 'Model/BaseModel.js',
@@ -175,7 +178,6 @@ deps.JS = [
   srcJS + 'Model/DeviceModel.js',
   srcJS + 'Model/EntitiesCounterModel.js',
   srcJS + 'Model/UserModel.js',
-  srcJS + 'Model/Map/MapboxGLLayer.js',
   srcJS + 'Model/Metadata/Variable.js',
   srcJS + 'Model/Metadata/Entity.js',
   srcJS + 'Model/Metadata/Category.js',
