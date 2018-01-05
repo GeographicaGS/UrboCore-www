@@ -21,7 +21,8 @@
 'use strict';
 
 App.View.HeaderView = Backbone.View.extend({
-  _template: _.template( $('#header_template').html() ),
+
+  _template: App.config.layout_header ?  _.template( $('#'+ App.config.layout_header).html() ) : _.template( $('#header_template').html() ),
 
   initialize: function(options) {
     this.render();
