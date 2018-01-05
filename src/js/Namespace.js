@@ -27,6 +27,7 @@ App.Model.Widgets = {};
 
 App.View = {};
 App.View.Map = {};
+App.View.Map.Layer = {};
 App.View.Map.Deprecated = {};
 App.View.Map.LayerTree = {};
 App.View.Map.LayerTree.Filters = {};
