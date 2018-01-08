@@ -63,9 +63,6 @@ App.View.HeaderView = Backbone.View.extend({
       case 'cedus':
         logo = '../verticals/theme-cedus/img/cedus_logo_cab.png';
         break;
-      case 'aquagis':
-        logo = '../verticals/aq_cons/img/aquagis_logo.svg';
-        break;
       default:
         logo = 'telefonica-logo_negativo.svg';
     }
