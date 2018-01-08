@@ -170,7 +170,7 @@ App.Router = Backbone.Router.extend({
     var metadataScope = App.mv().getScope(scope);
 
     if (!panel) panel = 'master';
-    var categoryClassName = App.Utils.categoryToClassName(category);
+    var categoryClassName = App.Utils.capitalizeFirstLetter(category);
     var panel = App.Utils.capitalizeFirstLetter(panel);
 
     if (!App.View.Panels.hasOwnProperty(categoryClassName)
