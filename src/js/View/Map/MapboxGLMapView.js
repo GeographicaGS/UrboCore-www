@@ -21,18 +21,23 @@
 App.View.Map.MapboxView = Backbone.View.extend({
 
   basemaps: {},
-  _currentBasemap: 'dark',
-  _availableBasemaps: ['dark','positron'],
+  _sources: [],
+  _currentBasemap: 'positron',
+  _availableBasemaps: ['positron','dark'],
   _center: [0,0],
   _zoom: 12,
-  _map: null,
+  _map: {},
+  _layers: [],
+  mapChanges: new Backbone.Model(),
+  
 
   initialize: function(options) {
-    this._currentBasemap = options.defaultBasemap || 'dark';
-    this._availableBasemaps = options.availableBasemaps || ['dark','positron'];
+    this._currentBasemap = options.defaultBasemap || 'positron';
+    this._availableBasemaps = options.availableBasemaps || ['positron','dark'];
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
+    this.$el.append(new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps).render().$el);
     this._preloadBasemaps();
   },
 
@@ -45,20 +50,58 @@ App.View.Map.MapboxView = Backbone.View.extend({
         center: this._center,
         zoom: this._zoom,
       });
+      this._map
+        .on('load', this.loaded.bind(this))
+        .on('moveend',this.onBBoxChange.bind(this))
     },100)
+    return this;
+  },
+
+  loaded: function() {
+    this.mapChanges.set({'loaded':true});
+  },
+
+  onBBoxChange: function() {
+    console.log(this.getBBox());
+    this.mapChanges.set({'bbox':this.getBBox()});
   },
 
   onClose: function() {
 
   },
 
-  addLayer: function() {
+  addSource: function(idSource, dataSource) {
+    let source = {id: idSource, data: dataSource};
+    this._sources.push(source);
+    this._map.addSource(idSource,dataSource);
+    return source;
+  },
 
+  addLayers: function(layers) {
+    this._layers = layers;
+    layers.forEach(layer => {
+      this._map.addLayer(layer);
+    });
   },
 
   changeBasemap: function(name) {
     this._map.setStyle(this.basemaps[name]);
     this._currentBasemap = name;
+    let sources = [];
+    this._sources.forEach(src => {
+      sources.push(this.addSource(src.id, src.data));
+    });
+    this._sources = sources;
+    this.addLayers(this._layers);
+  },
+
+  updateData: function(layer) {
+    console.log(layer._model);
+    //this._map.getSource(layer._idSource).setData(data);
+  },
+  
+  getBBox: function() {
+    return this._map.getBounds();
   },
 
   _preloadBasemaps: function() {
