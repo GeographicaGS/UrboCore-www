@@ -123,16 +123,6 @@ App.Utils = {
     return s.charAt(0).toUpperCase() + s.slice(1);
   },
 
-  categoryToClassName: function(s) {
-    if (s=='aq_cons') {
-      return 'AQCons';
-    }
-    else {
-      return this.capitalizeFirstLetter(s);
-    }
-
-  },
-
   getCartoAccount: function(category){
     return App.mv().getCategory(category).get('config').carto.account;
   },
