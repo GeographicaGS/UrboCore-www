@@ -48,3 +48,5 @@ public/verticals/*
 !public/verticals/.gitkeep
 
 site
+
+start_builder.sh
