@@ -159,6 +159,7 @@ deps.JS = [
   srcJS + 'View/Map/MapboxGLBaseMapSelectorView.js',
   srcJS + 'View/Map/BaseComparisonMapView.js',
   srcJS + 'View/Map/MapVectorPointsView.js',
+  srcJS + 'View/Map/MapboxGLLegendView.js',
   srcJS + 'View/Map/LayerTreeView.js',
   srcJS + 'View/Map/FilterSpatialMapView.js',
   srcJS + 'View/Map/MapSearchView.js',

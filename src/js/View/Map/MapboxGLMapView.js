@@ -37,6 +37,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
+    this.$el.append(new App.View.Map.MapboxLegendView(this, []).render().$el);
     this.$el.append(new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps).render().$el);
     this._preloadBasemaps();
   },
@@ -72,13 +73,21 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   addSource: function(idSource, dataSource) {
     let source = {id: idSource, data: dataSource};
-    this._sources.push(source);
+    let src =  this._sources.find(function(src) {
+      return source.id === src.id;
+    }.bind(this));
+    if(!src) {
+      this._sources.push(source);
+    }
     this._map.addSource(idSource,dataSource);
     return source;
   },
 
+  getSource: function(idSource) {
+    return this._map.getSource(idSource);
+  },
+
   addLayers: function(layers) {
-    this._layers = layers;
     layers.forEach(layer => {
       this._map.addLayer(layer);
     });
