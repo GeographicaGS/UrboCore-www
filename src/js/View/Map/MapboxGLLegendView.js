@@ -27,7 +27,8 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
         name: 'Industrial',
       }]
     }, {
-      name:'Sensores'
+      name:'Sensores',
+      childs: []
     }];
   },
 
@@ -36,8 +37,14 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
     let legend = '';
 
     this.items.forEach(function(item){
-      items += this._item.replace(/##ITEM_NAME##/, item.name);
+      let childs = '';
+      item.childs.forEach(function(child) {
+        childs += this._child.replace(/##ITEM_CHILD##/, child.name);
+      }.bind(this))
+      items += this._item.replace(/##ITEM_NAME##/, item.name)
+        .replace(/##CHILDS##/,childs);
     }.bind(this));
+
 
     legend = this._legend.replace(/##ITEMS##/, items);
     this.$el.append(legend);
