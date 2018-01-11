@@ -135,6 +135,10 @@ App.View.Map.Base = Backbone.View.extend({
     console.error('Virtual method call not supported [applyFilters]');
   },
 
+  resetSize: function() {
+    this.map.invalidateSize();
+  },
+
   _getCurrentBBOX: function () {
     return this.map.getBounds().toBBoxString().split(',');
   },
