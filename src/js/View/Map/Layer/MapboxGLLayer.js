@@ -39,6 +39,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       },
     });
     this._map._layers = this._map._layers.concat(this._layersConfig());
+    this._map.addLayers(this._layersConfig());    
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
   },
@@ -52,7 +53,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this._map._sources.find(function(src) {
       return src.id === this._idSource;
     }.bind(this)).data = {'type': 'geojson', 'data':this.dataSource};
-    this._map.addLayers(this._layersConfig());
     return change;
   },
 
