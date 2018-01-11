@@ -70,7 +70,7 @@ App.View.Split = Backbone.View.extend({
 
     if(this._mapView){
     	setTimeout(function(){
-      	_this._mapView.map.invalidateSize();
+      	_this._mapView.resetSize();
     	}, 300);
     }
 

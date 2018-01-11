@@ -81,7 +81,7 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     if(this._mapView){
       this._mapView.$el.toggleClass('expanded');
     	setTimeout(function(){
-      	_this._mapView.map.invalidateSize();
+      	_this._mapView.resetSize();
     	}, 300);
     }
   }
