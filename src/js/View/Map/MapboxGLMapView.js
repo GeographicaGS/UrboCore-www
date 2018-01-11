@@ -34,26 +34,28 @@ App.View.Map.MapboxView = Backbone.View.extend({
   initialize: function(options) {
     this._currentBasemap = options.defaultBasemap || 'positron';
     this._availableBasemaps = options.availableBasemaps || ['positron','dark'];
+    this._sprites = options.sprites;
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
     this.$el.append(new App.View.Map.MapboxLegendView(this, []).render().$el);
     this.$el.append(new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps).render().$el);
-    this._preloadBasemaps();
   },
 
   render: function() {
     setTimeout(()=>{
       mapboxgl.accessToken = 'pk.eyJ1Ijoiam9zbW9yc290IiwiYSI6ImNqYXBvcW9oNjVlaDAyeHIxejdtbmdvbXIifQ.a3H7tK8uHIaXbU7K34Q1RA';
-      this._map = new mapboxgl.Map({
-        container: this.$el[0],
-        style: `/mapstyles/${this._currentBasemap}.json`,
-        center: this._center,
-        zoom: this._zoom,
-      });
-      this._map
-        .on('load', this.loaded.bind(this))
-        .on('moveend',this.onBBoxChange.bind(this))
+      this._preloadBasemaps().then(function() {
+        this._map = new mapboxgl.Map({
+          container: this.$el[0],
+          style: this.basemaps['positron'],
+          center: this._center,
+          zoom: this._zoom,
+        });
+        this._map
+          .on('load', this.loaded.bind(this))
+          .on('moveend',this.onBBoxChange.bind(this))
+      }.bind(this));
     },100)
     return this;
   },
@@ -63,7 +65,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   onBBoxChange: function() {
-    console.log(this.getBBox());
     this.mapChanges.set({'bbox':this.getBBox()});
   },
 
@@ -105,7 +106,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   updateData: function(layer) {
-    console.log(layer._model);
     //this._map.getSource(layer._idSource).setData(data);
   },
   
@@ -114,15 +114,20 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   _preloadBasemaps: function() {
-    Promise.all(this._availableBasemaps.map(name => {
-      return this._loadBasemap(name);
-    })).then((response) => {
-      Promise.all(response.map(r => r.json())).then(response => {
-        this._availableBasemaps.forEach((bm, i) => {
-          this.basemaps[bm] = response[i];
-        });
-      })
-    });
+    let promise = new Promise(function(resolve,reject) {
+      Promise.all(this._availableBasemaps.map(name => {
+        return this._loadBasemap(name);
+      })).then((response) => {
+        Promise.all(response.map(r => r.json())).then(response => {
+          this._availableBasemaps.forEach((bm, i) => {
+            this.basemaps[bm] = response[i];
+            this.basemaps[bm].sprite = window.location.origin + this._sprites;
+            resolve();
+          });
+        })
+      });
+    }.bind(this));
+    return promise;
   },
 
   _loadBasemap: function(name) {
