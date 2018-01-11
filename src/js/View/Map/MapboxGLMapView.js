@@ -32,6 +32,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   
 
   initialize: function(options) {
+    this._options = options;
     this._currentBasemap = options.defaultBasemap || 'positron';
     this._availableBasemaps = options.availableBasemaps || ['positron','dark'];
     this._sprites = options.sprites;
@@ -54,7 +55,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
         });
         this._map
           .on('load', this.loaded.bind(this))
-          .on('moveend',this.onBBoxChange.bind(this))
+          .on('moveend',this.bboxChanged.bind(this))
       }.bind(this));
     },100)
     return this;
@@ -62,10 +63,23 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   loaded: function() {
     this.mapChanges.set({'loaded':true});
+    this._onMapLoaded();
   },
 
-  onBBoxChange: function() {
-    this.mapChanges.set({'bbox':this.getBBox()});
+  bboxChanged: function() {
+    let bbox = this.getBBox();
+    this.mapChanges.set({'bbox': bbox});
+    this._onBBoxChange(bbox);
+  },
+
+  _onBBoxChange: function(bbox) {
+    // This event is called after map moved.
+    // Override for bbox changes actions.
+  },
+
+  _onMapLoaded: function() {
+    // This event is called after map loaded.
+    // Place your layers here.
   },
 
   onClose: function() {
@@ -132,9 +146,11 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   _loadBasemap: function(name) {
     return fetch(`/mapstyles/${name}.json`);
+  },
+
+  resetSize: function() {
+    this._map.resize();
   }
-
-
 
 });
 
