@@ -441,6 +441,28 @@ App._embedIni = function(){
 }
 
 App.ini = function(){
+  window.document.title = App.config.title || 'Urbo - Solution for Smart Cities';
+  let applefavicons = $("link[rel='apple-touch-icon']");
+  // applefavicons.attr('href',`${App.config.pathFavicon || ''}/img/favicons/apple-icon-${applefavicons.attr('sizes')}.png`);
+  for(let i = 0; i < applefavicons.length; i++){
+    let el = applefavicons[i];
+    el.setAttribute('href',`${App.config.pathFavicon || ''}/img/favicons/apple-icon-${el.getAttribute('sizes')}.png`);
+  }
+
+  let favicons = $("link[rel='icon']");
+  for(let i = 0; i < favicons.length; i++){
+    let el = favicons[i];
+    if (el.getAttribute('sizes') !== '192x192') {
+      el.setAttribute('href',`${App.config.pathFavicon || ''}/img/favicons/favicon-${el.getAttribute('sizes')}.png`);
+    } else {
+      el.setAttribute('href',`${App.config.pathFavicon || ''}/img/favicons/android-chrome-192x192.png`);
+      
+    }
+  }
+
+  $("link[rel='manifest']").attr('href',`${App.config.pathFavicon || ''}/img/favicons/manifest.json`)
+  
+
 
   $('body').attr('layout',App.config.layout);
   // Detect browser here
