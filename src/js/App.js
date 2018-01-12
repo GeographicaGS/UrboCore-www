@@ -440,8 +440,25 @@ App._embedIni = function(){
   Backbone.history.start({pushState: true, root: '/' + App.lang + '/' });
 }
 
-App.ini = function(){
+App._updateFavicon = function() {
+  $("link[rel='apple-touch-icon']").each(function(index, element) {
+    element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/apple-icon-' + element.getAttribute('sizes') + '.png');
+  });
 
+  let favicons = $("link[rel='icon']").each(function(index, element) {
+    if (element.getAttribute('sizes') !== '192x192') {
+      element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/favicon-' + element.getAttribute('sizes') + '.png');
+    } else {
+      element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/android-chrome-192x192.png');      
+    }      
+  });
+
+  $("link[rel='manifest']").attr('href',`${App.config.pathFavicon || ''}/img/favicons/manifest.json`)  
+}
+
+App.ini = function(){
+  window.document.title = App.config.title || 'Urbo - Solution for Smart Cities';
+  App._updateFavicon();
   $('body').attr('layout',App.config.layout);
   // Detect browser here
   if(!this.isSupportedBrowser()){
