@@ -242,3 +242,12 @@ App.Utils.lastdataToObject = function(lastdata){
   });
   return obj;
 };
+
+App.Utils.getNextWeek = function() {
+  var currentDate = new Date();
+  var todayNumber = currentDate.getDay();
+  var daysToMonday = 8 - todayNumber; // 7 - today + 1;
+  var nextMonday = currentDate.setDate(currentDate.getDate() + daysToMonday);
+  var nextWeek = currentDate.setDate(currentDate.getDate() + 6);
+  return [new Date(nextMonday), new Date(nextWeek)];
+}

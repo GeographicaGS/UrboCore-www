@@ -24,6 +24,18 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
 
   _list_variable_template: _.template( $('#chart-base_chart_range_legend').html() ),
 
+  initialize: function(options) {
+
+    options = _.defaults(options,{
+      xRangeLabels: {
+        start: true,
+        end: true,
+      }
+    });
+
+    App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
+  },
+  
   onClose: function(){
     this.stopListening();
   },
@@ -136,24 +148,29 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
             .attr("text-anchor", "middle")
             .text(keyRange)
             ;
-            //Texto que va entre los separadores
-            _this._chart.svg.append("text")
-            .attr('class', 'text_axis')
-            .attr("x", rectWidth * cum + extraSpace)
-            .attr("y", 0)
-            .attr("text-anchor", "end")
-            .attr('transform', 'translate(-8,-15)')
-            .text(_this.options.get('dateFunction')(_this._currentDate))
-            ;
-            _this._chart.svg.append("text")
-            .attr('class', 'text_axis')
-            .attr("x", rectWidth * cum + extraSpace)
-            .attr("y", 0)
-            .attr("text-anchor", "start")
-            .attr('transform', 'translate(8,-15)')
-            .text(_this.options.get('dateFunction')(_this.options.get('nextDateFunction')(_this._currentDate.clone())))
-            ;
 
+            //Texto que va entre los separadores
+            if(_this.options.get('xRangeLabels').start) {
+              _this._chart.svg.append("text")
+              .attr('class', 'text_axis')
+              .attr("x", rectWidth * cum + extraSpace)
+              .attr("y", 0)
+              .attr("text-anchor", "start")
+              .attr('transform', 'translate(8,-15)')
+              .text(_this.options.get('dateFunction')(_this.options.get('nextDateFunction')(_this._currentDate.clone())))
+              ;
+            }
+
+            if(_this.options.get('xRangeLabels').end) {
+              _this._chart.svg.append("text")
+              .attr('class', 'text_axis')
+              .attr("x", rectWidth * cum + extraSpace)
+              .attr("y", 0)
+              .attr("text-anchor", "end")
+              .attr('transform', 'translate(-8,-15)')
+              .text(_this.options.get('dateFunction')(_this._currentDate))
+              ;
+            }
           }
           indexRange ++;
           keyRange  = Object.keys(_this.options.get('xRrange'))[indexRange],
@@ -217,16 +234,21 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
   },
 
   _getColor:function(d){
-    var legend = this.options.get('legend');
-    if(typeof legend === 'function') {
-      legend = legend(this.min, this.max)
+    let colors = this.options.get('colors');
+    if (typeof colors === 'function') {
+      return colors(d);
+    }else {
+      var legend = this.options.get('legend');
+      if(typeof legend === 'function') {
+        legend = legend(this.min, this.max)
+      }
+      legend = legend.toJSON();
+      for(var i=0; i<legend.length; i++){
+        if(d != null && d >=legend[i].min && (d < legend[i].max || legend[i].max == null) )
+        return legend[i].color;
+      }
+      return '#0d5166 ';
     }
-    legend = legend.toJSON();
-    for(var i=0; i<legend.length; i++){
-      if(d != null && d >=legend[i].min && (d < legend[i].max || legend[i].max == null) )
-      return legend[i].color;
-    }
-    return '#0d5166 ';
   },
 
   _getDate:function(d,index){
@@ -310,7 +332,10 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
 
       }
       else {
-        legend.data = this.options.get('legend').toJSON();
+        let legendCollection = this.options.get('legend');
+        if (legendCollection){
+          legend.data = legendCollection.toJSON();
+        }
       }
 
       this.$('.var_list').html(this._list_variable_template(legend));
