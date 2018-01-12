@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -177,5 +177,48 @@ App.Collection.Variables.Weekserie = App.Collection.Post.extend({
 App.Collection.Variables.Unique = App.Collection.Post.extend({
   url: function () {
     return App.config.api_url + '/' + this.options.id_scope + '/variables/' + this.options.id_variable + '/unique';
+  }
+});
+
+App.Collection.Variables.Simple = App.Collection.Post.extend({
+  initialize: function (models, options) {
+      this.options = options;
+
+      this.options.data = {
+        agg: this.options.agg,
+        vars: this.options.vars,
+        csv: this.options.csv || false,
+        findTimes: this.options.findTimes || false,
+        time: {
+          start: this.options.start,
+          finish: this.options.finish,
+          step: this.options.step
+        },
+        filters: this.options.filters || {}
+      };
+  },
+
+  url: function () {
+    return App.config.api_url + '/' + this.options.scope + '/variables/timeserie'
+  },
+
+  parse: function (response) {
+    if (this.options.filters && this.options.filters.group) {
+      let groupKey = this.options.filters.group;
+      let valueKey = this.options.vars[0];
+      let data = response.reduce(function (acum, elem, idx) {
+        acum[elem.time] = acum[elem.time] || {};
+        acum[elem.time][elem.data[groupKey]] = elem.data[valueKey];
+        return acum;
+      }, {});
+      let keys = Object.keys(data);
+      let formattedData = [];
+      keys.forEach(function (key) {
+        formattedData.push({step: key, elements: data[key]});
+      });
+      return formattedData;
+    } else {
+      return response;
+    }
   }
 });
