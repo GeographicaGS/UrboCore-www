@@ -453,7 +453,7 @@ App._updateFavicon = function() {
     }      
   });
 
-  $("link[rel='manifest']").attr('href',`${App.config.pathFavicon || ''}/img/favicons/manifest.json`)  
+  $("link[rel='manifest']").attr('href',(App.config.pathFavicon || '') + '/img/favicons/manifest.json');  
 }
 
 App.ini = function(){
