@@ -445,7 +445,7 @@ App._updateFavicon = function() {
     element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/apple-icon-' + element.getAttribute('sizes') + '.png');
   });
 
-  let favicons = $("link[rel='icon']").each(function(index, element) {
+  var favicons = $("link[rel='icon']").each(function(index, element) {
     if (element.getAttribute('sizes') !== '192x192') {
       element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/favicon-' + element.getAttribute('sizes') + '.png');
     } else {
