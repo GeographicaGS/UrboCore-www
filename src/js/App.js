@@ -457,7 +457,7 @@ App._updateFavicon = function() {
 }
 
 App.ini = function(){
-  window.document.title = App.config.title || 'Urbo - Solution for Smart Cities';
+  window.document.title = __(App.config.title || 'Urbo - Solution for Smart Cities');
   App._updateFavicon();
   $('body').attr('layout',App.config.layout);
   // Detect browser here
