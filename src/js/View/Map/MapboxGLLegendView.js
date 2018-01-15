@@ -20,6 +20,8 @@
 
 'use strict';
 App.View.Map.MapboxLegendView = Backbone.View.extend({
+
+  //TODO: REHACER ESTO COMO SE ESTÁ HACIENDO CON EL POPUP
   _legend: 
     '<div class="mapbox-legend" id="mapbox-legend">' +
     '  <div class="title">' + __('Ajustes') + '</div>' +
@@ -76,7 +78,7 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
     this.items.reverse();
     this.items.forEach(function(item){
       let childs = '';
-      if(item.childs.length > 1) {
+      if(item.childs.length > 2) {
         item.childs.forEach(function(child) {
           childs += this._child.replace(/##ITEM_CHILD##/, child.name);
         }.bind(this))

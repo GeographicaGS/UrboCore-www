@@ -41,7 +41,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       },
     });
     this._map._layers = this._map._layers.concat(this._layersConfig());
-    this._map.addLayers(this._layersConfig());    
+    this._map.addLayers(this._layersConfig());
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
     this.updateLegend();
@@ -56,6 +56,12 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   updateData: function(body) {
     this._model.fetch({data: body});
   },
+
+  on: function(event, id, callback) {
+    this._map._map.on(event,id,callback);
+    return this;
+  },
+
   _success: function(change) {
     this.dataSource = change.changed;
     this._map.getSource(this._idSource).setData(this.dataSource);
