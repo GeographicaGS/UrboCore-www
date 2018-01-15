@@ -20,55 +20,77 @@
 
 'use strict';
 App.View.Map.MapboxLegendView = Backbone.View.extend({
-  _legend: `
-    <div class="mapbox-legend">
-      ##ITEMS##
-    </div>
-  `,
+  _legend: 
+    '<div class="mapbox-legend" id="mapbox-legend">' +
+    '  <div class="title">' + __('Ajustes') + '</div>' +
+    '  <div class="body">' +
+    '    ##ITEMS##' +
+    '  </div>' +
+    '</div>'
+  ,
   _item: `
     <div class="mapbox-legend-item">
-      <span>##ITEM_NAME##</span>
+      <div class="item-head">
+        ##ITEM_LOGO##
+        <span>##ITEM_NAME##</span>
+      </div>
       ##CHILDS##
     </div>
   `,
   _child: `
-    <div class="mapbox-legend-item-child">
+    <div class="mapbox-legend-item-child" id="##ITEM_ID##">
       <span>##ITEM_CHILD##</span>
     </div>
   `,
 
+  items: [],
+
   initialize: function(map, items) {
     this._mapInstance = map;
-    this.items = [{
-      name: 'Tipo de consumo',
-      childs: [{
-        name: 'Doméstico',
-      }, {
-        name: 'Industrial',
-      }]
-    }, {
-      name:'Sensores',
-      childs: []
-    }];
   },
 
   render: function() {
+    this.$el.append(this._legend);
+    return this;
+  },
+
+  addItemLegend: function(item) {
+    let exist = _.find(this.items, function(i) {
+      return i.id == item.sectionId;
+    });
+    if (exist) {
+      exist.childs.push({name: item.name});
+    } else {
+      this.items.push({
+        id: item.sectionId,
+        icon: item.sectionIcon,
+        name: item.sectionName,
+        childs: [{name: item.name}]
+      });
+    }
+  },
+
+  drawLegend: function() {
     let items = '';
     let legend = '';
-
+    this.items.reverse();
     this.items.forEach(function(item){
       let childs = '';
-      item.childs.forEach(function(child) {
-        childs += this._child.replace(/##ITEM_CHILD##/, child.name);
-      }.bind(this))
-      items += this._item.replace(/##ITEM_NAME##/, item.name)
+      if(item.childs.length > 1) {
+        item.childs.forEach(function(child) {
+          childs += this._child.replace(/##ITEM_CHILD##/, child.name);
+        }.bind(this))
+      }
+
+      items += this._item
+        .replace(/##ITEM_LOGO##/, '<img src="' + item.icon + '"/>')
+        .replace(/##ITEM_NAME##/, item.name)
         .replace(/##CHILDS##/,childs);
     }.bind(this));
 
 
     legend = this._legend.replace(/##ITEMS##/, items);
     this.$el.append(legend);
-    return this;
   }
 
 });
