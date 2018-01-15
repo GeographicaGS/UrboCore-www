@@ -39,12 +39,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
-    this.$el.append(new App.View.Map.MapboxLegendView(this, []).render().$el);
+    this.legend = new App.View.Map.MapboxLegendView(this, []);
+    this.$el.append(this.legend.render().$el);
     this.$el.append(new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps).render().$el);
   },
 
   render: function() {
     setTimeout(()=>{
+      // TODO: move token to settings
       mapboxgl.accessToken = 'pk.eyJ1Ijoiam9zbW9yc290IiwiYSI6ImNqYXBvcW9oNjVlaDAyeHIxejdtbmdvbXIifQ.a3H7tK8uHIaXbU7K34Q1RA';
       this._preloadBasemaps().then(function() {
         this._map = new mapboxgl.Map({
@@ -150,7 +152,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   resetSize: function() {
     this._map.resize();
-  }
+  },
 
+  updateLegend(item) {
+    this.legend.addItemLegend(item);
+  },
+
+  drawLegend() {
+    this.legend.drawLegend();
+  }
 });
 
