@@ -215,9 +215,11 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
     // Date
     if(requestData && requestData.time && requestData.time.start){
-      var date = App.ctx.getDateRange();
-      requestData.time.start = date.start;
-      requestData.time.finish = date.finish;
+      if (!requestData.time.finish) {
+        var date = App.ctx.getDateRange();
+        requestData.time.start = date.start;
+        requestData.time.finish = date.finish;
+      }
     }
 
     // Aggregation
