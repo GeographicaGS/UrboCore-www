@@ -57,8 +57,14 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this._model.fetch({data: body});
   },
 
-  on: function(event, id, callback) {
-    this._map._map.on(event,id,callback);
+  on: function(event, ids, callback) {
+    if(ids.constructor === Array) {
+      ids.forEach(id => {
+        this._map._map.on(event,id,callback);
+      });
+    }else {
+      this._map._map.on(event,ids,callback);      
+    }
     return this;
   },
 
