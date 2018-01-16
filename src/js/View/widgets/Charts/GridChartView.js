@@ -33,6 +33,8 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
       }
     });
 
+    debugger;
+
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
   },
 
