@@ -21,33 +21,14 @@
 'use strict';
 App.View.Map.MapboxLegendView = Backbone.View.extend({
 
-  //TODO: REHACER ESTO COMO SE ESTÁ HACIENDO CON EL POPUP
-  _legend: 
-    '<div class="mapbox-legend" id="mapbox-legend">' +
-    '  <div class="title">' + __('Ajustes') + '</div>' +
-    '  <div class="body">' +
-    '    ##ITEMS##' +
-    '  </div>' +
-    '</div>'
-  ,
-  _item: `
-    <div class="mapbox-legend-item">
-      <div class="item-head">
-        ##ITEM_LOGO##
-        <span>##ITEM_NAME##</span>
-      </div>
-      ##CHILDS##
-    </div>
-  `,
-  _child: `
-    <div class="mapbox-legend-item-child" id="##ITEM_ID##">
-      <span>##ITEM_CHILD##</span>
-    </div>
-  `,
-
   items: [],
 
+  events: {
+    "click #toggler": 'toggle'
+  },
+
   initialize: function(map, items) {
+    this._template = _.template($("#map-mapbox_legend_template").html()); 
     this._mapInstance = map;
   },
 
@@ -72,27 +53,25 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
     }
   },
 
+  toggle: function(event) {
+    var body = this.$el[0].querySelectorAll("#mapbox-legend .body")[0]
+    if (body.classList.contains('opened')) {
+      event.target.classList.remove('opened');
+      body.classList.remove('opened');
+    } else {
+      event.target.classList.add('opened');      
+      body.classList.add('opened');      
+    }
+  },
+
   drawLegend: function() {
     let items = '';
-    let legend = '';
     this.items.reverse();
-    this.items.forEach(function(item){
-      let childs = '';
-      if(item.childs.length > 2) {
-        item.childs.forEach(function(child) {
-          childs += this._child.replace(/##ITEM_CHILD##/, child.name);
-        }.bind(this))
-      }
-
-      items += this._item
-        .replace(/##ITEM_LOGO##/, '<img src="' + item.icon + '"/>')
-        .replace(/##ITEM_NAME##/, item.name)
-        .replace(/##CHILDS##/,childs);
-    }.bind(this));
-
-
-    legend = this._legend.replace(/##ITEMS##/, items);
-    this.$el.append(legend);
+    console.log(items);
+    this.$el.append(this._template({
+      'legendTitle': __('Ajustes'), 
+      'items': this.items,
+    }));
   }
 
 });

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/positive/arrow-dropdown</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/positive/arrow-dropdown" fill="#626775">
+            <g id="Group-2" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) translate(7.000000, 9.000000)">
+                <path d="M5.75841002,-0.114063031 L9.61943599,4.34544529 L9.61943599,4.34544529 C9.98093658,4.76298065 9.93551142,5.39451406 9.51797606,5.75601464 C9.33621468,5.91338298 9.10384181,6 8.86342135,6 L1.14110753,6 L1.14110753,6 C0.588822782,6 0.141107532,5.55228475 0.141107532,5 C0.141107532,4.75956799 0.227732858,4.52718476 0.38511486,4.34541992 L4.2464027,-0.114088403 L4.2464027,-0.114088403 C4.6079173,-0.531611627 5.23945223,-0.577015591 5.65697546,-0.215500995 C5.69317176,-0.184160243 5.72707048,-0.150260386 5.75841002,-0.114063031 Z" id="Rectangle-11" transform="translate(5.000000, 3.000000) rotate(-360.000000) translate(-5.000000, -3.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
