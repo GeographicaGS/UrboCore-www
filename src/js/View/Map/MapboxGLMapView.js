@@ -154,7 +154,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._map.resize();
   },
 
-  updateLegend(item) {
+  addToLegend(item) {
     this.legend.addItemLegend(item);
   },
 
