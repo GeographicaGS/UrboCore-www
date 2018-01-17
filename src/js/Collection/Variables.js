@@ -20,8 +20,6 @@
 
 'use strict';
 
-
-
 App.Collection.Variables.Timeserie = App.Collection.Post.extend({
   initialize: function(models,options) {
       this.options = options;
@@ -79,6 +77,50 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
 
   setStep: function(step){
     this.options.data.time.step = step;
+  }
+});
+
+App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
+  initialize: function (models, options) {
+    this.options = options;
+
+    this.options.data = {
+      agg: this.options.agg,
+      vars: this.options.vars,
+      csv: this.options.csv || false,
+      findTimes: this.options.findTimes || false,
+      time: {
+        start: this.options.start,
+        finish: this.options.finish,
+        step: this.options.step
+      },
+      filters: this.options.filters || {}
+    };
+  },
+
+  url: function () {
+    return App.config.api_url + '/' + this.options.scope + '/variables/timeserie'
+  },
+
+  parse: function (response) {
+    if (this.options.filters && this.options.filters.group) {
+      let groupKey = this.options.filters.group;
+      let valueKey = this.options.vars[0];
+      let data = response.reduce(function (acum, elem, idx) {
+        acum[elem.time] = acum[elem.time] || {};
+        let b = elem.data[valueKey][0].agg || 'industrial';
+        acum[elem.time][b] = _.map(elem.data[valueKey], function(e) { return e.value})[0];
+        return acum;
+      }, {});
+      let keys = Object.keys(data);
+      let formattedData = [];
+      keys.forEach(function (key) {
+        formattedData.push({step: key, elements: data[key]});
+      });
+      return formattedData;
+    } else {
+      return response;
+    }
   }
 });
 
