@@ -23,7 +23,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   basemaps: {},
   _sources: [],
   _currentBasemap: 'positron',
-  _availableBasemaps: ['positron','dark'],
+  _availableBasemaps: ['positron','dark','pnoa'],
   _center: [0,0],
   _zoom: 12,
   _map: {},
@@ -34,7 +34,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   initialize: function(options) {
     this._options = options;
     this._currentBasemap = options.defaultBasemap || 'positron';
-    this._availableBasemaps = options.availableBasemaps || ['positron','dark'];
+    this._availableBasemaps = options.availableBasemaps || ['positron','dark','pnoa'];
     this._sprites = options.sprites;
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
