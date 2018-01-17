@@ -40,8 +40,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
     this.legend = new App.View.Map.MapboxLegendView(this, []);
+    this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps);
     this.$el.append(this.legend.render().$el);
-    this.$el.append(new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps).render().$el);
+    this.$el.append(this.basemapSelector.render().$el);
   },
 
   render: function() {
@@ -87,6 +88,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   onClose: function() {
     this._map.remove();
     this.stopListening();
+    this.basemapSelector.close(),
+    this.legend.close();
   },
 
   addSource: function(idSource, dataSource) {
