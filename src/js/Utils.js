@@ -251,3 +251,12 @@ App.Utils.getNextWeek = function() {
   var nextWeek = currentDate.setDate(currentDate.getDate() + 6);
   return [new Date(nextMonday), new Date(nextWeek)];
 }
+
+App.Utils.getPrevWeek = function() {
+  var currentDate = new Date();
+  var todayNumber = currentDate.getDay();
+  var daysToPrevSunday = todayNumber; // 7 - today + 1;
+  var prevSunday = currentDate.setDate(currentDate.getDate() - daysToPrevSunday);
+  var prevWeek = currentDate.setDate(currentDate.getDate() - 6);
+  return [new Date(prevWeek), new Date(prevSunday)];
+}
