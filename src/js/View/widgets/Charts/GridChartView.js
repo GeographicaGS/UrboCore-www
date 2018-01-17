@@ -342,4 +342,38 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
     }
   },
 
+  _fetchData: function(){
+    var requestData = this.collection.options.data;
+
+    // Step
+    if(this.options.get('currentStep')){
+      requestData.time.step = this.options.get('currentStep');
+    }
+
+    // Date
+    if(requestData && requestData.time && requestData.time.start){
+      if (!requestData.time.finish) {
+        var date = App.ctx.getDateRange();
+        requestData.time.start = date.start;
+        requestData.time.finish = date.finish;
+      }
+    }
+
+    // Aggregation
+    if(this._aggregationInfo){
+      var _this = this;
+      var aggs = [];
+      _.each(this.collection.options.data.vars, function(var_id){
+        if(_this && _this._aggregationInfo[var_id])
+          aggs.push(_this._aggregationInfo[var_id].current);
+      });
+      this.collection.options.data.agg = aggs;
+    }
+
+    this.collection.fetch({
+      reset:true,
+      data: requestData
+    });
+  },
+
 });

@@ -25,12 +25,14 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   _ids: [],
   _idSource: '',
   _model: null,
+  legendConfig: null,
   dataSource: null,
   layers: [],
 
-  initialize: function(model, body, map) {
+  initialize: function(model, body, legend, map) {
     this._map = map;
     this._model = model;
+    this.legendConfig = legend;
     this._map.addSource(this._idSource, {
       'type': 'geojson',
       'data': {
@@ -39,14 +41,33 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       },
     });
     this._map._layers = this._map._layers.concat(this._layersConfig());
-    this._map.addLayers(this._layersConfig());    
+    this._map.addLayers(this._layersConfig());
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
+    this.addToLegend();
+  },
+
+  addToLegend: function() {
+    if (this.legendConfig) {
+      this._map.addToLegend(this.legendConfig);
+    }
   },
 
   updateData: function(body) {
     this._model.fetch({data: body});
   },
+
+  on: function(event, ids, callback) {
+    if(ids.constructor === Array) {
+      ids.forEach(id => {
+        this._map._map.on(event,id,callback);
+      });
+    }else {
+      this._map._map.on(event,ids,callback);      
+    }
+    return this;
+  },
+
   _success: function(change) {
     this.dataSource = change.changed;
     this._map.getSource(this._idSource).setData(this.dataSource);

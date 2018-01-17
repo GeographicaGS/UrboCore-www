@@ -17,32 +17,26 @@
 // 
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
+
 'use strict';
-App.View.Map.MapboxBaseMapSelectorView = Backbone.View.extend({
-  _mapInstance: {},
-  _basemaps: [],
-  
-  events: {
-    'change #basemapselector': 'changeBasemap'
+
+App.View.Map.MapboxGLPopup = Backbone.View.extend({
+  initialize: function(template) {
+    this._template = _.template($(template).html());
   },
 
-  initialize: function(map, basemaps) {
-    this._template = _.template($('#map-basemap_selector_template').html()),
-    this._mapInstance = map;
-    this._basemaps = basemaps;
-  },
-
-  render: function() {
-    let options = '';
-    let selector = '';
-
-    this.$el.append(this._template({items: this._basemaps}));
-    return this;
-  },
-
-  changeBasemap: function(e){
-    let next = e.target.value;
-    this._mapInstance.changeBasemap(next);
+  bindData(label, properties, clicked) {
+    return this._template({
+      'name': label,
+      'properties': _.map(properties, function(p) {
+        if (p.feature.includes('#')) {
+          let access = p.feature.split('#');
+          p.value = JSON.parse(clicked.features[0].properties[access[0]])[access[1]];
+        } else {
+          p.value = clicked.features[0].properties[p.feature];  
+        }
+        return p;
+      })
+    });
   }
-
 });
