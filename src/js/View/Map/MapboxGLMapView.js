@@ -85,7 +85,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   onClose: function() {
-
+    this._map.remove();
+    this.stopListening();
   },
 
   addSource: function(idSource, dataSource) {
