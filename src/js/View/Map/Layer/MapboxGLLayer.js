@@ -33,6 +33,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this._map = map;
     this._model = model;
     this.legendConfig = legend;
+    this._mapEvents = {};
     this._map.addSource(this._idSource, {
       'type': 'geojson',
       'data': {
@@ -58,14 +59,31 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   },
 
   on: function(event, ids, callback) {
+    if(this._mapEvents[event] === undefined) {
+      this._mapEvents[event] = {};
+    }
     if(ids.constructor === Array) {
       ids.forEach(id => {
         this._map._map.on(event,id,callback);
+        this._mapEvents[event][id] = callback;
       });
     }else {
-      this._map._map.on(event,ids,callback);      
+      this._map._map.on(event,ids,callback);
+      this._mapEvents[event][id] = callback;      
     }
     return this;
+  },
+
+  offAll: function() {
+    _.each(this._mapEvents, function(childs,event) {
+      _.each(childs, function(callback, name) {
+        this._map._map.off(event,name,callback);
+      }.bind(this))
+    }.bind(this))
+  },
+
+  onClose: function() {
+    this.offAll();
   },
 
   _success: function(change) {
