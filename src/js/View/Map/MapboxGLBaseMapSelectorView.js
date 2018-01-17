@@ -19,17 +19,15 @@
 // iot_support at tid dot es
 'use strict';
 App.View.Map.MapboxBaseMapSelectorView = Backbone.View.extend({
-  _basemapSelectorTemplate: `
-    <select class="basemapselector" id="basemapselector">
-      ##options##
-    </select>`,
-  _optionTemplate: `
-    <option value="##basemap##">##basemap##</option>
-  `,
   _mapInstance: {},
   _basemaps: [],
+  
+  events: {
+    'change #basemapselector': 'changeBasemap'
+  },
 
   initialize: function(map, basemaps) {
+    this._template = _.template($('#map-basemap_selector_template').html()),
     this._mapInstance = map;
     this._basemaps = basemaps;
   },
@@ -38,17 +36,13 @@ App.View.Map.MapboxBaseMapSelectorView = Backbone.View.extend({
     let options = '';
     let selector = '';
 
-    this._basemaps.forEach(bm => {
-      options += this._optionTemplate.replace(/##basemap##/g,bm);
-    });
-
-    selector = this._basemapSelectorTemplate.replace(/##options##/g, options);
-    this.$el.append(selector);
-    this.$el.on('change', '#basemapselector', (e) => {
-      let next = document.getElementById("basemapselector").value;
-      this._mapInstance.changeBasemap(next);
-    });
+    this.$el.append(this._template({items: this._basemaps}));
     return this;
+  },
+
+  changeBasemap: function(e){
+    let next = e.target.value;
+    this._mapInstance.changeBasemap(next);
   }
 
 });

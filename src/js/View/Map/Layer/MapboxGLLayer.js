@@ -44,12 +44,12 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this._map.addLayers(this._layersConfig());
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
-    this.updateLegend();
+    this.addToLegend();
   },
 
-  updateLegend: function() {
+  addToLegend: function() {
     if (this.legendConfig) {
-      this._map.updateLegend(this.legendConfig);
+      this._map.addToLegend(this.legendConfig);
     }
   },
 
