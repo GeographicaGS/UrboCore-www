@@ -220,11 +220,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         })
       );
 
-      // debugger;
-      // this.data = new Backbone.Collection(this.data.where(function(c){
-      //   return c.get('values').length > 0;
-      // }));
-
       if(this.data.where({'disabled': false}).length > 1){
         d3.select(this.$('.chart')[0]).classed('normalized',true);
       }else{
