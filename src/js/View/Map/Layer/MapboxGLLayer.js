@@ -55,6 +55,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   },
 
   updateData: function(body) {
+    this._model.clear();
     this._model.fetch({data: body});
   },
 
