@@ -67,7 +67,6 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
   drawLegend: function() {
     let items = '';
     this.items.reverse();
-    console.log(items);
     this.$el.append(this._template({
       'legendTitle': __('Ajustes'), 
       'items': this.items,

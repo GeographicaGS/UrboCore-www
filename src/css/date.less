@@ -23,7 +23,10 @@
 	position: absolute;
 	left: 10px;
 	top: 10px;
-  z-index: 5;
+	z-index: 5;
+	&.disabled {
+		pointer-events: none;
+	}
   .shadow_std;
   // background-color: #fff;
   transition:width .25s 0s;
