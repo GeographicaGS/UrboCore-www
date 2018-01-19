@@ -28,15 +28,26 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
   bindData(label, properties, clicked) {
     return this._template({
       'name': label,
-      'properties': _.map(properties, function(p) {
+      'properties': _.filter(_.map(properties, function(p) {
         if (p.feature.includes('#')) {
           let access = p.feature.split('#');
           p.value = JSON.parse(clicked.features[0].properties[access[0]])[access[1]];
-        } else {
+        } else if (p.feature.includes('?')) {
+          //optional feature
+          let access = p.feature.split("?");
+          p.value = clicked.features[0].properties[access[0]];
+          p = (!p.value) ? null : p;
+        }else {
           p.value = clicked.features[0].properties[p.feature];  
         }
+        if(p && p.value === 'null') {
+          p.value = 0;
+        }
+        if(p && p.value && p.nbf) {
+          p.value = p.nbf(p.value);
+        }
         return p;
-      })
+      }),function(e){return e !== null})
     });
   }
 });
