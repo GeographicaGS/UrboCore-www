@@ -88,7 +88,6 @@ App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
       agg: this.options.agg,
       vars: this.options.vars,
       csv: this.options.csv || false,
-      findTimes: this.options.findTimes || false,
       time: {
         start: this.options.start,
         finish: this.options.finish,
@@ -103,24 +102,24 @@ App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
   },
 
   parse: function (response) {
-    if (this.options.filters && this.options.filters.group) {
-      let groupKey = this.options.filters.group;
-      let valueKey = this.options.vars[0];
-      let data = response.reduce(function (acum, elem, idx) {
-        acum[elem.time] = acum[elem.time] || {};
-        let b = elem.data[valueKey][0].agg || 'industrial';
-        acum[elem.time][b] = _.map(elem.data[valueKey], function(e) { return e.value})[0];
-        return acum;
-      }, {});
-      let keys = Object.keys(data);
-      let formattedData = [];
-      keys.forEach(function (key) {
-        formattedData.push({step: key, elements: data[key]});
+    var aux = {};
+    _.each(response, function(r) {
+      _.each(r.data, function(data) {
+        if (data && data.length > 0 && data[0].agg) {
+          if (!aux[data[0].agg]) {
+            aux[data[0].agg] = [];
+          }
+          aux[data[0].agg].push({
+            x: new Date(r.time),
+            y: data[0].value
+          });
+        }
       });
-      return formattedData;
-    } else {
-      return response;
-    }
+    });
+    response = _.map(aux, function(values, key){
+      return {'key':key, 'values':values, 'disabled':false}
+    });
+    return response;
   }
 });
 
