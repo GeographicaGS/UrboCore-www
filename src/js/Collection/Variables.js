@@ -222,6 +222,24 @@ App.Collection.Variables.Unique = App.Collection.Post.extend({
   }
 });
 
+App.Collection.Variables.Historic = App.Collection.Post.extend({
+  initialize: function (models, options) {
+    this.options = options;
+
+    this.options.data = {
+      agg: this.options.agg,
+      time: {
+        start: this.options.start,
+        finish: this.options.finish,
+      },
+      filters: this.options.filters || {}
+    };
+  },
+  url: function () {
+    return App.config.api_url + '/' + this.options.id_scope + '/variables/' + this.options.id_variable + '/historic';
+  }
+});
+
 App.Collection.Variables.Simple = App.Collection.Post.extend({
   initialize: function (models, options) {
       this.options = options;
