@@ -244,19 +244,15 @@ App.Utils.lastdataToObject = function(lastdata){
 };
 
 App.Utils.getNextWeek = function() {
-  var currentDate = new Date();
-  var todayNumber = currentDate.getDay();
-  var daysToMonday = 8 - todayNumber; // 7 - today + 1;
-  var nextMonday = currentDate.setDate(currentDate.getDate() + daysToMonday);
-  var nextWeek = currentDate.setDate(currentDate.getDate() + 6);
-  return [new Date(nextMonday), new Date(nextWeek)];
+  return [
+    moment().startOf('isoWeek').add(7, 'days').toDate(),
+    moment().endOf('isoWeek').add(7, 'days').toDate()
+  ];
 }
 
 App.Utils.getPrevWeek = function() {
-  var currentDate = new Date();
-  var todayNumber = currentDate.getDay();
-  var daysToPrevSunday = todayNumber; // 7 - today + 1;
-  var prevSunday = currentDate.setDate(currentDate.getDate() - daysToPrevSunday);
-  var prevWeek = currentDate.setDate(currentDate.getDate() - 6);
-  return [new Date(prevWeek), new Date(prevSunday)];
+  return [
+    moment().startOf('isoWeek').subtract(7, 'days').toDate(),
+    moment().startOf('isoWeek').subtract(1, 'days').endOf('day').toDate()
+  ];
 }
