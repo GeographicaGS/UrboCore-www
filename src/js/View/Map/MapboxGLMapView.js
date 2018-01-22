@@ -43,6 +43,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps);
     this.$el.append(this.legend.render().$el);
     this.$el.append(this.basemapSelector.render().$el);
+    this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);    
   },
 
   render: function() {
@@ -157,6 +158,19 @@ App.View.Map.MapboxView = Backbone.View.extend({
   resetSize: function() {
     this._map.resize();
   },
+
+  _changeBBOXStatus: function() {
+    if (App.ctx.get('bbox_status'))
+      App.ctx.set('bbox', this._getCurrentBBOX());
+    else
+      App.ctx.set('bbox', null);
+  },
+
+  _getCurrentBBOX: function() {
+    let bbox = this.getBBox();
+    return [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
+  },
+  
 
   addToLegend(item) {
     this.legend.addItemLegend(item);
