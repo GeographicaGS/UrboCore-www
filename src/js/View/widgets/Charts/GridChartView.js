@@ -303,11 +303,18 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
       }
     }));
     var cursorPos = d3.mouse(_this);
-    $tooltip.css({
-      position: 'absolute',
-      top: cursorPos[1],
-      left: cursorPos[0]
-    });
+    $tooltip.css({position: 'absolute'});
+    if (cursorPos[0] + $tooltip.width() > this.$el.width() - 100) {
+      $tooltip.css({
+        top: cursorPos[1],
+        left: cursorPos[0] - $tooltip.width() - 100
+      });
+    }else {
+      $tooltip.css({
+        top: cursorPos[1],
+        left: cursorPos[0] - 30
+      });
+    }
 
     $tooltip.removeClass('hidden');
   },

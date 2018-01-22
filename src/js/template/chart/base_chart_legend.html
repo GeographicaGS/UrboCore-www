@@ -17,7 +17,7 @@
       }
     %>
 
-    <div class='btnLegend <%= disabledList[mKey] ? 'inactive': '' %>' id="<%=dato.realKey%>" tag='<%=index%>' style="color:<%= color %>">
+    <div class='btnLegend <%= disabledList[mKey] || disabledList[dato.realKey] ? 'inactive': '' %>' id="<%=dato.realKey%>" tag='<%=index%>' style="color:<%= color %>">
       <span class="icon circle <%= cssClass %>" style="background-color:<%= color %>;border: 2px solid <%= color %>"></span>
       <span class="text first"><%= dato.key ? __(dato.key) : '' %></span>
 

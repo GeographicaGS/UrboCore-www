@@ -105,15 +105,15 @@ App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
     var aux = {};
     _.each(response, function(r) {
       _.each(r.data, function(data) {
-        if (data && data.length > 0 && data[0].agg) {
-          if (!aux[data[0].agg]) {
-            aux[data[0].agg] = [];
+        _.each(data, function(d) {
+          if (!aux[d.agg]) {
+            aux[d.agg] = [];
           }
-          aux[data[0].agg].push({
+          aux[d.agg].push({
             x: new Date(r.time),
-            y: data[0].value
+            y: d.value
           });
-        }
+        });
       });
     });
     response = _.map(aux, function(values, key){
