@@ -303,10 +303,11 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
       }
     }));
     var cursorPos = d3.mouse(_this);
+    debugger
     $tooltip.css({
       position: 'absolute',
       top: cursorPos[1],
-      left: cursorPos[0]
+      left: cursorPos[0] - 30
     });
 
     $tooltip.removeClass('hidden');
