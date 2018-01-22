@@ -218,7 +218,6 @@ App.View.Widgets.Base = Backbone.View.extend({
   },
 
   updateFilters: function(){
-
     for (var i in this.filterables){
       if (!this.filterables[i].options)
         this.filterables[i].options = {data: {}};
