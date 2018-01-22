@@ -89,7 +89,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   },
 
   _success: function(change) {
-    this.dataSource = change.changed;
+    this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
     this._map.getSource(this._idSource).setData(this.dataSource);
     if (this.layerModifier && this.dataSource) {
       this.dataSource.features = _.map(this.dataSource.features, this.layerModifier);
