@@ -28,7 +28,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   legendConfig: null,
   dataSource: null,
   layers: [],
-  layerModifier: null,
 
   initialize: function(model, body, legend, map) {
     this._map = map;
@@ -91,9 +90,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   _success: function(change) {
     this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
     this._map.getSource(this._idSource).setData(this.dataSource);
-    if (this.layerModifier && this.dataSource) {
-      this.dataSource.features = _.map(this.dataSource.features, this.layerModifier);
-    }
     this._map._sources.find(function(src) {
       return src.id === this._idSource;
     }.bind(this)).data = {'type': 'geojson', 'data': this.dataSource};
