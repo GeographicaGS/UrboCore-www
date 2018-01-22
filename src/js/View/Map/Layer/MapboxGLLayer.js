@@ -59,11 +59,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this._model.fetch({data: body});
   },
 
-  updatePaintOptions: function(options) {
-    this.layers[0].paint['fill-color'][2][1] = options;
-    this._map._map.setPaintProperty(this._ids[0], 'fill-color', this.layers[0].paint['fill-color']);
-  },
-
   on: function(event, ids, callback) {
     if(this._mapEvents[event] === undefined) {
       this._mapEvents[event] = {};
@@ -93,11 +88,11 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   },
 
   _success: function(change) {
-    this.dataSource = change.changed;
+    this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
     this._map.getSource(this._idSource).setData(this.dataSource);
     this._map._sources.find(function(src) {
       return src.id === this._idSource;
-    }.bind(this)).data = {'type': 'geojson', 'data':this.dataSource};
+    }.bind(this)).data = {'type': 'geojson', 'data': this.dataSource};
     return change;
   },
 
