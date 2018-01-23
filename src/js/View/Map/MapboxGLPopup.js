@@ -42,7 +42,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
           p.value = clicked.features[0].properties[p.feature];  
         }
         if(p && p.value === 'null') {
-          p = null;
+          p.value = '--';
         }
         if(p && p.value && p.nbf) {
           p.value = p.nbf(p.value);
