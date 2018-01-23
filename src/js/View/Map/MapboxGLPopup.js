@@ -47,7 +47,8 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
           p.value = p.nbf(p.value);
         }
         return p;
-      }),function(e){return e !== null})
+      }),function(e){return e !== null}),
+      'loading': false      
     });
   },
 
@@ -58,7 +59,8 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       }.bind(this),500);
       return this._template({
         'name': label,
-        'properties': []
+        'properties': [],
+        'loading': true
       });
     } else {
       return this.bindData(label, properties, clicked);
