@@ -38,6 +38,29 @@
     bottom: 8px;
   }
 
+  .toggle-3d {
+    position: absolute;
+    right: 16px;
+    bottom: 38px;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    border: 1px solid #808086;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/img/3d.svg') no-repeat;
+    background-color: #fff;
+    background-position: center;
+    cursor: pointer;
+    &.active {
+      border-color: #64B6D9;
+      background-color: #64B6D9;
+      background-image: url('/img/3d-on.svg');
+    }
+  }
+
 }
 
 .mapboxgl-ctrl-attrib{
