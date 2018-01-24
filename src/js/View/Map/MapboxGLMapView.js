@@ -28,8 +28,13 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _zoom: 12,
   _map: {},
   _layers: [],
+  _is3dActive: false,
   mapChanges: new Backbone.Model(),
-  
+  button3d: '<div class="toggle-3d"></div>'  ,
+
+  events: {
+    'click .toggle-3d': 'toggle3d'
+  },
 
   initialize: function(options) {
     this._options = options;
@@ -43,6 +48,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps);
     this.$el.append(this.legend.render().$el);
     this.$el.append(this.basemapSelector.render().$el);
+    this.$el.append(this.button3d);
     this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);    
   },
 
@@ -171,12 +177,19 @@ App.View.Map.MapboxView = Backbone.View.extend({
     return [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
   },
   
+  toggle3d: function(e) {
+    this._is3dActive = !this._is3dActive;
+    e.target.classList.toggle('active');
+    this._map.setPitch(this._is3dActive ? 50 : 0);
+    // This event is called after 3d button is clicked.
+    // Extend on implementation.
+  },
 
-  addToLegend(item) {
+  addToLegend: function(item) {
     this.legend.addItemLegend(item);
   },
 
-  drawLegend() {
+  drawLegend: function() {
     this.legend.drawLegend();
   }
 });
