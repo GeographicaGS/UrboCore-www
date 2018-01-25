@@ -27,7 +27,7 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
     "click #toggler": 'toggle'
   },
 
-  initialize: function(map, items) {
+  initialize: function(items, map) {
     this._template = _.template($("#map-mapbox_legend_template").html()); 
     this._mapInstance = map;
   },
