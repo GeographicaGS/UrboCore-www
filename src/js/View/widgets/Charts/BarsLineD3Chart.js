@@ -200,7 +200,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     this.data.sort(function(a, b){
       return a.type > b.type;
     });
-
+    
     // Get max value for each axis and adjust domain
     var domains =  [[0,1]];
     if(this.options.get('yAxisDomain')) {
@@ -513,8 +513,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   _formatXAxis: function(){
     if(this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor == Date){
-      var start = moment(this.collection.options.data.time.start).startOf('hour');
-      var finish = moment(this.collection.options.data.time.finish).endOf('hour').add(1, 'millisecond');
+      var start = moment(this.data[0].values[0].x).startOf('hour');
+      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
 
       //  Get step hours
