@@ -84,6 +84,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   bboxChanged: function() {
+    console.log(this._map.getCenter());
+    console.log(this._map.getZoom());
+    
     let bbox = this.getBBox();
     this.mapChanges.set({'bbox': bbox});
     this._onBBoxChange(bbox);
