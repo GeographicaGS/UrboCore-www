@@ -44,8 +44,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
-    this.legend = new App.View.Map.MapboxLegendView(this, []);
-    this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this, this._availableBasemaps);
+    this.legend = new App.View.Map.MapboxLegendView([], this);
+    this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this._availableBasemaps, this);
     this.$el.append(this.legend.render().$el);
     this.$el.append(this.basemapSelector.render().$el);
     this.$el.append(this.button3d);
