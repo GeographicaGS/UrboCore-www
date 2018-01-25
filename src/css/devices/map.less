@@ -38,6 +38,47 @@
     bottom: 8px;
   }
 
+  &.expanded {
+    .zoom-control {
+      top: calc(~'25% + 33px');
+    }
+  }
+  .zoom-control {
+    position: absolute;
+    z-index: 9;
+    background: white;
+    border: 1px solid #808086;
+    border-radius: 2px;
+    width: 33px;
+    right: 20px;
+    top: calc(~'25%');    
+    .control {
+      height: 31px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-repeat: no-repeat;
+      font-size: 0;
+      cursor: pointer;
+      &:hover {
+        background-color: #f4f4f4;
+      }
+
+      &.in{
+        background-image: url(/img/SC_ico_herram_zmas.svg)
+      }
+
+      &.out {
+        background-image: url(/img/SC_ico_herram_zmenos.svg)
+        
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #808086;
+      }
+    }
+  }
+
   .toggle-3d {
     position: absolute;
     right: 16px;
