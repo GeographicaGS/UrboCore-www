@@ -26,7 +26,7 @@ App.View.Map.MapboxBaseMapSelectorView = Backbone.View.extend({
     'change #basemapselector': 'changeBasemap'
   },
 
-  initialize: function(map, basemaps) {
+  initialize: function(basemaps, map) {
     this._template = _.template($('#map-basemap_selector_template').html()),
     this._mapInstance = map;
     this._basemaps = basemaps;
