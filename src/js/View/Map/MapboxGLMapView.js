@@ -30,10 +30,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _layers: [],
   _is3dActive: false,
   mapChanges: new Backbone.Model(),
-  button3d: '<div class="toggle-3d"></div>'  ,
+  button3d: '<div class="toggle-3d"></div>',
+  zoomControl: '<div class="zoom-control">'
+    + '<div class="control in"> + </div>'
+    + '<div class="control out"> - </div>'
+    + '</div>',
 
   events: {
-    'click .toggle-3d': 'toggle3d'
+    'click .toggle-3d': 'toggle3d',
+    'click .control.in': 'zoom',
+    'click .control.out': 'zoom',    
   },
 
   initialize: function(options) {
@@ -49,6 +55,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.$el.append(this.legend.render().$el);
     this.$el.append(this.basemapSelector.render().$el);
     this.$el.append(this.button3d);
+    this.$el.append(this.zoomControl);
     this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);    
   },
 
@@ -191,6 +198,15 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   drawLegend: function() {
     this.legend.drawLegend();
+  },
+
+  zoom: function(e) {
+    let currentZoom = this._map.getZoom();
+    if (e.target.classList.contains('out')) {
+      this._map.setZoom(currentZoom - 1)
+    } else {
+      this._map.setZoom(currentZoom + 1)      
+    }
   }
 });
 
