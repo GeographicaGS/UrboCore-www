@@ -343,8 +343,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       ;
     }
 
-    // TODO: allow hidding axis
-    if(this.yAxisDomain[1]){
+    if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
       var yAxis2 = this._chart.svg.append('g')
         .attr('class', 'axis y-axis y-axis-2')
         .attr('transform', 'translate(' + this._chart.w + ',0)')
