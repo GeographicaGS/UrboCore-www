@@ -70,7 +70,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       });
     }else {
       this._map._map.on(event,ids,callback);
-      this._mapEvents[event][id] = callback;      
+      this._mapEvents[event][ids] = callback;      
     }
     return this;
   },
