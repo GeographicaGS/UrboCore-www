@@ -59,8 +59,14 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
       elem.realKey = elem.key;
       if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key))
         elem.key = _this.options.get('legendNameFunc')(elem.key);
-      elem.type = _this.options.get('keysConfig')[elem.realKey].type;
-      elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+
+      if (_this.options.get('keysConfig')[elem.realKey]) {
+        elem.type = _this.options.get('keysConfig')[elem.realKey].type;
+        elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+      } else {
+        elem.type = _this.options.get('keysConfig')['*'].type;
+        elem.yAxis = _this.options.get('keysConfig')['*'].axis        
+      }
 
       if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
         var timeFormatter = d3.time.format.iso;
