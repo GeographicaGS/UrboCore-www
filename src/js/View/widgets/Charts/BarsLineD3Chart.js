@@ -113,8 +113,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         max = [];
     var _this = this;
     _.each(tempData, function(elem, dataIdx){
-
-
       // Check aggregations
       if(elem.values && elem.values.length && elem.values[0].y && elem.values[0].y.constructor === Array){
         _.each(elem.values[0].y, function(subelem, subElemIdx){
@@ -170,10 +168,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       }else{
 
         elem.realKey = elem.key;
-        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key))
-          elem.key = _this.options.get('legendNameFunc')(elem.key);
-        elem.type = _this.options.get('keysConfig')[elem.realKey].type;
-        elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
+          elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
+
+        if (_this.options.get('keysConfig')[elem.realKey]) {
+          elem.type = _this.options.get('keysConfig')[elem.realKey].type;
+          elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+        } else {
+          elem.type = _this.options.get('keysConfig')['*'].type;
+          elem.yAxis = _this.options.get('keysConfig')['*'].axis        
+        }
 
         if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
           var timeFormatter = d3.time.format.iso;
