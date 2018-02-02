@@ -1,3 +1,31 @@
+// Copyright (c) 2016, Mapbox
+//
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without modification,
+// are permitted provided that the following conditions are met:
+//
+//    * Redistributions of source code must retain the above copyright notice,
+//      this list of conditions and the following disclaimer.
+//    * Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
+//    * Neither the name of Mapbox GL JS nor the names of its contributors
+//      may be used to endorse or promote products derived from this software
+//      without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+// EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+// NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.mapboxgl = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
   function geometry(e){var r,t=0;switch(e.type){case"Polygon":return polygonArea(e.coordinates);case"MultiPolygon":for(r=0;r<e.coordinates.length;r++)t+=polygonArea(e.coordinates[r]);return t;case"Point":case"MultiPoint":case"LineString":case"MultiLineString":return 0;case"GeometryCollection":for(r=0;r<e.geometries.length;r++)t+=geometry(e.geometries[r]);return t}}function polygonArea(e){var r=0;if(e&&e.length>0){r+=Math.abs(ringArea(e[0]));for(var t=1;t<e.length;t++)r-=Math.abs(ringArea(e[t]))}return r}function ringArea(e){var r,t,n,o,a,i,g,s=0,l=e.length;if(l>2){for(g=0;g<l;g++)g===l-2?(o=l-2,a=l-1,i=0):g===l-1?(o=l-1,a=0,i=1):(o=g,a=g+1,i=g+2),r=e[o],t=e[a],n=e[i],s+=(rad(n[0])-rad(r[0]))*Math.sin(rad(t[1]));s=s*wgs84.RADIUS*wgs84.RADIUS/2}return s}function rad(e){return e*Math.PI/180}var wgs84=_dereq_("wgs84");module.exports.geometry=geometry,module.exports.ring=ringArea;
   },{"wgs84":49}],2:[function(_dereq_,module,exports){
