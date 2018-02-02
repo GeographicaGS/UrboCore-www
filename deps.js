@@ -123,6 +123,7 @@ deps.JS = [
   srcJS + 'View/widgets/Charts/BarsLineD3Chart.js',
   srcJS + 'View/widgets/Charts/GridChartView.js',
 
+  srcJS + 'View/widgets/WidgetAlertsVariable.js',
   srcJS + 'View/widgets/WidgetMultiVariableChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableBarChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableHorizontalChart.js',
