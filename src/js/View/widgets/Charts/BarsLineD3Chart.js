@@ -529,6 +529,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         }
       }
       // Adjustments
+      if (diff === 0) diff = 1; // If diff is 0 => Infinite loop in lines 538-541 (do-while)
       if(diff > 6 && diff < 12) diff = 12;
 
       // Manually create dates range
