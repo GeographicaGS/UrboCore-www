@@ -28,7 +28,6 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    debugger;
     this.options = options;
     // this.onclick = options.onclick;
     this.variables = options.variables;
