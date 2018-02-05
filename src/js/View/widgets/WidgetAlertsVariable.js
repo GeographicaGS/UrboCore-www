@@ -28,6 +28,7 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    debugger;
     this.options = options;
     // this.onclick = options.onclick;
     this.variables = options.variables;
@@ -45,8 +46,13 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
       data: this.options.searchParams,
       success: function(response) {
         var items = response.toJSON();
-
-        _this.$el.parent().parent().find('div.widget_header .title').html('<strong>' + items.length + '</strong> ALERTAS DE CONSUMO');
+        let html;
+        if(typeof _this.options.title === 'function') {
+          html = _this.options.title(items);
+        } else {
+          html = _this.options.title;
+        }
+        _this.$el.parent().parent().find('div.widget_header .title').html(html);
         _this.$el.html(_this._template({items: items, variables: _this.variables}));    
       }
     });
