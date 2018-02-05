@@ -124,6 +124,7 @@ deps.JS = [
   srcJS + 'View/widgets/Charts/GridChartView.js',
 
   srcJS + 'View/widgets/WidgetAlertsVariable.js',
+  srcJS + 'View/widgets/WidgetMultipleVariable.js',
   srcJS + 'View/widgets/WidgetMultiVariableChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableBarChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableHorizontalChart.js',
