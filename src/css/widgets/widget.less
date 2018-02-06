@@ -156,6 +156,14 @@
       overflow-y: scroll;
       height: calc( ~'100% - 12px');
       margin-top: 30px;
+      .fade {
+        position: absolute;
+        bottom: -2px;
+        height: 55px;
+        pointer-events: none;
+        width: calc(~'100% - 38px');
+        background: linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+      }
     }
 
     .title {
@@ -171,10 +179,15 @@
 
   &.bgTransparent{
     background-color: transparent !important;
+    height: 200px;
     .widget_header{
       .title{
         color:@blue;
       }
+    }
+    .widget_content {
+      height: calc( ~'100% - 12px');
+      margin-top: 30px;
     }
   }
 
@@ -631,6 +644,46 @@
       border-radius: 4px;
       position: relative;
       justify-content: space-between;
+      &.detailed {
+        background: none;
+        margin-bottom: 0 !important;
+        cursor: default;
+        padding: 20px;
+        button {
+          margin-top: 16px;
+          display: block;
+          height: 32px;
+          width: 208px;
+          border-radius: 62px;
+          background-color: #64B6D9;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 1px;
+          line-height: 15px;
+          color: #fff;
+          text-transform: uppercase;
+        }
+        .alert-header {
+          align-items: flex-start;
+        }
+        .alert-body {
+          .variable {
+            height: 70px;
+            .variable-content {
+              &.number {
+                font-size: 32px;
+                line-height: 40px;
+                > span {
+                  display: block;
+                  font-size: 16px;
+                  line-height: 20px;
+                }
+              }
+            }
+          }
+        }
+      }
+
       &:not(:first-child) {
         margin-top: 4px;
       }
@@ -661,6 +714,30 @@
       .alert-header {
         display: flex;
         align-items: center;
+
+        .detailed {
+          max-width: 380px;
+          height: 36px;
+          margin-right: 16px;
+          &:last-child {
+            margin-right: 0;
+          }
+
+          .detail-title {
+            text-transform: uppercase;
+            color: #165288;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 12px;
+          }
+
+          .detail-content {
+            color: #808086;
+            font-size: 14px;
+            line-height: 18px;
+          }
+        }
+        
         .alert-title {
           display: flex;
           align-items: center;
@@ -721,6 +798,9 @@
       .alert-body {
         margin-left: 20px;
         display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        margin-right: 40px;
 
         .variable {
           max-width: 380px;
@@ -760,14 +840,6 @@
       }
     }
 
-    .fade {
-      position: absolute;
-      bottom: -2px;
-      height: 55px;
-      pointer-events: none;
-      width: calc(~'100% - 38px');
-      background: linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    }
     .multipleVariableWidget {
       margin-top: 70px;
       color: white;
