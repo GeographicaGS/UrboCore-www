@@ -840,7 +840,34 @@
       }
     }
 
-    
+    .multipleVariableWidget {
+      margin-top: 70px;
+      color: white;
+      .variable {
+        padding-bottom: 33px;
+        margin-top: 38px;
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .variable-title {
+          font-size: 13px;
+          font-weight: 600;
+          letter-spacing: 1px;
+          line-height: 17px;
+          text-transform: uppercase;
+        }
+        .variable-value {
+          margin-top: 8px;
+          font-size: 51px;
+          font-weight: 200;
+          line-height: 51px;
+          .variable-unit {
+            font-size: 36px;
+            line-height: 45px;
+          }
+        }
+      }
+    }
   }
 
   &.button_link {
