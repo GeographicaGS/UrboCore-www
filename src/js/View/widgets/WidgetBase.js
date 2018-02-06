@@ -28,7 +28,7 @@ App.View.Widgets.Base = Backbone.View.extend({
     this.options = options;
 
     this.model = new App.Model.Widgets.Base({
-      title: this.options.title,
+      title: typeof this.options.title === 'function' ? '' : this.options.title,
       link: this.options.link,
       titleLink: this.options.titleLink||null,
       infoTemplate: this.options.infoTemplate,
