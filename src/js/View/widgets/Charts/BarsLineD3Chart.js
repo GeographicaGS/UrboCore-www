@@ -404,6 +404,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       }
     }
 
+    this._drawElements();
+  },
+
+  _drawElements: function() {
     var _this = this;
     this.data.forEach(function(data){
       switch (data.type) {
@@ -415,9 +419,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           }
           break;
         case 'line':
-        if(!_this._internalData.disabledList[data.realKey]){
-          _this._drawLine(data);
-        }
+          if(!_this._internalData.disabledList[data.realKey]){
+            _this._drawLine(data);
+          }
       }
     });
   },
@@ -434,16 +438,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })
       ;
 
-    line.selectAll('.point')
-      .data(data.values).enter()
-      .append('circle')
-        .attr('class', 'point')
-        .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
-        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
-        .attr('r', 3)
-        .attr('data-y', function(d, idx) {return d.y});
-
-    line.append('path')
+      line.append('path')
       .datum(data.values)
       .attr('class', function(d, idx){
         var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
@@ -454,6 +449,17 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         return _this._getColor(this.parentElement.__data__, idx);
       })
       .attr('d', this.lineGen);
+
+    line.selectAll('.point')
+      .data(data.values).enter()
+      .append('circle')
+        .attr('class', 'point')
+        .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
+        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
+        .attr('r', 3)
+        .attr('data-y', function(d, idx) {return d.y});
+
+    
 
     this._chart.line.push(line);
   },
