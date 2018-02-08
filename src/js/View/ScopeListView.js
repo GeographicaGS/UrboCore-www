@@ -100,7 +100,7 @@ App.View.ScopeList = Backbone.View.extend({
       maxZoom: 20
     }).addTo(this.map);
 
-    this.map.setView([37.405, -5.989], 8);
+    this.map.setView(this.modelScope.get('location'), this.modelScope.get('zoom') || 8);
 
     var _this = this;
 
