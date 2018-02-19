@@ -195,6 +195,20 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
             min[axis].push(value.y);
             i += 1;
           });
+        } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
+          var axis = elem.yAxis - 1;
+          min[axis] = min[axis] || [];
+          max[axis] = max[axis] || [];
+          var i = 0;
+          _.each(elem.values, function(value){
+            if(_this.options.get('stacked')){
+              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
+            }else{
+              max[axis].push(value.y);
+            }
+            min[axis].push(value.y);
+            i += 1;
+          });
         }
         _this.data.push(elem);
       }
@@ -204,7 +218,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     this.data.sort(function(a, b){
       return a.type > b.type;
     });
-    
     // Get max value for each axis and adjust domain
     var domains =  [[0,1]];
     if(this.options.get('yAxisDomain')) {
@@ -232,7 +245,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     // Clean all
     this.$('.chart').empty();
     this._chart = {};
-    this._chart.margin = {top: 40, right: 80, bottom: 90, left: 80},
+    this._chart.margin = {top: 40, right: 80, bottom: 90, left: 80};
+    if (this.options.get('hideYAxis2')) {
+      this._chart.margin.right = 40;
+    }
     this._chart.w = this.$el.innerWidth() - (this._chart.margin.left + this._chart.margin.right),
     // this._chart.h = this.$el.innerHeight() - (this._chart.margin.top + this._chart.margin.bottom);
     this._chart.h = 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
@@ -504,7 +520,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('fill', function(d,idx){
           return _this._getColor(d, idx);
         });
-
     bar.selectAll('rect')
       .data(function(d) {
         return d.values; })
@@ -567,6 +582,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .tickPadding(10)
       ;
 
+    } else if(this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor != Date){
+      var _this = this;
+      this._chart.xAxis = d3.svg.axis()
+        .scale(this.xScaleBars)
+        .orient('bottom')
+        .tickFormat(function(d) {
+          return _this.options.get('yAxisTickFormat')(_this.data[0].values[d].x);
+        })
+        .tickSize([])
+        .tickPadding(10);
     }
   },
 
