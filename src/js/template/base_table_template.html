@@ -23,7 +23,7 @@
         _.each(elements,function(el){ %>
           <tr>
             <%_.each(formats,function(c,i){%>
-              <td class="<%= typeof c.css_class === "function" ? c.css_class(el):c.css_class%>"><%= c.formatFN ? c.formatFN(el[i]) :el[i]%></td>
+              <td class="<%= typeof c.css_class === "function" ? c.css_class(el):c.css_class%>"><%= c.formatFN ? c.formatFN(el[i],el) :el[i]%></td>
               <%})%>
             </tr>
         <%}); %>
