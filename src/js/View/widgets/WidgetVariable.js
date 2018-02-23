@@ -45,6 +45,25 @@ App.View.Widgets.Variable = Backbone.View.extend({
     });
     return this;
   }
-
-
 });
+
+App.View.Widgets.VariableSimple = Backbone.View.extend({
+  
+    _template: _.template( $('#widgets-widget_variablesimple_template').html()),
+  
+    initialize: function(options) {
+      this.options = options;
+    },
+  
+    render:function() {
+      var _this = this;
+      this.model.fetch({
+        data: this.model.options.data,
+        success: function(m){
+          var d = m.toJSON();
+          _this.$el.html(_this._template(d));
+        }
+      });
+      return this;
+    }
+  });
