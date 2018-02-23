@@ -141,6 +141,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetIndicatorTable.js',
   srcJS + 'View/widgets/WidgetVariable.js',
   srcJS + 'View/widgets/WidgetVersusVariables.js',
+  srcJS + 'View/widgets/WidgetVersusVariablesGeneric.js',
   srcJS + 'View/widgets/WidgetEmbed.js',
 
   // DEPRECATED
