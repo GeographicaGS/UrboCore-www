@@ -34,6 +34,7 @@ App.View.Map.Layer.MapboxGLVectorLayer = App.View.Map.Layer.MapboxGLLayer.extend
     this._model = model;
     this.legendConfig = legend;
     this._mapEvents = {};
+    // TODO: refactor to don't need to load this tile
     this._map.addSource(this._idSource, {
       'type': 'vector',
       'tiles': ["https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt"],
