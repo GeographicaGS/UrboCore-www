@@ -56,7 +56,12 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.$el.append(this.basemapSelector.render().$el);
     this.$el.append(this.button3d);
     this.$el.append(this.zoomControl);
-    this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);    
+    this.filterModel = options.filterModel;
+    
+    this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);
+    if (options.filterModel) {
+      this.listenTo(options.filterModel, 'change', this._applyFilter);
+    }
   },
 
   render: function() {
@@ -177,6 +182,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
       App.ctx.set('bbox', this._getCurrentBBOX());
     else
       App.ctx.set('bbox', null);
+  },
+
+  _applyFilter: function() {
+    // Extend on implementation
   },
 
   _getCurrentBBOX: function() {

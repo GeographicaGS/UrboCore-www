@@ -51,11 +51,6 @@ App.View.Map.Layer.MapboxGLVectorLayer = App.View.Map.Layer.MapboxGLLayer.extend
     }
   },
 
-  updateData: function(body) {
-    this._model.clear();
-    this._model.fetch({data: body});
-  },
-
   on: function(event, ids, callback) {
     if(this._mapEvents[event] === undefined) {
       this._mapEvents[event] = {};
