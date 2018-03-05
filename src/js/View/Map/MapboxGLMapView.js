@@ -59,6 +59,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.filterModel = options.filterModel;
     
     this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);
+    this.listenTo(App.ctx, 'change:start change:finish', function() {
+      options.filterModel.set('time', App.ctx.getDateRange());
+    }.bind(this));
+    
     if (options.filterModel) {
       this.listenTo(options.filterModel, 'change', this._applyFilter);
     }
