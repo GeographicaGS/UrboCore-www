@@ -28,6 +28,8 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   legendConfig: null,
   dataSource: null,
   layers: [],
+  popupTemplate: new App.View.Map.MapboxGLPopup('#map-mapbox_base_popup_template'),
+  
 
   initialize: function(model, body, legend, map) {
     this._map = map;
@@ -85,6 +87,29 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
 
   onClose: function() {
     this.offAll();
+  },
+
+  setInteractivity: function(label, properties = []) {
+    this.on('click',this.layers.map(l => l.id), function(e) {
+      let mpopup = new mapboxgl.Popup()
+      .setLngLat(e.lngLat);
+      mpopup.setHTML(this.popupTemplate
+        .drawTemplate(label,properties, e, mpopup)).addTo(this._map._map);
+    }.bind(this));
+    return this;
+  },
+
+  setHoverable: function(isHoverable) {
+    if (isHoverable) {
+      this.on('mouseenter',_.map(this.layers,function(l) {return l.id}), function() {
+        this._map._map.getCanvas().style.cursor = 'pointer';
+      }.bind(this));
+
+      this.on('mouseleave',_.map(this.layers,function(l) {return l.id}), function() {
+        this._map._map.getCanvas().style.cursor = '';
+      }.bind(this));
+    }
+    return this;
   },
 
   _success: function(change) {
