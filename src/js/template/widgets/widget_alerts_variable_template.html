@@ -5,8 +5,8 @@
       <div class="detailed">
           <div class="detail-title"><%= options.detailedTitle %></div>
           <div class="detail-content">
-            <%= item['warning_description'] %>
-            <% if (options.workOrder) { %>
+            <%= item['warning_description'] || 'No hay alerta de consumo' %>
+            <% if (options.workOrder && item.warning_level != 0) { %>
               <button>Crear orden de trabajo</button>
             <% } %>
           </div>
