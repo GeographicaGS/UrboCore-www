@@ -49,6 +49,8 @@ App.View.Widgets.Table =  Backbone.View.extend({
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
 
+    _.bindAll(this, '_showTooltip');
+
   },
 
   events: {
@@ -88,6 +90,17 @@ App.View.Widgets.Table =  Backbone.View.extend({
 
     // this._tableToCsv.fetch({'reset':false,'dataType':'text'})
     this._tableToCsv.fetch(this._tableToCsv.options);
+  },
+
+  _showTooltip: function(element) {
+    if (!this.$el.find('.tooltip').get().length) {
+      this.$el.append("<span class='tooltip'>" + element.currentTarget.getAttribute('data-tooltip') + "</span>");
+    } else {
+      $(".tooltip").html(element.currentTarget.getAttribute('data-tooltip'));
+    }
+
+    $(".tooltip").css('top', element.clientY - 400);
+    $(".tooltip").css('left', element.clientX + 20 - 200);
   }
 
 });
