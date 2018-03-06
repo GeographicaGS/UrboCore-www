@@ -51,9 +51,11 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
         } else {
           html = _this.options.title;
         }
-        items = _.filter(items, function(item) {
-          return item.warning_level != 0;
-        })
+        if (!_this.options.detailed) {
+          items = _.filter(items, function(item) {
+            return item.warning_level != 0;
+          });
+        }
         _this.$el.parent().parent().find('div.widget_header .title').html(html);
         _this.$el.html(_this._template({items: items, variables: _this.variables, options: _this.options}));    
       }
