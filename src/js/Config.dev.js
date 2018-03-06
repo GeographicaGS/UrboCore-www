@@ -28,5 +28,6 @@ App.config = {
   'map_position':[36.7196718,4.4167761],
   'layout' : 'basetheme',
   'map_zoom':17,
-  'maps_prefix':  'dev_'
+  'maps_prefix':  'dev_',
+  'cartoUser': 'urbo-admin',  
 };
