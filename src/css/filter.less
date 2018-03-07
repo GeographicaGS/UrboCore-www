@@ -165,6 +165,33 @@
         top: 1px;
         margin-right: 5px;
       }
+      & > span.total {
+        right: 0;
+        left: auto !important;
+        color: @grey;
+        font-size: 14px !important;
+      }
+
+      &.more {
+        color: @turquoise;
+        font-weight: 600;
+        &:before {
+          display: flex;
+          height: 14px;
+          width: 14px;
+          background: @blue;
+          border-radius: 2px;
+          margin-right: 8px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url('/img/white/SC_icpanel_mas.svg');
+          content: '';
+        }
+        &.less:before {
+          background-image: url('/img/white/SC_icpanel_menos.svg');          
+        }
+
+      }
 
       .icon {
         display: inline-block;
