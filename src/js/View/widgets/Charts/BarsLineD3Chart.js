@@ -283,7 +283,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .rangeRoundBands([0, this._chart.w], 0.1);
     } else {
       this.xScaleBars = d3.scale.ordinal()
-        .domain(d3.range(this.data[0].values.length))
+        .domain(d3.range(this.data[0] ? this.data[0].values.length : 0))
         .rangeRoundBands([0, this._chart.w], 0.1);
     }
 
