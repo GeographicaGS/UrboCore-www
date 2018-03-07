@@ -62,7 +62,6 @@ App.View.Widgets.Table =  Backbone.View.extend({
   },
 
   render: function(){
-    debugger;
     this.$el.append(App.widgetLoading());
     if(this._listenContext){
       if (this.model.get('method')=='GET')
