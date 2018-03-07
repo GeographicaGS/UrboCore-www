@@ -82,8 +82,7 @@ App.View.Widgets.Table =  Backbone.View.extend({
 
   _downloadCsv:function(){
     this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
-    // this._tableToCsv.options.format = 'csv';
-    this._tableToCsv.options.data.format = 'csv';
+    this._tableToCsv.options.format = 'csv';
 
     this._tableToCsv.options.reset = false;
     this._tableToCsv.options.dataType = 'text'
@@ -103,4 +102,17 @@ App.View.Widgets.Table =  Backbone.View.extend({
     $(".tooltip").css('left', element.clientX + 20 - 200);
   }
 
+});
+
+App.View.Widgets.TableNewCSV =  App.View.Widgets.Table.extend({
+  _downloadCsv:function(){
+    this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
+    this._tableToCsv.options.data.csv = true;
+
+    this._tableToCsv.options.reset = false;
+    this._tableToCsv.options.dataType = 'text'
+
+    // this._tableToCsv.fetch({'reset':false,'dataType':'text'})
+    this._tableToCsv.fetch(this._tableToCsv.options);
+  }
 });

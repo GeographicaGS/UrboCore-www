@@ -206,3 +206,37 @@ App.View.Filter.RangeSlider = Backbone.View.extend({
   }
 
 });
+App.View.Filter.RangeTimeSlider = App.View.Filter.RangeSlider.extend({
+  render: function(){
+    
+    var d = this.model.get(this.options.property);
+
+    this.$el.slider({
+      range: true,
+      min: this.options.domain[0],
+      max: this.options.domain[1],
+      values: [ d.start, d.finish ],
+      slide: this._slide,
+      change: this._change
+    });
+
+    this.$el.append('<span class="min_value">' + d.start + '</span>');
+    this.$el.append('<span class="max_value">' + d.finish + '</span>');
+
+    this._updateSpanPosition();
+
+    return this;
+  },
+
+  _change: function(e, ui ) {
+    var min = parseInt(ui.values[0]),
+      max = parseInt(ui.values[1]);
+
+    this.$('.min_value').text(min);
+    this.$('.max_value').text(max);
+
+    this._updateSpanPosition();
+
+    this.model.set(this.options.property,{start: min,finish: max});
+  },
+})
