@@ -68,9 +68,15 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     }
 
+    // TODO: Deprecate.
     this.filterModel = App.getFilter(this.options.id_category);
     if (this.filterModel)
       this.listenTo(this.filterModel,'change',this._onChangeFilter);
+
+    // New Filter Model, to manage map and widget filters
+    this.newFilterModel = this.options.newFilterModel;
+    if (this.newFilterModel)
+      this.listenTo(this.newFilterModel,'change',this._onChangeFilter)
 
     if (this.model.get('refreshTime')){
       this._setRefreshInterval()
@@ -229,6 +235,8 @@ App.View.Widgets.Base = Backbone.View.extend({
       data.filters = data.filters || {};
       if(this.filterModel)
         data.filters = this.filterModel.toQuery();
+      if(this.newFilterModel)
+        data.filters = this.newFilterModel.toJSON();
 
       var bbox = this.ctx.getBBOX();
       if (bbox)
