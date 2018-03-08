@@ -209,7 +209,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
       var meta = App.mv().getVariable(key);
       if(meta && meta.get('config') && meta.get('config').hasOwnProperty('default'))
       disabled = !meta.get('config').default
-      return {'key':key, 'values':values, 'disabled':disabled}
+      return {'key':key, 'realKey':key, 'values':values, 'disabled':disabled}
     });
 
     return response;
