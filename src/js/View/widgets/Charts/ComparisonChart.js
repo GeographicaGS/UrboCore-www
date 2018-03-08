@@ -127,12 +127,14 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
     }
 
 
-    this.data.push(this._extractData(this.collection, disabledCol));
+    if(this.collection.toJSON().length) {
+      this.data.push(this._extractData(this.collection, disabledCol));
 
-    // If we have no dates we have no compared data to show
-    if(this._dateModel.getDateRange())
-      this.data.push(this._extractData(this.collectionComp, disabledColComp));
-
+      // If we have no dates we have no compared data to show
+      if(this._dateModel.getDateRange() && this.collectionComp.toJSON().length)
+        this.data.push(this._extractData(this.collectionComp, disabledColComp));
+    }
+    
     // Check number of values
     if(this.data[0] && this.data[1] && this.data[0].values && this.data[1].values){
       var longer, shorter, difference = this.data[0].values.length - this.data[1].values.length;
