@@ -81,7 +81,10 @@ App.View.DevicePeriod = Backbone.View.extend({
         device: this.model.get('id'),
         vars: entityVariablesIds,
         id:this.model.get('id'),
-        step: '1h'
+        step: '1h',
+        data: {
+          time: {}
+        }
       });
 
       this._chartView = new App.View.Widgets.MultiVariableChart({
