@@ -68,6 +68,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     if (options.filterModel) {
       this.listenTo(options.filterModel, 'change', this._applyFilter);
     }
+    _.bindAll(this,'dataLoaded');
   },
 
   render: function() {
@@ -84,9 +85,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
         this._map
           .on('load', this.loaded.bind(this))
           .on('moveend',this.bboxChanged.bind(this))
+          .on('dataloading', this.dataLoaded)
       }.bind(this));
     },100)
     return this;
+  },
+
+  dataLoaded: function() {
+    // To implement in child
   },
 
   loaded: function() {

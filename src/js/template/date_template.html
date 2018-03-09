@@ -16,15 +16,20 @@
 		<ul>
 			<li data-unit="days" data-value="0"><%= __('Hoy') %></li>
 			<!-- <li days="-1"><%= __('Ayer') %></li> -->
-      <% if (!isHighRangeCtx) { %>
+      <% if (!isHighRangeCtx && !isCrazyRangeCtx) { %>
   			<li data-unit="days" data-value="2"><%= __('Últimos 3 días') %></li>
   			<li data-unit="days" data-value="6"><%= __('Últimos 7 días') %></li>
   			<li data-unit="months" data-value="1"><%= __('Último mes') %></li>
-      <% } else { %>
+      <% } else if(!isCrazyRangeCtx) { %>
         <li data-unit="months" data-value="1"><%= __('Último mes') %></li>
         <li data-unit="months" data-value="3"><%= __('Últimos 3 meses') %></li>
   			<li data-unit="years" data-value="1"><%= __('Último año') %></li>
-      <% } %>
+			<% } else { %>
+				<li data-unit="months" data-value="1"><%= __('Último mes') %></li>
+        <li data-unit="months" data-value="3"><%= __('Últimos 3 meses') %></li>
+				<li data-unit="years" data-value="1"><%= __('Último año') %></li>
+  			<li data-unit="origin"><%= __('Todo') %></li>				
+			<% } %>
 		</ul>
 	</div>
 </div>
