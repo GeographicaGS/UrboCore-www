@@ -28,6 +28,16 @@
     }
   }
 
+  &:not(.active) {
+    .legendInline, .co_range_filter {
+      height: 0;
+      overflow-x: hidden;
+    }
+  }
+  .legendInline, .co_range_filter {
+    transition: height .25s linear;
+  }
+
   &.active{
     &:after{
       background-color: @blue;
@@ -42,16 +52,7 @@
       padding: 5px 5px 10px 45px;
     }
   }
-  // &:before{
-  //   content: '';
-  //   display: inline-block;
-  //   position: absolute;
-  //   left: 26px;
-  //   bottom: 0;
-  //   height: ~ "calc(100% + 11px)";
-  //   width: 1px;
-  //   background-color: #e5e5e6;
-  // }
+  
   h4{
     cursor: pointer;
     white-space: nowrap;

@@ -97,10 +97,14 @@ App.View.Date = Backbone.View.extend({
   render: function () {
     var _this = this;
     var isHighRangeCtx = false;
-    if (this.maxRange.asDays() >= 365) {
+    var isCrazyRangeCtx = false;
+    if (this.maxRange.asDays() >= 365 && this.maxRange.asDays < 36500) {
       isHighRangeCtx = true;
+    } else if(this.maxRange.asDays() >= 36500) {
+      isHighRangeCtx = true;
+      isCrazyRangeCtx = true;
     }
-    this.setElement(this._template({ isHighRangeCtx: isHighRangeCtx }));
+    this.setElement(this._template({ isHighRangeCtx: isHighRangeCtx, isCrazyRangeCtx: isCrazyRangeCtx }));
     this.$('.date').datepicker({ dateFormat: 'dd/mm/yy',
       beforeShow: this._placeDatePicker,
       onClose: function () {
@@ -174,11 +178,18 @@ App.View.Date = Backbone.View.extend({
     this.$el.removeClass('range_open');
 
     var finish = moment().endOf('day');
-
+    
+    var start;
     var $e = $(e.currentTarget),
       unit = $e.attr('data-unit'),
-      value = parseInt($e.attr('data-value')),
-      start = moment().subtract(value,unit).startOf('day');
+      value = parseInt($e.attr('data-value'));
+    
+    if (unit !== 'origin') {
+      start = moment().subtract(value,unit).startOf('day')
+    } else {
+      start = moment(0).startOf('day');
+    }
+
     this.model.set({
       start: start.utc(),
       finish:finish.utc()
