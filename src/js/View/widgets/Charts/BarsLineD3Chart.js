@@ -345,82 +345,91 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     ;
 
     // Draw
-    this._chart.svg.append('g')
-      .attr('class', 'axis x-axis')
-      .attr('transform', 'translate(0,' + this._chart.h + ')')
-      .call(this._chart.xAxis);
+    if (this._chart.xAxis) {
+      this._chart.svg.append('g')
+        .attr('class', 'axis x-axis')
+        .attr('transform', 'translate(0,' + this._chart.h + ')')
+        .call(this._chart.xAxis);
 
-    var yAxis1 = this._chart.svg.append('g')
-      .attr('class', 'axis y-axis y-axis-1')
-      .call(this._chart.yAxis1);
-    if(this.options.get('yAxisLabel')){
-      yAxis1.append('text')
-        .attr('class', 'axis-label')
-        .attr('x', -1 * this._chart.h / 2)
-        .attr('transform', 'rotate(270) translate(0,-68)')
-        .style('text-anchor', 'middle')
-        .text(this.options.get('yAxisLabel')[0])
-      ;
-    }
-
-    if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
-      var yAxis2 = this._chart.svg.append('g')
-        .attr('class', 'axis y-axis y-axis-2')
-        .attr('transform', 'translate(' + this._chart.w + ',0)')
-        .call(this._chart.yAxis2);
+      var yAxis1 = this._chart.svg.append('g')
+        .attr('class', 'axis y-axis y-axis-1')
+        .call(this._chart.yAxis1);
       if(this.options.get('yAxisLabel')){
-        yAxis2.append('text')
+        yAxis1.append('text')
           .attr('class', 'axis-label')
-          .attr('x', this._chart.h / 2)
-          .attr('transform', 'rotate(90) translate(0,-68)')
+          .attr('x', -1 * this._chart.h / 2)
+          .attr('transform', 'rotate(270) translate(0,-68)')
           .style('text-anchor', 'middle')
-          .text(this.options.get('yAxisLabel')[1])
+          .text(this.options.get('yAxisLabel')[0])
         ;
       }
-    }
 
-    if(this.options.has('yAxisThresholds')){
-      // Format thresholds
-      var _this = this;
-      var ticks = d3.selectAll(this.$('g.axis.y-axis-1 g.tick line'));
-      ticks
-        .attr('style', function(d,i){
-          var style = '';
-          var thresholdCfg = _this.options.get('yAxisThresholds')[i];
-          if(thresholdCfg){
-            style += 'stroke-dasharray: 4; stroke: ' + thresholdCfg.color;
-          }else if(_this.options.get('yAxisThresholds').length){
-            style += 'stroke-dasharray: 4; stroke: ' + _this.options.get('yAxisThresholds')[_this.options.get('yAxisThresholds').length - 1].color;
-          }
-          return style;
-        });
-      for(var i = 0; i < ticks[0].length -1;i++){
-        var y = ticks[0][i+1].getCTM().f - this._chart.margin.top;
-        var width = ticks[0][i].getBoundingClientRect().width;
-        var height = ticks[0][i].getCTM().f - ticks[0][i+1].getCTM().f;
-        var g = this._chart.svg.append('g');
-        g.append('rect')
-          .attr('x', 0)
-          .attr('y', y)
-          .attr('width', width)
-          .attr('height', height)
-          .attr('fill', this.options.get('yAxisThresholds')[i].color)
-          .attr('style', 'opacity: .1')
-        ;
-        g.append('text')
-          .text(__(this.options.get('yAxisThresholds')[i].realName))
-          .attr('class', 'axis-label')
-          .attr('x', 10)
-          .attr('y', y + height / 2)
-          .attr('dy', '.32em')
-          .attr('width', width)
-          .attr('height', height / 2)
-          .attr('class', 'thresholdLabel')
-        ;
+      if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
+        var yAxis2 = this._chart.svg.append('g')
+          .attr('class', 'axis y-axis y-axis-2')
+          .attr('transform', 'translate(' + this._chart.w + ',0)')
+          .call(this._chart.yAxis2);
+        if(this.options.get('yAxisLabel')){
+          yAxis2.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', this._chart.h / 2)
+            .attr('transform', 'rotate(90) translate(0,-68)')
+            .style('text-anchor', 'middle')
+            .text(this.options.get('yAxisLabel')[1])
+          ;
+        }
       }
-    }
 
-    this._drawElements();
+      if(this.options.has('yAxisThresholds')){
+        // Format thresholds
+        var _this = this;
+        var ticks = d3.selectAll(this.$('g.axis.y-axis-1 g.tick line'));
+        ticks
+          .attr('style', function(d,i){
+            var style = '';
+            var thresholdCfg = _this.options.get('yAxisThresholds')[i];
+            if(thresholdCfg){
+              style += 'stroke-dasharray: 4; stroke: ' + thresholdCfg.color;
+            }else if(_this.options.get('yAxisThresholds').length){
+              style += 'stroke-dasharray: 4; stroke: ' + _this.options.get('yAxisThresholds')[_this.options.get('yAxisThresholds').length - 1].color;
+            }
+            return style;
+          });
+        for(var i = 0; i < ticks[0].length -1;i++){
+          var y = ticks[0][i+1].getCTM().f - this._chart.margin.top;
+          var width = ticks[0][i].getBoundingClientRect().width;
+          var height = ticks[0][i].getCTM().f - ticks[0][i+1].getCTM().f;
+          var g = this._chart.svg.append('g');
+          g.append('rect')
+            .attr('x', 0)
+            .attr('y', y)
+            .attr('width', width)
+            .attr('height', height)
+            .attr('fill', this.options.get('yAxisThresholds')[i].color)
+            .attr('style', 'opacity: .1')
+          ;
+          g.append('text')
+            .text(__(this.options.get('yAxisThresholds')[i].realName))
+            .attr('class', 'axis-label')
+            .attr('x', 10)
+            .attr('y', y + height / 2)
+            .attr('dy', '.32em')
+            .attr('width', width)
+            .attr('height', height / 2)
+            .attr('class', 'thresholdLabel')
+          ;
+        }
+      }
+
+      this._drawElements();
+    } else {
+      this._chart.svg.append('text')
+        .attr('transform', 'translate(80,' + this._chart.h/2 + ')')
+        .attr('text-anchor', 'middle')
+        .attr('fill','#fff')
+        .attr('font-size','35px')
+        .text(__('No hay datos'));
+    }
   },
 
   _drawElements: function() {
