@@ -34,7 +34,7 @@ App.View.DevicePeriod = Backbone.View.extend({
         this._template = _.template( $('#indoor_air-custom_device_period_template').html() );
       }        
 
-      this.$el.html(this._template()); //TODO: If entity is 'indoor_air' use other template.
+      this.$el.html(this._template());
 
       this._summaryView = new App.View.DeviceSumary({el: this.$('#summary'),model: this.model});
 
