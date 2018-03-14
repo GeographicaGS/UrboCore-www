@@ -98,6 +98,7 @@ App.View.Panels.Base = App.View.Container.extend({
 
   render: function(){
     this.$el.html(this._template());
+    this.$el.attr('data-vertical', this.id_category);
 
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
