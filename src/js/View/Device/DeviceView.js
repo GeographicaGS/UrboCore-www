@@ -79,7 +79,7 @@ App.View.Device = Backbone.View.extend({
     App.getNavBar().set({
       breadcrumb : [{
         url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
-        title : __('Ficha de disposivo')
+        title : __('Ficha de dispositivo')
       },
       {
         url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
