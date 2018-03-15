@@ -25,7 +25,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     this._template = _.template($(template).html());
   },
 
-  bindData: function(label, properties, clicked) {
+  bindData: function(label, properties, clicked, deviceViewLink = false) {
     return this._template({
       'name': label,
       'properties': _.filter(_.map(properties, function(p) {
@@ -48,11 +48,12 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
         }
         return p;
       }),function(e){return e !== null}),
-      'loading': false      
+      'loading': false,
+      'deviceViewLink': deviceViewLink
     });
   },
 
-  drawTemplate: function(label, properties, clicked, popup) {
+  drawTemplate: function(label, properties, clicked, popup, deviceViewLink = false) {
     if (typeof properties === 'function') {
       setTimeout(function() {
         properties = properties(clicked, popup, this)
@@ -60,10 +61,11 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       return this._template({
         'name': label,
         'properties': [],
-        'loading': true
+        'loading': true,
+        'deviceViewLink': deviceViewLink
       });
     } else {
-      return this.bindData(label, properties, clicked);
+      return this.bindData(label, properties, clicked, deviceViewLink);
     }
 
   }
