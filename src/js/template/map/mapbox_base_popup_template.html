@@ -13,7 +13,14 @@
   </div>
   <% } %>  
 </div>
-<% } %>  
+<% } %>
+<% if (deviceViewLink) {%>
+  <div class="device-information">
+    <div class="view-button">
+      <a jslink href='<%= deviceViewLink %>'>Ver ficha</a>
+    </div>
+  </div>
+<% } %>
 <% if (loading) {%>  
   <div class="loading">
     <svg  viewBox="-10 -10 220 220">

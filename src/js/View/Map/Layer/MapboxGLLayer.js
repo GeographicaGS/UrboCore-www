@@ -89,12 +89,15 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this.offAll();
   },
 
-  setInteractivity: function(label, properties = []) {
+  setInteractivity: function(label, properties = [], deviceViewLink = false) {
     this.on('click',this.layers.map(l => l.id), function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
+      if(deviceViewLink) {
+        deviceViewLink = deviceViewLink.replace('{{device}}',e.features[0].properties.id_entity);
+      }
       mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label,properties, e, mpopup)).addTo(this._map._map);
+        .drawTemplate(label,properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
