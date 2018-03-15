@@ -77,4 +77,21 @@ App.Model.PublishedWidget = App.Model.Post.extend({
   url: function(){
     return App.config.api_url + '/' + App.currentScope + '/auth/widget/';
   }
-})
+});
+
+
+App.Model.TilesModel = Backbone.Model.extend({
+  
+    initialize: function(options) {
+      this.url = options.url;
+      this.params = options.params;
+    },
+  
+    fetch: function() {
+      var _this = this;
+      var mapConfig = encodeURIComponent(JSON.stringify(this.params));
+      $.get(this.url + '?config='+mapConfig, function(o) {
+        _this.set('response', o);
+      });
+    }
+  });
