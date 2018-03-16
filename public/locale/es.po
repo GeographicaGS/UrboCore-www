@@ -24,3 +24,19 @@ msgstr ""
 #: template/scope_list_template.html:8
 msgid "ámbito"
 msgstr ""
+
+# Indoor_air
+msgid "good"
+msgstr "Bueno"
+
+msgid "admisible"
+msgstr "Admisible"
+
+msgid "defficient"
+msgstr "Deficiente"
+
+msgid "bad"
+msgstr "Malo"
+
+msgid "very bad"
+msgstr "Muy malo"
