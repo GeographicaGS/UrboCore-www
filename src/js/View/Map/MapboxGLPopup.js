@@ -29,23 +29,41 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     return this._template({
       'name': label,
       'properties': _.filter(_.map(properties, function(p) {
-        if (p.feature.includes('#')) {
-          let access = p.feature.split('#');
-          p.value = JSON.parse(clicked.features[0].properties[access[0]])[access[1]];
-        } else if (p.feature.includes('?')) {
-          //optional feature
-          let access = p.feature.split("?");
-          p.value = clicked.features[0].properties[access[0]];
-          p = (!p.value) ? null : p;
-        }else {
-          p.value = clicked.features[0].properties[p.feature];  
-        }
-        if(p && p.value === 'null') {
-          p.value = '--';
-        }
-        if(p && p.value && p.nbf) {
-          p.value = p.nbf(p.value);
-        }
+        var multipleFeatures = p.feature.split(" ");
+        let value;
+        p.value = '';
+        debugger;
+        _.each(multipleFeatures, (attr) => {
+          let forTranslate = attr.includes('|translate');
+          if (forTranslate) {
+            attr = attr.replace('|translate','')
+          }
+          
+          if (attr.includes('#')) {
+            let access = attr.split('#');
+            value = JSON.parse(clicked.features[0].properties[access[0]])[access[1]];
+          } else if (attr.includes('?')) {
+            //optional feature
+            let access = attr.split("?");
+            value = clicked.features[0].properties[access[0]];
+          }else {
+            value = clicked.features[0].properties[attr];  
+          }
+
+          if (forTranslate) {
+            value = __(value);
+          }
+
+          if(p && value)
+            p.value = ((p.value)? p.value + ' · ' : '' ) + value;
+          
+          if(p && !p.value) {
+            p.value = '--';
+          }
+          if(p && p.value && p.nbf) {
+            p.value = p.nbf(p.value);
+          }
+        });
         return p;
       }),function(e){return e !== null}),
       'loading': false,
