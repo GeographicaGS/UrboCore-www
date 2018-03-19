@@ -45,6 +45,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             //optional feature
             let access = attr.split("?");
             value = clicked.features[0].properties[access[0]];
+            if(!value) {
+              return;
+            }
           }else {
             value = clicked.features[0].properties[attr];  
           }
