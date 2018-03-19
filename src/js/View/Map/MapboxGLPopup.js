@@ -56,10 +56,10 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             value = __(value);
           }
 
-          if(p && value)
+          if(p && (value || value === 0))
             p.value = ((p.value)? p.value + ' · ' : '' ) + value;
           
-          if(p && !p.value) {
+          if(p && !p.value && p.value !== 0) {
             p.value = '--';
           }
           if(p && p.value && p.nbf) {
