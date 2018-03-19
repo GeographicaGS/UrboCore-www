@@ -32,7 +32,6 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
         var multipleFeatures = p.feature.split(" ");
         let value;
         p.value = '';
-        debugger;
         _.each(multipleFeatures, (attr) => {
           let forTranslate = attr.includes('|translate');
           if (forTranslate) {

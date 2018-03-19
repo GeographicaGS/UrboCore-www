@@ -53,12 +53,16 @@ App.View.Widgets.VariableSimple = Backbone.View.extend({
   
     initialize: function(options) {
       this.options = options;
+      this.listenTo(this.collection,"reset",this.render);      
     },
   
     render:function() {
       var _this = this;
+      var model = this.model.options.data;
+      model.start = App.ctx.getDateRange().start;
+      model.finish = App.ctx.getDateRange().finish;
       this.model.fetch({
-        data: this.model.options.data,
+        data: model,
         success: function(m){
           var d = m.toJSON();
           _this.$el.html(_this._template(d));
