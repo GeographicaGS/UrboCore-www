@@ -91,7 +91,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
 
   setInteractivity: function(label, properties = [], deviceViewLink = false) {
     this.on('click',this.layers.map(l => l.id), function(e) {
-      console.log(e);
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
       if(deviceViewLink) {
