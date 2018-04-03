@@ -197,6 +197,11 @@ var backboneSync = Backbone.sync
 
 // Now override
 Backbone.sync = function (method, model, options) {
+  var disableCheck = model.__disableBackboneSyncInterceptor;
+  var disableInterceptor = typeof disableCheck === 'function' ? disableCheck() : disableCheck;
+  if(disableInterceptor) {
+    return;
+  }
 
   if(App.mode !== 'embed'){
     options.headers = {
