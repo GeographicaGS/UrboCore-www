@@ -117,6 +117,24 @@
     localStorage.setItem('auth',JSON.stringify(this._data));
   }
 
+  auth.prototype.oauthLogin = function (token,expires, cb) {
+    var _this = this;
+    $.ajax(App.config.api_url + '/auth/user/graph_oauth',{
+      method: 'GET',
+      data: {
+        "access_token": token
+      }
+    }).done(function(data) {
+      _this._data = data;
+      _this._data.token = token;
+      _this._data.expires = expires;
+      _this._data.password = '';
+      _this._data.graph = _this._graphToTree(data.graph);
+      _this.save();
+      if (cb) cb();
+    });
+  }
+
   auth.prototype.login = function(email,password,cb){
 
     var _this = this;
@@ -197,6 +215,11 @@ var backboneSync = Backbone.sync
 
 // Now override
 Backbone.sync = function (method, model, options) {
+  var disableCheck = model.__disableBackboneSyncInterceptor;
+  var disableInterceptor = typeof disableCheck === 'function' ? disableCheck() : disableCheck;
+  if(disableInterceptor) {
+    return;
+  }
 
   if(App.mode !== 'embed'){
     options.headers = {
