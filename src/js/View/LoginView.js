@@ -28,7 +28,7 @@ App.View.Login = Backbone.View.extend({
   },
 
   events: {
-    'click input[type="submit"]': 'login'
+    'click input#urbo-login[type="submit"]': 'login'
   },
 
   onClose: function () {
