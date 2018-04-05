@@ -45,7 +45,8 @@ App.View.Widgets.Frame.BaseFrame = App.View.Widgets.Base.extend({
       extraMenu: extraMenu
     });
     App.View.Widgets.Base.prototype.initialize.call(this, options);
-
+    
+    this.$el.addClass('widgetFrame');
     this.subviews.push(new App.View.Widgets.Frame.FrameContent({
       model: options.frameModel
     }));

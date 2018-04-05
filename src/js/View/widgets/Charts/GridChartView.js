@@ -26,12 +26,9 @@ App.View.Widgets.Charts.Grid =  App.View.Widgets.Charts.Base.extend({
 
   initialize: function(options) {
 
-    options = _.defaults(options,{
-      xRangeLabels: {
-        start: true,
-        end: true,
-      }
-    });
+    if (options && options.opts && !options.opts.get('xRangeLabels')) {
+      options.opts.set('xRangeLabels', {start:true, end:true});
+    }
 
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
   },
