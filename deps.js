@@ -123,6 +123,8 @@ deps.JS = [
   srcJS + 'View/widgets/Charts/BarsLineD3Chart.js',
   srcJS + 'View/widgets/Charts/GridChartView.js',
 
+  srcJS + 'View/widgets/WidgetAlertsVariable.js',
+  srcJS + 'View/widgets/WidgetMultipleVariable.js',
   srcJS + 'View/widgets/WidgetMultiVariableChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableBarChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableHorizontalChart.js',
@@ -139,6 +141,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetIndicatorTable.js',
   srcJS + 'View/widgets/WidgetVariable.js',
   srcJS + 'View/widgets/WidgetVersusVariables.js',
+  srcJS + 'View/widgets/WidgetVersusVariablesGeneric.js',
   srcJS + 'View/widgets/WidgetEmbed.js',
 
   // DEPRECATED
@@ -155,14 +158,22 @@ deps.JS = [
   // MAP
   srcJS + 'View/Map/BaseMapView.deprecated.js',
   srcJS + 'View/Map/BaseMapView.js',
+  srcJS + 'View/Map/MapboxGLMapView.js',
+  srcJS + 'View/Map/MapboxGLPopup.js',
+  srcJS + 'View/Map/MapboxGLBaseMapSelectorView.js',
   srcJS + 'View/Map/BaseComparisonMapView.js',
   srcJS + 'View/Map/MapVectorPointsView.js',
+  srcJS + 'View/Map/MapboxGLLegendView.js',
   srcJS + 'View/Map/LayerTreeView.js',
   srcJS + 'View/Map/FilterSpatialMapView.js',
   srcJS + 'View/Map/MapSearchView.js',
   srcJS + 'View/Map/LayerTreeFilters.js',
   srcJS + 'View/Map/LegendBaseMapView.js',
   srcJS + 'View/Map/ComparisonLegendMapView.js',
+  srcJS + 'View/Map/Layer/MapboxGLLayer.js',
+  srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
+  srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
+  
 
   // Models
   srcJS + 'Model/BaseModel.js',

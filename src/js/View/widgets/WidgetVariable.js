@@ -45,6 +45,29 @@ App.View.Widgets.Variable = Backbone.View.extend({
     });
     return this;
   }
-
-
 });
+
+App.View.Widgets.VariableSimple = Backbone.View.extend({
+  
+    _template: _.template( $('#widgets-widget_variablesimple_template').html()),
+  
+    initialize: function(options) {
+      this.options = options;
+      this.listenTo(this.collection,"reset",this.render);      
+    },
+  
+    render:function() {
+      var _this = this;
+      var model = this.model.options.data;
+      model.start = App.ctx.getDateRange().start;
+      model.finish = App.ctx.getDateRange().finish;
+      this.model.fetch({
+        data: model,
+        success: function(m){
+          var d = m.toJSON();
+          _this.$el.html(_this._template(d));
+        }
+      });
+      return this;
+    }
+  });

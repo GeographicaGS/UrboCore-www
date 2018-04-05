@@ -206,3 +206,63 @@ App.View.Filter.RangeSlider = Backbone.View.extend({
   }
 
 });
+App.View.Filter.RangeTimeSlider = App.View.Filter.RangeSlider.extend({
+  render: function(){
+    var d = this.model.get(this.options.property);
+    this.labels = this.options.domainLabels || [];
+    var defaultValues = [(d.start || this.options.domain[0]), (d.finish || this.options.domain[1])]
+
+    this.$el.slider({
+      range: true,
+      min: this.options.domain[0],
+      max: this.options.domain[1],
+      values: defaultValues,
+      slide: this._slide,
+      change: this._change
+    });
+
+    
+    this.$el.append('<span class="min_value">' + (d.start || this.labels[0]) + '</span>');
+    this.$el.append('<span class="max_value">' + (d.finish || this.labels[1]) + '</span>');
+
+    this._updateSpanPosition();
+
+    return this;
+  },
+
+  _change: function(e, ui ) {
+    var min = parseInt(ui.values[0]),
+      max = parseInt(ui.values[1]);
+
+      
+    this.$('.min_value').text(min === this.options.domain[0] ? this.labels[0] : min);
+    this.$('.max_value').text(max === this.options.domain[1] ? this.labels[1] : max);
+    
+    if(this.options.includeOutOfRange) {
+      min = min === this.options.domain[0] ? null : min;
+      max = max === this.options.domain[1] ? null : max;
+
+    }
+    this._updateSpanPosition();
+
+    var filter = {}
+    if(min !== null) {
+      filter.start = min;
+    }
+    if(max !== null) {
+      filter.finish = max;
+    }
+    this.model.set(this.options.property,filter);
+  },
+
+  _slide: function(e, ui ) {
+    var min = parseInt(ui.values[0]),
+    max = parseInt(ui.values[1]);
+
+    
+    this.$('.min_value').text(min === this.options.domain[0] ? this.labels[0] : min);
+    this.$('.max_value').text(max === this.options.domain[1] ? this.labels[1] : max);
+
+    this._updateSpanPosition();
+  },
+})

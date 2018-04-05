@@ -28,7 +28,7 @@ App.View.Panels.Frames.Master = App.View.Panels.Base.extend({
       dateView: false,
       id_category: 'frames',
       spatialFilter: false,
-      master: true,
+      master: false,
       title: __('Índice'),
       id_panel: 'master',
       filterView: false

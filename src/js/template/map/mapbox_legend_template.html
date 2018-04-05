@@ -1,0 +1,18 @@
+<div class="mapbox-legend" id="mapbox-legend">
+  <div class="head">
+    <div class="title">
+      <%= legendTitle %>
+    </div>
+    <img id="toggler" src="/img/arrow-dropdown.svg"/>
+  </div>
+  <div class="body">
+    <% for(var item of items) { %>
+      <div class="mapbox-legend-item">
+        <div class="item-head">
+          <img src="<%= item.icon %>">
+          <span><%= item.name %></span>
+        </div>
+      </div>
+    <% } %>      
+  </div>
+</div>

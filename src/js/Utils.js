@@ -123,16 +123,6 @@ App.Utils = {
     return s.charAt(0).toUpperCase() + s.slice(1);
   },
 
-  categoryToClassName: function(s) {
-    if (s=='aq_cons') {
-      return 'AQCons';
-    }
-    else {
-      return this.capitalizeFirstLetter(s);
-    }
-
-  },
-
   getCartoAccount: function(category){
     return App.mv().getCategory(category).get('config').carto.account;
   },
@@ -252,3 +242,17 @@ App.Utils.lastdataToObject = function(lastdata){
   });
   return obj;
 };
+
+App.Utils.getNextWeek = function() {
+  return [
+    moment().startOf('isoWeek').add(7, 'days').toDate(),
+    moment().endOf('isoWeek').add(7, 'days').toDate()
+  ];
+}
+
+App.Utils.getPrevWeek = function() {
+  return [
+    moment().startOf('isoWeek').subtract(7, 'days').toDate(),
+    moment().startOf('isoWeek').subtract(1, 'days').endOf('day').toDate()
+  ];
+}

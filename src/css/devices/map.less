@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -30,8 +30,93 @@
 	// bottom: 0;
 	// left: 0;
 	// right: 0;
-	// z-index: 1;
+  // z-index: 1;
+  .basemapselector {
+    z-index: 999;
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+  }
 
+  .zoom-control {
+    position: absolute;
+    z-index: 9;
+    background: white;
+    border: 1px solid #808086;
+    border-radius: 2px;
+    width: 33px;
+    right: 16px;
+    top: calc(~'50% - 33px - 40px');   
+    .control {
+      height: 31px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-repeat: no-repeat;
+      font-size: 0;
+      cursor: pointer;
+      &:hover {
+        background-color: #f4f4f4;
+      }
+
+      &.in{
+        background-image: url(/img/SC_ico_herram_zmas.svg)
+      }
+
+      &.out {
+        background-image: url(/img/SC_ico_herram_zmenos.svg)
+        
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #808086;
+      }
+    }
+  }
+
+  .toggle-3d {
+    position: absolute;
+    right: 16px;
+    bottom: 38px;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    border: 1px solid #808086;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/img/3d.svg') no-repeat;
+    background-color: #fff;
+    background-position: center;
+    cursor: pointer;
+    &.active {
+      border-color: #64B6D9;
+      background-color: #64B6D9;
+      background-image: url('/img/3d-on.svg');
+    }
+  }
+
+}
+
+.mapboxgl-ctrl-attrib{
+  margin-right: 120px !important;
+  a{
+    &:first-child{
+      display: none;
+    }
+  }
+  // display: none;
+}
+
+.mapboxgl-ctrl-attrib{
+  margin-right: 120px !important;
+  a{
+    &:first-child{
+      display: none;
+    }
+  }
+  // display: none;
 }
 
 .leaflet-popup.hoverPopup {

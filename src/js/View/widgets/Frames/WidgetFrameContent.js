@@ -48,6 +48,10 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
   initialize: function (options) {
     if (options.collection) {
       this.collection = options.collection;
+      _.defaults(this.collection,{
+        type: 'cityanalytics',
+        vertical: null
+      });
     } else {
       throw 'Error: Frame object needs a scope collection';
     }
@@ -77,6 +81,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
         data[x.name] = x.value;
       }
     );
+    data['type'] = this.collection.type;
+    data['vertical'] = this.collection.vertical;
 
     var _this = this;
     if (!this.model) {

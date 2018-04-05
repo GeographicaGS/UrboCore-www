@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -28,7 +28,7 @@ App.View.Widgets.Base = Backbone.View.extend({
     this.options = options;
 
     this.model = new App.Model.Widgets.Base({
-      title: this.options.title,
+      title: typeof this.options.title === 'function' ? '' : this.options.title,
       link: this.options.link,
       titleLink: this.options.titleLink||null,
       infoTemplate: this.options.infoTemplate,
@@ -68,9 +68,15 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     }
 
+    // TODO: Deprecate.
     this.filterModel = App.getFilter(this.options.id_category);
     if (this.filterModel)
       this.listenTo(this.filterModel,'change',this._onChangeFilter);
+
+    // New Filter Model, to manage map and widget filters
+    this.newFilterModel = this.options.newFilterModel;
+    if (this.newFilterModel)
+      this.listenTo(this.newFilterModel,'change',this._onChangeFilter)
 
     if (this.model.get('refreshTime')){
       this._setRefreshInterval()
@@ -229,6 +235,8 @@ App.View.Widgets.Base = Backbone.View.extend({
       data.filters = data.filters || {};
       if(this.filterModel)
         data.filters = this.filterModel.toQuery();
+      if(this.newFilterModel)
+        data.filters = this.newFilterModel.toJSON();
 
       var bbox = this.ctx.getBBOX();
       if (bbox)

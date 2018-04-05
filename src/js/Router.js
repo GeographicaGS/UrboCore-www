@@ -46,6 +46,7 @@ App.Router = Backbone.Router.extend({
 
       // Frames
       ':scope/frames/:id': 'frame',
+      ':scope/:category/frames/:id': 'frameVertical',
 
       // Generic routes
       ':scope/:entity/:id(/:section)' : 'device',
@@ -138,6 +139,24 @@ App.Router = Backbone.Router.extend({
     App.showView(v);
   },
 
+  frameVertical: function(scope, category, frameId) {
+    this.setCurrentScope(scope);
+
+    var categoryClassName = App.Utils.capitalizeFirstLetter(category);
+    var metadataScope = App.mv().getScope(scope);
+
+    if (!App.View.Panels.hasOwnProperty(categoryClassName))
+      return this.navigate('notfound', {trigger: true});
+
+    var v = new App.View.Panels.Frames.Data({
+      scopeModel: metadataScope,
+      type: 'vertical',
+      vertical: category,
+      frameId: frameId
+    });
+    App.showView(v);
+  },
+
   dashboard: function(scope){
     this.setCurrentScope(scope);
     var mdScope = App.mv().getScope(scope);
@@ -170,7 +189,7 @@ App.Router = Backbone.Router.extend({
     var metadataScope = App.mv().getScope(scope);
 
     if (!panel) panel = 'master';
-    var categoryClassName = App.Utils.categoryToClassName(category);
+    var categoryClassName = App.Utils.capitalizeFirstLetter(category);
     var panel = App.Utils.capitalizeFirstLetter(panel);
 
     if (!App.View.Panels.hasOwnProperty(categoryClassName)

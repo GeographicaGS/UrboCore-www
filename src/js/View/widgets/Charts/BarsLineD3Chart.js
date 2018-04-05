@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -113,8 +113,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         max = [];
     var _this = this;
     _.each(tempData, function(elem, dataIdx){
-
-
       // Check aggregations
       if(elem.values && elem.values.length && elem.values[0].y && elem.values[0].y.constructor === Array){
         _.each(elem.values[0].y, function(subelem, subElemIdx){
@@ -170,10 +168,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       }else{
 
         elem.realKey = elem.key;
-        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key))
-          elem.key = _this.options.get('legendNameFunc')(elem.key);
-        elem.type = _this.options.get('keysConfig')[elem.realKey].type;
-        elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
+          elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
+
+        if (_this.options.get('keysConfig')[elem.realKey]) {
+          elem.type = _this.options.get('keysConfig')[elem.realKey].type;
+          elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+        } else {
+          elem.type = _this.options.get('keysConfig')['*'].type;
+          elem.yAxis = _this.options.get('keysConfig')['*'].axis        
+        }
 
         if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
           var timeFormatter = d3.time.format.iso;
@@ -191,6 +195,20 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
             min[axis].push(value.y);
             i += 1;
           });
+        } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
+          var axis = elem.yAxis - 1;
+          min[axis] = min[axis] || [];
+          max[axis] = max[axis] || [];
+          var i = 0;
+          _.each(elem.values, function(value){
+            if(_this.options.get('stacked')){
+              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
+            }else{
+              max[axis].push(value.y);
+            }
+            min[axis].push(value.y);
+            i += 1;
+          });
         }
         _this.data.push(elem);
       }
@@ -200,7 +218,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     this.data.sort(function(a, b){
       return a.type > b.type;
     });
-
     // Get max value for each axis and adjust domain
     var domains =  [[0,1]];
     if(this.options.get('yAxisDomain')) {
@@ -228,7 +245,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     // Clean all
     this.$('.chart').empty();
     this._chart = {};
-    this._chart.margin = {top: 40, right: 80, bottom: 90, left: 80},
+    this._chart.margin = {top: 40, right: 80, bottom: 90, left: 80};
+    if (this.options.get('hideYAxis2')) {
+      this._chart.margin.right = 40;
+    }
     this._chart.w = this.$el.innerWidth() - (this._chart.margin.left + this._chart.margin.right),
     // this._chart.h = this.$el.innerHeight() - (this._chart.margin.top + this._chart.margin.bottom);
     this._chart.h = 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
@@ -263,7 +283,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .rangeRoundBands([0, this._chart.w], 0.1);
     } else {
       this.xScaleBars = d3.scale.ordinal()
-        .domain(d3.range(this.data[0].values.length))
+        .domain(d3.range(this.data[0] ? this.data[0].values.length : 0))
         .rangeRoundBands([0, this._chart.w], 0.1);
     }
 
@@ -325,82 +345,94 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     ;
 
     // Draw
-    this._chart.svg.append('g')
-      .attr('class', 'axis x-axis')
-      .attr('transform', 'translate(0,' + this._chart.h + ')')
-      .call(this._chart.xAxis);
+    if (this._chart.xAxis) {
+      this._chart.svg.append('g')
+        .attr('class', 'axis x-axis')
+        .attr('transform', 'translate(0,' + this._chart.h + ')')
+        .call(this._chart.xAxis);
 
-    var yAxis1 = this._chart.svg.append('g')
-      .attr('class', 'axis y-axis y-axis-1')
-      .call(this._chart.yAxis1);
-    if(this.options.get('yAxisLabel')){
-      yAxis1.append('text')
-        .attr('class', 'axis-label')
-        .attr('x', -1 * this._chart.h / 2)
-        .attr('transform', 'rotate(270) translate(0,-68)')
-        .style('text-anchor', 'middle')
-        .text(this.options.get('yAxisLabel')[0])
-      ;
-    }
-
-    // TODO: allow hidding axis
-    if(this.yAxisDomain[1]){
-      var yAxis2 = this._chart.svg.append('g')
-        .attr('class', 'axis y-axis y-axis-2')
-        .attr('transform', 'translate(' + this._chart.w + ',0)')
-        .call(this._chart.yAxis2);
+      var yAxis1 = this._chart.svg.append('g')
+        .attr('class', 'axis y-axis y-axis-1')
+        .call(this._chart.yAxis1);
       if(this.options.get('yAxisLabel')){
-        yAxis2.append('text')
+        yAxis1.append('text')
           .attr('class', 'axis-label')
-          .attr('x', this._chart.h / 2)
-          .attr('transform', 'rotate(90) translate(0,-68)')
+          .attr('x', -1 * this._chart.h / 2)
+          .attr('transform', 'rotate(270) translate(0,-68)')
           .style('text-anchor', 'middle')
-          .text(this.options.get('yAxisLabel')[1])
+          .text(this.options.get('yAxisLabel')[0])
         ;
       }
-    }
 
-    if(this.options.has('yAxisThresholds')){
-      // Format thresholds
-      var _this = this;
-      var ticks = d3.selectAll(this.$('g.axis.y-axis-1 g.tick line'));
-      ticks
-        .attr('style', function(d,i){
-          var style = '';
-          var thresholdCfg = _this.options.get('yAxisThresholds')[i];
-          if(thresholdCfg){
-            style += 'stroke-dasharray: 4; stroke: ' + thresholdCfg.color;
-          }else if(_this.options.get('yAxisThresholds').length){
-            style += 'stroke-dasharray: 4; stroke: ' + _this.options.get('yAxisThresholds')[_this.options.get('yAxisThresholds').length - 1].color;
-          }
-          return style;
-        });
-      for(var i = 0; i < ticks[0].length -1;i++){
-        var y = ticks[0][i+1].getCTM().f - this._chart.margin.top;
-        var width = ticks[0][i].getBoundingClientRect().width;
-        var height = ticks[0][i].getCTM().f - ticks[0][i+1].getCTM().f;
-        var g = this._chart.svg.append('g');
-        g.append('rect')
-          .attr('x', 0)
-          .attr('y', y)
-          .attr('width', width)
-          .attr('height', height)
-          .attr('fill', this.options.get('yAxisThresholds')[i].color)
-          .attr('style', 'opacity: .1')
-        ;
-        g.append('text')
-          .text(__(this.options.get('yAxisThresholds')[i].realName))
-          .attr('class', 'axis-label')
-          .attr('x', 10)
-          .attr('y', y + height / 2)
-          .attr('dy', '.32em')
-          .attr('width', width)
-          .attr('height', height / 2)
-          .attr('class', 'thresholdLabel')
-        ;
+      if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
+        var yAxis2 = this._chart.svg.append('g')
+          .attr('class', 'axis y-axis y-axis-2')
+          .attr('transform', 'translate(' + this._chart.w + ',0)')
+          .call(this._chart.yAxis2);
+        if(this.options.get('yAxisLabel')){
+          yAxis2.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', this._chart.h / 2)
+            .attr('transform', 'rotate(90) translate(0,-68)')
+            .style('text-anchor', 'middle')
+            .text(this.options.get('yAxisLabel')[1])
+          ;
+        }
       }
-    }
 
+      if(this.options.has('yAxisThresholds')){
+        // Format thresholds
+        var _this = this;
+        var ticks = d3.selectAll(this.$('g.axis.y-axis-1 g.tick line'));
+        ticks
+          .attr('style', function(d,i){
+            var style = '';
+            var thresholdCfg = _this.options.get('yAxisThresholds')[i];
+            if(thresholdCfg){
+              style += 'stroke-dasharray: 4; stroke: ' + thresholdCfg.color;
+            }else if(_this.options.get('yAxisThresholds').length){
+              style += 'stroke-dasharray: 4; stroke: ' + _this.options.get('yAxisThresholds')[_this.options.get('yAxisThresholds').length - 1].color;
+            }
+            return style;
+          });
+        for(var i = 0; i < ticks[0].length -1;i++){
+          var y = ticks[0][i+1].getCTM().f - this._chart.margin.top;
+          var width = ticks[0][i].getBoundingClientRect().width;
+          var height = ticks[0][i].getCTM().f - ticks[0][i+1].getCTM().f;
+          var g = this._chart.svg.append('g');
+          g.append('rect')
+            .attr('x', 0)
+            .attr('y', y)
+            .attr('width', width)
+            .attr('height', height)
+            .attr('fill', this.options.get('yAxisThresholds')[i].color)
+            .attr('style', 'opacity: .1')
+          ;
+          g.append('text')
+            .text(__(this.options.get('yAxisThresholds')[i].realName))
+            .attr('class', 'axis-label')
+            .attr('x', 10)
+            .attr('y', y + height / 2)
+            .attr('dy', '.32em')
+            .attr('width', width)
+            .attr('height', height / 2)
+            .attr('class', 'thresholdLabel')
+          ;
+        }
+      }
+
+      this._drawElements();
+    } else {
+      this._chart.svg.append('text')
+        .attr('transform', 'translate(80,' + this._chart.h/2 + ')')
+        .attr('text-anchor', 'middle')
+        .attr('fill','#fff')
+        .attr('font-size','35px')
+        .text(__('No hay datos'));
+    }
+  },
+
+  _drawElements: function() {
     var _this = this;
     this.data.forEach(function(data){
       switch (data.type) {
@@ -412,9 +444,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           }
           break;
         case 'line':
-        if(!_this._internalData.disabledList[data.realKey]){
-          _this._drawLine(data);
-        }
+          if(!_this._internalData.disabledList[data.realKey]){
+            _this._drawLine(data);
+          }
       }
     });
   },
@@ -431,16 +463,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })
       ;
 
-    line.selectAll('.point')
-      .data(data.values).enter()
-      .append('circle')
-        .attr('class', 'point')
-        .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
-        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
-        .attr('r', 3)
-        .attr('data-y', function(d, idx) {return d.y});
-
-    line.append('path')
+      line.append('path')
       .datum(data.values)
       .attr('class', function(d, idx){
         var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
@@ -451,6 +474,17 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         return _this._getColor(this.parentElement.__data__, idx);
       })
       .attr('d', this.lineGen);
+
+    line.selectAll('.point')
+      .data(data.values).enter()
+      .append('circle')
+        .attr('class', 'point')
+        .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
+        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
+        .attr('r', 3)
+        .attr('data-y', function(d, idx) {return d.y});
+
+    
 
     this._chart.line.push(line);
   },
@@ -495,7 +529,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('fill', function(d,idx){
           return _this._getColor(d, idx);
         });
-
     bar.selectAll('rect')
       .data(function(d) {
         return d.values; })
@@ -513,8 +546,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   _formatXAxis: function(){
     if(this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor == Date){
-      var start = moment(this.collection.options.data.time.start).startOf('hour');
-      var finish = moment(this.collection.options.data.time.finish).endOf('hour').add(1, 'millisecond');
+      var start = moment(this.data[0].values[0].x).startOf('hour');
+      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
 
       //  Get step hours
@@ -526,6 +559,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         }
       }
       // Adjustments
+      if (diff === 0) diff = 1; // If diff is 0 => Infinite loop in lines 538-541 (do-while)
       if(diff > 6 && diff < 12) diff = 12;
 
       // Manually create dates range
@@ -557,6 +591,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .tickPadding(10)
       ;
 
+    } else if(this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor != Date){
+      var _this = this;
+      this._chart.xAxis = d3.svg.axis()
+        .scale(this.xScaleBars)
+        .orient('bottom')
+        .tickFormat(function(d) {
+          return _this.options.get('yAxisTickFormat')(_this.data[0].values[d].x);
+        })
+        .tickSize([])
+        .tickPadding(10);
     }
   },
 

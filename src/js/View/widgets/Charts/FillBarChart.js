@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -182,4 +182,34 @@ App.View.Widgets.Charts.FillBar = App.View.Widgets.Charts.Bar.extend({
   //   multiBarWrapper.attr('transform', 'translate(60,35)');
   //   nvBg.attr('y','35');
   // }
+});
+
+App.View.Widgets.Charts.FillBarStacked = App.View.Widgets.Charts.FillBar.extend({
+  _processData: function () {
+    // Extract max colors
+    let max = Object.keys(_.max(this.collection.toJSON(), function (c) {
+      return Object.keys(c.elements).length;
+    }).elements).length;
+    this._colors = max > this.options.get('maxColors') ? [this.options.get('colors')[0]] : this.options.get('colors');
+
+    // Format data
+    this.data = [];
+    let _this = this;
+    for (let i = 0; i < max; i++) {
+      this.data.push({'values': []});
+      _.each(this.model.toJSON(), function (elem) {
+        let value = 0;
+        let keys = Object.keys(elem.elements);
+        if (i < keys.length) {
+          var key = keys[i];
+          value = elem.elements[key];
+        }
+        if (_this.data[i]['key'] === undefined) {
+          _this.data[i]['key'] = _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key) ? _this.options.get('legendNameFunc')(key) : key;
+        }
+        _this.data[i]['realKey'] = elem.name || key;
+        _this.data[i]['values'].push({'x': elem.step, 'y': value});
+      });
+    }
+  }
 });

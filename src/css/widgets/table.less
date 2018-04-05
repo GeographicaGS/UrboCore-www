@@ -17,7 +17,6 @@
 // 
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
-
 .table{
   background-color: #fff;
   border: 1px solid @greyLight2;
@@ -25,6 +24,14 @@
   border-radius: 5px;
 
   transition: opacity .25s;
+
+  & + .tooltip {
+    position: absolute;
+    background: @blue;
+    color: #fff;
+    padding: 4px;
+    border-radius: 3px;
+  }
 
   &.loading{
     opacity: .2;
@@ -259,9 +266,8 @@
       //   .ellipsis;
       // }
     }
-    .intensity {
-      display: flex;
-      align-items: center;
+    td {
+      vertical-align: middle;
       .rankingBar {
         border-radius: 2px;
         width: 90px;

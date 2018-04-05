@@ -1,0 +1,46 @@
+<% for(var item of items) {%>
+<div class="alertWidget <%= options.detailed ? 'detailed':'' %>" data-id="<%= item.id %>">
+  <div class="alert-header">
+    <% if (options.detailed) { %>
+      <div class="detailed">
+          <div class="detail-title"><%= options.detailedTitle %></div>
+          <div class="detail-content">
+            <%= item['warning_description'] || 'No hay alerta de consumo' %>
+            <% if (options.workOrder && item.warning_level != 0) { %>
+              <button>Crear orden de trabajo</button>
+            <% } %>
+          </div>
+        </div>
+    <% } else { %>
+      <div class="alert-title <%= (item.warning_level === 2) ? 'error' : 'warning' %>">
+        <h2>
+          <% if (item.warning_level == 2) { %>
+            Peligro de Fuga
+          <% } else if (item.warning_level == 1) { %>
+            Anomalía de consumo
+          <% } %>
+        </h2>
+        <span><%= item.name %></span>
+      </div>
+      <!-- <span class="alert-time">Hace 2 horas</span> -->
+    <% } %>
+  </div>
+  <div class="alert-body">
+    
+    <% for(var variable of variables) { %>
+      <div class="variable" style="border-color: <%= variable.color || '#00475d' %>">
+        <div class="variable-title"><%= variable.label %></div>
+        <div class="variable-content <%= variable.type %>">
+          <%= App.nbf(item[variable.param]) %>
+          <span><%= variable.units %></span>
+        </div>
+      </div>
+    <% } %>
+  </div>
+  <% if (options.linked) { %>    
+    <div class="link">
+    </div>
+  <% } %>
+</div>
+<% } %>
+<span class="fade"></span>

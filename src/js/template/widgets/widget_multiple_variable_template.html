@@ -1,0 +1,15 @@
+<% for(var variable of variables) {%>
+  <div class="variable <%= variable.class || '' %>">
+    <div class="variable-title">
+      <%= variable.label %>
+    </div>
+    <div class="variable-value">
+      <%= variable.nbf(model[variable.param]) %>
+      <span class="variable-unit">
+        <%= variable.units %>      
+      </span>
+    </div>
+      
+
+  </div>
+<% } %>  
