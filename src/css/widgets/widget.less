@@ -30,6 +30,35 @@
   width: 360px;
   height: 360px;
 
+  &:not(.allWidth) {
+    .title {
+      display: flex;
+      img {
+        margin-right: 4px;
+      }
+    }
+    .widget_content {
+      .frame {
+        padding-left: 0;
+        padding-right: 0;
+        .info {
+          flex-direction: column;
+          p:not(.source) {
+            color: #fff;
+          }
+          p.source {
+            position: absolute;
+            bottom: 8px;
+            padding: 0;
+            border: 0;
+            margin: 0;
+          }
+        }
+      }
+
+    }
+  }
+
   &.link {
     .widget_header .title, &.map_device .widget_header >span, &.reduced .widget_header >h4{
       transition: color .25s linear;
@@ -325,18 +354,18 @@
     }
 
     .options{
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    display: none;
-      img{
-      width: 12px;
-      height: 12px;
-      cursor: pointer;
-      &.tool{
-        margin-right: 30px;
-      }
-      }
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      display: none;
+        img{
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        &.tool{
+          margin-right: 30px;
+        }
+        }
     }
 
     &:hover{
