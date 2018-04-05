@@ -31,15 +31,19 @@ App.View.Panels.Frames.Data = App.View.Panels.Map.extend({
       title: __('Índice'),
       id_panel: 'master',
       filterView: false,
-      dateView: false
+      dateView: false,
+      type: 'cityanalytics',
     });
     App.View.Panels.Map.prototype.initialize.call(this,options);
 
     this.framesCol = new App.Collection.Frames.ScopeFrames([], {
-      scope: this.scopeModel.id
+      scope: this.scopeModel.id, 
     });
     this.listenTo(this.framesCol, 'reset', this.renderNavBar);
-    this.framesCol.fetch({reset: true});
+    this.framesCol.fetch({data:{
+      vertical: options.vertical,
+      type: options.type,
+    },reset: true});
   },
 
   renderNavBar: function() {
