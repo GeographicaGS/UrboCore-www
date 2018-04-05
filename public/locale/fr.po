@@ -1430,6 +1430,10 @@ msgstr "Cherche scope"
 msgid "Frames"
 msgstr "Cadres"
 
+#: View/Panels/BasePanelView.js:117
+msgid "Añadir Frame"
+msgstr "Ajouter un cadre"
+
 #: template/menu_panel_template.html:36
 msgid "Índice de correlaciones"
 msgstr "Indice de corrélations"
@@ -3510,3 +3514,8 @@ msgstr "Très bonne"
 
 msgid "Excelente"
 msgstr "Excellent"
+
+# LoginOverride.js
+msgid "Iniciar sesión con IDM"
+msgstr "Connexion avec IDM"
+
