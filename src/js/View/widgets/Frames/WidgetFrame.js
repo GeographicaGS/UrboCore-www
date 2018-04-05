@@ -23,6 +23,18 @@
 App.View.Widgets.Frame.BaseFrame = App.View.Widgets.Base.extend({
 
   initialize: function (options) {
+    var extraMenu = (App.auth && App.auth.getUser() && App.auth.getUser().superadmin)?[
+      {
+        id: 'editFrame',
+        title: __('Editar contenido')
+      },
+      {
+        id: 'deleteFrame',
+        title: __('Eliminar frame'),
+        class: 'danger'
+      }
+    ]:null;
+
     options = _.defaults(options, {
       title: options.frameModel.get('title'),
       bigTitle: true,
@@ -30,17 +42,7 @@ App.View.Widgets.Frame.BaseFrame = App.View.Widgets.Base.extend({
       timeMode: options.frameModel.get('datatype'),
       refreshTime: 3000000,
       dimension: 'allWidth bgWhite bgWhiteHover allHeight',
-      extraMenu: [
-        {
-          id: 'editFrame',
-          title: __('Editar contenido')
-        },
-        {
-          id: 'deleteFrame',
-          title: __('Eliminar frame'),
-          class: 'danger'
-        }
-      ]
+      extraMenu: extraMenu
     });
     App.View.Widgets.Base.prototype.initialize.call(this, options);
 
