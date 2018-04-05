@@ -33,7 +33,8 @@ App.View.Panels.Base = App.View.Container.extend({
       manageNavBar: true,
       spatialFilter: true,
       filterView: true,
-      filterViewOpen:false
+      filterViewOpen:false,
+      framesList: false
     });
     // @alasarr says: I want to remove this lines
     for (var i in options)
@@ -105,7 +106,7 @@ App.View.Panels.Base = App.View.Container.extend({
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
-    if (this.master) {
+    if (this.framesList) {
       this.framesCol = new App.Collection.Frames.ScopeFrames([], {
         scope: this.scopeModel.id
       });
@@ -217,7 +218,7 @@ App.View.Panels.Base = App.View.Container.extend({
       this.$('.widgets').html('<div class="nodata"><p>' + __('No hay datos para este vertical') + '</p></div>');
     else {
       this.customRender();
-      if (this.master)
+      if (this.framesList)
         this.drawFrames();
     }
   },
