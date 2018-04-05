@@ -121,7 +121,6 @@ App.View.Panels.Base = App.View.Container.extend({
             _this._onPopupClose();
           }
           _this._widgets = [];
-          _this.customRender();
           _this.drawFrames();
         });
         this.framesCol.fetch({reset: true});
@@ -264,17 +263,19 @@ App.View.Panels.Base = App.View.Container.extend({
 
   drawFrames: function() {
     var _this = this;
-    _this.$('.widgets').html('');
+    _this.$('.widgetFrame').remove();
     this.framesCol.fetch({data: {vertical:_this.category.id, type:'vertical'}, success: function(response) {
+      var _widgets2 = [];
+
       response.each(function(elem, idx){
-        _this._widgets.push(new App.View.Widgets.Frame.BaseFrame({
+        _widgets2.push(new App.View.Widgets.Frame.BaseFrame({
           link:  '/' + _this.scopeModel.get('id') + '/' + _this.category.id + '/frames/' + elem.id,
           frameModel: elem,
           dimension: '',          
         }));
       });
       _this.$('.widgets').append(new App.View.Widgets.Container({
-        widgets: _this._widgets,
+        widgets: _widgets2,
         el: _this.$('.widgets'),
       }));
       _this.$('.widgets').masonry('reloadItems',{
