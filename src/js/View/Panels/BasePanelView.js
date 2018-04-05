@@ -105,25 +105,27 @@ App.View.Panels.Base = App.View.Container.extend({
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
-    if (this.master && App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
-      this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
+    if (this.master) {
       this.framesCol = new App.Collection.Frames.ScopeFrames([], {
         scope: this.scopeModel.id
       });
       this.framesCol.type = 'vertical';
       this.framesCol.vertical = this.category.id;
-      var _this = this;
-      this.listenTo(this.framesCol, 'update', function() {
-        if (_this._popupView) {
-          _this._onPopupClose();
-        }
-        _this._widgets = [];
-        _this.customRender();
-        _this.drawFrames();
-      });
-      this.framesCol.fetch({reset: true});
+      
+      if (App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
+        this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
+        var _this = this;
+        this.listenTo(this.framesCol, 'update', function() {
+          if (_this._popupView) {
+            _this._onPopupClose();
+          }
+          _this._widgets = [];
+          _this.customRender();
+          _this.drawFrames();
+        });
+        this.framesCol.fetch({reset: true});
+      }
     }
-
     if (this.manageNavBar){
       var navBar = App.getNavBar();
       var vertical = this.scopeModel.get('categories').get(this.vertical);
