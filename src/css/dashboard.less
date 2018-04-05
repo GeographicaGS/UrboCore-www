@@ -79,3 +79,41 @@
 	  //   }
     }
 }
+
+.add-iframe {
+	cursor: pointer;
+	position: fixed;
+	bottom: 40px;
+	right: 12px;
+	height: 24px;
+	width: 24px;
+	overflow: hidden;
+	transition: width ease-in 150ms;
+	> div {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		&:before {
+			content: '';
+			display: block;
+			height: 24px;
+			// width: 24px;
+			width: 108px;
+			background-image: url(/img/SM_anadir.svg);
+			background-size: cover;
+			background-position: center;
+			border-radius: 10px;
+			flex: 0 0 24px;
+		}
+		span {
+			color: @blue;
+			font-size: 14px;
+			font-weight: 500;
+			margin-left: 4px;
+			white-space: nowrap;
+		}
+	}
+	&:hover {
+		width: 108px;
+	}
+}

@@ -25,6 +25,7 @@ App.View.Panels.Base = App.View.Container.extend({
 
   initialize: function(options) {
     App.View.Container.prototype.initialize.call(this,options);
+    this.listenTo(this.framesCol, 'reset', this.render);    
     options = _.defaults(options, {
       dateView: true,
       dateViewMaxRange: moment.duration(1, 'months'),
@@ -86,7 +87,8 @@ App.View.Panels.Base = App.View.Container.extend({
   },
 
   events: {
-    "click a.goToVertical" : "_goToVerticalLink"
+    "click a.goToVertical" : "_goToVerticalLink",
+    "click .add-iframe": "createFrame",
   },
 
   _goToVerticalLink: function(e) {
@@ -103,11 +105,28 @@ App.View.Panels.Base = App.View.Container.extend({
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
+    if (this.master && App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
+      this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
+      this.framesCol = new App.Collection.Frames.ScopeFrames([], {
+        scope: this.scopeModel.id
+      });
+      this.framesCol.type = 'vertical';
+      this.framesCol.vertical = this.category.id;
+      var _this = this;
+      this.listenTo(this.framesCol, 'update', function() {
+        if (_this._popupView) {
+          _this._onPopupClose();
+        }
+        _this._widgets = [];
+        _this.customRender();
+        _this.drawFrames();
+      });
+      this.framesCol.fetch({reset: true});
+    }
+
     if (this.manageNavBar){
       var navBar = App.getNavBar();
-      // if (this.master && !navBar.get('backurl') && this.scopeModel.get('categories').length==1){
-      //   navBar.set('backurl','/');
-      // }
+      var vertical = this.scopeModel.get('categories').get(this.vertical);
 
       var listCollection =  new Backbone.Collection(this.panelList.toJSON());
       listCollection.get(this.id_panel).set('selected', true);
@@ -121,7 +140,11 @@ App.View.Panels.Base = App.View.Container.extend({
       if (this.id_category === 'correlations') {
         sectionTitle = __('Correlations');
       } else if (this.id_category === 'frames') {
-        sectionTitle = __('City Analytics');
+        if (vertical) {
+          sectionTitle = __(vertical.get('name'));
+        } else {
+          sectionTitle = __('City Analytics');
+        }
       } else {
         sectionTitle = this.category.get('name');
       }
@@ -129,7 +152,7 @@ App.View.Panels.Base = App.View.Container.extend({
       var breadcrumb = [
         listCollection.toJSON(),
         {
-          url: this.scopeModel.get('id') + '/' + this.id_category + '/dashboard',
+          url: this.scopeModel.get('id') + '/' + ((!vertical)?this.id_category:this.vertical) + '/dashboard',
           title: sectionTitle
         },
         {
@@ -190,9 +213,11 @@ App.View.Panels.Base = App.View.Container.extend({
 
     if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get(this.id_category).get('nodata')===true)
       this.$('.widgets').html('<div class="nodata"><p>' + __('No hay datos para este vertical') + '</p></div>');
-    else
+    else {
       this.customRender();
-
+      if (this.master)
+        this.drawFrames();
+    }
   },
   customRender: function () {},
 
@@ -207,5 +232,56 @@ App.View.Panels.Base = App.View.Container.extend({
         });
       }
     }
+  },
+
+  createFrame: function(e) {
+    e.preventDefault();
+
+    var _this = this;
+    if(this._popupView == undefined) {
+      var popupModel = new Backbone.Model({
+        title: __('Nuevo frame')
+      });
+      this._popupView = new App.View.PopUp({
+        model: popupModel
+      });
+    }
+
+    var editView = new App.View.Widgets.Frame.FrameEdit({
+      collection: this.framesCol
+    });
+    this._popupView.internalView = editView;
+
+    this.$el.append(this._popupView.render().$el);
+
+    this.listenTo(editView, 'close', this._onPopupClose);
+
+    this._popupView.show();
+  },
+
+  drawFrames: function() {
+    var _this = this;
+    _this.$('.widgets').html('');
+    this.framesCol.fetch({data: {vertical:_this.category.id, type:'vertical'}, success: function(response) {
+      response.each(function(elem, idx){
+        _this._widgets.push(new App.View.Widgets.Frame.BaseFrame({
+          link:  '/' + _this.scopeModel.get('id') + '/' + _this.category.id + '/frames/' + elem.id,
+          frameModel: elem,
+          dimension: '',          
+        }));
+      });
+      _this.$('.widgets').append(new App.View.Widgets.Container({
+        widgets: _this._widgets,
+        el: _this.$('.widgets'),
+      }));
+      _this.$('.widgets').masonry('reloadItems',{
+        gutter: 20,
+        columnWidth: 360
+      });
+    }, reset: true});
+  },
+
+  _onPopupClose: function(e){
+    this._popupView.closePopUp();
   }
 });
