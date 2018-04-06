@@ -26,7 +26,6 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
   },
 
   bindData: function(label, properties, clicked, deviceViewLink = false) {
-    debugger;
     return this._template({
       'name': label,
       'properties': _.filter(_.map(properties, function(p) {
@@ -45,7 +44,6 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
           } else if (attr.includes('?')) {
             //optional feature
             let access = attr.split("?");
-            debugger;
             value = clicked.features[0].properties[access[0]];
             if(!value) {
               if (i === 0) {
