@@ -32,7 +32,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
         var multipleFeatures = p.feature.split(" ");
         let value;
         p.value = '';
-        _.each(multipleFeatures, (attr) => {
+        _.each(multipleFeatures, (attr, i) => {
           let forTranslate = attr.includes('|translate');
           if (forTranslate) {
             attr = attr.replace('|translate','')
@@ -46,7 +46,12 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             let access = attr.split("?");
             value = clicked.features[0].properties[access[0]];
             if(!value) {
-              return;
+              if (i === 0) {
+                p.optional = true;
+                return;
+              }
+              p.optional = true && p.optional;
+              return ;
             }
           }else {
             value = clicked.features[0].properties[attr];  
@@ -66,6 +71,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             p.value = p.nbf(p.value);
           }
         });
+        if (p.optional && !p.value) {
+          p = null;
+        }
         return p;
       }),function(e){return e !== null}),
       'loading': false,
