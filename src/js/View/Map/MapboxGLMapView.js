@@ -96,8 +96,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   loaded: function() {
+    let bbox = this.getBBox();
     this.mapChanges.set({'loaded':true});
-    this._onMapLoaded();
+    this._onMapLoaded(bbox);
   },
 
   bboxChanged: function() {
@@ -111,7 +112,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     // Override for bbox changes actions.
   },
 
-  _onMapLoaded: function() {
+  _onMapLoaded: function(bbox) {
     // This event is called after map loaded.
     // Place your layers here.
   },
@@ -215,6 +216,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   addToLegend: function(item) {
     this.legend.addItemLegend(item);
+  },
+
+  clearLegend: function() {
+    this.legend.removeLegendItems();
   },
 
   drawLegend: function() {
