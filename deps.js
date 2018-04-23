@@ -132,6 +132,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetMultiDeviceChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableAnalysisVarsChart.js',
   srcJS + 'View/widgets/WidgetGaugeView.js',
+  srcJS + 'View/widgets/WidgetGaugeViewCustom.js',
   srcJS + 'View/widgets/WidgetLviGaugeView.js',
   srcJS + 'View/widgets/WidgetDeviceMapView.js',
   srcJS + 'View/widgets/WidgetButtonLink.js',
