@@ -218,14 +218,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.legend.addItemLegend(item);
   },
 
-  clearLegend: function() {
-    this.legend.removeLegendItems();
-  },
-
   drawLegend: function() {
     this.legend.drawLegend();
   },
 
+  clearLegend: function() {
+    this.legend.removeLegendItems();
+  },
+  
   zoom: function(e) {
     let currentZoom = this._map.getZoom();
     if (e.target.classList.contains('out')) {
