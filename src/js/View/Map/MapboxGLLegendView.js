@@ -80,5 +80,17 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
       'legendTitle': __('Ajustes'), 
       'items': this.items,
     }));
+
+    // Set options
+    if (this._mapInstance._options.legendOpened) {
+     this.setOptionOpenedLegend();
+    }
   },
+
+  setOptionOpenedLegend: function() {
+    var body = this.$el[0].querySelectorAll("#mapbox-legend .body")[0];
+    var toggler = this.$el[0].querySelectorAll("#mapbox-legend #toggler")[0];
+    body.classList.add("opened");
+    toggler.classList.add("opened");
+  }
 });
