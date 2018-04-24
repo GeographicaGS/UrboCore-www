@@ -96,9 +96,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   loaded: function() {
-    let bbox = this.getBBox();
     this.mapChanges.set({'loaded':true});
-    this._onMapLoaded(bbox);
+    this._onMapLoaded();
   },
 
   bboxChanged: function() {
@@ -112,7 +111,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     // Override for bbox changes actions.
   },
 
-  _onMapLoaded: function(bbox) {
+  _onMapLoaded: function() {
     // This event is called after map loaded.
     // Place your layers here.
   },
