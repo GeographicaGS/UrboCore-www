@@ -38,9 +38,12 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
   },
 
   addItemLegend: function(item) {
-    let exist = _.find(this.items, function(i) {
-      return i.id == item.sectionId;
-    });
+    var exist;
+    if (item.sectionId)  {
+      exist = _.find(this.items, function(i) {
+        return i.id == item.sectionId;
+      });
+    }
     if (exist) {
       exist.childs.push({name: item.name});
     } else {
@@ -48,9 +51,14 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
         id: item.sectionId,
         icon: item.sectionIcon,
         name: item.sectionName,
-        childs: [{name: item.name}]
+        childs: [{name: item.name}],
+        count: item.sectionCount || null
       });
     }
+  },
+
+  removeLegendItems: function() {
+    this.items = [];
   },
 
   toggle: function(event) {
@@ -67,10 +75,10 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
   drawLegend: function() {
     let items = '';
     this.items.reverse();
+    this.$el.empty();
     this.$el.append(this._template({
       'legendTitle': __('Ajustes'), 
       'items': this.items,
     }));
-  }
-
+  },
 });

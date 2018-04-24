@@ -552,7 +552,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
       //  Get step hours
       var stepDiff = -1;
-      if(this.collection.options.data.time.step){
+      if(this.collection.options.data.time && this.collection.options.data.time.step){
         stepDiff = App.Utils.getStepHours(this.collection.options.data.time.step);
         if(diff !== -1){
           diff = Math.ceil(diff/stepDiff) * stepDiff;
