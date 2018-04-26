@@ -195,7 +195,7 @@ App.Utils = {
       // Setting options
       var default_opts = {
         volume: 1,
-        voice: 4,
+        lang: 'es-ES',
         rate: 1,
         pitch: 1
       };
@@ -207,10 +207,13 @@ App.Utils = {
       var voices = window.speechSynthesis.getVoices();      
 
       speech.volume = options.volume; // 0 to 1 - step 0.1
-      speech.voice = voices[options.voice]; // 4 spanish
+      speech.lang = options.lang; // Language Culture Name
       speech.rate = options.rate; // 0.1 to 10 - step 0.1
       speech.pitch = options.pitch; // 0 to 2 - step 0.1
       speech.text = text;
+      if (options.voice) {
+        speech.voice = options.voice;
+      }
 
       // Play
       speechSynthesis.speak(speech);
