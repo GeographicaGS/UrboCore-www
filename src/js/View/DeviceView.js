@@ -294,10 +294,18 @@ App.View.DeviceLastData = Backbone.View.extend({
           var widget = null;
           switch (varConfig.widget) {
             case 'gauge':
-              if(varMetadata.get('var_thresholds'))
-                widget = new App.View.Widgets.Gauge({
-                  model: model
-                });
+              if (varMetadata.get('var_thresholds')) {
+                if (this.model.get('entity') !== 'indoor_air.quality') {
+                  widget = new App.View.Widgets.Gauge({
+                    model: model
+                  });
+                } else {
+                  widget = new App.View.Widgets.GaugeCustom({
+                    model: model
+                  });
+                }
+
+              }
               break;
             case 'fillbar':
               widget = new App.View.Widgets.Device.FillBar({

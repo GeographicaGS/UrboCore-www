@@ -49,6 +49,7 @@ try {
     throw `${srcPath} is not a valid vertical`;
   }
 } catch (ex) {
+  console.log(ex);
   console.error('The source path does not exist');
   console.info(`USAGE: npm run-script install-vertical <vertical-source-path> <vertical-name>`);
   process.exit();

@@ -48,3 +48,8 @@ public/verticals/*
 !public/verticals/.gitkeep
 
 site
+
+start_builder.sh
+s3_website.*
+!s3_website.example.yml
+deploy.sh
