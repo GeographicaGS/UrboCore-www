@@ -220,7 +220,7 @@ Backbone.sync = function (method, model, options) {
   if(!disableInterceptor) {
     if(App.mode !== 'embed'){
       options.headers = {
-        'X-Access-Token': App.auth.getToken()
+        'X-Access-Token': App.auth.getToken(),
       }
   
       // DeMA integration
@@ -243,6 +243,9 @@ Backbone.sync = function (method, model, options) {
       else { // GET
         options.data = {"access_token_public": token}
       }
+    }
+    if (options.appendAuthorizationConnector) {
+        options.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjYyNTc2NzZ9.DTItdunTahmct1yK2uyPKG2WGRvK8R31iLMI1h9V4-0';
     }
   }
 
