@@ -58,7 +58,7 @@ App.View.CredentialList = Backbone.View.extend({
     userView.popUpView = this._popUpView;
     this.$el.append(this._popUpView.render().$el);
 
-    this.$el.find(".modal .header").html(__("Editar ficha de usuario"));
+    this.$el.find(".modal .header").html(__("Editar credencial"));
     this.$el.find("#credential_form form button[type='submit']").html(__("GUARDAR CAMBIOS"));
     if(App.auth.getUser().superadmin) {
       this.$el.find("#credential_form .deleteButton button").show();
@@ -86,7 +86,7 @@ App.View.CredentialList = Backbone.View.extend({
     this.$el.append(this._popUpView.render().$el);
     this._popUpView.show();
 
-    this.$el.find(".modal .header").html(__("Ficha de usuario"));
+    this.$el.find(".modal .header").html(__("Credencial"));
   },
 
   _newCredential: function(element) {
@@ -114,7 +114,7 @@ App.View.CredentialList = Backbone.View.extend({
 
   initialize: function(options) {
     this.credentials = new App.Collection.Credential();
-    this.credentials.fetch({"reset": true, "success": this._onCollectionFetched.bind(this)});
+    this.credentials.fetch({"reset": true, "appendAuthorizationConnector": true, "success": this._onCollectionFetched.bind(this)});
     App.getNavBar().set({
       visible : false
     });

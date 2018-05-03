@@ -71,7 +71,11 @@ App.View.Credential = Backbone.View.extend({
     var _thisView = this;
 
     if(this.model.isValid()) {
+      if (this.model.get('id') && !this.model.get('key')) {
+        this.model.unset('key');
+      }
       this.model.save('', '', {
+        "appendAuthorizationConnector": true,
         success : function(model, response) {
           _thisView.collectionCredential.add(model);
           _thisView.collectionCredential.trigger("reset", _thisView.collectionCredential);
