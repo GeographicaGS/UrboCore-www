@@ -27,6 +27,7 @@ App.View.Admin.Category = Backbone.View.extend({
     'change .listItem.entity > input[type=checkbox]': '_toggleVariableList',
     'change .listItem.variable > input[type=checkbox]': '_toggleVariable',
     'click .button.permission': '_showCategoryPermissionPopup',
+    'click .button.addConnector': '_showAddConnectorPopup',
     'click .listItem.entity > .permission': '_showEntityPermissionPopup',
     'click .listItem.variable > .permission': '_showVariablePermissionPopup',
     'change .categoryInfo #nodata': '_saveCategory'
@@ -155,6 +156,29 @@ App.View.Admin.Category = Backbone.View.extend({
     this.$el.append(this._popupView.render().$el);
 
     this.listenTo(permissionView, 'close', this._onPermissionPopupClose);
+
+    this._popupView.show();
+  },
+
+  _showAddConnectorPopup: function(e){
+    e.preventDefault();
+
+    debugger;
+    var connectorData = {
+      id_scope: this.scope,
+      type_resource: __('Ámbito'),
+      name_resource: this.model.get('name')
+    };
+    var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
+
+    if(this._popupView == undefined) {
+      this._popupView = new App.View.PopUp();
+    }
+    this._popupView.internalView = connectorView;
+
+    this.$el.append(this._popupView.render().$el);
+
+    this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
 
     this._popupView.show();
   },

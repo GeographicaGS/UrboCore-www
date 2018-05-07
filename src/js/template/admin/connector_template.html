@@ -1,0 +1,27 @@
+<div class="dialog admin">
+  <div class="header">
+    <h1><%= __('Conector de') %> <%= name %></h1>
+  </div>
+  <div class="content" id="connector_form">
+    <div class="row">
+      <label for="templateSelector" class="col-sm-3 control-label"><%= __('Seleccionar plantilla') %></label>
+      <div class="col-sm-9">
+        <select id="templateSelector" name="templateSelector" class="">
+          <option value="-1"><%= __('Seleccionar plantilla') %></option>
+          <% _.each(templates, function(template) { %>
+            <option value="<%= template.id %>">
+              <%= template.name %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <div class="row" id="connector-form">
+      Cargar el formulario para la plantilla seleccionada
+    </div>
+    <div class="buttons-row">
+      <a href="#" class="button empty noBorder exitButton cancel"><%= __('Cancelar') %></a>
+      <a href="#" class="button save"><%= __('Aceptar') %></a>
+    </div>
+  </div>
+</div>
