@@ -54,7 +54,7 @@ App.Collection.ConnectorEndpoints = Backbone.Collection.extend({
 });
 
 App.Collection.ConnectorInstances = Backbone.Collection.extend({
-		model: App.Model.ConnectorInstances,
+		model: App.Model.ConnectorInstance,
 		initialize: function(models,options) {
 	
 		},

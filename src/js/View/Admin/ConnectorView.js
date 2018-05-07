@@ -28,19 +28,17 @@ App.View.Admin.ConnectorPopup = Backbone.View.extend({
 
   events: {
     'change #templateSelector': '_changeTemplate',
-    'click .button.remove': '_removeUser',
     'click .button.save': '_saveAndExit',
     'click .button.cancel': '_cancelAndExit',
-    'keyup input.search': '_filterUsers'
   },
 
   initialize: function(options){
-    debugger;
     this.options = {
 			id_scope: options.id_scope || '',
 			id_resource: options.id_resource,
       type_resource: options.type_resource || '',
       name_resource: options.name_resource || '',
+      instance: options.instance
 		};
 
     this.templatesCollection = new App.Collection.ConnectorTemplates();
@@ -64,7 +62,7 @@ App.View.Admin.ConnectorPopup = Backbone.View.extend({
       var path = $(selector).attr('data-path').replace('template.','').split('.');
       var original = App.Utils.objectPath(_this.connectorTemplate, path);
       if (original[1].associative) {
-        var name = $('.endpoints-selector-name[data-path="template.' + path + '"]').val();
+        var name = $('.endpoints-selector-name[data-path="template.' + path + '-name"]').val();
         var value = {};
         value[name] =  parseInt($(selector).val());
         App.Utils.objectPath(_this.connectorTemplate, path, value);
@@ -98,7 +96,41 @@ App.View.Admin.ConnectorPopup = Backbone.View.extend({
       name: this.options.name_resource,
       templates: this.connectorTemplates.toJSON()
     })));
-  },  
+
+    if (this.options.instance) {
+      this.instances.set('id',this.options.instance);
+      this.instances.fetch({reset: true, appendAuthorizationConnector: true,  success: this._onInstanceLoad.bind(this)});
+    }
+  },
+
+  _onInstanceLoad: function(instance) {
+    var _this = this;
+    this.templateId = instance.get('template_id');
+    this.$el.find("#templateSelector").val(this.templateId);
+    this._changeTemplate(this.templateId);
+    var connector = this.connectorTemplates.get(this.templateId);
+    var config = instance.get('config');
+    var name = instance.get('name');
+    var blocks = connector.get('blocks');
+
+    setTimeout(function() {
+      _this.$el.find("#connector-name").val(name);
+      _.each(blocks, function(b) {
+        var path = b.path.slice(1);
+        var obj = App.Utils.objectPath(config, path);
+        var el;
+        if (path.join('.') !== 'subservices') {
+          el = _this.$el.find("[data-path='template." + path.join('.') + "']").val(obj);
+        } else {
+          _.each(obj, function(val, lbl) {
+            _this.$el.find("[data-path='template." + path.join('.') + "']").val(val);
+            _this.$el.find("[data-path='template." + path.join('.') + "-name']").val(lbl);
+          });
+          
+        }
+      });
+    }, 500);
+  },
 
   _cancelAndExit: function(e) {
     e.preventDefault();
@@ -107,7 +139,11 @@ App.View.Admin.ConnectorPopup = Backbone.View.extend({
 
   _changeTemplate: function(e) {
     var _this = this;
-    var id = e.currentTarget.value;
+    if (typeof e === 'object') {
+      var id = e.currentTarget.value;
+    } else {
+      var id = e;
+    }
     var connector = this.connectorTemplates.get(id);
     this.templateId = id;
     this.connectorTemplate = connector.get('template');

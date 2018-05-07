@@ -16,7 +16,7 @@
 <% } else { %>
   <label for="templateSelector" class="col-sm-6 control-label"><%= b.path.join('.') %></label>
   <div class="col-sm-6 col-sm-offset-6">
-    <input type="text" class="endpoints-selector-name form-control" name="<%= b.def.name %>" data-path="<%= b.path.join('.') %>"/>
+    <input type="text" class="endpoints-selector-name form-control" name="<%= b.def.name %>-name" data-path="<%= b.path.join('.') %>-name"/>
     <select class="endpoints-selector form-control" name="<%= b.def.name %>" data-path="<%= b.path.join('.') %>">
       <% _.each(b.endpoints, function(e){ %>
         <option value="<%= e.get('id') %>"><%= e.get('name') %></option>
