@@ -1,0 +1,5 @@
+<select id="vselector" class="variableselector">
+  <% for(var variable of variables) { %>
+    <option value="<%= variable.value %>"><%= variable.name %></option>
+  <% } %>
+</select>

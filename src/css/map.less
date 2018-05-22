@@ -640,7 +640,29 @@
 }
 
 .mapboxgl-map {
-  
+    .variableselector {
+      position: absolute;
+      left: 50%;
+      z-index: 9;
+      top: 10px;
+      > select {
+        width: 115px;
+        padding: 6px 8px;
+        border-radius: 0;
+        height: 34px;
+        background-color: #fff;
+        border: 1px solid #808086;
+        border-radius: 1px;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        background-image: url('/img/arrow-dropdown.svg');
+        background-repeat: no-repeat;
+        background-position: calc(100% - 4px);
+        font-size: 16px;
+        color: #55555D;
+      }
+    }
     .mapboxgl-popup-content{
       padding: 0 !important;
       padding-right: 10px !important;
