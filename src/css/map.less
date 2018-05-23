@@ -642,25 +642,73 @@
 .mapboxgl-map {
     .variableselector {
       position: absolute;
-      left: 50%;
       z-index: 9;
       top: 10px;
-      > select {
-        width: 115px;
-        padding: 6px 8px;
-        border-radius: 0;
-        height: 34px;
-        background-color: #fff;
-        border: 1px solid #808086;
-        border-radius: 1px;
-        appearance: none;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        background-image: url('/img/arrow-dropdown.svg');
-        background-repeat: no-repeat;
-        background-position: calc(100% - 4px);
-        font-size: 16px;
-        color: #55555D;
+      left: 50%;
+      width: 158px;
+      height: 32px;
+      display: flex;
+      flex-direction: column;
+
+      border-radius: 0;
+      background-color: #fff;
+      border: 1px solid @grey;
+      border-radius: 1px;
+     
+      background-image: url('/img/arrow-dropdown.svg');
+      background-repeat: no-repeat;
+      background-position: calc(100% - 4px);
+      font-size: 16px;
+      .wrapper {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        > span {
+          margin-left: 12px;
+        }
+        .options {
+          background-color: @greyLighter;
+          position: absolute;
+          top: 32px;
+          left: -1px;
+          display: flex;
+          flex-flow: column;
+          border: 1px solid @grey2;
+          width: 200px;
+          opacity: 1;
+          transition: opacity ease 0.1s, transform linear 0.1s;
+          transform: translateY(0);          
+          pointer-events: unset;
+    
+          &:not(.showing) {
+            pointer-events: none;
+            transform: translateY(-10px);
+            opacity: 0;
+          }
+
+          .option {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px 0 6px;
+            cursor: pointer;
+            &:not(:last-child) {
+              border-bottom: 1px solid @grey2;
+            }
+          
+            &:hover {
+              background-color: #fff;
+            }
+
+            &.choosen {
+              &:after {
+                content: url(/img/SC_ic_tick_blue.svg);
+              }
+            }
+          }
+        }
       }
     }
     .mapboxgl-popup-content{

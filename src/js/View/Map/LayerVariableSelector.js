@@ -1,7 +1,8 @@
 App.View.Map.VariableSelector = Backbone.View.extend({
   
     events: {
-      'change #vselector': 'changeVariable'
+      'click .variableselector': 'toggle',
+      'click .option': 'changeVariable'
     },
   
     initialize: function(options) {
@@ -9,7 +10,6 @@ App.View.Map.VariableSelector = Backbone.View.extend({
         variables: []
       })
       this.options = options;
-      this.variable = new Backbone.Model();
       this._template = _.template($("#map-variable_selector").html());
     
     },
@@ -21,7 +21,13 @@ App.View.Map.VariableSelector = Backbone.View.extend({
     },
   
     changeVariable: function(e) {
-      this.variable.set('variable',e.target.value);
-    }
-  
+      this.$el.find('.selected').html(e.target.innerText);
+      this.$el.find('.option').removeClass('choosen');
+      e.target.classList.toggle('choosen');
+      this.options.filterModel.set('variable',e.target.getAttribute('data-item-value'));
+    },
+
+    toggle: function(e) {
+      this.$el.find('.options').toggleClass('showing');
+    }  
   });
