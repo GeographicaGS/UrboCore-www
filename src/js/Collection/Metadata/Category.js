@@ -42,7 +42,6 @@ App.Collection.Metadata.Category = Backbone.Collection.extend({
 	},
 
 	initialize: function(models, options) {
-
 		this.options = {
 			id_scope: options.id_scope || ''
 		};
