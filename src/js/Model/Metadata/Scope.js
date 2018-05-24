@@ -50,7 +50,7 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
 
   initialize: function(model, options) {
     // // this.options = options;
-    var categories = new App.Collection.Metadata.Category(model.categories, {
+    var categories = new App.Collection.Metadata.Category(model.metadata, {
       id_scope: this.get('id')
     })
 
@@ -77,7 +77,7 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
       categories: data.categories
     };
 
-    if(data.childs){
+    if(data.childs && data.childs.length){
       scope.childs = new App.Collection.Metadata.Scope(data.childs, {
         parse: true,
         id_scope: data.id
