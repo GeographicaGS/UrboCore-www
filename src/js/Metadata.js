@@ -36,40 +36,35 @@
           return cb();
         }
         var i = 0;
+        
         collection.each(function(scope){
-          scope.fetch({ success: function(scope){
-            if(!scope.get('multi')){
-              scope.get('categories').fetch({
-                success: function(){
-                  i++;
-                  if(i >= total  && !History.started)
-                    cb();
-                }
-              });
-            }else{
-              total += scope.get('childs').length - 1;
-              if(scope.get('childs').length > 0){
-                scope.get('childs').each(function(child){
-                  child.fetch({
-                    success: function(subscope){
-                      subscope.get('categories').fetch({
-                        success: function(){
-                          i++;
-                          if(i >= total  && !History.started)
-                            if(cb)
-                              cb();
-                        }
-                      });
-                    }
-                  });
-                });
-              }else{
+          if(!scope.get('multi')){
+            scope.get('categories').fetch({
+              success: function(){
                 i++;
                 if(i >= total  && !History.started)
                   cb();
               }
+            });
+          }else{
+            total += scope.get('childs').length - 1;
+            if(scope.get('childs').length > 0){
+              scope.get('childs').each(function(child){
+                child.get('categories').fetch({
+                  success: function(){
+                    i++;
+                    if(i >= total  && !History.started)
+                      if(cb)
+                        cb();
+                  }
+                });
+              });
+            } else {
+              i++;
+              if(i >= total  && !History.started)
+                cb();
             }
-          }});
+          }
         });
 
   		},

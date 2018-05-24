@@ -260,7 +260,7 @@
 .filter{
   .shadow_std;
   position: absolute;
-  top: 55px;
+  top: 10px;
   left: 10px;
   background-color: white;
   // padding: 10px;
@@ -397,5 +397,10 @@
         }
       }
     }
+  }
+}
+*[data-time-filter=true] {
+  .filter {
+    top: 55px;
   }
 }
