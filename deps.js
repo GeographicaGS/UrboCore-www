@@ -75,6 +75,10 @@ deps.JS = [
   srcJS + 'View/User/UserView.js',
   srcJS + 'View/User/UserInfoView.js',
 
+  // CREDENTIALS
+  srcJS + 'View/Credentials/CredentialListView.js',
+  srcJS + 'View/Credentials/CredentialView.js',
+
   // ADMIN
   srcJS + 'View/Admin/PermissionView.js',
   srcJS + 'View/Admin/ScopeListView.js',
@@ -186,6 +190,7 @@ deps.JS = [
   srcJS + 'Model/DeviceModel.js',
   srcJS + 'Model/EntitiesCounterModel.js',
   srcJS + 'Model/UserModel.js',
+  srcJS + 'Model/CredentialModel.js',
   srcJS + 'Model/Metadata/Variable.js',
   srcJS + 'Model/Metadata/Entity.js',
   srcJS + 'Model/Metadata/Category.js',
@@ -204,6 +209,7 @@ deps.JS = [
   srcJS + 'Collection/WidgetContextCollection.deprecated.js',
   srcJS + 'Collection/SearchMapCollection.js',
   srcJS + 'Collection/UserCollection.js',
+  srcJS + 'Collection/CredentialCollection.js',
   srcJS + 'Collection/PlacementCollection.js',
   srcJS + 'Collection/ScatterCollection.js',
   srcJS + 'Collection/EntitiesCounterCollection.js',

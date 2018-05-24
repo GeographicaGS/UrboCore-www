@@ -217,36 +217,36 @@ var backboneSync = Backbone.sync
 Backbone.sync = function (method, model, options) {
   var disableCheck = model.__disableBackboneSyncInterceptor;
   var disableInterceptor = typeof disableCheck === 'function' ? disableCheck() : disableCheck;
-  if(disableInterceptor) {
-    return;
-  }
-
-  if(App.mode !== 'embed'){
-    options.headers = {
-      'X-Access-Token': App.auth.getToken()
-    }
-
-    // DeMA integration
-    if(App.config.with_dema) {
-      options.headers['DeMA-Access-PSK'] = App.config.with_dema;
-    }
-
-
-  } else {
-    // Enrich object with query data
-    var qparams = App.Utils.queryParamsToObject();
-    var token = qparams.access_token_public;
-
-    if(options.data) { // POST
-      options.data = atob(qparams.b);
+  if(!disableInterceptor) {
+    if(App.mode !== 'embed'){
       options.headers = {
-        'X-Access-Token-Public': token
+        'X-Access-Token': App.auth.getToken(),
+      }
+  
+      // DeMA integration
+      if(App.config.with_dema) {
+        options.headers['DeMA-Access-PSK'] = App.config.with_dema;
+      }
+  
+  
+    } else {
+      // Enrich object with query data
+      var qparams = App.Utils.queryParamsToObject();
+      var token = qparams.access_token_public;
+  
+      if(options.data) { // POST
+        options.data = atob(qparams.b);
+        options.headers = {
+          'X-Access-Token-Public': token
+        }
+      }
+      else { // GET
+        options.data = {"access_token_public": token}
       }
     }
-    else { // GET
-      options.data = {"access_token_public": token}
+    if (options.appendAuthorizationConnector) {
+        options.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjYyNTc2NzZ9.DTItdunTahmct1yK2uyPKG2WGRvK8R31iLMI1h9V4-0';
     }
-
   }
 
   // call the original function
