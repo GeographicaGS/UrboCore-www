@@ -31,42 +31,7 @@
     this._metadataCatalog.fetch();
   	this._metadataCollection.fetch({reset:true,
   		success:function(collection){
-        var total = collection.length;
-        if (total == 0) {
-          return cb();
-        }
-        var i = 0;
-        
-        collection.each(function(scope){
-          if(!scope.get('multi')){
-            scope.get('categories').fetch({
-              success: function(){
-                i++;
-                if(i >= total  && !History.started)
-                  cb();
-              }
-            });
-          }else{
-            total += scope.get('childs').length - 1;
-            if(scope.get('childs').length > 0){
-              scope.get('childs').each(function(child){
-                child.get('categories').fetch({
-                  success: function(){
-                    i++;
-                    if(i >= total  && !History.started)
-                      if(cb)
-                        cb();
-                  }
-                });
-              });
-            } else {
-              i++;
-              if(i >= total  && !History.started)
-                cb();
-            }
-          }
-        });
-
+        return cb();
   		},
   		error:function(){
   			console.error('Cannot get metadata variables');

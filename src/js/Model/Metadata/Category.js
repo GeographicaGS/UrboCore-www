@@ -30,15 +30,8 @@ App.Model.Metadata.Category = Backbone.Model.extend({
     this.options = {
       id_scope: options.id_scope || ''
     };
-
     this.set({
-      'id': model,
-      'name': model
-    });
-
-    if(!this.has('entities'))
-    this.set({
-      entities: new App.Collection.Metadata.Entity(null, {
+      entities: new App.Collection.Metadata.Entity(model.entities, {
         id_scope: this.options.id_scope
       })
     });
