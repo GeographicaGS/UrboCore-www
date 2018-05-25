@@ -81,6 +81,8 @@ App.View.Panels.Base = App.View.Container.extend({
       }
     }
 
+    this.$el.attr('data-time-filter', this.dateView);
+
     if (this.spatialFilter)
       this.subviews.push(new App.View.Map.FilterSpatial());
 
