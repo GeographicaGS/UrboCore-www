@@ -42,16 +42,28 @@ App.View.Admin.Scope = Backbone.View.extend({
     this.scope = options.scope;
     this.model = App.mv().getScope(this.scope);
     this.catalog = App.mv().getCatalog();
+    _.bindAll(this, '_afterInit');
+    var _this = this;
 
+    if (!this.catalog.fetched) {
+      this.catalog.fetch({success: function(response) {
+        App.mv().setCatalog(response);
+        _this._afterInit();
+      }});
+    } else {
+      this._afterInit();
+    }
+  },
+
+  _afterInit: function() {
     if(this.model.get('name') !== undefined){
       this.render();
     }else {
-      var _this = this;
       this.model.fetch({
         success: function(){
-          _this.render();
+          this.render();
         }
-      })
+      });
     }
   },
 

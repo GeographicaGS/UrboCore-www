@@ -63,7 +63,6 @@
     })
     .done(function( data, textStatus, jqXHR ) {
 
-      _this._data.graph = _this._graphToTree(data);
       _this.save();
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
@@ -129,7 +128,6 @@
       _this._data.token = token;
       _this._data.expires = expires;
       _this._data.password = '';
-      _this._data.graph = _this._graphToTree(data.graph);
       _this.save();
       if (cb) cb();
     });
@@ -149,7 +147,6 @@
       //console.log('Login completed');
       _this._data = data;
       _this._data.password = password;
-      _this._data.graph = _this._graphToTree(data.graph);
       _this.save();
       _this.setRenewer();
       if (cb) cb();

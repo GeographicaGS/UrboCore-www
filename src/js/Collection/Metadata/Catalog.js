@@ -30,5 +30,10 @@ App.Collection.Metadata.Catalog = App.Collection.Metadata.Category.extend({
 
 	initialize: function(){
 		this.options = {};
+	},
+
+	fetch: function (options) {
+		this.fetched = true;
+		App.Collection.Metadata.Category.prototype.fetch.call(this, options);
 	}
 });

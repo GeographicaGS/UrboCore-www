@@ -28,7 +28,6 @@
   metadata.prototype.start = function(cb){
 
     // Load *all* metadata before starting
-    this._metadataCatalog.fetch();
   	this._metadataCollection.fetch({reset:true,
   		success:function(collection){
         return cb();
@@ -114,6 +113,10 @@
   metadata.prototype.getCatalog = function(){
     return this._metadataCatalog;
   };
+
+  metadata.prototype.setCatalog = function(catalog){
+    this._metadataCatalog = catalog;
+  }
 
   metadata.prototype.getCatalogCategory = function(category_id){
     var result = this._metadataCatalog.get(category_id);
