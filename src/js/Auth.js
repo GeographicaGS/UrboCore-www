@@ -45,7 +45,7 @@
       cb(false);
     }
     else{
-      this.setRenewer();
+      this.refreshPermissionGraph()
       cb(true);
     }
   }
@@ -68,6 +68,7 @@
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
       console.error('Cannot refresh premission graph');
+      window.location = '/';
     });
   }
 
@@ -104,12 +105,11 @@
   }
 
   auth.prototype.setRenewer = function(){
-    this.refreshPermissionGraph();
     var diff = new Date(this._data.expires) - new Date();
     var _this = this;
     setTimeout(function(){
       console.log('Token auto renew');
-      _this.login(_this._data.user.email,_this._data.password);
+      this.refreshPermissionGraph();
     },diff-this._renewGapSeconds*1000);
   }
 
