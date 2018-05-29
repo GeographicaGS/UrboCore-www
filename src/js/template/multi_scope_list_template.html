@@ -63,8 +63,8 @@
                     <% } %>
                   </h3>
 									<div class="categories_section">
-										<%_.each(s.categories, function(category) {
-											%><span class="rectangleIcon <%=category%>"></span>
+										<%_.each(s.categories.toJSON(), function(category) {;
+											%><span class="rectangleIcon <%=category.id%>"></span>
 										<%})%>
 									</div>
 								</div>

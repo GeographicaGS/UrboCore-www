@@ -31,7 +31,7 @@ App.Collection.Metadata.Scope = Backbone.Collection.extend({
 		if(_superadmin)
 			return App.config.api_url + '/admin/scopes';
 		else
-			return App.config.api_url + '/scopes';
+			return App.config.api_url + '/scopes?metadata=true';
 	},
 
 	initialize: function(models, options) {
