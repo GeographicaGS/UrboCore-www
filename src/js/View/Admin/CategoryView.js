@@ -33,12 +33,12 @@ App.View.Admin.Category = Backbone.View.extend({
   },
 
   initialize: function(options){
+    var _this = this;
     this.scope = options.scope;
     this.category = options.category;
 
     _.bindAll(this, 'render');
     this.model = App.mv().getCategory(this.category);
-    this.catalog = App.mv().getCatalogCategory(this.category);
     this.scopeModel = App.mv().getScope(this.scope);
 
     App.getNavBar().set({
@@ -63,7 +63,16 @@ App.View.Admin.Category = Backbone.View.extend({
       }
     });
 
-    this.render();
+    if (!App.mv().getCatalog().fetched) {
+      App.mv().getCatalog().fetch({success: function(response) {
+        App.mv().setCatalog(response);
+        _this.catalog = App.mv().getCatalogCategory(_this.category);
+        _this.render();
+      }})
+    } else {
+      this.catalog = App.mv().getCatalogCategory(this.category);
+      this.render();
+    }
   },
 
   render: function(){

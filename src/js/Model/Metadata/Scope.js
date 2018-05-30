@@ -49,10 +49,21 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
   },
 
   initialize: function(model, options) {
-    // this.options = options;
-    var categories = new App.Collection.Metadata.Category(null, {
-      id_scope: this.get('id')
-    })
+    // // this.options = options;
+    var categories;
+    if(!model.multi) {
+      categories = new App.Collection.Metadata.Category(model.metadata, {
+        id_scope: this.get('id')
+      })
+    } else {
+      // If scope is 'Multi scope' we need to create a fake Collection of 
+      // categories using the id. If not, categories icon would be empty at HOME
+      categories = new App.Collection.Metadata.Category(
+        _.map(model.categories, function(c) {
+          return { id: c }
+        }), {id_scope: this.get('id')
+      });
+    }
 
     this.set({
       categories: categories
@@ -60,7 +71,7 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
   },
 
   parse: function(data, opts) {
-
+    
     if(opts.parse === false) return this.attributes;
 
     var scope = {
@@ -73,15 +84,11 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
       users: data.users,
       dbschema: data.dbschema || '',
       status: data.status || 0,
-      frames: data.frames
+      frames: data.frames,
+      categories: data.categories
     };
 
-    if(!data.multi){
-      scope.categories = new App.Collection.Metadata.Category(data.categories, {
-        parse: true,
-        id_scope: data.id
-      });
-    }else if(data.childs){
+    if(data.childs && data.childs.length){
       scope.childs = new App.Collection.Metadata.Scope(data.childs, {
         parse: true,
         id_scope: data.id

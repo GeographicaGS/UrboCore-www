@@ -45,12 +45,11 @@ App.Model.Metadata.Entity = Backbone.Model.extend({
 		this.options = {
 			id_scope: options.id_scope || ''
 		};
-		if(!this.has('variables'))
-			this.set({
-				variables: new App.Collection.Metadata.Variable(null, {
-					id_scope: this.options.id_scope
-				})
-			});
+		this.set({
+			variables: new App.Collection.Metadata.Variable(model.variables, {
+				id_scope: this.options.id_scope
+			})
+		});
 	},
 
 	parse: function(data, opts) {
