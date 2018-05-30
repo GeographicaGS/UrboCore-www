@@ -53,8 +53,8 @@
 							</div>
 							<div class="content_top">
 								<div class="counter_scopes">
-									<%if(s.multi) {%>
-										<div class="counter"><%=s.n_cities%> <%= __('Ámbitos') %></div>
+									<%if(s.multi) {;%>
+										<div class="counter"><%=s.childs ? s.childs.length : 0%> <%= __('Ámbitos') %></div>
 									<%}%>
 								</div>
 							</div>
