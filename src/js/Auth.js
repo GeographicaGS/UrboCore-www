@@ -45,7 +45,7 @@
       cb(false);
     }
     else{
-      this.setRenewer();
+      this.refreshPermissionGraph()
       cb(true);
     }
   }
@@ -63,11 +63,11 @@
     })
     .done(function( data, textStatus, jqXHR ) {
 
-      _this._data.graph = _this._graphToTree(data);
       _this.save();
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
       console.error('Cannot refresh premission graph');
+      window.location = '/';
     });
   }
 
@@ -104,12 +104,11 @@
   }
 
   auth.prototype.setRenewer = function(){
-    this.refreshPermissionGraph();
     var diff = new Date(this._data.expires) - new Date();
     var _this = this;
     setTimeout(function(){
       console.log('Token auto renew');
-      _this.login(_this._data.user.email,_this._data.password);
+      this.refreshPermissionGraph();
     },diff-this._renewGapSeconds*1000);
   }
 
@@ -129,7 +128,6 @@
       _this._data.token = token;
       _this._data.expires = expires;
       _this._data.password = '';
-      _this._data.graph = _this._graphToTree(data.graph);
       _this.save();
       if (cb) cb();
     });
@@ -149,7 +147,6 @@
       //console.log('Login completed');
       _this._data = data;
       _this._data.password = password;
-      _this._data.graph = _this._graphToTree(data.graph);
       _this.save();
       _this.setRenewer();
       if (cb) cb();
