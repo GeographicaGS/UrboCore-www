@@ -43,12 +43,7 @@ App.View.Panels.Base = App.View.Container.extend({
     this.panelList = new App.Collection[App.Utils.capitalizeFirstLetter(this.id_category)].PanelList(null,options);
     //this.panelList.fetch({scope: this.scopeModel.get('id')});
 
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: TEMPORAL!!!! MIENTRAS NO SE IMPLEMENTE MOBILITY EN BACK!!!!!! OJO!!!
-    this.category = this.scopeModel.get('categories').get('transport');
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    this.category = this.scopeModel.get('categories').get(this.id_category);
 
     if (this.filterView){
       this.filterModel = App.getFilter(this.id_category);
@@ -220,7 +215,7 @@ App.View.Panels.Base = App.View.Container.extend({
 
     this.setFooter();
 
-    if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get('transport').get('nodata')===true)
+    if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get(this.id_category).get('nodata')===true)
       this.$('.widgets').html('<div class="nodata"><p>' + __('No hay datos para este vertical') + '</p></div>');
     else {
       this.customRender();
