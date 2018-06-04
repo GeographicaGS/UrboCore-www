@@ -299,27 +299,3 @@ App.Utils.getPrevWeek = function() {
     moment().startOf('isoWeek').subtract(1, 'days').endOf('day').toDate()
   ];
 }
-
-/**
- * Find object property passing a path
- * @param obj The object
- * @param path The Path (as Array)
- * @param set:Optional New propertiy value.
- */
-App.Utils.objectPath = function(obj, path, set) {
-  if (!obj) return undefined;
-  if (!path) return undefined;
-  var current = obj;
-  var pathDeep = path.length;
-
-
-  _.each(path, function(p,i) {
-    if(current.hasOwnProperty(p) && i < pathDeep-1)current = current[p];
-  });
-
-  if (set !== undefined) {
-    current[path[pathDeep - 1]] = set;
-  }
-
-  return current[path[pathDeep - 1]];
-}
