@@ -20,36 +20,20 @@
 
 'use strict';
 
-App.Collection.Metadata.Scope = Backbone.Collection.extend({
+App.Collection.Credential = Backbone.Collection.extend({
 
-	model: App.Model.Metadata.Scope,
+	model : App.Model.Credential,
+
+	initialize: function(models,options) {
+
+  },
 
 	url: function(){
-
-		var _superadmin = App.auth && App.auth.getUser() && App.auth.getUser().superadmin;
-		if(_superadmin)
-			return App.config.api_url + '/admin/scopes';
-		else
-			return App.config.api_url + '/scopes?metadata=true';
+		return App.config.configurator_url + '/' + 'credentials'
 	},
 
-	initialize: function(models, options) {
-		this.options = options;
-	},
+	parse: function(credentials) {
+		return credentials.results;
+	}
 
-	parse: function(data){
-		_.each(data, function(vertical) {
-			// Search verticals with childs to change id by Model
-			if (vertical.multi && vertical.childs.length > 0) {
-				var children = [];
-				_.each(vertical.childs, function(child) {
-					children.push (_.findWhere(data, {id: child}));
-				});
-
-				vertical.childs = children;
-			}
-
-		});
-		return data;
-	},
 });

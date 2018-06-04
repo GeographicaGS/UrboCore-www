@@ -18,38 +18,18 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-'use strict';
+var App = App || {};
 
-App.Collection.Metadata.Scope = Backbone.Collection.extend({
+var baseURL = 'urbo-backend.geographica.gs/api';
 
-	model: App.Model.Metadata.Scope,
-
-	url: function(){
-
-		var _superadmin = App.auth && App.auth.getUser() && App.auth.getUser().superadmin;
-		if(_superadmin)
-			return App.config.api_url + '/admin/scopes';
-		else
-			return App.config.api_url + '/scopes?metadata=true';
-	},
-
-	initialize: function(models, options) {
-		this.options = options;
-	},
-
-	parse: function(data){
-		_.each(data, function(vertical) {
-			// Search verticals with childs to change id by Model
-			if (vertical.multi && vertical.childs.length > 0) {
-				var children = [];
-				_.each(vertical.childs, function(child) {
-					children.push (_.findWhere(data, {id: child}));
-				});
-
-				vertical.childs = children;
-			}
-
-		});
-		return data;
-	},
-});
+App.config = {
+  'api_url' : 'https://' + baseURL,
+  'ws_url' : 'wss://' + baseURL + '/',
+  'map_position':[41.2343093,-4.4286122],
+  'layout' : 'castillayleon',
+  'map_zoom': 8,
+  'maps_prefix':  'production_',
+  'cartoUser': 'urbo-admin',
+  'layout_header': 'castillayleon_header_template',
+  'layout_footer': 'castillayleon_footer_template'
+};

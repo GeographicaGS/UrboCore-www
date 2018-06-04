@@ -20,36 +20,28 @@
 
 'use strict';
 
-App.Collection.Metadata.Scope = Backbone.Collection.extend({
+App.Model.Credential = Backbone.Model.extend({
 
-	model: App.Model.Metadata.Scope,
+  defaults: {
+    name : "",
+    active : true,
+    type : "",
+    auth_name : "",
+    created_at : "",
+    expires : "",
+    description: "",
+    key: "",
+  },
 
-	url: function(){
+  urlRoot: function(){
+    return App.config.configurator_url + '/credentials';
+  },
 
-		var _superadmin = App.auth && App.auth.getUser() && App.auth.getUser().superadmin;
-		if(_superadmin)
-			return App.config.api_url + '/admin/scopes';
-		else
-			return App.config.api_url + '/scopes?metadata=true';
-	},
-
-	initialize: function(models, options) {
-		this.options = options;
-	},
-
-	parse: function(data){
-		_.each(data, function(vertical) {
-			// Search verticals with childs to change id by Model
-			if (vertical.multi && vertical.childs.length > 0) {
-				var children = [];
-				_.each(vertical.childs, function(child) {
-					children.push (_.findWhere(data, {id: child}));
-				});
-
-				vertical.childs = children;
-			}
-
-		});
-		return data;
-	},
+  validators: {
+    name: {
+      required: {
+        msg: 'El nombre no puede estar vacío'
+      }
+    }
+  }
 });
