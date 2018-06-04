@@ -26,18 +26,13 @@
           <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos de vertical') %></a>
         </div>
         <div class="col-md-12 align-right">
-          <% if (!hasConnector) {%>
-            <a href="#" class="button empty addConnector" data-category="<%= catalog.get('id') %>"><%= __('Añadir conector') %></a>
-          <% } else { %>
-            <a href="#" class="button empty editConnector" data-category="<%= catalog.get('id') %>"><%= __('Editar conector') %></a>
-            <a href="#" class="button empty deleteConnector" data-category="<%= catalog.get('id') %>"><%= __('Eliminar conector') %></a>
-          <% } %> 
+          <a href="#" class="button empty addConnector" data-category="<%= catalog.get('id') %>"><%= __('Añadir conector') %></a>
+          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Editar conector') %></a>
+          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Eliminar conector') %></a>        
         </div>
         <div class="col-md-12 align-right">
-          <% if (hasConnector) {%>
-            <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
-            <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a> 
-          <% } %>       
+          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
+          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a>        
         </div>
       </div> -->
     </div>
