@@ -57,6 +57,7 @@ App.Model.BaseChartConfigModel = Backbone.Model.extend({
     yAxisLabel: false,
     yAxisAdjust: false,
     colors: d3.scale.category20().range(),
+    groupSpacing: 0.1,
     // maxColors: 3,
     noDataMessage: __('No hay datos disponibles'),
     hideStepControl: false

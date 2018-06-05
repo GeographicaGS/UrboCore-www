@@ -177,6 +177,7 @@ deps.JS = [
   srcJS + 'View/Map/LegendBaseMapView.js',
   srcJS + 'View/Map/ComparisonLegendMapView.js',
   srcJS + 'View/Map/Layer/MapboxGLLayer.js',
+  srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
   

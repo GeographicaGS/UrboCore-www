@@ -95,3 +95,19 @@ App.Model.TilesModel = Backbone.Model.extend({
       });
     }
   });
+
+  App.Model.FunctionModel = Backbone.Model.extend({
+    
+    initialize: function(options) {
+      this.function = options.function;
+      this.params = options.params;
+    },
+  
+    fetch: function(opts) {
+      if (opts.data && opts.data.params) {
+        this.params = opts.data.params
+      }
+      var result = this.function.apply(this, this.params);
+      this.set('response', result);
+    }
+  });

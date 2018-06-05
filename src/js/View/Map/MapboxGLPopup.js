@@ -21,7 +21,8 @@
 'use strict';
 App.View.Map.RowsTemplate = {
   BASIC_ROW: _.template($('#map-popups-basic_row_template').html()),
-  EXTENDED_TITLE: _.template($('#map-popups-extended_title_template').html())
+  EXTENDED_TITLE: _.template($('#map-popups-extended_title_template').html()),
+  ACTION_BUTTON: _.template($('#map-popups-action_button_template').html())
 };
 
 App.View.Map.MapboxGLPopup = Backbone.View.extend({
@@ -138,8 +139,16 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     });
   },
 
+
+  /**
+   * Property can be:
+   *  - ?           : OPTIONAL
+   *  - | translate : To translate
+   *  - | exactly   : Is not property, is a String
+   * 
+   *  e.g. 'MORE DETAILS | translate | exactly' 
+   */
   __replacePropertyByValue: function(property, event) {
-    debugger;
     var clickedProperties = event.features[0].properties;
     // property can contains '#' (navigation), '| translate' (for translation) and '?' (optionals)
     var isOptional = property.value.includes('?');
@@ -147,16 +156,23 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
 
     var toTranslate = property.value.includes('| translate');
     property.value = property.value.replace(/\| translate/g,'');
-    
-    var navigation = property.value.split('#');
 
-    var propertiesNavigated = clickedProperties;
-    for(var i = 0; i < navigation.length; i++) {
-      var step = navigation[i];
-      if (!propertiesNavigated.hasOwnProperty(step)) {
-        break;
+    var isExactly = property.value.includes('| exactly');
+    property.value = property.value.replace(/\| exactly/g,'');
+    
+    var propertiesNavigated;
+    if (!isExactly) {
+      var navigation = property.value.split('#');
+      propertiesNavigated = clickedProperties;
+      for(var i = 0; i < navigation.length; i++) {
+        var step = navigation[i];
+        if (!propertiesNavigated.hasOwnProperty(step)) {
+          break;
+        }
+        propertiesNavigated = propertiesNavigated[step];
       }
-      propertiesNavigated = propertiesNavigated[step];
+    } else {
+      propertiesNavigated = property.value;
     }
 
     if (toTranslate && !propertiesNavigated) {
