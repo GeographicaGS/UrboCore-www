@@ -28,7 +28,7 @@ App.View.Panels.Base = App.View.Container.extend({
     this.listenTo(this.framesCol, 'reset', this.render);    
     options = _.defaults(options, {
       dateView: true,
-      dateViewMaxRange: moment.duration(1, 'months'),
+      dateViewMaxRange: moment.duration(1, 'year'),
       dateViewModel: App.ctx,
       manageNavBar: true,
       spatialFilter: true,
