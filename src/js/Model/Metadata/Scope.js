@@ -88,12 +88,14 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
       categories: data.categories
     };
 
-    if(data.childs && data.childs.length){
-      scope.childs = new App.Collection.Metadata.Scope(data.childs, {
-        parse: true,
-        id_scope: data.id
-      });
+    if (!data.childs){
+      data.childs = [];
     }
+
+    scope.childs = new App.Collection.Metadata.Scope(data.childs, {
+      parse: true,
+      id_scope: data.id
+    });
 
     return scope;
   },
