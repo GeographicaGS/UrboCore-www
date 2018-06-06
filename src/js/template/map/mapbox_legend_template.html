@@ -11,6 +11,9 @@
         <div class="item-head">
           <img src="<%= item.icon %>">
           <span><%= item.name %></span>
+          <% if (item.count){ %>
+            <div class="badge"><span class="badge-number"><%= item.count %></span></div>
+          <% } %>
         </div>
       </div>
     <% } %>      
