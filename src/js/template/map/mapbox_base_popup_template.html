@@ -32,14 +32,16 @@
       </svg>
     </div>
   <% } %>  
-  <!-- DEPRECATION -->
-  <% if (templates.length > 0) {%>
-  <div class="content">
-    <% _.each(templates, function(template) { %>
-      <div class="popup-row <%= template.classes %>">
-        <%= template.output %>
-      </div>
-    <% }); %>
-  </div>
-  <% } %>
+  <!-- END DEPRECATION -->
+  <% if (!properties.length) {%>
+    <% if (templates.length > 0) {%>
+    <div class="content">
+      <% _.each(templates, function(template) { %>
+        <div class="popup-row <%= template.classes %>">
+          <%= template.output %>
+        </div>
+      <% }); %>
+    </div>
+    <% } %>
+  <% } %>  
 </div>
