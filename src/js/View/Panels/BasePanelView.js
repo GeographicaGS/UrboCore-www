@@ -28,7 +28,7 @@ App.View.Panels.Base = App.View.Container.extend({
     this.listenTo(this.framesCol, 'reset', this.render);    
     options = _.defaults(options, {
       dateView: true,
-      dateViewMaxRange: moment.duration(1, 'year'),
+      dateViewMaxRange: moment.duration(1, 'months'),
       dateViewModel: App.ctx,
       manageNavBar: true,
       spatialFilter: true,
@@ -116,7 +116,7 @@ App.View.Panels.Base = App.View.Container.extend({
       this.framesCol.vertical = this.category.id;
       
       if (App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
-        //TODO Ivan: 'No recuerdo porque esto tenía que estar aquí' this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
+        this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
         var _this = this;
         this.listenTo(this.framesCol, 'update', function() {
           if (_this._popupView) {

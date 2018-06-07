@@ -245,7 +245,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     // Clean all
     this.$('.chart').empty();
     this._chart = {};
-    this._chart.margin = this.options.get('margin') || {top: 40, right: 80, bottom: 90, left: 80};
+    this._chart.margin = {top: 40, right: 80, bottom: 90, left: 80};
     if (this.options.get('hideYAxis2')) {
       this._chart.margin.right = 40;
     }
@@ -274,20 +274,47 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       });
     }
 
+    // Scales for bars
+    // TODO: Set scales and axis config using chart's keysConfig
+
     if(this.data[1]) {
       this.xScaleBars = d3.scale.ordinal()
         .domain(d3.range(this.data[1].values.length))
-        .rangeRoundBands([0, this._chart.w], this.options.get('groupSpacing'));
+        .rangeRoundBands([0, this._chart.w], 0.1);
     } else {
       this.xScaleBars = d3.scale.ordinal()
         .domain(d3.range(this.data[0] ? this.data[0].values.length : 0))
-        .rangeRoundBands([0, this._chart.w], this.options.get('groupSpacing'));
+        .rangeRoundBands([0, this._chart.w], 0.1);
     }
 
+    // Scales for lines (based on bars scales to align with them)
     this.xScaleLine = function(d) {
       var offset = _this.xScaleBars.rangeBand() / 2;
       return _this.xScaleBars(d) + offset;
     };
+
+    // if(!this.options.get('stacked')){
+    //   this.yScaleBars = d3.scale.linear()
+    //     .domain([ 0, this.yAxisDomain[1][1] ])
+    //     .range([this._chart.h, 0])
+    //   ;
+    // }else{
+    //   var sumValues = [];
+    //   this.stackedData.forEach(function(elVal){
+    //     elVal.values.forEach(function(el, idx, arr){
+    //       sumValues[idx] = sumValues[idx] !== undefined ? sumValues[idx] += el.y : el.y;
+    //     });
+    //   });
+    //   this.yScaleBars = d3.scale.linear()
+    //     .domain(this.yAxisDomain[1])
+    //     .range([this._chart.h, 0])
+    //   ;
+    // }
+    //
+    // this.yScaleLine = d3.scale.linear()
+    //   .domain(this.yAxisDomain[0])
+    //   .range([this._chart.h, 0])
+    // ;
 
     this.yScales = [
       d3.scale.linear()
@@ -324,26 +351,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('transform', 'translate(0,' + this._chart.h + ')')
         .call(this._chart.xAxis);
 
-      
-      var xAxis = this._chart.svg
-        .selectAll('.axis.x-axis .tick');
-
-      if (this.options.get('useImageAsLegendX')) {
-        xAxis
-          .selectAll('text')
-          .remove();
-
-        xAxis
-          .append("image")
-          .attr("xlink:href", function(d, i) {
-            return _this.options.get('yAxisTickFormat')(_this.data[0].values[d].x);
-          })
-          .attr("width", 16)
-          .attr("height", 16)
-          .attr('x', -8)
-          .attr('y', 8);
-      }
-
       var yAxis1 = this._chart.svg.append('g')
         .attr('class', 'axis y-axis y-axis-1')
         .call(this._chart.yAxis1);
@@ -351,9 +358,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         yAxis1.append('text')
           .attr('class', 'axis-label')
           .attr('x', -1 * this._chart.h / 2)
-          .attr('transform', 'rotate(270) translate(0,'+ (12 - _this._chart.margin.left) +')')
+          .attr('transform', 'rotate(270) translate(0,-68)')
           .style('text-anchor', 'middle')
-          .text(_this.options.get('yAxisLabel')[0])
+          .text(this.options.get('yAxisLabel')[0])
         ;
       }
 
@@ -545,7 +552,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
       //  Get step hours
       var stepDiff = -1;
-      if(this.collection.options.data.time && this.collection.options.data.time.step){
+      if(this.collection.options.data.time.step){
         stepDiff = App.Utils.getStepHours(this.collection.options.data.time.step);
         if(diff !== -1){
           diff = Math.ceil(diff/stepDiff) * stepDiff;
@@ -753,8 +760,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var cursorPos = d3.mouse(_this);
     $tooltip.css({
       position: 'absolute',
-      top: cursorPos[1] + 8,
-      left: cursorPos[0] + 8
+      top: cursorPos[1],
+      left: cursorPos[0]
     });
 
     $tooltip.removeClass('hidden');

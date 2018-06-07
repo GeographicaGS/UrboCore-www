@@ -199,8 +199,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
       _.each(Object.keys(r.data), function(k) {
         if(!aux[k])
         aux[k] = [];
-        if(!r.data[k])
-          r.data[k] = 0;
+        if(r.data[k] != null)
         aux[k].push({'x':new Date(r.time), 'y':k == 'seconds' ? r.data[k]/60:r.data[k]});
       });
     });

@@ -20,10 +20,14 @@
           <%
           var numVerticals = s.categories.length;
           var link;
-          if(numVerticals >= 1) {
-            link = s.id + "/categories/welcome";
-          } else {
-            link = s.id + "/frames/dashboard";
+          if(numVerticals == 1) {
+            link = s.id +
+            "/dashboard";
+          } else if(numVerticals > 1) {
+            var category = typeof s.categories[0] === "object" ? s.categories[0].id : s.categories[0];
+            // Redirect multi categories scopes when coming from Scope List
+            link = s.id + "/" + category + "/dashboard";
+            // link = s.id + "/correlations";
           }
           %>
           <a href="<%=link%>" jslink>

@@ -38,12 +38,9 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
   },
 
   addItemLegend: function(item) {
-    var exist;
-    if (item.sectionId)  {
-      exist = _.find(this.items, function(i) {
-        return i.id == item.sectionId;
-      });
-    }
+    let exist = _.find(this.items, function(i) {
+      return i.id == item.sectionId;
+    });
     if (exist) {
       exist.childs.push({name: item.name});
     } else {
@@ -51,14 +48,9 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
         id: item.sectionId,
         icon: item.sectionIcon,
         name: item.sectionName,
-        childs: [{name: item.name}],
-        count: item.sectionCount || null
+        childs: [{name: item.name}]
       });
     }
-  },
-
-  removeLegendItems: function() {
-    this.items = [];
   },
 
   toggle: function(event) {
@@ -75,22 +67,10 @@ App.View.Map.MapboxLegendView = Backbone.View.extend({
   drawLegend: function() {
     let items = '';
     this.items.reverse();
-    this.$el.empty();
     this.$el.append(this._template({
       'legendTitle': __('Ajustes'), 
       'items': this.items,
     }));
-
-    // Set options
-    if (this._mapInstance._options.legendOpened) {
-     this.setOptionOpenedLegend();
-    }
-  },
-
-  setOptionOpenedLegend: function() {
-    var body = this.$el[0].querySelectorAll("#mapbox-legend .body")[0];
-    var toggler = this.$el[0].querySelectorAll("#mapbox-legend #toggler")[0];
-    body.classList.add("opened");
-    toggler.classList.add("opened");
   }
+
 });

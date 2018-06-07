@@ -54,9 +54,6 @@ App.Router = Backbone.Router.extend({
       // Users
       'users' : 'users',
 
-      // Credentials
-      'credentials': 'credentials',
-
       'notfound' : 'notfound',
       'error' : 'error',
       '*other'    : 'defaultRoute'
@@ -235,12 +232,6 @@ App.Router = Backbone.Router.extend({
   users: function(){
     // if(App.auth.getUser().superadmin) {
       App.showView(new App.View.UserList());
-    // }
-  },
-
-  credentials: function(){
-    // if(App.auth.getUser().superadmin) {
-      App.showView(new App.View.CredentialList());
     // }
   },
 

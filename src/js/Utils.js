@@ -179,49 +179,6 @@ App.Utils = {
     return new Backbone.Collection(formatted);
 
   },
-
-  /**
-  * Speech text using speechSynthesis Web API
-  * https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
-  * 
-  * @param {string} text
-  * @param {object} options
-  * 
-  */
-
-  speechSynthesis: function(text, options) {
-    if ('speechSynthesis' in window) {
-
-      // Setting options
-      var default_opts = {
-        volume: 1,
-        lang: 'es-ES',
-        rate: 1,
-        pitch: 1
-      };
-      options = options || {};
-      _.defaults(options,default_opts);
-
-      // Setting values
-      var speech = new SpeechSynthesisUtterance();
-      var voices = window.speechSynthesis.getVoices();      
-
-      speech.volume = options.volume; // 0 to 1 - step 0.1
-      speech.lang = options.lang; // Language Culture Name
-      speech.rate = options.rate; // 0.1 to 10 - step 0.1
-      speech.pitch = options.pitch; // 0 to 2 - step 0.1
-      speech.text = text;
-      if (options.voice) {
-        speech.voice = options.voice;
-      }
-
-      // Play
-      speechSynthesis.speak(speech);
-    
-    } else {
-      console.log("speechSynthesis not supported")
-    }
-  }
 }
 
 // RANGES

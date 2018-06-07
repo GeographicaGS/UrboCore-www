@@ -89,11 +89,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this.offAll();
   },
 
-  /**
-   * @deprecated
-   */
   setInteractivity: function(label, properties = [], deviceViewLink = false) {
-    console.warn('setInteractivity is DEPRECATED. Please use setPopup instead.')
     this.on('click',this.layers.map(l => l.id), function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
@@ -102,25 +98,6 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       }
       mpopup.setHTML(this.popupTemplate
         .drawTemplate(label,properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
-    }.bind(this));
-    return this;
-  },
-
-  /**
-   * One template per row, each row shoud contain: 
-   *  - output: HTML Output
-   *  - classes: String of classes for parent.
-   */
-  setPopup: function(classes, label, templates = []) {
-    this.on('click',this.layers.map(l => l.id), function(e) {
-      let mpopup = new mapboxgl.Popup()
-      .setLngLat(e.lngLat);
-
-      var fullyProcessedTemplate = this.popupTemplate
-        .drawTemplatesRow(classes,label,templates, e, mpopup)
-
-      mpopup.setHTML(fullyProcessedTemplate).addTo(this._map._map);
-      
     }.bind(this));
     return this;
   },

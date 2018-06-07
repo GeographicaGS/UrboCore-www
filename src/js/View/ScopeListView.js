@@ -116,9 +116,13 @@ App.View.ScopeList = Backbone.View.extend({
       var s = App.Utils.toDeepJSON(child);
       var numVerticals = s.categories.length;
 
-      if(numVerticals >= 1) {
-        link = s.id + "/categories/welcome";
-      } else {
+      if(numVerticals == 1) {
+        link = s.id +
+        "/dashboard";
+      } else if(numVerticals > 1) {
+        var category = typeof s.categories[0] === "object" ? s.categories[0].id : s.categories[0];
+        link = s.id + "/" + category + "/dashboard";
+      } else if(numVerticals === 0) {
         link = s.id + "/frames/dashboard";
       }
       L.marker(s.location, {icon: markerIcon})
