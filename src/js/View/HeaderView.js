@@ -33,6 +33,7 @@ App.View.HeaderView = Backbone.View.extend({
   	'click .user_popup .close_sesion' : '_closeSesion',
     'click .tool .admin' : '_togglePopup',
     'click .admin_popup .users' : '_goUsers',
+    'click .admin_popup .credentials' : '_goCredentials',
     'click .admin_popup .scopes' : '_goScopes',
     'click .admin_popup .logs' : '_goLogs',
     'click .tool .lang' : '_togglePopup',
@@ -86,6 +87,11 @@ App.View.HeaderView = Backbone.View.extend({
 
   _goUsers:function(){
     App.router.navigate('users',{trigger: true});
+    this.$('.admin_popup').removeClass('active');
+  },
+
+  _goCredentials:function(){
+    App.router.navigate('credentials',{trigger: true});
     this.$('.admin_popup').removeClass('active');
   },
 

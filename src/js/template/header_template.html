@@ -7,11 +7,6 @@
     </div>
   </a>
   <div class="tool">
-    <!-- <div class="searchToolBox">
-      <span class="iconSearch"></span>
-      <input type="text" placeholder="Buscar ámbito"/>
-    </div> -->
-
     <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) {%>
       <a class="admin" popup="admin" href="#"><%=__('Administración')%></a>
       <ul class="admin_popup genericPopup">
@@ -21,6 +16,12 @@
             <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
           </span>
         </li>
+        <!-- <li class="credentials">
+          <%= __('Gestión de credenciales') %>
+          <span class="icon">
+            <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
+          </span>
+        </li> -->
         <li class="scopes">
           <%= __('Ámbitos') %>
           <span class="icon">
@@ -36,7 +37,6 @@
       </ul>
     <%}%>
     <a class="alerts" href="#" style="display:none"><%=__('Alertas')%></a>
-    <!-- <a href="#">Soporte</a> -->
 
     <a class="lang uppercase" popup="lang" href="#"><%=App.lang%></a>
     <ul class="lang_popup genericPopup">
