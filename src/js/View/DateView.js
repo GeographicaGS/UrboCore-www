@@ -76,7 +76,7 @@ App.View.Date = Backbone.View.extend({
     var options = options || {};
     this._compact = options.compact ? options.compact : null;
     this.model = options.model ? options.model : App.ctx;
-    this.maxRange = options.maxRange ? options.maxRange : moment.duration(1, 'months');
+    this.maxRange = options.maxRange ? options.maxRange : moment.duration(1, 'year');
     this.listenTo(this.model,'change:start change:finish',this._renderDatePicker);
     _.bindAll(this, '_placeDatePicker');
   },
