@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -49,9 +49,13 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     this._colors = this.options.get('colors');
 
     // Format data
-    var max = _.max(this.collection.toJSON(), function(c){
+    var max = 0;
+    var potMax = _.max(this.collection.toJSON(), function(c){
       return c.data.length;
-    }).data.length;
+    });
+    if(potMax.data){
+      max=potMax.data.length;
+    }
     this.data = [];
     var _this = this;
     var timeFormatter = d3.time.format.iso;
@@ -113,13 +117,14 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
 
   _adjustXAxis: function(){
     this._chart.update();
-
-    var _this = this;
-    var width = _this._chart.xAxis.rangeBand();
-    var ticks = d3.select(this.$('.nv-x')[0]).selectAll('.tick text,.tick foreignObject');
-    ticks.each(function(d,i){
-      _this.insertLinebreaks(this, d, width );
-    });
+    if (this.data.length>0){
+      var _this = this;
+      var width = _this._chart.xAxis.rangeBand();
+      var ticks = d3.select(this.$('.nv-x')[0]).selectAll('.tick text,.tick foreignObject');
+      ticks.each(function(d,i){
+        _this.insertLinebreaks(this, d, width );
+      });
+    }
   },
 
   insertLinebreaks: function (t, d, width) {
