@@ -223,13 +223,16 @@ App.View.DeviceLastData = Backbone.View.extend({
   },
 
   render: function(e){
-
+    
+    var _this = this;
     if (!this._renderer){
       this.collection = new Backbone.Collection();
       this.collection.url = this.model.durl() + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/lastdata';
       this.listenTo(this.collection,'reset',this._onModelFetched);
       this.$el.append(App.circleLoading());
-      this.collection.fetch({'reset': true});
+      this.collection.fetch({'reset': true, 'error': function() {
+        _this.$el.html('<div class="device-no-data">' +  __('No hay datos para este dispositivo') + '</div>');
+      }});
 
     }
 
