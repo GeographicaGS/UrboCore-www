@@ -159,7 +159,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.data = new Backbone.Collection (
         _.each(this.collection.toJSON(), function(c, index) {
 
-          if(_this.data){
+          if(_this.data && _this.data.length){
             var data = _this.data.findWhere({'realKey':c.key});
             if(data != undefined) {
               c.realKey = data.get('realKey');
