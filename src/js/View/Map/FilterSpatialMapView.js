@@ -34,7 +34,9 @@ App.View.Map.FilterSpatial = Backbone.View.extend({
   },
 
   onClose: function(){
-      this.stopListening();
+    this._ctx.set('bbox_status',false);
+    this._ctx.set('bbox_info',false);    
+    this.stopListening();
   },
 
   render: function(){
