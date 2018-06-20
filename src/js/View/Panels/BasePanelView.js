@@ -78,8 +78,10 @@ App.View.Panels.Base = App.View.Container.extend({
 
     this.$el.attr('data-time-filter', this.dateView);
 
-    if (this.spatialFilter)
-      this.subviews.push(new App.View.Map.FilterSpatial());
+    if (this.spatialFilter) {
+      this.filterSpatialView = new App.View.Map.FilterSpatial();
+      this.subviews.push(this.filterSpatialView);
+    }
 
     if (this.dateView)
       this.subviews.push(new App.View.Date({
@@ -285,6 +287,12 @@ App.View.Panels.Base = App.View.Container.extend({
         columnWidth: 360
       });
     }, reset: true});
+  },
+
+  onClose: function() {
+    if (this.filterSpatialView) {
+      this.filterSpatialView.close()
+    };
   },
 
   _onPopupClose: function(e){
