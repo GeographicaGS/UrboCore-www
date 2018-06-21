@@ -148,30 +148,34 @@ App.View.Widgets.Charts.FillBar = App.View.Widgets.Charts.Bar.extend({
 
     var svg = d3.select(this.$('.chart')[0]);
     var barsWrapCTM = d3.select(this.$('.nv-barsWrap')[0]).node().getCTM();
-    var svgBBox = svg.node().getBBox();
-
-    svg.insert('rect', '.nv-wrap')
-      .attr('id', 'nv-bg')
-      .attr('x', barsWrapCTM.e) // start rectangle where barsWrap will start
-      .attr('y', barsWrapCTM.f) // start rectangle where barsWrap will start
-      .attr('width', svgBBox.width - barsWrapCTM.e + svgBBox.x) // full width
-      .attr('height', svgBBox.height - barsWrapCTM.f + svgBBox.y - 23) // full height - barsWrap margin - chart margin
-      .attr('fill', 'rgba(66,139,202, 0.2)');
-
-    //Linea divisoria para warning y error
-    if(this.options.has('divisorLines')) {
-      var _this = this;
-      _.each(this.options.get('divisorLines'), function(o) {
-        svg.append('line')
-        .attr({
-            x1: barsWrapCTM.e,
-            y1: _this._chart.yAxis.scale()(o.value) + barsWrapCTM.f,
-            x2: svgBBox.width + svgBBox.x,
-            y2: _this._chart.yAxis.scale()(o.value) + barsWrapCTM.f
-        })
-        .style('stroke', o.color)
-        .style('stroke-dasharray', ('3, 3'));
-      });
+    try {
+      var svgBBox = svg.node().getBBox();
+  
+      svg.insert('rect', '.nv-wrap')
+        .attr('id', 'nv-bg')
+        .attr('x', barsWrapCTM.e) // start rectangle where barsWrap will start
+        .attr('y', barsWrapCTM.f) // start rectangle where barsWrap will start
+        .attr('width', svgBBox.width - barsWrapCTM.e + svgBBox.x) // full width
+        .attr('height', svgBBox.height - barsWrapCTM.f + svgBBox.y - 23) // full height - barsWrap margin - chart margin
+        .attr('fill', 'rgba(66,139,202, 0.2)');
+  
+      //Linea divisoria para warning y error
+      if(this.options.has('divisorLines')) {
+        var _this = this;
+        _.each(this.options.get('divisorLines'), function(o) {
+          svg.append('line')
+          .attr({
+              x1: barsWrapCTM.e,
+              y1: _this._chart.yAxis.scale()(o.value) + barsWrapCTM.f,
+              x2: svgBBox.width + svgBBox.x,
+              y2: _this._chart.yAxis.scale()(o.value) + barsWrapCTM.f
+          })
+          .style('stroke', o.color)
+          .style('stroke-dasharray', ('3, 3'));
+        });
+      }
+    } catch(e) {
+      console.log("error capturado", e);
     }
   },
 
