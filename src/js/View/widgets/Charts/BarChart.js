@@ -152,7 +152,8 @@ App.View.Widgets.Charts.Bar = App.View.Widgets.Charts.Base.extend({
               x2: lineBBox.width,
               y2: 0
           });
-      } catch {
+      } catch (e) {
+        console.log("Error capturado");
       }
     }
   }
