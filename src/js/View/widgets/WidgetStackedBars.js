@@ -231,11 +231,15 @@ App.View.Widgets.StackedBars = Backbone.View.extend({
 
   _centerLegend:function(){
     if(this.model.get('showLegend')){
-      var yTranslate = d3.transform(d3.select('.nv-legendWrap').attr('transform')).translate[1];
-      var chartWidth = d3.select(this.$('.chart')[0]).node().getBBox().width;
-      var legendWidth = d3.select(this.$('.nv-legendWrap')[0]).node().getBBox().width;
-      var margin = 50;
-      d3.select('.nv-legendWrap').attr('transform', 'translate(' + (chartWidth/2 - legendWidth/2 - margin) + ',' + yTranslate + ')');
+      try {
+        var yTranslate = d3.transform(d3.select('.nv-legendWrap').attr('transform')).translate[1];
+        var chartWidth = d3.select(this.$('.chart')[0]).node().getBBox().width;
+        var legendWidth = d3.select(this.$('.nv-legendWrap')[0]).node().getBBox().width;
+        var margin = 50;
+        d3.select('.nv-legendWrap').attr('transform', 'translate(' + (chartWidth/2 - legendWidth/2 - margin) + ',' + yTranslate + ')');
+      } catch (e) {
+        console.log("error capturado", e);
+      }
     }
   },
 
