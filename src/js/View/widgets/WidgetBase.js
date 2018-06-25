@@ -239,6 +239,11 @@ App.View.Widgets.Base = Backbone.View.extend({
         data.filters = this.newFilterModel.toJSON();
 
       var bbox = this.ctx.getBBOX();
+
+      if(data.filters instanceof Backbone.Model && data.filters.get('the_geom') && bbox) {
+        data.filters.get('the_geom')['&&'] = bbox;
+      }
+
       if (bbox)
         data.filters.bbox = bbox;
       else if (data.filters.hasOwnProperty('bbox'))
