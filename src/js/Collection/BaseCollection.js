@@ -49,3 +49,14 @@ App.Collection.Post = App.Collection.Base.extend({
 App.Collection.PublishedWidget = App.Collection.Base.extend({
   model: App.Model.PublishedWidget
 });
+
+App.Collection.MapsCollection = App.Collection.Post.extend({
+  url: function(options) {
+    return App.config.api_url + "/" + this.options.scope + "/maps/" + this.options.entity + "/" + this.options.type; 
+  },
+
+  fetch: function(options) {
+    options.data.filters.conditions = options.data.filters.conditions || {};
+    return App.Collection.Post.prototype.fetch.call(this, options);
+  }
+});
