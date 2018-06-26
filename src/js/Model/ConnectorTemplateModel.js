@@ -1,4 +1,4 @@
-// Copyright 2018 Telefónica Digital España S.L.
+// Copyright 2017 Telefónica Digital España S.L.
 // 
 // This file is part of UrboCore WWW.
 // 
@@ -18,17 +18,31 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-var App = App || {};
+'use strict';
 
-var baseURL = 'urbo-backend.geographica.gs/api'
+App.Model.ConnectorTemplate = Backbone.Model.extend({
 
-App.config = {
-  'api_url' : 'https://' + baseURL,
-  'ws_url' : 'wss://' + baseURL + '/',
-  'map_position':[36.7196718,4.4167761],
-  'layout' : 'basetheme',
-  'map_zoom':17,
-  'with_dema': '7df4e8517dfd672cfca8d8cfba660474',
-  'maps_prefix':  'production_',
-  'connectorTools': true  
-};
+  defaults: {
+    name : "",
+    id : true,
+    blocks : [],
+    template : {},
+  },
+
+  urlRoot: function(){
+    return App.config.configurator_url + '/connector/subservices/templates/';
+  },
+
+  validators: {
+  }
+});
+
+App.Model.ConnectorInstance = Backbone.Model.extend({
+    
+    urlRoot: function(){
+      return App.config.configurator_url + '/connector/subservices/instances/';
+    },
+  
+    validators: {
+    }
+  });
