@@ -198,7 +198,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               }
             }
           }
-
           // var max = _.max(c.values, function(v){ return v.y; }).y;
           // var min = _.min(c.values, function(v){ return v.y; }).y;
           // c.values = _.map(c.values, function(v){
@@ -219,6 +218,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           });
         })
       );
+      
+      _.each(this._internalData.disabledList, function(value, key) {
+        if (value) {
+          _this.data.find({'realKey': key}).set('disabled', true);
+          _this.collection.find({'key': key}).set('disabled', true);
+        }
+      });
 
       if(this.data.where({'disabled': false}).length > 1){
         d3.select(this.$('.chart')[0]).classed('normalized',true);
