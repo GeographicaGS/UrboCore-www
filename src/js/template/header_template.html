@@ -16,12 +16,14 @@
             <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
           </span>
         </li>
-        <!-- <li class="credentials">
-          <%= __('Gestión de credenciales') %>
-          <span class="icon">
-            <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
-          </span>
-        </li> -->
+        <% if (App.config.connectorTools) { %>
+          <li class="credentials">
+            <%= __('Gestión de credenciales') %>
+            <span class="icon">
+              <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
+            </span>
+          </li>
+        <% } %>
         <li class="scopes">
           <%= __('Ámbitos') %>
           <span class="icon">
