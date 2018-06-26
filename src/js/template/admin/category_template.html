@@ -20,6 +20,7 @@
         <div class="col-md-12 align-right">
           <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos de vertical') %></a>
         </div>
+        <% if (App.config.connectorTools) { %>
         <div class="col-md-12 align-right">
           <% if (!hasConnector) {%>
             <a href="#" class="button empty addConnector" data-category="<%= catalog.get('id') %>"><%= __('Añadir conector') %></a>
@@ -34,6 +35,7 @@
             <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a> 
           <% } %>       
         </div>
+        <% } %>
       </div>
     </div>
     <div class="row">

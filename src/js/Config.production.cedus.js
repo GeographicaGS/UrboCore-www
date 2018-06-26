@@ -29,5 +29,6 @@ App.config = {
   'layout' : 'basetheme',
   'map_zoom':17,
   'with_dema': '7df4e8517dfd672cfca8d8cfba660474',
-  'maps_prefix':  'production_'
+  'maps_prefix':  'production_',
+  'connectorTools': true  
 };
