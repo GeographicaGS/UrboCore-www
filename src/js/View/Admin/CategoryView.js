@@ -29,6 +29,8 @@ App.View.Admin.Category = Backbone.View.extend({
     'click .button.permission': '_showCategoryPermissionPopup',
     'click .button.addConnector': '_showAddConnectorPopup',
     'click .button.editConnector': '_showEditConnectorPopup',
+    'click .button.activateConnector': '_activateConnector',
+    'click .button.deactivateConnector': '_deactivateConnector',
     'click .button.deleteConnector': '_deleteConnector',
     'click .listItem.entity > .permission': '_showEntityPermissionPopup',
     'click .listItem.variable > .permission': '_showVariablePermissionPopup',
@@ -283,6 +285,14 @@ App.View.Admin.Category = Backbone.View.extend({
       },
       parse: false
     });
+  },
+
+  _activateConnector: function() {
+    window.alert("Conector activado")
+  },
+
+  _deactivateConnector: function() {
+    window.alert("Conector desactivado")
   }
 
 });
