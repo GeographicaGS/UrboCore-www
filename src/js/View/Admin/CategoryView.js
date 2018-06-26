@@ -27,6 +27,11 @@ App.View.Admin.Category = Backbone.View.extend({
     'change .listItem.entity > input[type=checkbox]': '_toggleVariableList',
     'change .listItem.variable > input[type=checkbox]': '_toggleVariable',
     'click .button.permission': '_showCategoryPermissionPopup',
+    'click .button.addConnector': '_showAddConnectorPopup',
+    'click .button.editConnector': '_showEditConnectorPopup',
+    'click .button.activateConnector': '_activateConnector',
+    'click .button.deactivateConnector': '_deactivateConnector',
+    'click .button.deleteConnector': '_deleteConnector',
     'click .listItem.entity > .permission': '_showEntityPermissionPopup',
     'click .listItem.variable > .permission': '_showVariablePermissionPopup',
     'change .categoryInfo #nodata': '_saveCategory'
@@ -79,6 +84,7 @@ App.View.Admin.Category = Backbone.View.extend({
     this.$el.html(this._template({
       scope: {name: this.scope, id: this.scope},
       category: this.model.toJSON(),
+      hasConnector: this.catalog.get('config').connector || 7, //TODO: HARDCODED
       catalog: this.catalog
     }));
 
@@ -136,23 +142,13 @@ App.View.Admin.Category = Backbone.View.extend({
   _showCategoryPermissionPopup: function(e){
     e.preventDefault();
 
-    // var id_resource = $(e.currentTarget).data('category');
     var permissionData = {};
 
-    // if(!this.scopeModel.get('parent_id') || this.scopeModel.get('parent_id') === 'orphan'){
-      permissionData = {
-        id_scope: this.scope,
-        type_resource: __('Ámbito'),
-        name_resource: this.model.get('name')
-      };
-    // }else{
-    //   permissionData = {
-    //     id_scope: this.scopeModel.get('parent_id'),
-    //     id_resource: id_resource,
-    //     type_resource: 'Ámbito',
-    //     name_resource: this.model.get('name')
-    //   };
-    // }
+    permissionData = {
+      id_scope: this.scope,
+      type_resource: __('Ámbito'),
+      name_resource: this.model.get('name')
+    };
 
     var permissionView = new App.View.Admin.PermissionPopup(permissionData);
 
@@ -168,6 +164,53 @@ App.View.Admin.Category = Backbone.View.extend({
     this._popupView.show();
   },
 
+  _showEditConnectorPopup: function(e) {
+    e.preventDefault();
+    
+      var connectorData = {
+        id_scope: this.scope,
+        id_category: this.category,
+        type_resource: __('Ámbito'),
+        name_resource: this.model.get('name'),
+        instance: this.catalog.get('config').connector || 7, //TODO: HARDCODED
+      };
+      var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
+  
+      if(this._popupView == undefined) {
+        this._popupView = new App.View.PopUp();
+      }
+      this._popupView.internalView = connectorView;
+  
+      this.$el.append(this._popupView.render().$el);
+  
+      this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
+  
+      this._popupView.show();
+  },
+
+  _showAddConnectorPopup: function(e){
+    e.preventDefault();
+
+    var connectorData = {
+      id_scope: this.scope,
+      id_category: this.category,
+      type_resource: __('Ámbito'),
+      name_resource: this.model.get('name')
+    };
+    var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
+
+    if(this._popupView == undefined) {
+      this._popupView = new App.View.PopUp();
+    }
+    this._popupView.internalView = connectorView;
+
+    this.$el.append(this._popupView.render().$el);
+
+    this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
+
+    this._popupView.show();
+  },
+
   _showEntityPermissionPopup: function(e){
     e.preventDefault();
 
@@ -178,9 +221,6 @@ App.View.Admin.Category = Backbone.View.extend({
       type_resource: __('Entidad'),
       name_resource: this.model.get('entities').get(id_resource).get('name')
     };
-    // if(this.scopeModel.get('parent_id') && this.scopeModel.get('parent_id') !== 'orphan'){
-    //   permissionData.id_scope = this.scopeModel.get('parent_id');
-    // }
     var permissionView = new App.View.Admin.PermissionPopup(permissionData);
 
     if(this._popupView == undefined) {
@@ -203,11 +243,7 @@ App.View.Admin.Category = Backbone.View.extend({
       id_scope: this.scope,
       id_resource: id_resource,
       type_resource: __('Variable'),
-      name_resource: ''//this.model.get('entities').get(id_resource).get('name')
     };
-    // if(this.scopeModel.get('parent_id') !== 'orphan'){
-    //   permissionData.id_scope = this.scopeModel.get('parent_id');
-    // }
     var permissionView = new App.View.Admin.PermissionPopup(permissionData);
 
     if(this._popupView == undefined) {
@@ -222,6 +258,12 @@ App.View.Admin.Category = Backbone.View.extend({
     this._popupView.show();
   },
 
+  _deleteConnector: function(e) {
+    var instanceModel = new App.Model.ConnectorInstance();
+    instanceModel.set('id', this.catalog.get('config').connector || 7);
+    instanceModel.destroy({reset: true, appendAuthorizationConnector: true,  success: function() {}});
+  },
+
   _onPermissionPopupClose: function(e){
     this._popupView.closePopUp();
   },
@@ -233,7 +275,7 @@ App.View.Admin.Category = Backbone.View.extend({
       nodata: e.currentTarget.checked
     };
 
-    this.model.set(data);
+    this.model.set(data, this.catalog.get('config').connector || 7); //TODO: HARDCODED
     this.model.save(null,{
       success: function(){
         $target.removeClass('error').attr('readonly','readonly');
@@ -243,6 +285,14 @@ App.View.Admin.Category = Backbone.View.extend({
       },
       parse: false
     });
+  },
+
+  _activateConnector: function() {
+    window.alert("Conector activado")
+  },
+
+  _deactivateConnector: function() {
+    window.alert("Conector desactivado")
   }
 
 });

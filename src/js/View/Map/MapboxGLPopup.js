@@ -113,7 +113,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
   drawTemplatesRow: function(classes, label, templates, clicked, popup) {
     var _this = this;
     if (typeof templates === 'function') {
-      templates = templates(clicked);
+      templates = templates(clicked, popup);
     }
     return this._template({
       'classes': classes,
