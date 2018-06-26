@@ -258,17 +258,24 @@
 }
 
 .filter{
+  
   .shadow_std;
   position: absolute;
   top: 10px;
   left: 10px;
+  display: flex;
+  flex: 1 1 ~"calc(100% - 70px)";
+  max-height: ~"calc(100% - 70px)";
   background-color: white;
-  // padding: 10px;
   width: 320px;
   z-index: 4;
   border: 1px solid @grey4;
   border-radius: 2px;
   transition: width .25s linear;
+
+  > div {
+    flex: 1 1 100%;
+  }
 
   &.compact{
     width: 36px;

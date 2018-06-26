@@ -31,8 +31,8 @@
         </div>
         <div class="col-md-12 align-right">
           <% if (hasConnector) {%>
-            <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
-            <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a> 
+            <a href="#" class="button empty activateConnector" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
+            <a href="#" class="button empty deactivateConnector" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a> 
           <% } %>       
         </div>
         <% } %>
