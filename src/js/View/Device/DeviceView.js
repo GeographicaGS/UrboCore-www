@@ -61,6 +61,12 @@ App.View.Device = Backbone.View.extend({
   },
 
   _renderTab: function(e){
+    var _this = this;
+    _.each(this._tabs, function(nil, tab) {
+      if (_this._tabs[tab]) {
+        _this._tabs[tab].close();
+      }
+    });
     var v = this._tabs[this.model.get('tab')];
     this.$('.ctrl_container').html(v.$el);
 
