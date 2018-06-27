@@ -24,7 +24,10 @@ App.View.Login = Backbone.View.extend({
   _template: _.template( $('#login_template').html() ),
   className: 'login',
   initialize: function(options) {
+    this._ctx = App.ctx;    
     this._headerView = options.headerView;
+    this._ctx.set('bbox_status',false);
+    this._ctx.set('bbox_info',false);
   },
 
   events: {
