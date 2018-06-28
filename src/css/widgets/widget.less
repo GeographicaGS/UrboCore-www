@@ -149,7 +149,7 @@
   }
 
   &.double{
-    width: 720px;
+    width: 740px;
   }
 
   &.allWidth{
@@ -181,10 +181,16 @@
 
   &.scroll {
     height: 200px;
+    &.defaultHeight {
+      height: 360px;
+    }
     .widget_content {
       overflow-y: scroll;
-      height: calc( ~'100% - 12px');
+      height: calc( ~'100% - 18px');
       margin-top: 30px;
+      .table {
+        margin-top: 0;
+      }
       .fade {
         position: absolute;
         bottom: -2px;
