@@ -48,7 +48,9 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
     if(typeof response === 'object') {
 
       var aux = {};
-
+      response = response.sort(function(t1,t2){
+        return moment(t1.time).isBefore(moment(t2.time)) ? -1 : 1;
+      });
       _.each(response, function(r) {
         _.each(Object.keys(r.data), function(k) {
             if(!aux[k])
