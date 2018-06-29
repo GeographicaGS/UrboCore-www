@@ -751,11 +751,20 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       }
     }));
     var cursorPos = d3.mouse(_this);
-    $tooltip.css({
-      position: 'absolute',
-      top: cursorPos[1] + 8,
-      left: cursorPos[0] + 8
-    });
+    $tooltip.css({position: 'absolute'});
+    if (cursorPos[0] + $tooltip.width() > this.$el.width() - 100) {
+      $tooltip.css({
+        top: cursorPos[1],
+        zIndex: 2,
+        left: cursorPos[0] - $tooltip.width() - 100
+      });
+    }else {
+      $tooltip.css({
+        top: cursorPos[1],
+        zIndex: 2,
+        left: cursorPos[0] - 50
+      });
+    }
 
     $tooltip.removeClass('hidden');
   },
