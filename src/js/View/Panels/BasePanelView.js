@@ -106,7 +106,7 @@ App.View.Panels.Base = App.View.Container.extend({
   render: function(){
     this.$el.html(this._template());
     this.$el.attr('data-vertical', this.id_category);
-
+    
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
@@ -118,7 +118,7 @@ App.View.Panels.Base = App.View.Container.extend({
       this.framesCol.vertical = this.category.id;
       
       if (App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
-        //TODO Ivan: 'No recuerdo porque esto tenía que estar aquí' this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
+        this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
         var _this = this;
         this.listenTo(this.framesCol, 'update', function() {
           if (_this._popupView) {
