@@ -68,6 +68,11 @@ App.View.Map.MapboxView = Backbone.View.extend({
     if (options.filterModel) {
       this.listenTo(options.filterModel, 'change', this._applyFilter);
     }
+    if (options.autoRefresh) {
+      this.realTime = setInterval(function() {
+        this._applyFilter(options.filterModel);
+      }.bind(this), options.autoRefresh);
+    }
     _.bindAll(this,'dataLoaded');
   },
 
@@ -117,6 +122,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   onClose: function() {
+    if (this.realTime) {
+      clearInterval(this.realTime);
+    }
     this._map.remove();
     this.stopListening();
     this.basemapSelector.close(),
