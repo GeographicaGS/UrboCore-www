@@ -75,7 +75,12 @@ deps.JS = [
   srcJS + 'View/User/UserView.js',
   srcJS + 'View/User/UserInfoView.js',
 
+  // CREDENTIALS
+  srcJS + 'View/Credentials/CredentialListView.js',
+  srcJS + 'View/Credentials/CredentialView.js',
+
   // ADMIN
+  srcJS + 'View/Admin/ConnectorView.js',
   srcJS + 'View/Admin/PermissionView.js',
   srcJS + 'View/Admin/ScopeListView.js',
   srcJS + 'View/Admin/ScopeView.js',
@@ -168,10 +173,12 @@ deps.JS = [
   srcJS + 'View/Map/LayerTreeView.js',
   srcJS + 'View/Map/FilterSpatialMapView.js',
   srcJS + 'View/Map/MapSearchView.js',
+  srcJS + 'View/Map/LayerVariableSelector.js',
   srcJS + 'View/Map/LayerTreeFilters.js',
   srcJS + 'View/Map/LegendBaseMapView.js',
   srcJS + 'View/Map/ComparisonLegendMapView.js',
   srcJS + 'View/Map/Layer/MapboxGLLayer.js',
+  srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
   
@@ -186,6 +193,8 @@ deps.JS = [
   srcJS + 'Model/DeviceModel.js',
   srcJS + 'Model/EntitiesCounterModel.js',
   srcJS + 'Model/UserModel.js',
+  srcJS + 'Model/ConnectorTemplateModel.js',
+  srcJS + 'Model/CredentialModel.js',
   srcJS + 'Model/Metadata/Variable.js',
   srcJS + 'Model/Metadata/Entity.js',
   srcJS + 'Model/Metadata/Category.js',
@@ -204,6 +213,8 @@ deps.JS = [
   srcJS + 'Collection/WidgetContextCollection.deprecated.js',
   srcJS + 'Collection/SearchMapCollection.js',
   srcJS + 'Collection/UserCollection.js',
+  srcJS + 'Collection/ConnectorTemplatesCollection.js',
+  srcJS + 'Collection/CredentialCollection.js',
   srcJS + 'Collection/PlacementCollection.js',
   srcJS + 'Collection/ScatterCollection.js',
   srcJS + 'Collection/EntitiesCounterCollection.js',

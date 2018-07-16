@@ -49,11 +49,12 @@ App.View.Map.Layer.MapboxSQLLayer = App.View.Map.Layer.MapboxGLVectorLayer.exten
     }
   },
 
-  _updateSQLData: function(sql) {
+  _updateSQLData: function(sql, sourceLayer) {
+    sourceLayer = sourceLayer || 'cartoLayer'
     this._model.clear();
     this._model.params = {
       layers:[ {
-        id: 'cartoLayer',
+        id: sourceLayer,
         options:{
           sql: sql
         }

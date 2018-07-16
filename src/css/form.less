@@ -204,8 +204,16 @@
   // }
 }
 
-#user_form {
-  input.form-control {
+#user_form, #credential_form, #connector_form {
+  input.form-control, select.form-control {
     width: 100%;
+  }
+}
+
+#connector_form {
+  #connector-form {
+    label + div {
+      padding-bottom: 10px;
+    }
   }
 }

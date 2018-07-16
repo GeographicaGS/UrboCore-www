@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -151,6 +151,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     // Order data keys for legend
     if(this.options.get('legendOrderFunc'))
       this._orderLegendKeys();
+
+    // Fix for sometimes incorrectly hidden legend in watemeter historic widget
+    $(this.el).children('.var_list').removeClass('hide');
 
     // Append data to chart
     d3.select(this.$('.chart')[0])
@@ -376,12 +379,16 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
   _centerLegend:function(){
     if(!this.options.get('hideLegend')){
-      var yTranslate = d3.transform(d3.select(this.$('.nv-legendWrap')[0]).attr('transform')).translate[1];
-      var chartWidth = d3.select(this.$('.chart')[0]).node().getBBox().width;
-      var legendWidth = d3.select(this.$('.nv-legendWrap')[0]).node().getBBox().width;
-      var margin = 50;
-      d3.select('.nv-legendWrap').attr('transform', 'translate(-' + (chartWidth/2 - legendWidth/2 - margin) + ',' + yTranslate + ')');
-      this._chart.legend.margin().right = (chartWidth/2 - legendWidth/2 - margin);
+      try {
+        var yTranslate = d3.transform(d3.select(this.$('.nv-legendWrap')[0]).attr('transform')).translate[1];
+        var chartWidth = d3.select(this.$('.chart')[0]).node().getBBox().width;
+        var legendWidth = d3.select(this.$('.nv-legendWrap')[0]).node().getBBox().width;
+        var margin = 50;
+        d3.select('.nv-legendWrap').attr('transform', 'translate(-' + (chartWidth/2 - legendWidth/2 - margin) + ',' + yTranslate + ')');
+        this._chart.legend.margin().right = (chartWidth/2 - legendWidth/2 - margin);
+      } catch(e) {
+        console.log("Error capturado", e)
+      }
     }
   },
 

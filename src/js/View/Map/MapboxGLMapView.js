@@ -68,6 +68,11 @@ App.View.Map.MapboxView = Backbone.View.extend({
     if (options.filterModel) {
       this.listenTo(options.filterModel, 'change', this._applyFilter);
     }
+    if (options.autoRefresh) {
+      this.realTime = setInterval(function() {
+        this._applyFilter(options.filterModel);
+      }.bind(this), options.autoRefresh);
+    }
     _.bindAll(this,'dataLoaded');
   },
 
@@ -117,6 +122,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   onClose: function() {
+    if (this.realTime) {
+      clearInterval(this.realTime);
+    }
     this._map.remove();
     this.stopListening();
     this.basemapSelector.close(),
@@ -172,7 +180,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
         Promise.all(response.map(r => r.json())).then(response => {
           this._availableBasemaps.forEach((bm, i) => {
             this.basemaps[bm] = response[i];
-            this.basemaps[bm].sprite = window.location.origin + this._sprites;
+            
+            if (this._sprites) {
+              this.basemaps[bm].sprite = window.location.origin + this._sprites;
+            }
             resolve();
           });
         })
@@ -221,6 +232,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.legend.drawLegend();
   },
 
+  clearLegend: function() {
+    this.legend.removeLegendItems();
+  },
+  
   zoom: function(e) {
     let currentZoom = this._map.getZoom();
     if (e.target.classList.contains('out')) {

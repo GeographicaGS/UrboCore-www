@@ -143,14 +143,18 @@ App.View.Widgets.Charts.Bar = App.View.Widgets.Charts.Base.extend({
     // Top line
     var svg = d3.select(this.$('.chart .nv-axis.nv-y .nv-wrap > g .tick line')[0]);
     if(svg.node()){
-      var lineBBox = svg.node().getBBox();
-      d3.select(this.$('.chart .nv-axis.nv-y .nv-wrap > g')[0]).append('line')
-      .attr({
-          x1: 0,
-          y1: 0,
-          x2: lineBBox.width,
-          y2: 0
-      });
+      try {
+        var lineBBox = svg.node().getBBox();
+        d3.select(this.$('.chart .nv-axis.nv-y .nv-wrap > g')[0]).append('line')
+          .attr({
+              x1: 0,
+              y1: 0,
+              x2: lineBBox.width,
+              y2: 0
+          });
+      } catch (e) {
+        console.log("Error capturado");
+      }
     }
   }
 

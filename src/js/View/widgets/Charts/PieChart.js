@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -112,50 +112,52 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
   _drawExtra: function() {
     var svg = d3.select(this.$('.chart')[0]);
     var svgNode = svg.node();
+    var clientSize = svgNode.getClientRects();
+    if(clientSize){
+      // Draw icon
+      if(this.options.get('img')){
+        var logoSize = { height: 32, width: 32 };
+        var logoOffset = { top: 5, left: 0 };
 
-    // Draw icon
-    if(this.options.get('img')){
-      var logoSize = { height: 32, width: 32 };
-      var logoOffset = { top: 5, left: 0 };
-      var clientSize = svgNode.getClientRects();
-      if(this.options.get('showTotal'))
-        logoOffset.top = 20;
+        if(this.options.get('showTotal'))
+          logoOffset.top = 20;
 
-      svg.insert('svg:image', '.nv-wrap')
-            .attr('xlink:href', this.options.get('img'))
-            .attr('x', clientSize[0].width / 2)
-            .attr('y', clientSize[0].width / 2)
-            .attr('height', logoSize.height + 'px')
-            .attr('width', logoSize.width + 'px')
-            .attr('transform', 'translate(-' + (logoSize.width / 2 + logoOffset.left) +
-              ',-' + (logoSize.height + logoOffset.top) + ')');
-    }
+        svg.insert('svg:image', '.nv-wrap')
+              .attr('xlink:href', this.options.get('img'))
+              .attr('x', clientSize[0].width / 2)
+              .attr('y', clientSize[0].width / 2)
+              .attr('height', logoSize.height + 'px')
+              .attr('width', logoSize.width + 'px')
+              .attr('transform', 'translate(-' + (logoSize.width / 2 + logoOffset.left) +
+                ',-' + (logoSize.height + logoOffset.top) + ')');
+      }
 
-    // Draw total
-    if(this.options.get('showTotal')){
-      var valueOffset = { top: 35, left: 0 };
-      if(this.options.get('img'))
-        valueOffset.top = 15;
-      var total = _.reduce(this.data, function(sum, elem){ return sum + elem.y; }, 0);
-      var valueFunc = this.options.get('yAxisFunction') ? this.options.get('yAxisFunction') : App.nbf;
+      // Draw total
+      if(this.options.get('showTotal')){
+        var valueOffset = { top: 35, left: 0 };
+        if(this.options.get('img'))
+          valueOffset.top = 15;
+        var total = _.reduce(this.data, function(sum, elem){ return sum + elem.y; }, 0);
+        var valueFunc = this.options.get('yAxisFunction') ? this.options.get('yAxisFunction') : App.nbf;
 
-      var textEl = svg.insert('foreignObject', '.nv-wrap')
-          .attr('x', clientSize[0].width / 4)
-          .attr('y', clientSize[0].height / 2)
-          .attr('width', clientSize[0].width / 2)
-          .attr('height', clientSize[0].height / 4)
-          .attr('transform', 'translate(-' + valueOffset.left +
-            ',-' + valueOffset.top + ')')
-        .append('xhtml:p')
-          .attr('class','extraContent')
-          .html(__('Total') + ' ');
+        var textEl = svg.insert('foreignObject', '.nv-wrap')
+            .attr('x', clientSize[0].width / 4)
+            .attr('y', clientSize[0].height / 2)
+            .attr('width', clientSize[0].width / 2)
+            .attr('height', clientSize[0].height / 4)
+            .attr('transform', 'translate(-' + valueOffset.left +
+              ',-' + valueOffset.top + ')')
+          .append('xhtml:p')
+            .attr('class','extraContent')
+            .html(__('Total') + ' ');
 
-      textEl.append('xhtml:span')
-        .html(valueFunc(total));
+        textEl.append('xhtml:span')
+          .html(valueFunc(total));
 
-      // if(!this.options.get('img')){
-      //   textEl.attr('style','transform: translate(0,0)')
-      // }
+        // if(!this.options.get('img')){
+        //   textEl.attr('style','transform: translate(0,0)')
+        // }
+      }
     }
   }
 });

@@ -149,7 +149,7 @@
   }
 
   &.double{
-    width: 720px;
+    width: 740px;
   }
 
   &.allWidth{
@@ -181,10 +181,16 @@
 
   &.scroll {
     height: 200px;
+    &.defaultHeight {
+      height: 360px;
+    }
     .widget_content {
       overflow-y: scroll;
-      height: calc( ~'100% - 12px');
+      height: calc( ~'100% - 18px');
       margin-top: 30px;
+      .table {
+        margin-top: 0;
+      }
       .fade {
         position: absolute;
         bottom: -2px;
@@ -1031,7 +1037,7 @@
       justify-content: flex-start;
 
       .primary {
-        flex: 0 0 60%;
+        flex: 0 0 50%;
         align-self: flex-start;
         display: flex;
         flex-direction: column;
@@ -1067,8 +1073,9 @@
         }
       }
       .secondary {
-        flex: 0 0 40%;
+        flex: 0 0 50%;
         align-self: flex-start;
+        align-items: flex-end;
         display: flex;
         flex-direction: column;
         // align-items: stretch;

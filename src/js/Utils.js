@@ -179,6 +179,49 @@ App.Utils = {
     return new Backbone.Collection(formatted);
 
   },
+
+  /**
+  * Speech text using speechSynthesis Web API
+  * https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
+  * 
+  * @param {string} text
+  * @param {object} options
+  * 
+  */
+
+  speechSynthesis: function(text, options) {
+    if ('speechSynthesis' in window) {
+
+      // Setting options
+      var default_opts = {
+        volume: 1,
+        lang: 'es-ES',
+        rate: 1,
+        pitch: 1
+      };
+      options = options || {};
+      _.defaults(options,default_opts);
+
+      // Setting values
+      var speech = new SpeechSynthesisUtterance();
+      var voices = window.speechSynthesis.getVoices();      
+
+      speech.volume = options.volume; // 0 to 1 - step 0.1
+      speech.lang = options.lang; // Language Culture Name
+      speech.rate = options.rate; // 0.1 to 10 - step 0.1
+      speech.pitch = options.pitch; // 0 to 2 - step 0.1
+      speech.text = text;
+      if (options.voice) {
+        speech.voice = options.voice;
+      }
+
+      // Play
+      speechSynthesis.speak(speech);
+    
+    } else {
+      console.log("speechSynthesis not supported")
+    }
+  }
 }
 
 // RANGES
@@ -255,4 +298,28 @@ App.Utils.getPrevWeek = function() {
     moment().startOf('isoWeek').subtract(7, 'days').toDate(),
     moment().startOf('isoWeek').subtract(1, 'days').endOf('day').toDate()
   ];
+}
+
+/**
+ * Find object property passing a path
+ * @param obj The object
+ * @param path The Path (as Array)
+ * @param set:Optional New propertiy value.
+ */
+App.Utils.objectPath = function(obj, path, set) {
+  if (!obj) return undefined;
+  if (!path) return undefined;
+  var current = obj;
+  var pathDeep = path.length;
+
+
+  _.each(path, function(p,i) {
+    if(current.hasOwnProperty(p) && i < pathDeep-1)current = current[p];
+  });
+
+  if (set !== undefined) {
+    current[path[pathDeep - 1]] = set;
+  }
+
+  return current[path[pathDeep - 1]];
 }

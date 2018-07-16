@@ -708,6 +708,19 @@ h6{
   font-size: 18px;
 }
 
+.title_selection {
+  font-size: 24px;
+  font-weight: 300;
+  color: @blue;
+  &_id {
+    color: @blue;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+}
+
 .title_page{
   // color:@grey;
   color:@blue;
@@ -762,6 +775,7 @@ h6{
     background-color: transparent;
     color:#00b8c7;
     border: 1px solid #00b8c7;
+    margin: 2px;
   }
 
   &.small {
@@ -1546,20 +1560,19 @@ input[type=text]:-moz-placeholder{
   }
 }
 
-.linkLeft {
-  position: absolute;
-  bottom: -2px;
-  left: 26px;
+.link {
   color:@turquoise;
   font-weight: 600;
-}
-
-.linkRight {
-  position: absolute;
-  bottom: -2px;
-  right:43px;
-  color:@turquoise;
-  font-weight: 600;
+  &Left {
+    position: absolute;
+    bottom: -2px;
+    left: 26px;
+  }
+  &Right {
+    position: absolute;
+    bottom: -2px;
+    right:43px;
+  }
 }
 
 .ok{

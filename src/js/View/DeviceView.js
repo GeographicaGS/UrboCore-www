@@ -27,87 +27,83 @@ App.View.DevicePeriod = Backbone.View.extend({
 
   render: function(e){
 
-    if (!this._renderer){
-      var entity = App.mv().getEntity(this.model.get('entity'));
-      
-      if (entity.get('id') === 'indoor_air.quality') {
-        this._template = _.template( $('#indoor_air-custom_device_period_template').html() );
-      }        
+    var entity = App.mv().getEntity(this.model.get('entity'));
+    
+    if (entity.get('id') === 'indoor_air.quality') {
+      this._template = _.template( $('#indoor_air-custom_device_period_template').html() );
+    }        
 
-      this.$el.html(this._template());
+    this.$el.html(this._template());
 
-      this._summaryView = new App.View.DeviceSumary({el: this.$('#summary'),model: this.model});
+    this._summaryView = new App.View.DeviceSumary({el: this.$('#summary'),model: this.model});
 
-      var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
-      var entityVariables = _.filter(metadata, function(el){
-        return el.config ? el.config.active : el.units;
-      });
-      var varAgg = {};
-      for(var i = 0; i<entityVariables.length; i++){
-        var agg = _.findWhere(metadata, {id: entityVariables[i].id}).var_agg[0] || '';
-        varAgg[entityVariables[i].id] = agg.toLowerCase();
-      }
-
-      // TODO: REFACTOR!
-      if (entity.get('id') === 'indoor_air.quality') {
-        this._chartView = new App.View.Widgets.Indoor_air.VariableVsTemperature({
-          el: this.$('#chart'),
-          id_scope: this.model.get('scope'),
-          device: this.model.get('id'),          
-        }).render();
-
-        this._chartView = new App.View.Widgets.Indoor_air.VariableVsHumidity({
-          el: this.$('#chart2'),
-          id_scope: this.model.get('scope'),
-          device: this.model.get('id')          
-        }).render();
-        
-      } else {
-        var multiVariableModel = new Backbone.Model({
-          category:'',
-          title: __('Evolución'),
-          aggDefaultValues: varAgg
-        });
-  
-        // Get variables domains
-        var yDomains = {};
-        _.each(entityVariables, function(elem){
-          if(elem.config && elem.config.local_domain)
-            yDomains[elem.id] = elem.config.local_domain;
-        });
-        if(Object.keys(yDomains > 0)){
-          multiVariableModel.set({ yAxisDomain: yDomains });
-        }
-  
-        var stepModel = new Backbone.Model({
-          'step':'1d'
-        });
-  
-        var entityVariablesIds = _.map(entityVariables, function(el){ return el.id});
-  
-        var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([],{
-          scope: this.model.get('scope'),
-          entity: this.model.get('entity'),
-          device: this.model.get('id'),
-          vars: entityVariablesIds,
-          id:this.model.get('id'),
-          step: '1h',
-          data: {
-            time: {}
-          }
-        });
-  
-        this._chartView = new App.View.Widgets.MultiVariableChart({
-          el: this.$('#chart'),
-          collection:multiVariableCollection,
-          multiVariableModel: multiVariableModel,
-          stepModel: stepModel
-        });
-
-      }
-
-      this._renderer = true;
+    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
+    var entityVariables = _.filter(metadata, function(el){
+      return el.config ? el.config.active : el.units;
+    });
+    var varAgg = {};
+    for(var i = 0; i<entityVariables.length; i++){
+      var agg = _.findWhere(metadata, {id: entityVariables[i].id}).var_agg[0] || '';
+      varAgg[entityVariables[i].id] = agg.toLowerCase();
     }
+
+    // TODO: REFACTOR!
+    if (entity.get('id') === 'indoor_air.quality') {
+      this._chartView = new App.View.Widgets.Indoor_air.VariableVsTemperature({
+        el: this.$('#chart'),
+        id_scope: this.model.get('scope'),
+        device: this.model.get('id'),          
+      }).render();
+
+      this._chartView = new App.View.Widgets.Indoor_air.VariableVsHumidity({
+        el: this.$('#chart2'),
+        id_scope: this.model.get('scope'),
+        device: this.model.get('id')          
+      }).render();
+      
+    } else {
+      var multiVariableModel = new Backbone.Model({
+        category:'',
+        title: __('Evolución'),
+        aggDefaultValues: varAgg
+      });
+
+      // Get variables domains
+      var yDomains = {};
+      _.each(entityVariables, function(elem){
+        if(elem.config && elem.config.local_domain)
+          yDomains[elem.id] = elem.config.local_domain;
+      });
+      if(Object.keys(yDomains > 0)){
+        multiVariableModel.set({ yAxisDomain: yDomains });
+      }
+
+      var stepModel = new Backbone.Model({
+        'step':'1d'
+      });
+
+      var entityVariablesIds = _.map(entityVariables, function(el){ return el.id});
+
+      var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([],{
+        scope: this.model.get('scope'),
+        entity: this.model.get('entity'),
+        device: this.model.get('id'),
+        vars: entityVariablesIds,
+        id:this.model.get('id'),
+        step: '1h',
+        data: {
+          time: {}
+        }
+      });
+
+      this._chartView = new App.View.Widgets.MultiVariableChart({
+        el: this.$('#chart'),
+        collection:multiVariableCollection,
+        multiVariableModel: multiVariableModel,
+        stepModel: stepModel
+      });
+
+      }
 
     return this;
   },
@@ -138,62 +134,59 @@ App.View.DeviceRaw = Backbone.View.extend({
   },
 
   render: function(e){
-    if (!this._renderer){
-      this.$el.html(this._template());
-      this.$('select#time').val(this.model.get('time'));
+    this.$el.html(this._template());
+    this.$('select#time').val(this.model.get('time'));
 
-      var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
-      var entityVariables = _.filter(metadata, function(el){
-        return el.config ? el.config.active : el.units;
-      });
-      var varAgg = [];
-      for(var i = 0; i<entityVariables.length; i++){
-        var agg = metadata[i].var_agg[0] || '';
-        varAgg.push(agg.toLowerCase());
-      }
-      var multiVariableModel = new Backbone.Model({
-        category: '',
-        title: __('Evolución'),
-        aggDefaultValues: varAgg
-      });
-
-      // Get variables domains
-      var yDomains = {};
-      _.each(entityVariables, function(elem){
-        if(elem.config && elem.config.local_domain)
-          yDomains[elem.id] = elem.config.local_domain;
-      });
-      if(Object.keys(yDomains > 0)){
-        multiVariableModel.set({ yAxisDomain: yDomains });
-      }
-
-      var multiVariableCollection = new App.Collection.DeviceRaw([],{
-        scope: this.model.get('scope'),
-        entity: this.model.get('entity'),
-        device: this.model.get('id'),
-        variables: _.pluck(entityVariables,'id'),
-        data: {
-          time: {}
-        }
-      });
-      multiVariableCollection.parse = App.Collection.Variables.Timeserie.prototype.parse;
-
-      this._chartView = new App.View.Widgets.MultiVariableChart({
-        el: this.$('#chart'),
-        collection: multiVariableCollection,
-        multiVariableModel: multiVariableModel,
-        noAgg: true
-      });
-
-      this._tableView = new App.View.Widgets.Device.DeviceRawTable({
-        el: this.$('#table'),
-        model: this.model,
-        collection: multiVariableCollection,
-        vars: entityVariables
-      });
-
-      this._renderer = true;
+    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
+    var entityVariables = _.filter(metadata, function(el){
+      return el.config ? el.config.active : el.units;
+    });
+    var varAgg = [];
+    for(var i = 0; i<entityVariables.length; i++){
+      var agg = metadata[i].var_agg[0] || '';
+      varAgg.push(agg.toLowerCase());
     }
+    var multiVariableModel = new Backbone.Model({
+      category: '',
+      title: __('Evolución'),
+      aggDefaultValues: varAgg
+    });
+
+    // Get variables domains
+    var yDomains = {};
+    _.each(entityVariables, function(elem){
+      if(elem.config && elem.config.local_domain)
+        yDomains[elem.id] = elem.config.local_domain;
+    });
+    if(Object.keys(yDomains > 0)){
+      multiVariableModel.set({ yAxisDomain: yDomains });
+    }
+
+    var multiVariableCollection = new App.Collection.DeviceRaw([],{
+      scope: this.model.get('scope'),
+      entity: this.model.get('entity'),
+      device: this.model.get('id'),
+      variables: _.pluck(entityVariables,'id'),
+      data: {
+        time: {}
+      }
+    });
+    multiVariableCollection.parse = App.Collection.Variables.Timeserie.prototype.parse;
+
+    this._chartView = new App.View.Widgets.MultiVariableChart({
+      el: this.$('#chart'),
+      collection: multiVariableCollection,
+      multiVariableModel: multiVariableModel,
+      noAgg: true
+    });
+
+    this._tableView = new App.View.Widgets.Device.DeviceRawTable({
+      el: this.$('#table'),
+      model: this.model,
+      collection: multiVariableCollection,
+      vars: entityVariables
+    });
+
 
     return this;
   },
@@ -223,15 +216,16 @@ App.View.DeviceLastData = Backbone.View.extend({
   },
 
   render: function(e){
+    
+    var _this = this;
+    this.collection = new Backbone.Collection();
+    this.collection.url = this.model.durl() + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/lastdata';
+    this.listenTo(this.collection,'reset',this._onModelFetched);
+    this.$el.append(App.circleLoading());
+    this.collection.fetch({'reset': true, 'error': function() {
+      _this.$el.html('<div class="device-no-data">' +  __('No hay datos para este dispositivo') + '</div>');
+    }});
 
-    if (!this._renderer){
-      this.collection = new Backbone.Collection();
-      this.collection.url = this.model.durl() + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/lastdata';
-      this.listenTo(this.collection,'reset',this._onModelFetched);
-      this.$el.append(App.circleLoading());
-      this.collection.fetch({'reset': true});
-
-    }
 
     return this;
   },
@@ -335,7 +329,6 @@ App.View.DeviceLastData = Backbone.View.extend({
       this.$('.widget_container').append(this._widgetViews[i].el);
       this._widgetViews[i].render();
     }
-    this._renderer = true;
   }
 
 });

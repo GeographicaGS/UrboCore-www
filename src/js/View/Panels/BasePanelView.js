@@ -28,7 +28,7 @@ App.View.Panels.Base = App.View.Container.extend({
     this.listenTo(this.framesCol, 'reset', this.render);    
     options = _.defaults(options, {
       dateView: true,
-      dateViewMaxRange: moment.duration(1, 'months'),
+      dateViewMaxRange: moment.duration(1, 'year'),
       dateViewModel: App.ctx,
       manageNavBar: true,
       spatialFilter: true,
@@ -78,8 +78,10 @@ App.View.Panels.Base = App.View.Container.extend({
 
     this.$el.attr('data-time-filter', this.dateView);
 
-    if (this.spatialFilter)
-      this.subviews.push(new App.View.Map.FilterSpatial());
+    if (this.spatialFilter) {
+      this.filterSpatialView = new App.View.Map.FilterSpatial();
+      this.subviews.push(this.filterSpatialView);
+    }
 
     if (this.dateView)
       this.subviews.push(new App.View.Date({
@@ -104,7 +106,7 @@ App.View.Panels.Base = App.View.Container.extend({
   render: function(){
     this.$el.html(this._template());
     this.$el.attr('data-vertical', this.id_category);
-
+    
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
@@ -285,6 +287,12 @@ App.View.Panels.Base = App.View.Container.extend({
         columnWidth: 360
       });
     }, reset: true});
+  },
+
+  onClose: function() {
+    if (this.filterSpatialView) {
+      this.filterSpatialView.close()
+    };
   },
 
   _onPopupClose: function(e){

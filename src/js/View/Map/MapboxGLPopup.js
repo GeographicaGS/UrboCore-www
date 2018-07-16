@@ -19,14 +19,23 @@
 // iot_support at tid dot es
 
 'use strict';
+App.View.Map.RowsTemplate = {
+  BASIC_ROW: _.template($('#map-popups-basic_row_template').html()),
+  EXTENDED_TITLE: _.template($('#map-popups-extended_title_template').html()),
+  ACTION_BUTTON: _.template($('#map-popups-action_button_template').html())
+};
 
 App.View.Map.MapboxGLPopup = Backbone.View.extend({
   initialize: function(template) {
     this._template = _.template($(template).html());
   },
 
+  /**
+   * @deprecated
+   */
   bindData: function(label, properties, clicked, deviceViewLink = false) {
     return this._template({
+      'classes': '',
       'name': label,
       'properties': _.filter(_.map(properties, function(p) {
         var multipleFeatures = p.feature.split(" ");
@@ -81,6 +90,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     });
   },
 
+  /**
+   * @deprecated
+   */
   drawTemplate: function(label, properties, clicked, popup, deviceViewLink = false) {
     if (typeof properties === 'function') {
       setTimeout(function() {
@@ -96,5 +108,79 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       return this.bindData(label, properties, clicked, deviceViewLink);
     }
 
+  },
+
+  drawTemplatesRow: function(classes, label, templates, clicked, popup) {
+    var _this = this;
+    if (typeof templates === 'function') {
+      templates = templates(clicked, popup);
+    }
+    return this._template({
+      'classes': classes,
+      'name': label,
+      'templates': _.filter(_.map(templates, function(template) {
+
+        var props = _.map(template.properties, function(property) {
+          return {
+            label: property.label,
+            value: _this.__replacePropertyByValue(property,clicked),
+            units: property.units
+          }
+        });
+        if (props)
+          return {
+            classes: template.classes,
+            output: template.output({ properties: props})
+          };
+      }),function(i) { return i }),
+      'loading': false,
+      'properties': [], // TODO: DEPRECATED PROPERTIES
+      'deviceViewLink': null // TODO: DEPRECATED PROPERTIES
+    });
+  },
+
+
+  /**
+   * Property can be:
+   *  - ?           : OPTIONAL
+   *  - | translate : To translate
+   *  - | exactly   : Is not property, is a String
+   * 
+   *  e.g. 'MORE DETAILS | translate | exactly' 
+   */
+  __replacePropertyByValue: function(property, event) {
+    var clickedProperties = event.features[0].properties;
+    // property can contains '#' (navigation), '| translate' (for translation) and '?' (optionals)
+    var isOptional = property.value.includes('?');
+    property.value = property.value.replace(/\?/g,'');
+
+    var toTranslate = property.value.includes('| translate');
+    property.value = property.value.replace(/\| translate/g,'');
+
+    var isExactly = property.value.includes('| exactly');
+    property.value = property.value.replace(/\| exactly/g,'');
+    
+    var propertiesNavigated;
+    if (!isExactly) {
+      var navigation = property.value.split('#');
+      propertiesNavigated = clickedProperties;
+      for(var i = 0; i < navigation.length; i++) {
+        var step = navigation[i];
+        if (!propertiesNavigated.hasOwnProperty(step)) {
+          break;
+        }
+        propertiesNavigated = propertiesNavigated[step];
+      }
+    } else {
+      propertiesNavigated = property.value;
+    }
+
+    if (toTranslate && !propertiesNavigated) {
+      propertiesNavigated = __(propertiesNavigated);
+    }
+
+    // TODO: If properties is OPTIONAL?????
+    
+    return propertiesNavigated;
   }
 });

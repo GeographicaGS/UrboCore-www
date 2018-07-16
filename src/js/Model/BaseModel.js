@@ -95,3 +95,34 @@ App.Model.TilesModel = Backbone.Model.extend({
       });
     }
   });
+
+  App.Model.FunctionModel = Backbone.Model.extend({
+    
+    initialize: function(options) {
+      this.function = options.function;
+      this.params = options.params;
+    },
+  
+    fetch: function(opts) {
+      if (opts.data && opts.data.params) {
+        this.params = opts.data.params
+      }
+      var result = this.function.apply(this, this.params);
+      this.set('response', result);
+    }
+  });
+
+  App.Model.MapsModel = App.Model.Post.extend({
+    initialize: function(options) {
+      this.options = options;
+    },
+  
+    url: function(options) {
+      return App.config.api_url + "/" + this.options.scope + "/maps/" + this.options.entity + "/" + this.options.type; 
+    },
+  
+    fetch: function(options) {
+      options.data.filters.conditions = options.data.filters.conditions || {};
+      return App.Model.Post.prototype.fetch.call(this, options);
+    }
+  });
