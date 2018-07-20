@@ -65,6 +65,9 @@ App.View.Widgets.VariableSimple = Backbone.View.extend({
         data: model,
         success: function(m){
           var d = m.toJSON();
+          if (!d.units) {
+            d.units = null;
+          }
           _this.$el.html(_this._template(d));
         }
       });

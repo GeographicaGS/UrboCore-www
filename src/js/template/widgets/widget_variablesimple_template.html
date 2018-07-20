@@ -2,6 +2,9 @@
   <div class="majorInfo" style="margin-top:55px;">
     <div class="data">
       <%= App.nbf(value, {decimals: 0})%>
+      <% if (units) {%>
+        <%= units %>
+      <% } %>
     </div>
   </div>
 </div>
