@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -124,8 +124,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }
       if(this.data.where({'disabled': false}).length == 1){
         var json = this._getUniqueDataEnableToDraw();
-        this.svgChart.datum(json).call(this.chart)
-        this.svgChart.classed('normalized',false)
+        this.svgChart.datum(json).call(this.chart);
+        this.svgChart.classed('normalized',false);
         this._updateYAxis();
       }else{
         this.svgChart.datum(this.data.toJSON()).call(this.chart)
@@ -218,7 +218,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           });
         })
       );
-      
+
       _.each(this._internalData.disabledList, function(value, key) {
         if (value) {
           _this.data.find({'realKey': key}).set('disabled', true);
@@ -270,7 +270,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this._updateYAxis();
 
     // Force Y axis domain because of normalization
-    this.chart.forceY([0,1]);
+    // this.chart.forceY([0,1]);
 
     this.chart.interactiveLayer.tooltip.contentGenerator(function(data) {
       _.each(data.series,function(s) {
