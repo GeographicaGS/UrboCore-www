@@ -48,6 +48,7 @@ App.Router = Backbone.Router.extend({
       ':scope/frames/:id': 'frame',
       ':scope/:category/frames/:id': 'frameVertical',
 
+      ':scope/custom/:category/:entity/:id(/:section)' : 'customdevice',
       // Generic routes
       ':scope/:entity/:id(/:section)' : 'device',
 
@@ -229,6 +230,14 @@ App.Router = Backbone.Router.extend({
       section = 'lastdata';
     var model = new App.Model.Device({'scope':scope, 'entity':entity,'id': id,'tab': section});
     var view = new App.View.Device({'model': model});
+    App.showView(view.render());
+  },
+
+  customdevice: function(scope,category,entity,id,section){
+    this.setCurrentScope(scope);
+    var categoryCapitalize = App.Utils.capitalizeFirstLetter(category)
+    var model = new App.Model.Device({'scope':scope, 'entity':entity,'id': id,'tab': section});
+    var view = new App.View.Device[categoryCapitalize].Custom({'model': model});
     App.showView(view.render());
   },
 
