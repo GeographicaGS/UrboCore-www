@@ -19,7 +19,7 @@
       <ul>
         <li data-el='ctrl_lastdata' selected><%=__('Datos básicos')%></li>
         <li data-el='ctrl_period'><%=__('Promedios')%></li>
-        <%if(entity != 'lighting.stcabinet' && entity != 'environment.airqualityobserved' 
+        <%if(entity != 'lighting.stcabinet' && entity != 'lighting.streetlight' && entity != 'environment.airqualityobserved' 
           && entity != 'environment.noiseobserved' && entity != 'environment.weatherobserved' && entity != 'indoor_air.quality'){%>
           <li data-el='ctrl_raw'><%=__('Datos brutos')%></li>
         <%}%>
