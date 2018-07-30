@@ -149,6 +149,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
    *  e.g. 'MORE DETAILS | translate | exactly' 
    */
   __replacePropertyByValue: function(property, event) {
+    property = _.assign({},property);
     var clickedProperties = event.features[0].properties;
     // property can contains '#' (navigation), '| translate' (for translation) and '?' (optionals)
     var isOptional = property.value.includes('?');
