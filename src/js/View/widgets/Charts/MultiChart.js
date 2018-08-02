@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -65,7 +65,7 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
         elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
       } else {
         elem.type = _this.options.get('keysConfig')['*'].type;
-        elem.yAxis = _this.options.get('keysConfig')['*'].axis        
+        elem.yAxis = _this.options.get('keysConfig')['*'].axis
       }
 
       if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
@@ -276,7 +276,7 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
       do {
         datesInterval.push(nextDate);
         nextDate = d3.time.hour.offset(nextDate, diff);
-      }while(finish.isAfter(nextDate));
+      }while(finish.isAfter(nextDate) && diff > 0);
 
       this._chart.xAxis
         .domain([start.toDate(),finish.toDate()])

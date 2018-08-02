@@ -176,7 +176,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
         } else {
           elem.type = _this.options.get('keysConfig')['*'].type;
-          elem.yAxis = _this.options.get('keysConfig')['*'].axis        
+          elem.yAxis = _this.options.get('keysConfig')['*'].axis
         }
 
         if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
@@ -324,7 +324,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('transform', 'translate(0,' + this._chart.h + ')')
         .call(this._chart.xAxis);
 
-      
+
       var xAxis = this._chart.svg
         .selectAll('.axis.x-axis .tick');
 
@@ -477,7 +477,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('r', 3)
         .attr('data-y', function(d, idx) {return d.y});
 
-    
+
 
     this._chart.line.push(line);
   },
@@ -561,7 +561,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       do {
         datesInterval.push(nextDate);
         nextDate = d3.time.hour.offset(nextDate, diff);
-      }while(finish.isAfter(nextDate));
+      }while(finish.isAfter(nextDate) && diff > 0);
 
       var _this = this;
       this._chart.xAxis = d3.svg.axis()
