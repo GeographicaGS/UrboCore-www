@@ -756,13 +756,13 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0] - $tooltip.width() - 100
+        left: cursorPos[0] - $tooltip.width() - 50
       });
     }else {
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0] - 50
+        left: cursorPos[0]
       });
     }
 
