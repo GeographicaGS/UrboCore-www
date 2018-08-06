@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -645,7 +645,7 @@
       z-index: 9;
       top: 10px;
       left: 50%;
-      width: 158px;
+      width: 200px;
       height: 32px;
       display: flex;
       flex-direction: column;
@@ -654,7 +654,7 @@
       background-color: #fff;
       border: 1px solid @grey;
       border-radius: 1px;
-     
+
       background-image: url('/img/arrow-dropdown.svg');
       background-repeat: no-repeat;
       background-position: calc(100% - 4px);
@@ -678,9 +678,9 @@
           width: 200px;
           opacity: 1;
           transition: opacity ease 0.1s, transform linear 0.1s;
-          transform: translateY(0);          
+          transform: translateY(0);
           pointer-events: unset;
-    
+
           &:not(.showing) {
             pointer-events: none;
             transform: translateY(-10px);
@@ -697,7 +697,7 @@
             &:not(:last-child) {
               border-bottom: 1px solid @grey2;
             }
-          
+
             &:hover {
               background-color: #fff;
             }
@@ -786,7 +786,7 @@
         border-right-color: @blue;
       }
     }
-    
+
     .mapboxgl-popup {
       max-width: 260px;
 
@@ -859,12 +859,12 @@
         }
       }
     }
-    
+
     .mapboxgl-popup-close-button {
       font-size: 20px;
       color: #8AA8C3
     };
-  
+
     &#map .basemapselector {
       display: none;
     }
@@ -879,7 +879,7 @@
         bottom: 0;
         background: #fff;
     }
-  
+
     .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
       margin-right: 0 !important;
     }
