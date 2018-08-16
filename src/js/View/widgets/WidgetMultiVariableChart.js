@@ -307,7 +307,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var col = this.data.where({'disabled': false});
     if(col.length == 1){
       var values = col[0].get('values');
-      var format = App.d3Format.numberFormat('s');
+      var format = App.nbf;
       for(var i=0; i<values.length; i++){
         if(values[i].realY < 1){
           format = App.d3Format.numberFormat(',.3r');
