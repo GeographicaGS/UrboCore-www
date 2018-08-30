@@ -49,7 +49,7 @@ App.View.Map.LayerTree.Filters.CategoryFn = function(filters){
     for (var f in filters){
       if (filters[f]){
         var v = _.find(values,{var: f});
-        if (v && filters[f].indexOf(v.value)==-1)
+        if (v && filters[f].indexOf(v.value.toString())==-1)
           return false;
       }
     }
