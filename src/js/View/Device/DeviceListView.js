@@ -25,7 +25,10 @@ App.View.DeviceList = Backbone.View.extend({
 
   initialize: function(options) {
 
-	this.model = options.model;
+  this.model = options.model;
+  if (options.template) {
+    this._template = options.template;
+  }
 	this._collection = new Backbone.Collection();
 	this._collection.url = App.config.api_url + '/' + this.model.get('scope') +'/entities/' + this.model.get('entity') + '/elements';
 	this.listenTo(this._collection,'reset',this.render);
