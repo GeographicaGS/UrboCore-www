@@ -23,7 +23,7 @@
           && entity != 'environment.noiseobserved' && entity != 'environment.weatherobserved' && entity != 'indoor_air.quality'){%>
           <li data-el='ctrl_raw'><%=__('Datos brutos')%></li>
         <%}%>
-        <%if(entity == 'watering.sosteco.solenoidvalve'){%>
+        <%if(entity == 'watering.sosteco.solenoidvalve' || entity == 'irrigation.solenoidvalve'){%>
           <li data-el='ctrl_other'><%=__('Otros datos')%></li>
         <%}%>
       </ul>
