@@ -156,7 +156,7 @@ App.View.Widgets.Charts.FillBar = App.View.Widgets.Charts.Bar.extend({
         .attr('x', barsWrapCTM.e) // start rectangle where barsWrap will start
         .attr('y', barsWrapCTM.f) // start rectangle where barsWrap will start
         .attr('width', svgBBox.width - barsWrapCTM.e + svgBBox.x) // full width
-        .attr('height', svgBBox.height - barsWrapCTM.f + svgBBox.y - 23) // full height - barsWrap margin - chart margin
+        .attr('height', svgBBox.height - barsWrapCTM.f + svgBBox.y - 7) // full height - barsWrap margin - chart margin
         .attr('fill', 'rgba(66,139,202, 0.2)');
   
       //Linea divisoria para warning y error
