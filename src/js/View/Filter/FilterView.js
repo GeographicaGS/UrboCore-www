@@ -266,3 +266,50 @@ App.View.Filter.RangeTimeSlider = App.View.Filter.RangeSlider.extend({
     this._updateSpanPosition();
   },
 })
+
+
+App.View.Filter.SimpleSlider = App.View.Filter.RangeSlider.extend({
+  render: function(){
+    var d = this.model.get(this.options.property);
+    this.labels = this.options.domainLabels || [];
+    var defaultValues = [(d.start || this.options.domain[0]), (d.finish || this.options.domain[1])]
+
+    this.$el.slider({
+      step: this.options.step,
+      min: this.options.min,
+      max: this.options.max,
+      value: d,
+      slide: this._slide,
+      change: this._change
+    });
+
+    
+    this.$el.append('<span class="min_value">' + (d.start || this.labels[0]) + '</span>');
+    this.$el.append('<span class="max_value">' + (d.finish || this.labels[1]) + '</span>');
+    this.$el.append('<span class="line"></span>');
+    this.$('.line').css({'width':$(this.$('.ui-slider-handle')[0]).css('left')});
+    
+
+
+    return this;
+  },
+
+  _change: function(e, ui ) {
+    var value = parseFloat(ui.value);
+
+      
+    this._updateSpanPosition();
+
+    var c = value;
+    this.model.set(this.options.property,c);
+  },
+
+  _slide: function(e, ui ) {
+  },
+
+  _updateSpanPosition: function() {
+    this.$('.min_value').css({'left': 0});
+    this.$('.line').css({'width':$(this.$('.ui-slider-handle')[0]).css('left')});
+    
+  }
+})
