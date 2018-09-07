@@ -44,7 +44,7 @@
 		<div class="content <%=alertClass%>">
       <p class="variable"><%= __(d.title ? d.title : mdVar.name)%></p>
       <p class="value alert_0">
-        <%= d.formatFN(d.value)%>
+        <%= __(d.formatFN(d.value))%>
         <span class="measure alert_0"><%= units ? units : '' %></span>
       </p>
       <% if(i == lastdata.length - 1) { %><p class="date"><%=App.formatDateTime(timeinstant)%></p><% } %>

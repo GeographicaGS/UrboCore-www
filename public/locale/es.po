@@ -40,3 +40,9 @@ msgstr "Malo"
 
 msgid "very bad"
 msgstr "Muy malo"
+
+msgid "Invalid date"
+msgstr "Fecha incorrecta"
+
+msgid "Invalid Date"
+msgstr "Fecha incorrecta"
