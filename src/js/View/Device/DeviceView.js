@@ -122,7 +122,9 @@ App.View.Device = Backbone.View.extend({
       case 'watering.sosteco.solenoidvalve':
         otherView = new App.View.Watering.OtherView({model: new Backbone.Model(this.model.toJSON())});
         break;
-
+      case 'irrigation.solenoidvalve':
+        otherView = new App.View.Panels.Irrigation.Devices.OtherView({model: new Backbone.Model(this.model.toJSON())});
+        break;
       default:
         otherView = null;
     }
