@@ -8,7 +8,7 @@
         <%
         var formats = m.get('columns_format');
         _.each(formats,function(c,i){%>
-          <th class="<%=c.css_class%>"><%=c.title%></th>
+          <th class="<%=c.css_class%>"><%=(typeof c.title === 'function') ? c.title() : c.title%></th>
           <%})%>
         </tr>
         <%
