@@ -6,7 +6,7 @@
     <div class="variable-value">
       <%= variable.nbf(model[variable.param]) %>
       <span class="variable-unit">
-        <%= variable.units %>      
+        <%= (typeof variable.units === 'function') ? variable.units() : variable.units %>      
       </span>
     </div>
   </div>
