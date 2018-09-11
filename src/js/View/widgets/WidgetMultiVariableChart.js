@@ -67,7 +67,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this._ctx = App.ctx;
     this.listenTo(this._ctx,'change:start change:finish change:bbox',function(){
-
+      if (!this.collection.options.data) {
+        this.collection.options.data = {time:{}}
+      }
       this.collection.options.data.time.start = this._ctx.get('start').format();
       this.collection.options.data.time.finish = this._ctx.get('finish').format();
 

@@ -286,7 +286,9 @@ App.View.Filter.SimpleSlider = App.View.Filter.RangeSlider.extend({
     
     this.$el.append('<span class="min_value">' + (d.start || this.labels[0]) + '</span>');
     this.$el.append('<span class="max_value">' + (d.finish || this.labels[1]) + '</span>');
+    this.$el.append('<span class="curr_value">' + (d || this.labels[1]) + '</span>');
     this.$el.append('<span class="line"></span>');
+    this.$('.curr_value').css({'left': $(this.$('.ui-slider-handle')[0]).css('left')});        
     this.$('.line').css({'width':$(this.$('.ui-slider-handle')[0]).css('left')});
     
 
@@ -304,7 +306,16 @@ App.View.Filter.SimpleSlider = App.View.Filter.RangeSlider.extend({
     this.model.set(this.options.property,c);
   },
 
+  _prevPageX: null,
   _slide: function(e, ui ) {
+    if (e.pageX < this._prevPageX) {
+      this.$('.curr_value').css({'left': 'calc(' + $(this.$('.ui-slider-handle')[0]).css('left') + ' - 12px)'});    
+    } else {
+      this.$('.curr_value').css({'left': 'calc(' + $(this.$('.ui-slider-handle')[0]).css('left') + ' + 12px)'});    
+    }
+    this._prevPageX = e.pageX;
+
+    this.$('.curr_value').text(ui.value);    
   },
 
   _updateSpanPosition: function() {
