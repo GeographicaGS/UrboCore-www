@@ -182,6 +182,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
 
     // TODO: If properties is OPTIONAL?????
     
+    if (property.nbf) {
+      propertiesNavigated = property.nbf(propertiesNavigated);
+    }
     return propertiesNavigated;
   }
 });
