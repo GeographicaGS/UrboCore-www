@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -28,10 +28,10 @@ App.View.DevicePeriod = Backbone.View.extend({
   render: function(e){
 
     var entity = App.mv().getEntity(this.model.get('entity'));
-    
+
     if (entity.get('id') === 'indoor_air.quality') {
       this._template = _.template( $('#indoor_air-custom_device_period_template').html() );
-    }        
+    }
 
     this.$el.html(this._template());
 
@@ -39,7 +39,7 @@ App.View.DevicePeriod = Backbone.View.extend({
 
     var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
     var entityVariables = _.filter(metadata, function(el){
-      return el.config ? el.config.active : el.units;
+      return (el.config ? el.config.active : el.units) && (el.var_agg && el.var_agg.length && el.var_agg[0]!=="NOAGG");
     });
     var varAgg = {};
     for(var i = 0; i<entityVariables.length; i++){
@@ -52,15 +52,15 @@ App.View.DevicePeriod = Backbone.View.extend({
       this._chartView = new App.View.Widgets.Indoor_air.VariableVsTemperature({
         el: this.$('#chart'),
         id_scope: this.model.get('scope'),
-        device: this.model.get('id'),          
+        device: this.model.get('id'),
       }).render();
 
       this._chartView = new App.View.Widgets.Indoor_air.VariableVsHumidity({
         el: this.$('#chart2'),
         id_scope: this.model.get('scope'),
-        device: this.model.get('id')          
+        device: this.model.get('id')
       }).render();
-      
+
     } else {
       var multiVariableModel = new Backbone.Model({
         category:'',
@@ -216,7 +216,7 @@ App.View.DeviceLastData = Backbone.View.extend({
   },
 
   render: function(e){
-    
+
     var _this = this;
     this.collection = new Backbone.Collection();
     this.collection.url = this.model.durl() + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/lastdata';
@@ -503,7 +503,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
       return el.units;
     });
     this.entityVariables = _.map(this.entityVariables, function(el){ return el.id});
-    
+
     this.collection = new Backbone.Collection();
     for(var i = 0; i<this.entityVariables.length; i++){
       var meta = _.findWhere(this.metadata, {id: this.entityVariables[i]});
