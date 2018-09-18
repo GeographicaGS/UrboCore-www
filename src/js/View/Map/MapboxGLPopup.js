@@ -115,6 +115,13 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     if (typeof templates === 'function') {
       templates = templates(clicked, popup);
     }
+
+    templates = _.filter(templates, function(t) {
+      if (t.hasOwnProperty('permissions')) {
+        return App.mv().validateInMetadata(t.permissions);
+      }
+      return true;
+    })
     return this._template({
       'classes': classes,
       'name': label,
@@ -132,7 +139,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             classes: template.classes,
             output: template.output({ properties: props})
           };
-      }),function(i) { return i }),
+      }),function(i) { 
+        return i 
+      }),
       'loading': false,
       'properties': [], // TODO: DEPRECATED PROPERTIES
       'deviceViewLink': null // TODO: DEPRECATED PROPERTIES
