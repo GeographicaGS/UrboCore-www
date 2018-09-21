@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -25,7 +25,7 @@ App.View.MapSearch = Backbone.View.extend({
   _template_list: _.template( $('#map-search_template_list').html()),
 
   initialize: function(options) {
-    
+
     _.bindAll(this,'_updateTerm');
 
     this._map = options.map;
@@ -35,7 +35,7 @@ App.View.MapSearch = Backbone.View.extend({
     var icon = L.icon({
         iconUrl: '/img/SC_marcador_busqueda.svg',
         iconSize:     [50, 50],
-        iconAnchor:   [25, 50] 
+        iconAnchor:   [25, 50]
     });
 
     this._markerS = L.marker([0,0],{'clickable':false, 'opacity':0, zIndexOffset:'999', 'icon': icon}).addTo(this._map);
@@ -90,7 +90,7 @@ App.View.MapSearch = Backbone.View.extend({
     var bbox = elem.get('bbox');
     var maxZoom = 18;
     if(elem.get('type') == 'device'){
-      maxZoom = 20;
+      maxZoom = 19;
       this._markerS.setLatLng([bbox[1],bbox[0]])
     }else{
       this._markerS.setLatLng([(bbox[3]+bbox[1])/2,(bbox[2]+bbox[0])/2])
