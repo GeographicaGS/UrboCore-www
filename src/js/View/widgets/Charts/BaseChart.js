@@ -100,7 +100,12 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
   render: function(){
     if(this.options.has('currentStep')){
-      this.options.set({ stepsAvailable: App.Utils.getStepsAvailable() });
+      var dates = null;
+      if (this.collection
+        && this.collection.timeMode === '24h') {
+        dates = {start: moment.utc().subtract(24, 'hours'), finish: moment.utc()}
+      }
+      this.options.set({ stepsAvailable: App.Utils.getStepsAvailable(dates) });
       if(!_.contains(this.options.get('stepsAvailable'), this.options.get('currentStep'))){
         this.options.set({currentStep: this.options.get('stepsAvailable')[this.options.get('stepsAvailable').length - 1] });
       }
@@ -111,7 +116,6 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
     this.$el.append(App.widgetLoading());
     // this._fetchData();
-
     try{
       this._fetchData();
     }catch(e){
@@ -217,11 +221,17 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     }
 
     // Date
-    if(requestData && requestData.time && !requestData.time.start){
-      var date = App.ctx.getDateRange();
+    var date = App.ctx.getDateRange();
+    
+    if (this.collection.timeMode === '24h') {
+      var date = {start: moment.utc().subtract(24, 'hours'), finish: moment.utc()}
+    } 
+
+    if(requestData && requestData.time && requestData.time.start){
       requestData.time.start = date.start;
       requestData.time.finish = date.finish;
     }
+
 
     // Aggregation
     if(this._aggregationInfo){
