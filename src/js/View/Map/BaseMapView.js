@@ -73,7 +73,7 @@ App.View.Map.Base = Backbone.View.extend({
     this.map = new L.Map(this.$el[0], {
       zoomControl : false,
       minZoom : 2,
-      maxZoom : 100,
+      maxZoom : 19,
       scrollWheelZoom: false
     });
 
