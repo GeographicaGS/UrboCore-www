@@ -180,7 +180,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
       time: {
         start: App.ctx.getDateRange().start,
         finish: App.ctx.getDateRange().finish,
-        step: this.options.vars
+        step: this.options.step
       },
       findTimes : false,
       filters: {
