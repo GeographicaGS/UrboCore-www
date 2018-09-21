@@ -758,7 +758,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var cursorPos = d3.mouse(_this);
     $tooltip.css({position: 'absolute'});
     if (cursorPos[0] + $tooltip.width() > this.$el.width() - 100) {
-      console.log("entra")
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
