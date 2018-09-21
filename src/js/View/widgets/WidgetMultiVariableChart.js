@@ -237,7 +237,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this.chart = nv.models.lineChart()
                           .useInteractiveGuideline(true)
-                          .margin({'right':30})
+                          .margin({'right':45})
                           .height(268)
                           .noData(__('No hay datos disponibles'))
     ;
