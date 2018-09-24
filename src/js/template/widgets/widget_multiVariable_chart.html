@@ -19,7 +19,8 @@
 			<%= __('Periodo') %><a class="popup_widget step" href="#"><%=App.stepToStr(s.step)%>
 				<div class="varsel">
 						<ul>
-							<!-- <li data-step="30m" class="<%='30' == s.step ? 'selected':''%>"><%=App.stepToStr('30m')%></li> -->
+							<li data-step="15m" class="<%='15' == s.step ? 'selected':''%>
+									<%=!_.contains(stepsAvailable, '15m') ? 'disabled' : ''%>"><%=App.stepToStr('15m')%></li>
 							<li data-step="1h" class="<%='1h' == s.step ? 'selected':''%>
 								<%=!_.contains(stepsAvailable, '1h') ? 'disabled' : ''%>">
 								<%=App.stepToStr('1h')%></li>
