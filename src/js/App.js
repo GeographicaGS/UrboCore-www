@@ -330,6 +330,8 @@ App.stepToStr = function(timeunit){
     return __('4 Horas');
   else if (timeunit=='30m')
     return __('30 minutos');
+  else if (timeunit=='15m')
+    return __('15 minutos');
 }
 
 App.scopeOptionsToStr = function(scopeOption) {
