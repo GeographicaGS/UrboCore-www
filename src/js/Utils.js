@@ -64,9 +64,9 @@ App.Utils = {
     return stepsAvailable;
   },
 
-  getStepsAvailable: function(){
-    var start = App.ctx.toJSON().start;
-    var finish = App.ctx.toJSON().finish;
+  getStepsAvailable: function(dates){
+    var start = dates? moment(dates.start) : App.ctx.toJSON().start;
+    var finish = dates? moment(dates.finish) : App.ctx.toJSON().finish;
 
     var stepsAvailable = [];
 

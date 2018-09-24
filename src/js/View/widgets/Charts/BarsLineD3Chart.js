@@ -166,7 +166,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           _this.data.push(procSubelem);
         });
       }else{
-
         elem.realKey = elem.key;
         if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
           elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
@@ -289,14 +288,17 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       return _this.xScaleBars(d) + offset;
     };
 
+    var scale1Fn = this.options.get('y1Scale') || 'linear'
+    var scale2Fn = this.options.get('y2Scale') || 'linear'
+
     this.yScales = [
-      d3.scale.linear()
+      d3.scale[scale1Fn]()
         .domain(this.yAxisDomain[0])
         .range([this._chart.h, 0])
     ]
     if(this.yAxisDomain[1]) {
       this.yScales.push(
-        d3.scale.linear()
+        d3.scale[scale2Fn]()
           .domain(this.yAxisDomain[1])
           .range([this._chart.h, 0])
       )
@@ -356,7 +358,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           .text(_this.options.get('yAxisLabel')[0])
         ;
       }
-
+      
       if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
         var yAxis2 = this._chart.svg.append('g')
           .attr('class', 'axis y-axis y-axis-2')
@@ -616,9 +618,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       .orient('left')
       .tickValues(range)
       .tickSize(-1 * this._chart.w ,0)
-      .tickPadding(10)
-      .tickFormat(this.options.get('yAxisFunction')[0])
-    ;
+      .tickPadding(10);
+    if(!this.options.get('hideYAxis1')) {
+      this._chart.yAxis1.tickFormat(this.options.get('yAxisFunction')[0]);
+    } else {
+      this._chart.yAxis1.tickFormat('');
+    }
 
     if(this.yAxisDomain[1]){
       diff = (this.yAxisDomain[1][1] - this.yAxisDomain[1][0]) / 4;
@@ -756,13 +761,13 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0] - $tooltip.width() - 50
+        left: cursorPos[0] - 2 * $tooltip.width() + 75
       });
     }else {
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0]
+        left: cursorPos[0] - 100
       });
     }
 

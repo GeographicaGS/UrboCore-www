@@ -45,7 +45,7 @@ App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
     columns.unshift({
       key: 'time',
       title: 'Fecha',
-      format: function(d){return App.formatDateTime(d);}
+      format: function(d){return App.formatDateTime(d, 'DD/MM/YYYY HH:mm:ss');}
     });
     _.each(columns, function(el){
       if(['dumps.container.datelastemptying'].indexOf(el.key) !== -1) // It is using an array to let you add more items when needed

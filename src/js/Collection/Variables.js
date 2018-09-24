@@ -24,7 +24,8 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
   initialize: function(models,options) {
       this.options = options;
       var date = App.ctx.getDateRange();
-
+      if (this.options.date && this.options.date.start)
+        date = this.options.date
       this.options.data = {
         agg: this.options.agg,
         vars: this.options.vars,

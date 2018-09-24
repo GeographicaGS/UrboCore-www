@@ -46,7 +46,7 @@
     border-radius: 2px;
     width: 33px;
     right: 16px;
-    top: calc(~'50% - 33px - 40px');   
+    top: calc(~'50% - 33px - 40px');
     .control {
       height: 31px;
       display: flex;
@@ -65,7 +65,7 @@
 
       &.out {
         background-image: url(/img/SC_ico_herram_zmenos.svg)
-        
+
       }
 
       &:not(:last-child) {
@@ -121,6 +121,7 @@
 
 .leaflet-popup.hoverPopup {
   cursor: pointer;
+  pointer-events: none;
 
   .leaflet-popup-content-wrapper {
     background-color: fade(@black, 85%);
