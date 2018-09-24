@@ -99,6 +99,7 @@ App.Utils = {
       case '4h':  return 4;
       case '2h':  return 2;
       case '1h':  return 1;
+      case '15m':  return .25;
       default:    return -1;
     }
   },
