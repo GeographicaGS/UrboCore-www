@@ -50,6 +50,7 @@ App.Utils = {
     var thresholdTime = this.thresholdToDataChartInHours;
     var differenceInHours = finish.diff(start, "hour");
     if(differenceInHours <= thresholdTime) {
+      stepsAvailable.push('15m');      
       stepsAvailable.push('1h');
     }
     if(differenceInHours / 2 <= thresholdTime) {
@@ -73,6 +74,7 @@ App.Utils = {
     var thresholdTime = this.thresholdToDataChartInHours;
     var differenceInHours = finish.diff(start, "hour");
     if(differenceInHours <= thresholdTime) {
+      stepsAvailable.push('15m');
       stepsAvailable.push('1h');
     }
     if(differenceInHours / 2 <= thresholdTime) {
