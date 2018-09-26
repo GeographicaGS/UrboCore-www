@@ -301,8 +301,8 @@ App.View.Widgets.StackedBars = Backbone.View.extend({
           .attr("xlink:href", '/img/SC_ic_flecha-saltar.svg')
           .attr("width", 18)
           .attr("height", 18)
-          .attr("x", 2)
-          .attr("y", 2);
+          .attr("x", 8)
+          .attr("y", -1);
 
       this._firstDataButton = d3.select(this.$('.chart')[0])
         .append('g')
@@ -325,6 +325,8 @@ App.View.Widgets.StackedBars = Backbone.View.extend({
           .attr('height', 20)
           .attr('transform', 'translate(0,-6)')
           .attr('text-anchor', 'middle')
+          .attr('fill', 'white')
+          .attr('font-size', '14px')
           .text('Saltar a los datos');
     }
   },
