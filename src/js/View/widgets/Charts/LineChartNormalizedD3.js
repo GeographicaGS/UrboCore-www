@@ -53,7 +53,16 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
     if( this._internalData.elementsDisabled < _.where(this.data, {'disabled': false}).length - 1){
       d3.select(this.$('.chart')[0]).classed('normalized',true);
     }else{
+      var __tmp__ = _.filter(this.data, function(e) {
+        return !this._internalData.disabledList[e.realKey]
+      }.bind(this));
       d3.select(this.$('.chart')[0]).classed('normalized',false);
+      if (__tmp__.length)
+        d3.selectAll(this.$('g.axis.y-axis-1 text.axis-label'))
+          .text(__tmp__[0].key +
+            (App.mv().getVariable(__tmp__[0].realKey).get('units') ? 
+              ' (' + App.mv().getVariable(__tmp__[0].realKey).get('units') + ')' : 
+              ''));
     }
 
     // Remove loading animation
