@@ -145,7 +145,6 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
       if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
       if(domains[1][1] < maxAxis2) domains[1][1] = Math.ceil(maxAxis2);
     }
-    console.log(domains)
     this.yAxisDomain = domains;
   },
 
