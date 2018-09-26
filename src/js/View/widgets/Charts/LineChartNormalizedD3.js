@@ -50,6 +50,20 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
 
     // Create tooltips
     this._initTooltips();
+    if( this._internalData.elementsDisabled < _.where(this.data, {'disabled': false}).length - 1){
+      d3.select(this.$('.chart')[0]).classed('normalized',true);
+    }else{
+      var __tmp__ = _.filter(this.data, function(e) {
+        return !this._internalData.disabledList[e.realKey]
+      }.bind(this));
+      d3.select(this.$('.chart')[0]).classed('normalized',false);
+      if (__tmp__.length)
+        d3.selectAll(this.$('g.axis.y-axis-1 text.axis-label'))
+          .text(__tmp__[0].key +
+            (App.mv().getVariable(__tmp__[0].realKey).get('units') ? 
+              ' (' + App.mv().getVariable(__tmp__[0].realKey).get('units') + ')' : 
+              ''));
+    }
 
     // Remove loading animation
     this.$('.loading.widgetL').addClass('hiden');
@@ -65,107 +79,55 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
     var min = [],
         max = [];
     var _this = this;
+    // tempData = _.filter(tempData, function (d) {
+    //   return !_this._internalData.disabledList[d.key]
+    // });
     _.each(tempData, function(elem, dataIdx){
       // Check aggregations
-      if(elem.values && elem.values.length && elem.values[0].y && elem.values[0].y.constructor === Array){
-        _.each(elem.values[0].y, function(subelem, subElemIdx){
-          var key = elem.key + '_' + subelem.agg.toLowerCase();
-          var procSubelem = {
-              key: (_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key)) ? _this.options.get('legendNameFunc')(elem.key) + ' (' + subelem.agg + ')' : key,
-              agg: subelem.agg,
-              realKey: key,
-              type: _this.options.get('keysConfig')[key].type,
-              yAxis: _this.options.get('keysConfig')[key].axis,
-              values: []
-          };
+      elem.realKey = elem.key;
+      if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
+        elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
 
-          if(elem.values && elem.values.length && elem.values[0].x){
-            var axis = procSubelem.yAxis - 1;
-            min[axis] = min[axis] || [];
-            max[axis] = max[axis] || [];
-            var i = 0;
-            if(elem.values[0].x.constructor == Date){
-              var timeFormatter = d3.time.format.iso;
-              _.each(elem.values, function(value, idx){
-                procSubelem.values[idx] = {
-                  x: timeFormatter.parse(value.x),
-                  y: value.y[subElemIdx].value
-                };
-                if(_this.options.get('stacked')){
-                  max[axis][i] = max[axis][i] ? max[axis][i] + procSubelem.values[idx].y : procSubelem.values[idx].y;
-                }else{
-                  max[axis].push(procSubelem.values[idx].y)
-                }
-                min[axis].push(procSubelem.values[idx].y);
-                i += 1;
-              });
-            }else{
-              _.each(elem.values, function(value, idx){
-                procSubelem.values[idx] = {
-                  x: value.x,
-                  y: value.y[subElemIdx].value
-                };
-                if(_this.options.get('stacked')){
-                  max[axis][i] = max[axis][i] ? max[axis][i] + procSubelem.values[idx].y : procSubelem.values[idx].y;
-                }else{
-                  max[axis].push(procSubelem.values[idx].y)
-                }
-                min[axis].push(procSubelem.values[idx].y);
-                i += 1;
-              });
-            }
-          }
-
-          _this.data.push(procSubelem);
-        });
-      }else{
-        elem.realKey = elem.key;
-        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
-          elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
-
-        if (_this.options.get('keysConfig')[elem.realKey]) {
-          elem.type = _this.options.get('keysConfig')[elem.realKey].type;
-          elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
-        } else {
-          elem.type = _this.options.get('keysConfig')['*'].type;
-          elem.yAxis = _this.options.get('keysConfig')['*'].axis
-        }
-
-        if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
-          var timeFormatter = d3.time.format.iso;
-          var axis = elem.yAxis - 1;
-          min[axis] = min[axis] || [];
-          max[axis] = max[axis] || [];
-          var i = 0;
-          var __realKey__ = elem.realKey;
-          _.each(elem.values, function(value){
-            value.x = timeFormatter.parse(value.x);
-            value.__realKey__ = __realKey__;
-            if(_this.options.get('stacked')){
-              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
-            }else{
-              max[axis].push(value.y);
-            }
-            min[axis].push(value.y);
-            i += 1;
-          });
-        } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
-          var axis = elem.yAxis - 1;
-          min[axis] = min[axis] || [];
-          max[axis] = max[axis] || [];
-          var i = 0;
-          _.each(elem.values, function(value){
-            if(_this.options.get('stacked')){
-              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
-            }else{
-              max[axis].push(value.y);
-            }
-            min[axis].push(value.y);
-            i += 1;
-          });
-        }
-        _this.data.push(elem);
+      if (_this.options.get('keysConfig')[elem.realKey]) {
+        elem.type = _this.options.get('keysConfig')[elem.realKey].type;
+        elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+      } else {
+        elem.type = _this.options.get('keysConfig')['*'].type;
+        elem.yAxis = _this.options.get('keysConfig')['*'].axis
       }
+
+      if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
+        var timeFormatter = d3.time.format.iso;
+        var axis = elem.yAxis - 1;
+        min[axis] = min[axis] || [];
+        max[axis] = max[axis] || [];
+        var i = 0;
+        var __realKey__ = elem.realKey;
+        _.each(elem.values, function(value){
+          value.x = timeFormatter.parse(value.x);
+          value.y = parseFloat(d3.format('.2f')(value.y))
+          if (!_this._internalData.disabledList[__realKey__]) {
+            max[axis].push(value.y);
+            min[axis].push(value.y);
+          }
+          i += 1;
+        });
+      } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
+        var axis = elem.yAxis - 1;
+        min[axis] = min[axis] || [];
+        max[axis] = max[axis] || [];
+        var i = 0;
+        _.each(elem.values, function(value){
+          value.y = parseFloat(d3.format('.2f')(value.y))          
+          if (!_this._internalData.disabledList[__realKey__]) {
+            max[axis].push(value.y);
+            min[axis].push(value.y);
+          }
+          i += 1;
+        });
+      }
+      _this.data.push(elem);
+      
     });
 
     // Sort data to bring lines to the end
@@ -184,8 +146,9 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
         minAxis2 = Math.min.apply(null, min[1]);
     var maxAxis1 = Math.max.apply(null, max[0]),
         maxAxis2 = Math.max.apply(null, max[1]);
-    if(domains[0][0] > minAxis1) domains[0][0] = Math.floor(minAxis1);
-    if(domains[0][1] < maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
+        
+    domains[0][0] = Math.floor(minAxis1);
+    domains[0][1] = Math.ceil(maxAxis1);
 
     if(domains[1]) {
       if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
@@ -514,7 +477,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
       .tickSize(-1 * this._chart.w ,0)
       .tickPadding(10);
     if(!this.options.get('hideYAxis1')) {
-      this._chart.yAxis1.tickFormat(this.options.get('yAxisFunction')[0]);
+      this._chart.yAxis1.tickFormat(this.options.get('yAxisTicksFunction')[0]);
     } else {
       this._chart.yAxis1.tickFormat('');
     }
@@ -581,7 +544,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
       //
       // d3.select(this.$('g[key=' + realKey + ']')[0]).style('opacity', newOpacity);
       // $(element.target).parent().toggleClass('inactive');
-
+      
       disabledList[realKey] = !disabledList[realKey];
       this._internalData.elementsDisabled = disabledList[realKey] ? this._internalData.elementsDisabled + 1 : this._internalData.elementsDisabled - 1;
 
