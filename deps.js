@@ -58,6 +58,7 @@ deps.JS = [
   srcJS + 'View/NavigationBarView.js',
   srcJS + 'View/LoginView.js',
   srcJS + 'View/DateView.js',
+  srcJS + 'View/DateTimeView.js',
   srcJS + 'View/ScopeListView.js',
   srcJS + 'View/CategoriesListView.js',
   srcJS + 'View/MultiScopeListView.js',

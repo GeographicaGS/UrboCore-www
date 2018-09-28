@@ -24,6 +24,17 @@
 	left: 10px;
 	top: 10px;
 	z-index: 5;
+
+	&.dateTimeSelector {
+		.header {
+			.date_wrapper {
+				.date {
+					max-width: 128px;
+				}
+			}
+		}
+	}
+
 	&.disabled {
 		pointer-events: none;
 		.header .range_selector, .date_wrapper{
@@ -236,6 +247,33 @@
 					border-bottom: none;
 				}
 			}
+		}
+	}
+
+	.ui-timepicker-div {
+		display: flex;
+		background-color: #fff;
+		padding: 10px 20px;
+		dt {
+			&.ui_tpicker_time_label, &.ui_tpicker_hour_label, &.ui_tpicker_minute_label {
+				font-size: 14px;
+				color: #55555d;
+				font-weight: 700;
+			}
+		}
+		.ui-slider-horizontal {
+			border-radius: 4px;
+			border: 1px solid @grey2;
+
+			.ui-slider-handle.ui-corner-all.ui-state-default {
+				background-color: @accent;
+				border-radius: 8px;
+			}
+		}
+		& + .ui-datepicker-buttonpane.ui-widget-content {
+			background: #fff;
+			margin: 0;
+			display: flex;
 		}
 	}
 }
