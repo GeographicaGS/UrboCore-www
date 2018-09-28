@@ -363,12 +363,18 @@ App.View.DeviceLastData = Backbone.View.extend({
       }
     }
 
+    this._customWidgets();
     this.$el.html(this._template({m: this.model.toJSON()}));
     for (var i=0;i<this._widgetViews.length;i++){
       this.$('.widget_container').append(this._widgetViews[i].el);
       this._widgetViews[i].render();
     }
+  },
+
+  _customWidgets: function() {
+
   }
+
 
 });
 
