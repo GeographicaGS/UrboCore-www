@@ -24,6 +24,7 @@
 
 @import "src/css/lib/jquery-ui.less";
 @import "src/css/lib/jquery-ui.structure.less";
+@import "src/css/lib/jquery-ui-timepicker-addon.less";
 
 @font : 'Source Sans Pro', sans-serif;
 
@@ -1126,7 +1127,7 @@ h4{
     width: 30px;
     height: 30px;
     border-radius: 100%;
-    background-color: #7bd7de;
+    background-color: @accent;
     margin: 0 8px;
 
     span{
@@ -1170,10 +1171,15 @@ h4{
 }
 
 // Fix for dateSelector DatePicker placement
-#dateSelector #ui-datepicker-div{
+#dateSelector:not(.dateTimeSelector) #ui-datepicker-div{
   position: relative !important;
   top: -6px !important;
   left: auto !important;
+}
+
+#dateSelector.dateTimeSelector #ui-datepicker-div {
+  left: 15px !important;
+  top: 182px !important;
 }
 
 .ui-datepicker-calendar{
