@@ -757,7 +757,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }));
     var cursorPos = d3.mouse(_this);
     $tooltip.css({position: 'absolute'});
-    if (cursorPos[0] + $tooltip.width() > this.$el.width() - 100) {
+    if (cursorPos[0] + $tooltip.width() > this.$el.width() - $tooltip.width()) {
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
@@ -767,7 +767,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0] - 100
+        left: cursorPos[0] - $tooltip.width()/2 + 20
       });
     }
 
