@@ -21,6 +21,11 @@
 App.View.DevicePeriod = Backbone.View.extend({
   _template: _.template( $('#devices-period_template').html() ),
 
+  events: {
+    'click span.download': '_downloadCsv'
+  },
+  
+
   initialize: function(options) {
 
   },
@@ -83,6 +88,7 @@ App.View.DevicePeriod = Backbone.View.extend({
       });
 
       var entityVariablesIds = _.map(entityVariables, function(el){ return el.id});
+      this.entityVariablesIds = entityVariablesIds;
 
       var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([],{
         scope: this.model.get('scope'),
@@ -113,6 +119,39 @@ App.View.DevicePeriod = Backbone.View.extend({
     if (this._chartView) this._chartView.close();
     if (this._summaryView) this._summaryView.close();
     if (this._tableView) this._tableView.close();
+  },
+
+  _downloadCsv: function() {
+    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
+    var vars = _.pluck(metadata, 'id');
+    
+    const dateRange = App.ctx.getDateRange();
+    this.collection = new Backbone.Model();
+    this.collection.url = App.config.api_url + '/' + App.currentScope + '/devices/' + this.model.get('entity') +  '/' + this.model.get('id') + '/raw',
+    this.collection.fetch({
+      type: 'POST',
+      contentType: "application/json; charset=utf-8",
+      dataType: "text",
+      data: JSON.stringify({
+        "time": {
+          start: moment.utc(dateRange.start).startOf('day').format(),
+          finish: moment.utc(dateRange.finish).endOf('day').format(),
+        },
+        "id_entity": this.model.get('id'),
+        "vars": vars,
+        "format": "csv"
+      })
+    });
+    this.collection.parse = function(response) {
+        var blob = new Blob([response], {type:'text/csv'});
+        var csvUrl = window.URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.setAttribute("href", csvUrl);
+        link.setAttribute("download", "download.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
   }
 
 });
@@ -324,12 +363,18 @@ App.View.DeviceLastData = Backbone.View.extend({
       }
     }
 
+    this._customWidgets();
     this.$el.html(this._template({m: this.model.toJSON()}));
     for (var i=0;i<this._widgetViews.length;i++){
       this.$('.widget_container').append(this._widgetViews[i].el);
       this._widgetViews[i].render();
     }
+  },
+
+  _customWidgets: function() {
+
   }
+
 
 });
 
@@ -500,7 +545,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     var _this = this;
     this.metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
     this.entityVariables = _.filter(this.metadata, function(el){
-      return el.units;
+      return el.config? el.config.active : el.units;
     });
     this.entityVariables = _.map(this.entityVariables, function(el){ return el.id});
 
