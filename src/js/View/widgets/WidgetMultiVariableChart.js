@@ -215,10 +215,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             min = _.min(c.values, function(v){ return v.y; }).y;
             max = _.max(c.values, function(v){ return v.y; }).y;
           }
-          debugger;
           _.each(c.values, function(v) {
             v.y = parseFloat(v.y);
-            debugger;
           })
           c.values = _.map(c.values, function(v){
             return {'x':v.x,'y':(max-min) > 0 ? (v.y-min)/(max-min) : 0, 'realY':v.y}
