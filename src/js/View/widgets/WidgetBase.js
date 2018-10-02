@@ -44,7 +44,8 @@ App.View.Widgets.Base = Backbone.View.extend({
       classname: this.options.classname || '',
       context: this.options.context || App.ctx,
       bigTitle: this.options.bigTitle || false,
-      extraMenu: this.options.extraMenu || null
+      extraMenu: this.options.extraMenu || null,
+      footerTemplate: this.options.footerTemplate || null
     });
 
     this.ctx = this.model.get('context');
@@ -265,6 +266,10 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     for (var i in this.subviews)
       this.$('.widget_content').append(this.subviews[i].render().$el);
+    
+    if (this.model.get('footerTemplate')) {
+      this.$('.widget_footer').append(this.model.get('footerTemplate'))
+    }
     return this;
   },
 
