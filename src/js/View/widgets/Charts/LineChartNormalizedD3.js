@@ -323,6 +323,19 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
         }
       }
 
+      this._chart.svg.append('g').selectAll('.linegroup').data(this.data[0].values).enter().append('line')
+        .attr('class', 'tickline')
+        .attr('opacity', 0)
+        .attr('x1', function(d, idx) {
+          return _this.xScaleLine(idx); 
+        })
+        .attr('x2', function(d, idx) {
+          return _this.xScaleLine(idx); 
+        })
+        .attr('y1', function(d, idx) {
+          return _this._chart.h;
+        })
+        .attr('stroke', '#909599');
       this._drawElements();
     } else {
       this._chart.svg.append('text')
@@ -364,8 +377,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
         .style('fill', function(d, idx) { return _this._getColor(this.__data__, idx); })
         .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })
       ;
-
-      line.append('path')
+    line.append('path')
       .datum(data.values)
       .attr('class', function(d, idx){
         var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
@@ -391,7 +403,6 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
           })
         .attr('r', 3)
         .attr('data-y', function(d, idx) {return d.y});
-
 
 
     this._chart.line.push(line);
@@ -571,12 +582,16 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
   _setTooltipEvents: function(elem, _this){
     elem
       .on('mouseover', function(d, serie, index){
-            _this._drawTooltip(d, serie, index, this);
-          })
+        var x1 = _this.xScaleLine(serie)
+        d3.selectAll('.tickline[x1="' + x1 + '"]').attr('opacity',0.6)
+        _this._drawTooltip(d, serie, index, this);
+      })
       .on('mousemove', function(d, serie, index){
         _this._drawTooltip(d, serie, index, this);
       })
       .on('mouseout', function(d, serie, index){
+        var x1 = _this.xScaleLine(serie)
+        d3.selectAll('.tickline[x1="' + x1 + '"]').attr('opacity',0)
         _this._hideTooltip(d, serie, index, this);
       })
     ;
