@@ -1,5 +1,9 @@
 <%
 var metaData = App.Utils.toDeepJSON(App.mv().getVariable(m.var_id))
+if (withIndicator) {
+  var indicatorColl = App.Static.Collection[App.Utils.capitalizeFirstLetter(category)].Indicator;
+  var metaDataIndicator = App.Utils.toDeepJSON(App.mv().getVariable(m.var_id + '_indicator'));
+}
 %>
 <div class='widget'>
   <div class="botons">
@@ -8,13 +12,22 @@ var metaData = App.Utils.toDeepJSON(App.mv().getVariable(m.var_id))
     </span>
   </div>
   <h4 class="mb20"><%= __(metaData.name) %></h4>
-  <!-- <h6 class='regular'>Moderada</h6> -->
 
   <div class='co_chart'>
     <div class='chart'></div>
     <div class='co_value'>
       <p class='value big'><%= m.var_value == 'null' ? App.nbf(null) : App.nbf(m.var_value) %><span><%= metaData.units%></span></p>
-      <!-- <p class='time'><%=__('Hace')%> <%= App.nextTimeMinutes(m.timeinstant) %> min</p> -->
     </div>
+    <% if (withIndicator) { %>
+      <div class='co_status'>
+        <p class='value'>
+          <span class='<%= indicatorColl.get(indicator.var_value || -1).get("cid") %>'></span>
+          <label>
+            <%= __('Estado') %>:
+          </label>
+          <%= indicatorColl.get(indicator.var_value || -1).get("name") %>
+        </p>
+      </div>
+    <% } %>
   </div>
 </div>

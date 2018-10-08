@@ -353,7 +353,17 @@ App.View.DeviceLastData = Backbone.View.extend({
               break;
             case 'variable':
               widget = new App.View.LastDataWidgetSimple({
-                model: model
+                model: model,
+              });
+              break;
+            case 'variable_indicator':
+              widget = new App.View.LastDataWidgetSimple({
+                model: model,
+                indicator: _.find(lastdata, function(l) {
+                  return l.var_id === model.get('var_id') + '_indicator'
+                }),
+                category: this.model.get('category'),
+                withIndicator: true,
               });
               break;
           }
@@ -403,11 +413,18 @@ App.View.LastDataWidgetSimple = App.View.LastDataWidget.extend({
   _template: _.template( $('#devices-lastdata_chart_template').html() ),
 
   initialize: function(options) {
-
+    this.withIndicator = options.withIndicator;
+    this.category = options.category;
+    this.indicator = options.indicator;
   },
 
   render: function(){
-    this.$el.html(this._template({m: this.model ? this.model.toJSON() : null}));
+    this.$el.html(this._template({
+      m: this.model ? this.model.toJSON() : null,
+      category: this.category,
+      withIndicator: this.withIndicator,
+      indicator: this.indicator
+    }));
     this.$('.chart').remove();
     this.$('.co_value').addClass('textleft');
     this.$('.widget').addClass('reduced')
