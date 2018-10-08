@@ -21,11 +21,11 @@ if (withIndicator) {
     <% if (withIndicator) { %>
       <div class='co_status'>
         <p class='value'>
-          <span class='<%= indicatorColl.get(indicator.var_value || -1).get("cid") %>'></span>
+          <span class='<%= indicatorColl.get(indicator.var_value === null ? -1 : indicator.var_value).get("cid") %>'></span>
           <label>
             <%= __('Estado') %>:
           </label>
-          <%= indicatorColl.get(indicator.var_value || -1).get("name") %>
+          <%= indicatorColl.get(indicator.var_value === null ? -1 : indicator.var_value).get("name") %>
         </p>
       </div>
     <% } %>
