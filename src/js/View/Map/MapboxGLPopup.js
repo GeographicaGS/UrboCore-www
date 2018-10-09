@@ -126,15 +126,19 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       'classes': classes,
       'name': label,
       'templates': _.filter(_.map(templates, function(template) {
-
         var props = _.map(template.properties, function(property) {
-          return {
-            label: property.label,
-            value: _this.__replacePropertyByValue(property,clicked),
-            units: property.units
+          var value = _this.__replacePropertyByValue(property,clicked);
+          if (value != undefined) {
+            return {
+              label: property.label,
+              value: value,
+              units: property.units
+            }
+          } else {
+            return undefined;
           }
         });
-        if (props)
+        if (!props.includes(undefined))
           return {
             classes: template.classes,
             output: template.output({ properties: props})
@@ -171,12 +175,14 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
     property.value = property.value.replace(/\| exactly/g,'');
     
     var propertiesNavigated;
+    var exists = true;
     if (!isExactly) {
       var navigation = property.value.split('#');
       propertiesNavigated = clickedProperties;
       for(var i = 0; i < navigation.length; i++) {
         var step = navigation[i];
         if (!propertiesNavigated.hasOwnProperty(step)) {
+          exists = false;
           break;
         }
         propertiesNavigated = propertiesNavigated[step];
@@ -189,7 +195,9 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       propertiesNavigated = __(propertiesNavigated);
     }
 
-    // TODO: If properties is OPTIONAL?????
+    if (isOptional && !exists) {
+      return undefined;
+    }
     
     if (property.nbf) {
       propertiesNavigated = property.nbf(propertiesNavigated);
