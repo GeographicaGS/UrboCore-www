@@ -123,7 +123,10 @@ App.View.DevicePeriod = Backbone.View.extend({
 
   _downloadCsv: function() {
     var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
-    var vars = _.pluck(metadata, 'id');
+    var entityVariables = _.filter(metadata, function(el){
+      return el.config ? el.config.active : el.units;
+    });
+    var vars = _.pluck(entityVariables, 'id');
     
     const dateRange = App.ctx.getDateRange();
     this.collection = new Backbone.Model();
