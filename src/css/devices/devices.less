@@ -505,4 +505,28 @@
   .widget .co_chart .co_value .value.big {
     font-size: 58px;
   }
+  .widget .co_chart .co_status {
+    position: absolute;
+    bottom: 0;
+    .value {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 14px;      
+      font-weight: 600;
+      span {
+        display: flex;
+        height: 9px;
+        width: 9px;
+        border-radius: 50%;
+        margin-right: 4px;
+      }
+      label {
+        color: @greyBluish;
+        font-size: 14px;
+        margin-right: 4px;
+        font-weight: 500;
+      }
+    }
+  }
 }
