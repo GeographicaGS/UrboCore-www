@@ -1,0 +1,26 @@
+FROM node:6.11-alpine
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+COPY package.json /usr/src/app/
+
+RUN \
+    set -x \
+    && apk add --no-cache bash ruby \
+    && apk add --no-cache --virtual build-dep \
+        git \
+        make \
+        gcc \
+        g++ \
+        python \
+    && npm install \
+    && gem install --no-ri --no-rdoc s3_website \
+    && npm cache clean --force \
+    && apk del build-dep
+
+COPY . /usr/src/app
+
+CMD [ "npm", "start" ]
