@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  www_builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.new
+    command: npm run-script builder-watcher
+    restart: unless-stopped
+
+  www:
+    ports:
+      - "8085:80"
+    restart: unless-stopped
