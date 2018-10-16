@@ -1,37 +1,11 @@
-version: "3"
+version: "3.6"
 
 services:
   www_builder:
     container_name: urbo_www_builder
-    build:
-      context: .
-      dockerfile: Dockerfile.new
-      args:
-        NODE_ENV: production
-    volumes:
-      - .:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
-      # Mount directories containing the desired verticals (if needed)
-      # - path/to/verticals/my_vertical/www:/usr/src/app/src/verticals/my_vertical
-      # Or copy the required verticals inside the verticals directory
-      # and mount that. Remember not to override the index.js file
-      # - path/to/verticals:/usr/src/app/src/verticals
-    network_mode: bridge
     command: npm run-script start
+    restart: unless-stopped
 
   www:
     container_name: urbo_www_server
-    image: geographica/nginx4dev:js
-    volumes:
-      - ./public:/usr/share/nginx/html
-      - .:/usr/share/nginx/html/src
-      # Mount directories containing the desired verticals (if needed)
-      # - path/to/verticals/my_vertical/www:/usr/share/nginx/html/src/src/verticals/my_vertical
-      # Or copy the required verticals inside the verticals directory
-      # and mount that. Remember not to override the index.js file
-      # - path/to/verticals:/usr/share/nginx/html/src/src/verticals
-    network_mode: bridge
-    restart: always
-
-volumes:
-  node_modules:
+    restart: unless-stopped
