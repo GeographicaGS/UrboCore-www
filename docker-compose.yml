@@ -1,17 +1,11 @@
-www_builder:
-  build: .
-  volumes:
-    - .:/usr/src/app
+version: "3.6"
 
-  command: npm run-script builder-watcher
-  # command: npm run-script start
+services:
+  www_builder:
+    container_name: urbo_www_builder
+    command: npm run-script start
+    restart: unless-stopped
 
-www:
-  image: geographica/nginx4dev:js
-  ports:
-    - "8085:80"
-
-  # Dev values
-  volumes:
-    - ./public:/usr/share/nginx/html
-    - .:/usr/share/nginx/html/src
+  www:
+    container_name: urbo_www_server
+    restart: unless-stopped
