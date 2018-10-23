@@ -37,6 +37,11 @@ App.View.Widgets.MultipleVariable = Backbone.View.extend({
       data: this.options.searchParams,
       success: function(response) {
         let model = response.toJSON();
+
+        if (_.isArray(model)) {
+          model = model[0];
+        }
+        
         _this.$el.html(_this._template({model: model, variables: _this.variables, options: _this.options}));    
       }
     });

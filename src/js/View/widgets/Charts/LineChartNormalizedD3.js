@@ -28,7 +28,7 @@
 *
 *   - showLineDots (Boolean, default: false). Show dots on lines without hover
 */
-App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
+App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend({
   initialize: function(options){
     if(!options.opts.has('keysConfig')) throw new Error('keysConfig parameter is mandatory');
     if(!options.opts.has('showLineDots')) options.opts.set({showLineDots: false});
@@ -45,58 +45,25 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     // Create chart
     this._initChartModel();
 
-    // // Order data keys for legend
-    // if(this.options.get('legendOrderFunc'))
-    //   this._orderLegendKeys();
-    //
-    // // Append data to chart
-    // d3.select(this.$('.chart')[0])
-    //     .datum(this.data)
-    //     .call(this._chart);
-    //
     // Create legend
     this._initLegend();
 
     // Create tooltips
     this._initTooltips();
-
-    // // Adjustments
-    // if(this.options.get('centerLegend'))
-    //   this._centerLegend();
-    //
-    // if(this.options.get('xAxisLabel'))
-    //   this._chart.xAxis.axisLabel(this.options.get('xAxisLabel'));
-    //
-    // if(this.options.get('yAxisLabel'))
-    //   if(this._chart.yAxis){
-    //     this._chart.yAxis.axisLabel(this.options.get('yAxisLabel'));
-    //   }else if(this.options.get('yAxisLabel').length >= 2){
-    //     this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
-    //     this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
-    //   }
-    //
-    // if(this.xAxisFunction)
-    //   this._formatXAxis();
-    //
-    // if(this.options.get('yAxisFunction'))
-    //   this._formatYAxis();
-    //
-    // if(this.options.has('xAxisDomain'))
-    //   this._forceXAxisDomain();
-    //
-    // if(this.options.has('yAxisDomain'))
-    //   this._forceYAxisDomain();
-    //
-    // if(this.options.get('yAxisAdjust'))
-    //   this._adjustYAxis();
-    //
-    // // Force apply adjustments (TODO: fix this hack)
-    // var _this = this;
-    // setTimeout(function(){
-    //   _this._chart.update();
-    // },100);
-    //
-    // nv.utils.windowResize(this._chart.update);
+    if( this._internalData.elementsDisabled < _.where(this.data, {'disabled': false}).length - 1){
+      d3.select(this.$('.chart')[0]).classed('normalized',true);
+    }else{
+      var __tmp__ = _.filter(this.data, function(e) {
+        return !this._internalData.disabledList[e.realKey]
+      }.bind(this));
+      d3.select(this.$('.chart')[0]).classed('normalized',false);
+      if (__tmp__.length)
+        d3.selectAll(this.$('g.axis.y-axis-1 text.axis-label'))
+          .text(__tmp__[0].key +
+            (App.mv().getVariable(__tmp__[0].realKey).get('units') ? 
+              ' (' + App.mv().getVariable(__tmp__[0].realKey).get('units') + ')' : 
+              ''));
+    }
 
     // Remove loading animation
     this.$('.loading.widgetL').addClass('hiden');
@@ -112,105 +79,55 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var min = [],
         max = [];
     var _this = this;
+    // tempData = _.filter(tempData, function (d) {
+    //   return !_this._internalData.disabledList[d.key]
+    // });
     _.each(tempData, function(elem, dataIdx){
       // Check aggregations
-      if(elem.values && elem.values.length && elem.values[0].y && elem.values[0].y.constructor === Array){
-        _.each(elem.values[0].y, function(subelem, subElemIdx){
-          var key = elem.key + '_' + subelem.agg.toLowerCase();
-          var procSubelem = {
-              key: (_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key)) ? _this.options.get('legendNameFunc')(elem.key) + ' (' + subelem.agg + ')' : key,
-              agg: subelem.agg,
-              realKey: key,
-              type: _this.options.get('keysConfig')[key].type,
-              yAxis: _this.options.get('keysConfig')[key].axis,
-              values: []
-          };
+      elem.realKey = elem.key;
+      if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
+        elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
 
-          if(elem.values && elem.values.length && elem.values[0].x){
-            var axis = procSubelem.yAxis - 1;
-            min[axis] = min[axis] || [];
-            max[axis] = max[axis] || [];
-            var i = 0;
-            if(elem.values[0].x.constructor == Date){
-              var timeFormatter = d3.time.format.iso;
-              _.each(elem.values, function(value, idx){
-                procSubelem.values[idx] = {
-                  x: timeFormatter.parse(value.x),
-                  y: value.y[subElemIdx].value
-                };
-                if(_this.options.get('stacked')){
-                  max[axis][i] = max[axis][i] ? max[axis][i] + procSubelem.values[idx].y : procSubelem.values[idx].y;
-                }else{
-                  max[axis].push(procSubelem.values[idx].y)
-                }
-                min[axis].push(procSubelem.values[idx].y);
-                i += 1;
-              });
-            }else{
-              _.each(elem.values, function(value, idx){
-                procSubelem.values[idx] = {
-                  x: value.x,
-                  y: value.y[subElemIdx].value
-                };
-                if(_this.options.get('stacked')){
-                  max[axis][i] = max[axis][i] ? max[axis][i] + procSubelem.values[idx].y : procSubelem.values[idx].y;
-                }else{
-                  max[axis].push(procSubelem.values[idx].y)
-                }
-                min[axis].push(procSubelem.values[idx].y);
-                i += 1;
-              });
-            }
-          }
-
-          _this.data.push(procSubelem);
-        });
-      }else{
-        elem.realKey = elem.key;
-        if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key, elem))
-          elem.key = _this.options.get('legendNameFunc')(elem.key, elem);
-
-        if (_this.options.get('keysConfig')[elem.realKey]) {
-          elem.type = _this.options.get('keysConfig')[elem.realKey].type;
-          elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
-        } else {
-          elem.type = _this.options.get('keysConfig')['*'].type;
-          elem.yAxis = _this.options.get('keysConfig')['*'].axis
-        }
-
-        if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
-          var timeFormatter = d3.time.format.iso;
-          var axis = elem.yAxis - 1;
-          min[axis] = min[axis] || [];
-          max[axis] = max[axis] || [];
-          var i = 0;
-          _.each(elem.values, function(value){
-            value.x = timeFormatter.parse(value.x);
-            if(_this.options.get('stacked')){
-              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
-            }else{
-              max[axis].push(value.y);
-            }
-            min[axis].push(value.y);
-            i += 1;
-          });
-        } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
-          var axis = elem.yAxis - 1;
-          min[axis] = min[axis] || [];
-          max[axis] = max[axis] || [];
-          var i = 0;
-          _.each(elem.values, function(value){
-            if(_this.options.get('stacked')){
-              max[axis][i] = max[axis][i] ? max[axis][i] + value.y : value.y;
-            }else{
-              max[axis].push(value.y);
-            }
-            min[axis].push(value.y);
-            i += 1;
-          });
-        }
-        _this.data.push(elem);
+      if (_this.options.get('keysConfig')[elem.realKey]) {
+        elem.type = _this.options.get('keysConfig')[elem.realKey].type;
+        elem.yAxis = _this.options.get('keysConfig')[elem.realKey].axis;
+      } else {
+        elem.type = _this.options.get('keysConfig')['*'].type;
+        elem.yAxis = _this.options.get('keysConfig')['*'].axis
       }
+
+      if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor == Date){
+        var timeFormatter = d3.time.format.iso;
+        var axis = elem.yAxis - 1;
+        min[axis] = min[axis] || [];
+        max[axis] = max[axis] || [];
+        var i = 0;
+        var __realKey__ = elem.realKey;
+        _.each(elem.values, function(value){
+          value.x = timeFormatter.parse(value.x);
+          value.y = parseFloat(d3.format('.2f')(value.y))
+          if (!_this._internalData.disabledList[__realKey__]) {
+            max[axis].push(value.y);
+            min[axis].push(value.y);
+          }
+          i += 1;
+        });
+      } else if(elem.values && elem.values.length && elem.values[0].x && elem.values[0].x.constructor != Date) {
+        var axis = elem.yAxis - 1;
+        min[axis] = min[axis] || [];
+        max[axis] = max[axis] || [];
+        var i = 0;
+        _.each(elem.values, function(value){
+          value.y = parseFloat(d3.format('.2f')(value.y))          
+          if (!_this._internalData.disabledList[__realKey__]) {
+            max[axis].push(value.y);
+            min[axis].push(value.y);
+          }
+          i += 1;
+        });
+      }
+      _this.data.push(elem);
+      
     });
 
     // Sort data to bring lines to the end
@@ -229,8 +146,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         minAxis2 = Math.min.apply(null, min[1]);
     var maxAxis1 = Math.max.apply(null, max[0]),
         maxAxis2 = Math.max.apply(null, max[1]);
-    if(domains[0][0] > minAxis1) domains[0][0] = Math.floor(minAxis1);
-    if(domains[0][1] < maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
+        
+    domains[0][0] = Math.floor(minAxis1);
+    domains[0][1] = Math.ceil(maxAxis1);
 
     if(domains[1]) {
       if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
@@ -261,18 +179,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       .append('g')
         .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')');
 
-    if(this.options.get('stacked')){
-      this.stackedRawData = {};
-      _.each(this.data, function(el){
-        if(el.type === 'bar' && ! _this._internalData.disabledList[el.realKey]){
-          _this.stackedRawData[el.realKey] = el; // el.values
-        }
-      });
-      this.stackedData = _.map(this.stackedRawData, function(val, key){
-        return val;
-      });
-    }
-
     if(this.data[1]) {
       this.xScaleBars = d3.scale.ordinal()
         .domain(d3.range(this.data[1].values.length))
@@ -288,17 +194,14 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       return _this.xScaleBars(d) + offset;
     };
 
-    var scale1Fn = this.options.get('y1Scale') || 'linear'
-    var scale2Fn = this.options.get('y2Scale') || 'linear'
-
     this.yScales = [
-      d3.scale[scale1Fn]()
+      d3.scale.linear()
         .domain(this.yAxisDomain[0])
         .range([this._chart.h, 0])
     ]
     if(this.yAxisDomain[1]) {
       this.yScales.push(
-        d3.scale[scale2Fn]()
+        d3.scale.linear()
           .domain(this.yAxisDomain[1])
           .range([this._chart.h, 0])
       )
@@ -314,7 +217,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         return _this.xScaleLine(idx);
       })
       .y(function(d, idx) {
-        return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y);
+        var _scale = d3.scale.linear().domain([
+          Math.min.apply(null,this.parentElement.__data__.values.map((e)=>e.y)),
+          Math.max.apply(null,this.parentElement.__data__.values.map((e)=>e.y))
+         ]).range([_this._chart.h, 0]);
+        return _scale(d.y); 
       })
       .interpolate('monotone')
     ;
@@ -416,6 +323,19 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         }
       }
 
+      this._chart.svg.append('g').selectAll('.linegroup').data(this.data[0].values).enter().append('line')
+        .attr('class', 'tickline')
+        .attr('opacity', 0)
+        .attr('x1', function(d, idx) {
+          return _this.xScaleLine(idx); 
+        })
+        .attr('x2', function(d, idx) {
+          return _this.xScaleLine(idx); 
+        })
+        .attr('y1', function(d, idx) {
+          return _this._chart.h;
+        })
+        .attr('stroke', '#909599');
       this._drawElements();
     } else {
       this._chart.svg.append('text')
@@ -457,8 +377,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('fill', function(d, idx) { return _this._getColor(this.__data__, idx); })
         .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })
       ;
-
-      line.append('path')
+    line.append('path')
       .datum(data.values)
       .attr('class', function(d, idx){
         var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
@@ -475,68 +394,18 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       .append('circle')
         .attr('class', 'point')
         .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
-        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
+        .attr('cy', function(d, idx) {
+            var b = d3.scale.linear().domain([
+            Math.min.apply(null,this.parentElement.__data__.values.map((e)=>e.y)),
+            Math.max.apply(null,this.parentElement.__data__.values.map((e)=>e.y))
+            ]).range([_this._chart.h, 0])
+            return b(d.y); 
+          })
         .attr('r', 3)
         .attr('data-y', function(d, idx) {return d.y});
 
 
-
     this._chart.line.push(line);
-  },
-
-  _drawSimpleBar: function(data){
-    var _this = this;
-    this._chart.bars = this._chart.bars || [];
-    // this._chart.bars = this._chart.svg.selectAll('.bar')
-    var bar = this._chart.svg.append('g').data([data])
-    bar.selectAll('.bar')
-      .data(data.values).enter()
-      .append('rect')
-        .attr('class', 'bar')
-        .attr('x', function(d, idx) {return _this.xScaleBars(idx);})
-        .attr('y', function(d, idx) {
-          return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y);
-        })
-        .attr('width', function(d) {return _this.xScaleBars.rangeBand();})
-        .attr('height', function(d) {return _this._chart.h - _this.yScales[this.parentElement.__data__.yAxis - 1](d.y);})
-        .style('fill', function(d,idx){
-          return _this._getColor(this.parentElement.__data__, idx);
-        })
-        .attr('data-idx', function(d, idx) {return idx; })
-      ;
-    this._chart.bars.push(bar);
-  },
-
-  _drawStackedBar: function(data){
-    var _this = this;
-    this._chart.bars = this._chart.bars || [];
-    var layers = d3.layout.stack()
-      .values(function(d){ return d.values })
-      (data);
-
-    var bar = this._chart.svg.append('g').data([data]);
-
-    bar = this._chart.svg.selectAll('.layer')
-      .data(layers)
-      .enter().append('g')
-        .attr('class', 'layer')
-        .attr('key', function(d){ return d.realKey; })
-        .style('fill', function(d,idx){
-          return _this._getColor(d, idx);
-        });
-    bar.selectAll('rect')
-      .data(function(d) {
-        return d.values; })
-      .enter().append('rect')
-        .attr('x', function(d, idx) { return _this.xScaleBars(idx); })
-        .attr('y', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y + d.y0); })
-        .attr('height', function(d) {
-          return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y0) - _this.yScales[this.parentElement.__data__.yAxis - 1](d.y + d.y0);
-        })
-        .attr('width', _this.xScaleBars.rangeBand() - 1)
-        .attr('data-idx', function(d, idx) {return idx; })
-      ;
-    this._chart.bars.push(bar);
   },
 
   _formatXAxis: function(){
@@ -581,8 +450,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
             return '';
           }
         })
-        // .tickValues(datesInterval)
-        .tickSize([])
+        .tickSize([10])
         .tickPadding(10)
       ;
 
@@ -620,7 +488,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       .tickSize(-1 * this._chart.w ,0)
       .tickPadding(10);
     if(!this.options.get('hideYAxis1')) {
-      this._chart.yAxis1.tickFormat(this.options.get('yAxisFunction')[0]);
+      this._chart.yAxis1.tickFormat(this.options.get('yAxisTicksFunction')[0]);
     } else {
       this._chart.yAxis1.tickFormat('');
     }
@@ -687,7 +555,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       //
       // d3.select(this.$('g[key=' + realKey + ']')[0]).style('opacity', newOpacity);
       // $(element.target).parent().toggleClass('inactive');
-
+      
       disabledList[realKey] = !disabledList[realKey];
       this._internalData.elementsDisabled = disabledList[realKey] ? this._internalData.elementsDisabled + 1 : this._internalData.elementsDisabled - 1;
 
@@ -714,12 +582,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   _setTooltipEvents: function(elem, _this){
     elem
       .on('mouseover', function(d, serie, index){
-            _this._drawTooltip(d, serie, index, this);
-          })
+        var x1 = _this.xScaleLine(serie)
+        d3.selectAll('.tickline[x1="' + x1 + '"]').attr('opacity',0.6)
+        _this._drawTooltip(d, serie, index, this);
+      })
       .on('mousemove', function(d, serie, index){
         _this._drawTooltip(d, serie, index, this);
       })
       .on('mouseout', function(d, serie, index){
+        var x1 = _this.xScaleLine(serie)
+        d3.selectAll('.tickline[x1="' + x1 + '"]').attr('opacity',0)
         _this._hideTooltip(d, serie, index, this);
       })
     ;
@@ -757,7 +629,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }));
     var cursorPos = d3.mouse(_this);
     $tooltip.css({position: 'absolute'});
-    if (cursorPos[0] + $tooltip.width() > this.$el.width() - $tooltip.width()) {
+    if (cursorPos[0] + $tooltip.width() > this.$el.width() - 100) {
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
@@ -767,7 +639,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       $tooltip.css({
         top: cursorPos[1],
         zIndex: 2,
-        left: cursorPos[0] - $tooltip.width()/2 + 20
+        left: cursorPos[0] - 100
       });
     }
 

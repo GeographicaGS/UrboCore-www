@@ -28,7 +28,8 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
 	events: _.extend(
     {
       'click .split_handler': 'toggleTopHiding',
-      'click .co_fullscreen_toggle': 'toggleTopFullScreen'
+      'click .co_fullscreen_toggle': 'toggleTopFullScreen',
+      'click #backdetail': '_goBack'
     },
     App.View.Panels.Base.prototype.events
   ),

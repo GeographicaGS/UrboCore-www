@@ -21,6 +21,11 @@
 App.View.DevicePeriod = Backbone.View.extend({
   _template: _.template( $('#devices-period_template').html() ),
 
+  events: {
+    'click span.download': '_downloadCsv'
+  },
+  
+
   initialize: function(options) {
 
   },
@@ -33,7 +38,7 @@ App.View.DevicePeriod = Backbone.View.extend({
       this._template = _.template( $('#indoor_air-custom_device_period_template').html() );
     }
 
-    this.$el.html(this._template());
+    this.$el.html(this._template({m: this.model.toJSON()}));
 
     this._summaryView = new App.View.DeviceSumary({el: this.$('#summary'),model: this.model});
 
@@ -83,6 +88,7 @@ App.View.DevicePeriod = Backbone.View.extend({
       });
 
       var entityVariablesIds = _.map(entityVariables, function(el){ return el.id});
+      this.entityVariablesIds = entityVariablesIds;
 
       var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([],{
         scope: this.model.get('scope'),
@@ -113,6 +119,42 @@ App.View.DevicePeriod = Backbone.View.extend({
     if (this._chartView) this._chartView.close();
     if (this._summaryView) this._summaryView.close();
     if (this._tableView) this._tableView.close();
+  },
+
+  _downloadCsv: function() {
+    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
+    var entityVariables = _.filter(metadata, function(el){
+      return el.config ? el.config.active : el.units;
+    });
+    var vars = _.pluck(entityVariables, 'id');
+    
+    const dateRange = App.ctx.getDateRange();
+    this.collection = new Backbone.Model();
+    this.collection.url = App.config.api_url + '/' + App.currentScope + '/devices/' + this.model.get('entity') +  '/' + this.model.get('id') + '/raw',
+    this.collection.fetch({
+      type: 'POST',
+      contentType: "application/json; charset=utf-8",
+      dataType: "text",
+      data: JSON.stringify({
+        "time": {
+          start: moment.utc(dateRange.start).startOf('day').format(),
+          finish: moment.utc(dateRange.finish).endOf('day').format(),
+        },
+        "id_entity": this.model.get('id'),
+        "vars": vars,
+        "format": "csv"
+      })
+    });
+    this.collection.parse = function(response) {
+        var blob = new Blob([response], {type:'text/csv'});
+        var csvUrl = window.URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.setAttribute("href", csvUrl);
+        link.setAttribute("download", "download.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
   }
 
 });
@@ -314,7 +356,17 @@ App.View.DeviceLastData = Backbone.View.extend({
               break;
             case 'variable':
               widget = new App.View.LastDataWidgetSimple({
-                model: model
+                model: model,
+              });
+              break;
+            case 'variable_indicator':
+              widget = new App.View.LastDataWidgetSimple({
+                model: model,
+                indicator: _.find(lastdata, function(l) {
+                  return l.var_id === model.get('var_id') + '_indicator'
+                }),
+                category: this.model.get('category'),
+                withIndicator: true,
               });
               break;
           }
@@ -324,12 +376,18 @@ App.View.DeviceLastData = Backbone.View.extend({
       }
     }
 
+    this._customWidgets();
     this.$el.html(this._template({m: this.model.toJSON()}));
     for (var i=0;i<this._widgetViews.length;i++){
       this.$('.widget_container').append(this._widgetViews[i].el);
       this._widgetViews[i].render();
     }
+  },
+
+  _customWidgets: function() {
+
   }
+
 
 });
 
@@ -358,11 +416,18 @@ App.View.LastDataWidgetSimple = App.View.LastDataWidget.extend({
   _template: _.template( $('#devices-lastdata_chart_template').html() ),
 
   initialize: function(options) {
-
+    this.withIndicator = options.withIndicator;
+    this.category = options.category;
+    this.indicator = options.indicator;
   },
 
   render: function(){
-    this.$el.html(this._template({m: this.model ? this.model.toJSON() : null}));
+    this.$el.html(this._template({
+      m: this.model ? this.model.toJSON() : null,
+      category: this.category,
+      withIndicator: this.withIndicator,
+      indicator: this.indicator
+    }));
     this.$('.chart').remove();
     this.$('.co_value').addClass('textleft');
     this.$('.widget').addClass('reduced')
@@ -500,7 +565,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     var _this = this;
     this.metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
     this.entityVariables = _.filter(this.metadata, function(el){
-      return el.units;
+      return el.config? el.config.active : el.units;
     });
     this.entityVariables = _.map(this.entityVariables, function(el){ return el.id});
 

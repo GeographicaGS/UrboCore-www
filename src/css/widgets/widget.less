@@ -18,7 +18,7 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-.widget{
+.device_detail #lastdata .widget, .widget{
   background-color: @blue;
   border: 2px solid @blue;
   border-radius: 4px;
@@ -909,6 +909,13 @@
         }
       }
     }
+  }
+
+  .widget_footer {
+    position: absolute;
+    bottom: 18px;
+    font-size: 12px;
+    color: @grey4;
   }
 
   &.button_link {

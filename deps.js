@@ -58,6 +58,7 @@ deps.JS = [
   srcJS + 'View/NavigationBarView.js',
   srcJS + 'View/LoginView.js',
   srcJS + 'View/DateView.js',
+  srcJS + 'View/DateTimeView.js',
   srcJS + 'View/ScopeListView.js',
   srcJS + 'View/CategoriesListView.js',
   srcJS + 'View/MultiScopeListView.js',
@@ -126,6 +127,7 @@ deps.JS = [
   srcJS + 'View/widgets/Charts/ComparisonChart.js',
   srcJS + 'View/widgets/Charts/LineChart.js',
   srcJS + 'View/widgets/Charts/BarsLineD3Chart.js',
+  srcJS + 'View/widgets/Charts/LineChartNormalizedD3.js',
   srcJS + 'View/widgets/Charts/GridChartView.js',
 
   srcJS + 'View/widgets/WidgetAlertsVariable.js',

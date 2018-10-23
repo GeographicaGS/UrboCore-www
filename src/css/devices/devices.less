@@ -38,6 +38,80 @@
   padding-top: 40px;
 }
 
+.device-tools {
+  position: relative;
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: space-between;
+  span, ul {
+    width: 148px;
+    display: flex;
+  }
+
+  span, li {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 12px;
+  }
+
+  span {
+    margin: 12px 0;
+    height: 24px;
+    flex-flow: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    background: @accent;
+    border-radius: 2px;
+    cursor: pointer;
+    &.download {
+      flex-flow: row;
+    }
+    &.selectedPhase {
+      .triangle-down(#fff, 6px, 5px);        
+    }
+    &.clicked, &:hover {
+      background: @primary;
+    }
+  }
+  ul {
+    flex-flow: column;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 35px;
+    z-index: 9;
+    background: @accent;
+    transition: visibility ease-in 200ms;
+    cursor: pointer;
+
+    &.opened {
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      height: 24px;
+      &:not(:last-child) {
+        border-bottom: 1px solid #fff;
+      }
+      &:hover {
+        color: #5A7B52;
+      }
+    }
+  }
+
+  & + .date-wrapper + #summary {
+    a.popup_widget {
+      position: absolute;
+      right: 24px;
+      top: 5px;
+    }
+  }
+}
+
 .device_detail{
   padding: 20px 0;
   position: relative;
@@ -430,5 +504,29 @@
 
   .widget .co_chart .co_value .value.big {
     font-size: 58px;
+  }
+  .widget .co_chart .co_status {
+    position: absolute;
+    bottom: 0;
+    .value {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 14px;      
+      font-weight: 600;
+      span {
+        display: flex;
+        height: 9px;
+        width: 9px;
+        border-radius: 50%;
+        margin-right: 4px;
+      }
+      label {
+        color: @greyBluish;
+        font-size: 14px;
+        margin-right: 4px;
+        font-weight: 500;
+      }
+    }
   }
 }

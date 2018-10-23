@@ -215,6 +215,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             min = _.min(c.values, function(v){ return v.y; }).y;
             max = _.max(c.values, function(v){ return v.y; }).y;
           }
+          _.each(c.values, function(v) {
+            v.y = parseFloat(v.y);
+          })
           c.values = _.map(c.values, function(v){
             return {'x':v.x,'y':(max-min) > 0 ? (v.y-min)/(max-min) : 0, 'realY':v.y}
           });
@@ -237,7 +240,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this.chart = nv.models.lineChart()
                           .useInteractiveGuideline(true)
-                          .margin({'right':30})
+                          .margin({'right':45})
                           .height(268)
                           .noData(__('No hay datos disponibles'))
     ;
