@@ -24,7 +24,7 @@ App.View.DevicePeriod = Backbone.View.extend({
   events: {
     'click span.download': '_downloadCsv'
   },
-  
+
 
   initialize: function(options) {
 
@@ -127,7 +127,7 @@ App.View.DevicePeriod = Backbone.View.extend({
       return el.config ? el.config.active : el.units;
     });
     var vars = _.pluck(entityVariables, 'id');
-    
+
     const dateRange = App.ctx.getDateRange();
     this.collection = new Backbone.Model();
     this.collection.url = App.config.api_url + '/' + App.currentScope + '/devices/' + this.model.get('entity') +  '/' + this.model.get('id') + '/raw',
@@ -567,7 +567,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     this.entityVariables = _.filter(this.metadata, function(el){
       return el.config? el.config.active : el.units;
     });
-    this.entityVariables = _.map(this.entityVariables, function(el){ return el.id});
+    this.entityVariables = _.map(this.entityVariables, function(el){ return el.id}).sort();
 
     this.collection = new Backbone.Collection();
     for(var i = 0; i<this.entityVariables.length; i++){
