@@ -22,6 +22,9 @@
 
 var ENTER_KEY = 13;
 
+// var availableColors = ['#00d5e7','#f69e37','#fa606f','#3eba94','#3c71db','#9966cc',];
+var availableColors = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+
 Backbone.View.prototype.close = function(){
   this.remove();
   this.unbind();
@@ -265,7 +268,11 @@ App.nbf = function (n, options){
 }
 
 App.getSensorVariableColor = function(key){
-  return ['#00d5e7','#f69e37','#fa606f','#3eba94','#3c71db','#9966cc',][key]
+  return availableColors[key];
+}
+
+App.getSensorVariableColorList = function(){
+  return availableColors;
 }
 
 App.getAggStr = function(agg){
@@ -451,11 +458,11 @@ App._updateFavicon = function() {
     if (element.getAttribute('sizes') !== '192x192') {
       element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/favicon-' + element.getAttribute('sizes') + '.png');
     } else {
-      element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/android-chrome-192x192.png');      
-    }      
+      element.setAttribute('href',(App.config.pathFavicon || '') + '/img/favicons/android-chrome-192x192.png');
+    }
   });
 
-  $("link[rel='manifest']").attr('href',(App.config.pathFavicon || '') + '/img/favicons/manifest.json');  
+  $("link[rel='manifest']").attr('href',(App.config.pathFavicon || '') + '/img/favicons/manifest.json');
 }
 
 App.ini = function(){

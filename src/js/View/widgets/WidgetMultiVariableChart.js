@@ -294,7 +294,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.chart.update();
     nv.utils.windowResize(this.chart.update);
     this.$('.var_list').html(this._list_variable_template({
-      colors:d3.scale.category20().range(),
+      colors: App.getSensorVariableColorList(),
       data : this.data.toJSON(),
       'currentAggs':this._internalData.currentAggs,
       'disabledList':this._internalData.disabledList
