@@ -106,7 +106,8 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
       _.sortBy(this.data, function(el){ return _this.options.get('legendOrderFunc')(el.realKey); });
 
     // Get max value for each axis and adjust domain
-    var domains = this.options.get('yAxisDomain') ? this.options.get('yAxisDomain') : [[0,1],[0,1]];
+    // var domains = this.options.get('yAxisDomain') ? this.options.get('yAxisDomain') : [[0,1],[0,1]];
+    var domains =[[0,1],[0,1]];
     // Clear null from array
     if(min[0]) min[0] = min[0].filter(Boolean);
     if(min[1]) min[1] = min[1].filter(Boolean);
@@ -114,10 +115,10 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
         minAxis2 = Math.min.apply(null, min[1]);
     var maxAxis1 = Math.max.apply(null, max[0]),
         maxAxis2 = Math.max.apply(null, max[1]);
-    if(domains[0][0] > minAxis1) domains[0][0] = Math.floor(minAxis1);
-    if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
-    if(domains[0][1] < maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
-    if(domains[1][1] < maxAxis2) domains[1][1] = Math.ceil(maxAxis2);
+    if(minAxis1) domains[0][0] = Math.floor(minAxis1);
+    if(minAxis2) domains[1][0] = Math.floor(minAxis2);
+    if(maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
+    if(maxAxis2) domains[1][1] = Math.ceil(maxAxis2);
     this.options.set({yAxisDomain: domains});
   },
 
