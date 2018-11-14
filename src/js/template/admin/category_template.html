@@ -27,13 +27,13 @@
           <% } else { %>
             <a href="#" class="button empty editConnector" data-category="<%= catalog.get('id') %>"><%= __('Editar conector') %></a>
             <a href="#" class="button empty deleteConnector" data-category="<%= catalog.get('id') %>"><%= __('Eliminar conector') %></a>
-          <% } %> 
+          <% } %>
         </div>
         <div class="col-md-12 align-right">
           <% if (hasConnector) {%>
             <a href="#" class="button empty activateConnector" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
-            <a href="#" class="button empty deactivateConnector" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a> 
-          <% } %>       
+            <a href="#" class="button empty deactivateConnector" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a>
+          <% } %>
         </div>
         <% } %>
       </div>
@@ -61,18 +61,21 @@
                     <li>
                       <span class="listItem variable"
                         data-entity="<%= catEntity.get('id') %>"
-                        data-variable="<%= catVar.get('id') %>" >
+                        data-variable="<%= catVar.get('id') %>"
+                        data-mandatory="<%= catVar.get('mandatory') %>">
                         <!-- <input id="<%= catVar.get('id') %>" type="checkbox" <%= category.entities.length > 0 && category.entities.get(catEntity.get('id')) && category.entities.get(catEntity.get('id')).get('variables').where({id: catVar.get('id')}).length > 0 ? 'checked':'' %>> -->
                         <input id="<%= catVar.get('id') %>" type="checkbox"
                           <%=
                             category.entities.length > 0 &&
                             category.entities.get(catEntity.get('id')) &&
                             category.entities.get(catEntity.get('id')).get('variables').where({id: catVar.get('id')}).length > 0
-                            ? (catVar.get('mandatory') ? 'disabled' : 'checked') :'' %> >
+                            ? 'checked' :'' %> >
                         <label for="<%= catVar.get('id') %>" class="icon <%= catVar.get('id') %>"><%= catVar.get('name') %></label>
                         <a href="/admin/scope/<%= scope.id %>/<%= category.id %>/<%= catEntity.get('id') %>/<%= catVar.get('id') %>" jslink class="containerEditAndDelete"><%= __('Editar') %></a>
                         <span class="onlyOnHover">&nbsp;|&nbsp;</span>
-                        <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
+                        <% if(!catVar.get('mandatory')) { %>
+                          <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
+                        <% } %>
                     </span>
                     </li>
                     <% } %>

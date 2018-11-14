@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -126,16 +126,23 @@ App.View.Admin.Category = Backbone.View.extend({
     var entityId = $(e.currentTarget).parent().data('entity');
     var entityModel = App.mv().getEntity(entityId);
 
-    if(e.currentTarget.checked){
-      // Add variable
-      entityModel.addVariable(variableId);
-    } else {
-      // Remove variable
-      if(window.confirm('¿Estás seguro de eliminar esta variable?\nSe perderán todas las configuraciones de esta variable.')){
-        entityModel.removeVariable(variableId);
-      }else{
-        e.currentTarget.checked = true;
+    var mandatory = $(e.currentTarget).parent().data('mandatory');
+    if(!mandatory){
+      if(e.currentTarget.checked){
+        // Add variable
+        entityModel.addVariable(variableId);
+      } else {
+        // Remove variable
+        if(window.confirm('¿Estás seguro de eliminar esta variable?\nSe perderán todas las configuraciones de esta variable.')){
+          entityModel.removeVariable(variableId);
+        }else{
+          e.currentTarget.checked = true;
+        }
       }
+    }
+    else {
+      // Always checked
+      e.currentTarget.checked = true;
     }
   },
 
@@ -166,7 +173,7 @@ App.View.Admin.Category = Backbone.View.extend({
 
   _showEditConnectorPopup: function(e) {
     e.preventDefault();
-    
+
       var connectorData = {
         id_scope: this.scope,
         id_category: this.category,
@@ -175,16 +182,16 @@ App.View.Admin.Category = Backbone.View.extend({
         instance: this.catalog.get('config').connector || 7, //TODO: HARDCODED
       };
       var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
-  
+
       if(this._popupView == undefined) {
         this._popupView = new App.View.PopUp();
       }
       this._popupView.internalView = connectorView;
-  
+
       this.$el.append(this._popupView.render().$el);
-  
+
       this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
-  
+
       this._popupView.show();
   },
 
