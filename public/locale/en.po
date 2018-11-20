@@ -3521,3 +3521,9 @@ msgstr "Excellent"
 # LoginOverride.js
 msgid "Iniciar sesión con IDM"
 msgstr "Login with IDM"
+
+msgid "Tráfico - Mapa"
+msgstr "Traffic - Map"
+
+msgid "Bicicletas - Tiempo Real"
+msgstr "Bikes - Real Time"
