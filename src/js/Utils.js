@@ -326,3 +326,22 @@ App.Utils.objectPath = function(obj, path, set) {
 
   return current[path[pathDeep - 1]];
 }
+
+/**
+ * Transform a file from input file to base64
+ * @param <object> - file object
+ * @return Promise
+ */
+App.Utils.imgToBase64 = function(file) {
+  return new Promise(function (resolve, reject) {
+    var reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      resolve(reader.result);
+    };
+    reader.onerror = function(error) {
+      reject(error);
+    };
+  });
+}

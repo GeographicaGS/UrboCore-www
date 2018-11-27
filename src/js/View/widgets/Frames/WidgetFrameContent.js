@@ -41,6 +41,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
   _template: _.template( $('#widgets-Frame-widget_frame_edit_template').html() ),
 
   events: {
+    'change input[name="descriptionFile"]': '_changeFile',
+    'click #optionsDescriptionType input[type="radio"]': '_changeDescriptionType',
     'click .button.save': '_saveAndExit',
     'click .button.cancel': '_cancelAndExit'
   },
@@ -64,6 +66,38 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
 
     return this;
   },
+
+  _changeDescriptionType: function(e) {
+    var wrapperDescriptionFile = this.$('#wrapperDescriptionFile');
+    var wrapperDescription = this.$('#wrapperDescription');
+
+    if (e.currentTarget.value === 'image') {
+      wrapperDescriptionFile.removeClass('hide');
+      wrapperDescription.addClass('hide');
+    } else { 
+      wrapperDescriptionFile.addClass('hide');
+      wrapperDescription.removeClass('hide');
+    }
+  },
+
+  _changeFile: function(e) {
+    var files = _.filter(e.currentTarget.files, function(file) {
+      return RegExp(/image\/(jpeg|gif|png|jpg)/i).test(file.type);
+    });
+
+    if (files.length > 0) {
+      App.Utils.imgToBase64(files[0])
+        .then(function(data) {
+          var description = this.$('#description');
+          if (description.length > 0) {
+            description[0].value = data;
+          }
+        }.bind(this));
+    } else {
+      alert('Tipo de fichero no soportado');
+      e.currentTarget.value = '';
+    }
+  }, 
 
   _cancelAndExit: function (e) {
     e.preventDefault();
