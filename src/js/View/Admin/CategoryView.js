@@ -27,6 +27,7 @@ App.View.Admin.Category = Backbone.View.extend({
     'change .listItem.entity > input[type=checkbox]': '_toggleVariableList',
     'change .listItem.variable > input[type=checkbox]': '_toggleVariable',
     'click .button.permission': '_showCategoryPermissionPopup',
+    'click .button.downloadConfig': '_downloadConfig',
     'click .button.addConnector': '_showAddConnectorPopup',
     'click .button.editConnector': '_showEditConnectorPopup',
     'click .button.activateConnector': '_activateConnector',
@@ -144,6 +145,10 @@ App.View.Admin.Category = Backbone.View.extend({
       // Always checked
       e.currentTarget.checked = true;
     }
+  },
+
+  _downloadConfig: function(e) {
+    alert('Descargando YML');
   },
 
   _showCategoryPermissionPopup: function(e){

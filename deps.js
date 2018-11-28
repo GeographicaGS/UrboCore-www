@@ -89,6 +89,8 @@ deps.JS = [
   srcJS + 'View/Admin/CategoryView.js',
   srcJS + 'View/Admin/VariableView.js',
   srcJS + 'View/Admin/LogsView.js',
+  srcJS + 'View/Admin/SupportView.js',
+  srcJS + 'View/Admin/SupportDetailView.js',
 
   // DEVICES
   srcJS + 'View/DeviceView.js',
