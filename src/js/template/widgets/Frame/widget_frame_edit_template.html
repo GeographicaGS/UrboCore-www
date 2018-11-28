@@ -10,6 +10,27 @@
         <input class="col-sm-9 form-control" id="title" name="title" type="text" required <% if (m.title) { %>value="<%= m.title %>"<% } %> >
       </div>
       <div class="form-group row">
+        <label class="col-sm-3 control-label"><%= __('Tipo descripción') %></label>
+        <div class="col-sm-9 form-check" id="optionsDescriptionType">
+          <label class="form-check-label">
+            <input name="description_type" type="radio" value="text" <% if (m.description_type && m.description_type === 'text'  || typeof m.description_type === 'undefined') { %>checked<% } %>>
+            <%= __('Texto') %>
+          </label>
+          <label class="form-check-label">
+            <input name="description_type" type="radio" value="iframe" <% if (m.description_type && m.description_type === 'iframe') { %>checked<% } %> >
+            <%= __('Url (iframe)') %>
+          </label>
+          <label class="form-check-label">
+            <input name="description_type" type="radio" value="image" <% if (m.description_type && m.description_type === 'image') { %>checked<% } %> >
+            <%= __('Imagen') %>
+          </label>
+        </div>
+      </div>
+      <div class="form-group row <% if (m.description_type && m.description_type !== 'image' || typeof m.description_type === 'undefined') { %>hide<% } %>" id="wrapperDescriptionFile">
+        <label class="col-sm-3 control-label"><%= __('Imagen descripción') %></label>
+          <input type="file" name="descriptionFile" class="col-sm-9 form-control">
+      </div>      
+      <div class="form-group row <% if (m.description_type && m.description_type === 'image') { %>hide<% } %>" id="wrapperDescription">
         <label class="col-sm-3 control-label" for="description"><%= __('Descripción') %></label>
         <textarea class="col-sm-9 form-control" id="description" name="description"><% if (m.description) { %><%= m.description %><% } %></textarea>
       </div>
