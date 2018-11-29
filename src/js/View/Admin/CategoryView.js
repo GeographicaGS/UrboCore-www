@@ -26,16 +26,10 @@ App.View.Admin.Category = Backbone.View.extend({
   events: {
     'change .listItem.entity > input[type=checkbox]': '_toggleVariableList',
     'change .listItem.variable > input[type=checkbox]': '_toggleVariable',
-    'click .button.permission': '_showCategoryPermissionPopup',
-    'click .button.downloadConfig': '_downloadConfig',
-    'click .button.addConnector': '_showAddConnectorPopup',
-    'click .button.editConnector': '_showEditConnectorPopup',
-    'click .button.activateConnector': '_activateConnector',
-    'click .button.deactivateConnector': '_deactivateConnector',
-    'click .button.deleteConnector': '_deleteConnector',
     'click .listItem.entity > .permission': '_showEntityPermissionPopup',
     'click .listItem.variable > .permission': '_showVariablePermissionPopup',
-    'change .categoryInfo #nodata': '_saveCategory'
+    'click .button.permission': '_showCategoryPermissionPopup',
+    'click .button.downloadConfig': '_downloadConfig',    
   },
 
   initialize: function(options){
@@ -147,10 +141,6 @@ App.View.Admin.Category = Backbone.View.extend({
     }
   },
 
-  _downloadConfig: function(e) {
-    alert('Descargando YML');
-  },
-
   _showCategoryPermissionPopup: function(e){
     e.preventDefault();
 
@@ -172,53 +162,6 @@ App.View.Admin.Category = Backbone.View.extend({
     this.$el.append(this._popupView.render().$el);
 
     this.listenTo(permissionView, 'close', this._onPermissionPopupClose);
-
-    this._popupView.show();
-  },
-
-  _showEditConnectorPopup: function(e) {
-    e.preventDefault();
-
-      var connectorData = {
-        id_scope: this.scope,
-        id_category: this.category,
-        type_resource: __('Ámbito'),
-        name_resource: this.model.get('name'),
-        instance: this.catalog.get('config').connector || 7, //TODO: HARDCODED
-      };
-      var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
-
-      if(this._popupView == undefined) {
-        this._popupView = new App.View.PopUp();
-      }
-      this._popupView.internalView = connectorView;
-
-      this.$el.append(this._popupView.render().$el);
-
-      this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
-
-      this._popupView.show();
-  },
-
-  _showAddConnectorPopup: function(e){
-    e.preventDefault();
-
-    var connectorData = {
-      id_scope: this.scope,
-      id_category: this.category,
-      type_resource: __('Ámbito'),
-      name_resource: this.model.get('name')
-    };
-    var connectorView = new App.View.Admin.ConnectorPopup(connectorData);
-
-    if(this._popupView == undefined) {
-      this._popupView = new App.View.PopUp();
-    }
-    this._popupView.internalView = connectorView;
-
-    this.$el.append(this._popupView.render().$el);
-
-    this.listenTo(connectorView, 'close', this._onPermissionPopupClose);
 
     this._popupView.show();
   },
@@ -270,41 +213,24 @@ App.View.Admin.Category = Backbone.View.extend({
     this._popupView.show();
   },
 
-  _deleteConnector: function(e) {
-    var instanceModel = new App.Model.ConnectorInstance();
-    instanceModel.set('id', this.catalog.get('config').connector || 7);
-    instanceModel.destroy({reset: true, appendAuthorizationConnector: true,  success: function() {}});
-  },
-
   _onPermissionPopupClose: function(e){
     this._popupView.closePopUp();
   },
 
-  _saveCategory: function(e) {
-    e.preventDefault();
-    var $target = $(e.currentTarget);
-    var data = {
-      nodata: e.currentTarget.checked
-    };
-
-    this.model.set(data, this.catalog.get('config').connector || 7); //TODO: HARDCODED
-    this.model.save(null,{
-      success: function(){
-        $target.removeClass('error').attr('readonly','readonly');
-      },
-      error: function(){
-        $target.addClass('error');
-      },
-      parse: false
+  _downloadConfig: function(e) {
+    var configGenerator = new App.Model.ConnectorConfigGenerator({
+      id_scope: this.scope,
+      id_category: this.category
     });
-  },
 
-  _activateConnector: function() {
-    window.alert("Conector activado")
-  },
-
-  _deactivateConnector: function() {
-    window.alert("Conector desactivado")
-  }
+    configGenerator.fetch({
+      success: function() {
+        debugger;
+      },
+      error: function() {
+        window.alert(__('Hubo un error al intentar descargar el fichero de configuración'));
+      }
+    })
+  },  
 
 });

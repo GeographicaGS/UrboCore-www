@@ -3,38 +3,164 @@
   <h2 class="title"><%= __('¿Cómo desplegar un conector?') %></h2>
   <div class="support-box">
     <h3 class="title"><%= __('Pasos a seguir') %></h3>
-    <h4 class="subtitle"><%= __('Step 1 Requirements') %></h4>
+
+    <h4 class="subtitle"><%= __('Step 1 - Requirements') %></h4>
     <p>
-      Docker must be installed (version >= 18.02) <a href="#">https://www.docker.com</a><br/>
-      Docker must be installed (version >= 18.02) <a href="#">https://www.docker.com</a>
+      Docker must be installed (version >= 18.0.2). <a href="https://www.docker.com" target="_blank">https://www.docker.com</a><br/>
+      Docker-compose must be installed. <a href="https://docs.docker.com/compose/" target="_blank">https://docs.docker.com/compose/</a>
     </p>
     <hr/>
-    
+
     <h4 class="subtitle"><%= __('Step 2') %></h4>
     <p>
-      Maecenas ut orci condimentum, cursus enim non, mollis odio
+      Click on generate configuration for connector and download the file config.yml.<br/>
+      This file contains all configuration needed for a connector.
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 3') %></h4>
+    <p>
+      Edit config.yml in order to set the following fields: <br/>
       <ul>
         <li>
           <span class="index">a</span>
-          Morbi tempor maximus massa quis volutpat
+          baseUrl: This must be the full URL (including port if necessary) in which the connector will be
+          listening to receive the changes in the data from Context Broker.
         </li>
         <li>
           <span class="index">b</span>
-          Morbi tempor maximus massa quis volutpat
+          contextBrokerUrls<br><br>
+          <ul>
+            <li>
+              <span class="index">I.</span>
+              portAuthtk: auth port of the Context Broker
+            </li>
+            <li>
+              <span class="index">II.</span>
+              portCtxApi: general port of the Context Broker
+            </li>  
+            <li>
+              <span class="index">III.</span>
+              urlCtxBrBase: general url for the the Context Broker (not including port)
+            </li>  
+            <li>
+              <span class="index">IV.</span>
+              urlCtxAuthBase: auth url for the the Context Broker (not including port)
+            </li>  
+          </ul>
         </li>
         <li>
           <span class="index">c</span>
-          Morbi tempor maximus massa quis volutpat
-        </li>
-        <li>
-          <span class="index">d</span>
-          Morbi tempor maximus massa quis volutpat
+          subservices<br><br>
+          <ul>
+              <li>
+                <span class="index">I.</span>
+                service: name of the Context Broker service to which the connector will subscribe
+              </li>
+              <li>
+                <span class="index">II.</span>
+                subservice: name of the Context Broker subservice to which the connector will subscribe
+              </li>  
+              <li>
+                <span class="index">III.</span>
+                auth: <br><br>
+                <ul>
+                  <li>
+                    <span class="index">1.</span>
+                    user: user for authenicating with the service of the Context Broker
+                  </li>
+                  <li>
+                    <span class="index">2.</span>
+                    password: password for authenicating with the service of the Context Broker
+                  </li>  
+                </ul>
+              </li>  
+            </ul>
         </li>
       </ul>      
     </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 4') %></h4>
+    <p>
+      Clone <a href="https://github.com/GeographicaGS/urbo-pgsql-connector" target="_blank">https://github.com/GeographicaGS/urbo-pgsql-connector</a>
+      in a folder of the computer that will host the conector
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 5') %></h4>
+    <p>
+      Go into the folder and copy the edited config.yml inside the api folder
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 6') %></h4>
+    <p>
+      Execute the following command:
+    </p>
+    <p class="code">
+      <span class="index">a</span>
+      docker-composer run -d \<br>
+      &nbsp; -v path-to-log:/logs \<br>
+      &nbsp; -p connector-port:3000 \<br>
+      &nbsp; api npm start
+    </p>
+    <p>
+      <span class="index">b</span>
+      path-to-log is the path to the folder that will store the logs
+    </p>
+    <p>
+      <span class="index">c</span>
+      connector-port is the port to witch the connector will be listening for changes in the data
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 7') %></h4>
+    <p>
+      Publish the connector, so that when requests come into the url in baseUrl configured in file config.yml
+      they send the data to the port the connector is listening to. There are multiples ways and systems of
+      doing this, we recommend Nginx. Example of Nginx configuration:
+    </p>
+    <p class="code">
+      <span class="index">a</span>
+      location /baseUrl-path/ {<br>
+      &nbsp; proxy_pass http://localhost:connector-port/;<br>
+      &nbsp; proxy_http_version 1.1;<br>
+      &nbsp; proxy_set_header Upgrade $http_upgrade<br>
+      &nbsp; proxy_set_header Connection 'upgrade';<br>
+      &nbsp; proxy_set_header Host $host;<br>
+      &nbsp; proxy_cache_bypass $http_upgrade;<br>
+      }
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 8') %></h4>
+    <p>
+      Once started with the previous command, the connector will download all entities of the vertical present in the context
+      broker and will subscribe to changes in that data.
+    </p>
+    <hr/>
+
+    <h4 class="subtitle"><%= __('Step 9') %></h4>
+    <p>
+      If any error happens on the initialization, it will appear in the log file in the log folder. The connector will restart
+      continuously until the initialization is correct.
+    </p>
+    <hr/>
+    
+    <h4 class="subtitle"><%= __('Step 10') %></h4>
+    <p>
+      To stop the connector, execute
+    </p>
     <p class="code">
       docker ps
-    </p>    
-    <hr/>    
+    </p>
+    <p>
+      to get the id of the container holding the connector, and then execute
+    </p>      
+    <p class="code">
+      docker stop id_container
+    </p>
+
   </div>
 </div>

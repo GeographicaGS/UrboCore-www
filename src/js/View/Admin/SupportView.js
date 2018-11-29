@@ -41,7 +41,7 @@ App.View.Admin.Support = Backbone.View.extend({
   },
 
   _setActiveTab: function(e) {
-    _.each(this.$('.tabs a'), function(tab) {
+    _.each(this.$('.tabs li'), function(tab) {
       tab.classList.remove('active');
     });
     e.currentTarget.classList.add('active');

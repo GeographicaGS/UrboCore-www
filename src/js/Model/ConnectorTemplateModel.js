@@ -33,16 +33,31 @@ App.Model.ConnectorTemplate = Backbone.Model.extend({
     return App.config.configurator_url + '/connector/subservices/templates/';
   },
 
-  validators: {
-  }
+  validators: {}
 });
 
 App.Model.ConnectorInstance = Backbone.Model.extend({
     
-    urlRoot: function(){
-      return App.config.configurator_url + '/connector/subservices/instances/';
-    },
-  
-    validators: {
-    }
-  });
+  urlRoot: function(){
+    return App.config.configurator_url + '/connector/subservices/instances/';
+  },
+
+  validators: {}
+});
+
+App.Model.ConnectorConfigGenerator = Backbone.Model.extend({
+
+  defaults: {
+    id_scope: null,
+    id_category: null,
+  },
+
+  initialize: function(options){
+    this.id_scope = options.id_scope || null;
+    this.id_category = options.id_category || null;
+  },
+    
+  urlRoot: function(){
+    return App.config.api_url.concat('/admin/scopes/', this.id_scope, '/generators/config/connector/', this.id_category);
+  },
+});
