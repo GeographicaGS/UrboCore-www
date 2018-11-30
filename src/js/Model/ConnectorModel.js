@@ -20,31 +20,6 @@
 
 'use strict';
 
-App.Model.ConnectorTemplate = Backbone.Model.extend({
-
-  defaults: {
-    name : "",
-    id : true,
-    blocks : [],
-    template : {},
-  },
-
-  urlRoot: function(){
-    return App.config.configurator_url + '/connector/subservices/templates/';
-  },
-
-  validators: {}
-});
-
-App.Model.ConnectorInstance = Backbone.Model.extend({
-    
-  urlRoot: function(){
-    return App.config.configurator_url + '/connector/subservices/instances/';
-  },
-
-  validators: {}
-});
-
 App.Model.ConnectorConfigGenerator = Backbone.Model.extend({
 
   defaults: {
