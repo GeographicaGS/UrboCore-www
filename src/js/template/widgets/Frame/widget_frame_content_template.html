@@ -1,7 +1,15 @@
 <div class="frame">
 	<div class="url"><%= model.url %></div>
-  <div class="info">
-    <% if (model.source) {%><p><%= model.description %></p><% } %>
-    <% if (model.source) {%><p class="source"><%= __('Fuente') %>: <%= model.source %></p><% } %>
+  <div class="info <%= model.description_type %>">
+    <% if (model.description) {%>
+      <% if (model.description_type === 'image') {%>
+          <img src="<%= model.description %>" class="<%= model.description_type %>">
+        <% } else if (model.description_type === 'iframe'){ %>
+          <iframe width="100%" height="240px" src="<%= model.description %>" class="<%= model.description_type %>"></iframe>
+        <% } else { %>
+          <p><%= model.description %></p>
+        <% } %>
+    <% } %>
   </div>
+  <% if (model.source) {%><p class="source"><%= __('Fuente') %>: <%= model.source %></p><% } %>
 </div>
