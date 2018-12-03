@@ -5,7 +5,13 @@
       <% if (model.description_type === 'image') {%>
           <img src="<%= model.description %>" class="<%= model.description_type %>">
         <% } else if (model.description_type === 'iframe'){ %>
-          <iframe width="100%" height="240px" src="<%= model.description %>" class="<%= model.description_type %>"></iframe>
+          <iframe 
+            width="100%"
+            height="240px"
+            scrolling="yes"
+            frameborder="no"
+            src="<%= model.description %>"
+            class="<%= model.description_type %>"></iframe>
         <% } else { %>
           <p><%= model.description %></p>
         <% } %>

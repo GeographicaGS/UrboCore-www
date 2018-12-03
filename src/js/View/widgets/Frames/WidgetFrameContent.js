@@ -70,11 +70,15 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
   _changeDescriptionType: function(e) {
     var wrapperDescriptionFile = this.$('#wrapperDescriptionFile');
     var wrapperDescription = this.$('#wrapperDescription');
+    var description = this.$('#description');
 
     if (e.currentTarget.value === 'image') {
       wrapperDescriptionFile.removeClass('hide');
       wrapperDescription.addClass('hide');
     } else { 
+      if (description.length > 0) {
+        description[0].value = '';
+      }
       wrapperDescriptionFile.addClass('hide');
       wrapperDescription.removeClass('hide');
     }
@@ -82,7 +86,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
 
   _changeFile: function(e) {
     var files = _.filter(e.currentTarget.files, function(file) {
-      return RegExp(/image\/(jpeg|gif|png|jpg)/i).test(file.type);
+      return RegExp(/image\/(jpeg|gif|png|jpg)/i).test(file.type)
+        && parseInt(file.size/1024, 10) < 100;
     });
 
     if (files.length > 0) {
@@ -94,7 +99,7 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
           }
         }.bind(this));
     } else {
-      alert('Tipo de fichero no soportado');
+      alert(__('Ocurrio un error al subir. Las causas pueden ser: \n\n1. Tipo de fichero que intenta subir no está soportado. Los ficheros soportados son JPG, GIF o PNG.\n\n2. Tamaño de la imagen excede de los 100KBs.'));
       e.currentTarget.value = '';
     }
   }, 
@@ -127,8 +132,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
           _this.collection.trigger('update');
           _this.trigger('close', {});
         },
-        failure: function (error) {
-          console.log('Error: ' + error);
+        error: function (error) {
+          alert(__('Ha ocurrido un error en la creación del Widget.'));
         }
       });
     }
