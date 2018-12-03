@@ -224,12 +224,32 @@ App.View.Admin.Category = Backbone.View.extend({
     });
 
     configGenerator.fetch({
-      success: function() {
-        debugger;
-      },
-      error: function() {
-        window.alert(__('Hubo un error al intentar descargar el fichero de configuración'));
-      }
+      complete: function(response) {
+        if (response.status === 200 && response.statusText === 'OK') {
+          // Download File
+          var file = new Blob([response.responseText], { type: 'text/yaml' });
+          var filename = this.scope + '_' + this.category + '.config.yml';
+
+          if (window.navigator.msSaveOrOpenBlob) { // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+          } else { // Others
+            var tagA = document.createElement('a');
+            var url = URL.createObjectURL(file);
+
+            tagA.href = url;
+            tagA.download = filename;
+            document.body.appendChild(tagA);
+            tagA.click();
+
+            setTimeout(function() {
+              document.body.removeChild(tagA);
+              window.URL.revokeObjectURL(url);
+            }, 0); 
+          }             
+        } else {
+          window.alert(__('Hubo un error al intentar descargar el fichero de configuración'));
+        }
+      }.bind(this)
     })
   },  
 

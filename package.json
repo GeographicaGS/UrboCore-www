@@ -10,7 +10,8 @@
     "test": "./node_modules/.bin/karma start",
     "deploy": "node ./build.js && s3_website push",
     "install-vertical": "node ./install-vertical.js",
-    "update-vertical": "node ./update-vertical.js"
+    "update-vertical": "node ./update-vertical.js",
+    "make-translation": "node ls"
   },
   "author": "Geographica",
   "license": "ISC",
