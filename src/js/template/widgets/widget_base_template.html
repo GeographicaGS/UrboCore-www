@@ -58,7 +58,10 @@
 
   </div>
   <div class="widget_header main">
-    <div class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>">
+    <div
+      class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>"
+      title="<%=title%>"
+      >
       <% if(category){%>
         <h3><%=category%></h3>
       <%}%>
