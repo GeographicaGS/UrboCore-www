@@ -81,7 +81,6 @@ deps.JS = [
   srcJS + 'View/Credentials/CredentialView.js',
 
   // ADMIN
-  srcJS + 'View/Admin/ConnectorView.js',
   srcJS + 'View/Admin/PermissionView.js',
   srcJS + 'View/Admin/ScopeListView.js',
   srcJS + 'View/Admin/ScopeView.js',
