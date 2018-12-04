@@ -29,7 +29,7 @@ App.View.HeaderView = Backbone.View.extend({
   },
 
   events: {
-  	'click .tool .user' : '_togglePopup',
+    'click .tool .user' : '_togglePopup',
   	'click .user_popup .close_sesion' : '_closeSesion',
     'click .tool .admin' : '_togglePopup',
     'click .admin_popup .users' : '_goUsers',
@@ -39,7 +39,8 @@ App.View.HeaderView = Backbone.View.extend({
     'click .tool .lang' : '_togglePopup',
   	'click a:not(.admin) a:not(.user), .user_popup li:not(.close_sesion)' : '_pending',
     'mouseleave': '_closePopups',
-    'click .council' : '_goToHome'
+    'click .council' : '_goToHome',
+    'click .tool .support' : '_goSupport',
   },
 
   _goToHome: function(e) {
@@ -105,6 +106,10 @@ App.View.HeaderView = Backbone.View.extend({
     this.$('.admin_popup').removeClass('active');
   },
 
+  _goSupport:function(){
+    App.router.navigate('/admin/support',{trigger: true});
+  },  
+
   _closePopups:function(){
     this.$('.genericPopup').removeClass('active');
   },
@@ -114,6 +119,6 @@ App.View.HeaderView = Backbone.View.extend({
     var classPopup = '.' + $(e.currentTarget).attr('popup') + '_popup';
     this.$('.genericPopup').not(classPopup).removeClass('active');
     this.$(classPopup).toggleClass('active');
-  }
+  },
 
 });

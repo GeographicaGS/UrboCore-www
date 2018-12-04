@@ -1,0 +1,61 @@
+<div class="admin">
+  <div class="container">
+    <!-- Header -->
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="underlined no-border"><%= __('Soporte') %></h1>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="tabs">
+          <li class="active">
+            <%= __('Todos') %>
+          </li>
+          <li data-type="vertical">
+            <%= __('Vertical') %>
+          </li>
+          <li data-type="scope">
+            <%= __('Ambitos') %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="row items">
+      <div class="col-md-3 vertical">
+        <a href="/admin/support/question1" class="mini-box" jslink>
+          <h4 class="category">
+            <%= __('Vertical') %>
+          </h4>
+          <h3 class="title">
+            <%= __('¿Cómo desplegar un conector?') %>
+          </h3>
+        </a>
+      </div>
+      <div class="col-md-3 vertical">
+        <a href="/admin/support/question2" class="mini-box" jslink>
+          <h4 class="category">
+            <%= __('Vertical') %>
+          </h4>
+          <h3 class="title">
+            <%= __('Preguntas frecuentes sobre el conector') %>
+          </h3>
+        </a>
+      </div>
+      <div class="col-md-3 scope">
+        <a href="/admin/support/question3" class="mini-box" jslink>
+          <h4 class="category">
+            <%= __('Ambito') %>
+          </h4>
+          <h3 class="title">
+            <%= __('Esto es una pregunta para los ambitos') %>
+          </h3>
+        </a>
+      </div>  
+    </div>
+  </div>
+</div>

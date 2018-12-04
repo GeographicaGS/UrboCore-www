@@ -89,6 +89,8 @@ deps.JS = [
   srcJS + 'View/Admin/CategoryView.js',
   srcJS + 'View/Admin/VariableView.js',
   srcJS + 'View/Admin/LogsView.js',
+  srcJS + 'View/Admin/SupportView.js',
+  srcJS + 'View/Admin/SupportDetailView.js',
 
   // DEVICES
   srcJS + 'View/DeviceView.js',
@@ -195,7 +197,7 @@ deps.JS = [
   srcJS + 'Model/DeviceModel.js',
   srcJS + 'Model/EntitiesCounterModel.js',
   srcJS + 'Model/UserModel.js',
-  srcJS + 'Model/ConnectorTemplateModel.js',
+  srcJS + 'Model/ConnectorModel.js',
   srcJS + 'Model/CredentialModel.js',
   srcJS + 'Model/Metadata/Variable.js',
   srcJS + 'Model/Metadata/Entity.js',
@@ -215,7 +217,6 @@ deps.JS = [
   srcJS + 'Collection/WidgetContextCollection.deprecated.js',
   srcJS + 'Collection/SearchMapCollection.js',
   srcJS + 'Collection/UserCollection.js',
-  srcJS + 'Collection/ConnectorTemplatesCollection.js',
   srcJS + 'Collection/CredentialCollection.js',
   srcJS + 'Collection/PlacementCollection.js',
   srcJS + 'Collection/ScatterCollection.js',
