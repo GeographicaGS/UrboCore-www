@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.3\n"
 "X-Poedit-Basepath: ../../src/js\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n !1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: View\n"
@@ -3594,7 +3594,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.3\n"
 "X-Poedit-Basepath: ../../src/js\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n !1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: View\n"
@@ -7079,3 +7079,90 @@ msgstr "Eccellente"
 # LoginOverride.js
 msgid "Iniciar sesión con IDM"
 msgstr "Accedi con IDM"
+
+msgid "Schools"
+msgstr "Istituti"
+
+msgid "School"
+msgstr "Istituto"
+
+msgid "Companies"
+msgstr "Aziende"
+
+msgid "Company"
+msgstr "Azienda"
+
+msgid "Total internships"
+msgstr "Totale tirocini"
+
+msgid "Internship status"
+msgstr "Stato tirocini"
+
+msgid "Total companies"
+msgstr "Totale aziende"
+
+msgid "Total courses"
+msgstr "Totale corsi"
+
+msgid "Vista general"
+msgstr "Vista generale"
+
+msgid "Number of internship"
+msgstr "Numero tirocini"
+
+msgid "Internships list"
+msgstr "Lista tirocini"
+
+msgid "Title"
+msgstr "titolo"
+
+msgid "Places"
+msgstr "Istanze"
+
+msgid "Duration"
+msgstr "durata"
+
+msgid "Actives"
+msgstr "Attivi"
+
+msgid "Availables"
+msgstr "Disponibili"
+
+msgid "A few seconds"
+msgstr "Pochi secondi"
+
+msgid "Months"
+msgstr "Mesi"
+
+msgid "Month"
+msgstr "Mese"
+
+msgid "Weeks"
+msgstr "Settimane"
+
+msgid "Week"
+msgstr "Settimana"
+
+msgid "Course list"
+msgstr "Lista corsi"
+
+msgid "No hay datos"
+msgstr "Non ci sono dati"
+
+msgid "Category"
+msgstr "Categoria"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Value"
+msgstr "Valore"
+
+msgid "Quantitative"
+msgstr "Quantitativo"
+
+msgid "Internship places"
+msgstr "Numero tirocini"
+
+msgid "Available internship"
+msgstr "Tirocini disponibili"

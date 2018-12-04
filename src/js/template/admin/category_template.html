@@ -2,40 +2,31 @@
   <div class="container list">
     <div class="row">
       <div class="col-md-12 header">
-        <h1 class="underlined"><%= __('Ficha de Vertical') %></h1>
+        <h1 class="underlined">
+          <span class="text">
+            <%= __('Configurar Vertical') %>
+          </span>
+          <span class="post">
+            <a href="/admin/support" jslink>
+              <img src="/img/SM_soporte.svg">
+            </a>
+          </span>
+        </h1>
       </div>
     </div>
     <% if (scope.name){ %>
     <div class="row">
       <div class="col-md-6">
         <p class="elementTitle category <%= catalog.get('id') %>"><%= catalog.get('name') %></p>
-        <form class="categoryInfo">
-          <div class="row">
-            <label for="nodata"><%= __('Vertical sin datos') %></label>
-            <input id="nodata" type="checkbox" <%= catalog.get('nodata') ? 'checked="checked"' : '' %>">
-          </div>
-        </form>
       </div>
       <div class="col-md-6">
-        <div class="col-md-12 align-right">
-          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos de vertical') %></a>
+        <div class="align-right">
+          <a href="#" class="button empty downloadConfig">
+            <img src="/img/SC_ic_descargar.svg">
+            <%= __('Config.YML') %>
+          </a>
+          <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos') %></a>
         </div>
-        <% if (App.config.connectorTools) { %>
-        <div class="col-md-12 align-right">
-          <% if (!hasConnector) {%>
-            <a href="#" class="button empty addConnector" data-category="<%= catalog.get('id') %>"><%= __('Añadir conector') %></a>
-          <% } else { %>
-            <a href="#" class="button empty editConnector" data-category="<%= catalog.get('id') %>"><%= __('Editar conector') %></a>
-            <a href="#" class="button empty deleteConnector" data-category="<%= catalog.get('id') %>"><%= __('Eliminar conector') %></a>
-          <% } %>
-        </div>
-        <div class="col-md-12 align-right">
-          <% if (hasConnector) {%>
-            <a href="#" class="button empty activateConnector" data-category="<%= catalog.get('id') %>"><%= __('Activar conector') %></a>
-            <a href="#" class="button empty deactivateConnector" data-category="<%= catalog.get('id') %>"><%= __('Desactivar conector') %></a>
-          <% } %>
-        </div>
-        <% } %>
       </div>
     </div>
     <div class="row">
@@ -47,10 +38,8 @@
             <% if(catEntity.get('editable') || catEntity.get('mandatory')){ %>
               <li>
                 <span class="listItem entity" data-entity="<%= catEntity.get('id') %>" data-mandatory="<%= catEntity.get('mandatory') %>">
-                  <!-- <input id="<%= catEntity.get('id') %>" type="checkbox" <%= category.entities.where({id: catEntity.get('id')}).length > 0 ? 'checked':'' %>> -->
                   <input id="<%= catEntity.get('id') %>" type="checkbox" <%= category.entities.where({id: catEntity.get('id')}).length > 0 ? 'checked':'' %>>
                   <label for="<%= catEntity.get('id') %>" class="icon <%= catEntity.get('id') %> varListToggle"><%= catEntity.get('name') %></label>
-                  <!-- <a href="#" class=""></a> -->
                   <% if(!catEntity.get('mandatory')) { %>
                     <a href="#" class="onlyOnHover permission"><%= __('Permisos') %></a>
                   <% } %>
