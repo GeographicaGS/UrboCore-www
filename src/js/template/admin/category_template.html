@@ -6,11 +6,13 @@
           <span class="text">
             <%= __('Configurar Vertical') %>
           </span>
+          <% if (App.config.support_section) { %>
           <span class="post">
             <a href="/admin/support" jslink>
               <img src="/img/SM_soporte.svg">
             </a>
           </span>
+          <% } %>
         </h1>
       </div>
     </div>
@@ -21,10 +23,12 @@
       </div>
       <div class="col-md-6">
         <div class="align-right">
+          <% if (App.config.download_config_file) { %>
           <a href="#" class="button empty downloadConfig">
             <img src="/img/SC_ic_descargar.svg">
             <%= __('Config.YML') %>
           </a>
+          <% } %>
           <a href="#" class="button empty permission" data-category="<%= catalog.get('id') %>"><%= __('Permisos') %></a>
         </div>
       </div>
