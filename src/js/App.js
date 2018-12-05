@@ -447,7 +447,9 @@ App._embedIni = function(){
   $('body').attr('mode',this.mode);
   this.auth = new App.Auth();
   this.router = new App.Router();
-  Backbone.history.start({pushState: true, root: '/' + App.lang + '/' });
+  // Load metadata
+  this._metadata.start(function(){});  
+  Backbone.history.start({ pushState: true, root: '/' + App.lang + '/' });
 }
 
 App._updateFavicon = function() {
