@@ -29,6 +29,7 @@ App.Router = Backbone.Router.extend({
       '' : 'ini',
       'home' : 'home',
       'login' : 'login',
+      'login_external?(user=:user)(&pass=:pass)' : 'loginExternal',
       'embed/v1/:scope' : 'embedWidget',
       ':scope/scope' : 'scopes',
 
@@ -119,6 +120,28 @@ App.Router = Backbone.Router.extend({
   login: function(){
     var v = new App.View.Login({'headerView':App.header});
     App.showView(v.render());
+  },
+
+  loginExternal: function() {
+    var queryParams = App.Utils.queryParamsToObject();
+  
+    if(queryParams !== {}) {
+      var user = queryParams.user || '';
+      var pass = queryParams.pass || '';
+  
+      this._auth.login(user, md5(pass), function (err) {
+        if (err) {
+          this.navigate('login', { trigger: true });
+        } else {
+          App.mv().start(function () {
+            this.navigate('', { trigger: true });
+          });
+        }
+      });
+    
+    } else {
+      this.navigate('login', { trigger: true });
+    }
   },
 
   scopes: function(scope) {
