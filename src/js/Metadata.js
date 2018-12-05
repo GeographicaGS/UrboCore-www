@@ -55,13 +55,8 @@
       var _this = this;
       scope = new App.Model.Metadata.Scope({id: scope_id}).fetch({
         success: function(scope){
-          scope.get('categories').fetch({
-            success: function(){
-              _this._metadataCollection.push(scope);
-              if (cb) cb();
-            },
-            error: error
-          });
+          _this._metadataCollection.push(scope);
+          if (cb) cb();
         },
         error: error
       });
