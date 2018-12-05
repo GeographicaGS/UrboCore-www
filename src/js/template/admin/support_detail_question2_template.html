@@ -1,0 +1,32 @@
+<div id="support-detail">
+  <h4 class="category"><%= __('Vertical') %></h4>
+  <h2 class="title"><%= __('Connectors common questions') %></h2>
+  <div class="support-question">
+    <h3 class="title"> How can I check if my connector is bringing data?.</h3>
+    <div class="text">
+      <p>
+        Please check the log file for any errors first.
+      </p>
+    </div>
+  </div>
+
+  <div class="support-question">
+    <h3 class="title">My connector is running and no errors appear on the log but there is no data entering.</h3>
+    <div class="text">
+      <p>
+        Check your configuration file to see if your connector is using the processing module (processing -> active -> true). If that is the case,
+        change "processing -> active" to false, restart the connector and check the logs again. The errors will appear in the log.
+      </p>
+    </div>
+  </div>
+
+  <div class="support-question">
+    <h3 class="title">Log shows errors indicating connector is unable to recreate a subscription.</h3>
+    <div class="text">
+      <p>
+        In this case you will need to delete by hand in the database the entries relative to your connector in the table public.subscriptions.
+      </p>
+    </div>
+  </div>
+
+</div>

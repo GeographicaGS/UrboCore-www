@@ -344,6 +344,11 @@ header{
           background-image: url('/img/SC_ic_menu-admin.svg');
         }
       }
+      &.support{
+        &:before{
+          background-image: url('/img/SC_ic_menu-support.svg');
+        }
+      }      
       &.alerts{
         &:before{
           background-image: url('/img/SC_ic_menu-alertas.svg');
@@ -762,11 +767,8 @@ h6{
 .button{
   cursor: pointer;
   display: inline-block;
-  // height: 34px;
-  // line-height: 34px;
   flex: 0 0 auto;
-  padding: 9px 10px;
-  min-width: 170px;
+  padding: 9px 15px;
   background-color:#00b8c7;
   color:#fff;
   text-transform: uppercase;
@@ -775,6 +777,8 @@ h6{
   font-weight: bold;
   text-align: center;
   border-radius: 2px;
+  letter-spacing: 1px;
+  
   &.empty{
     background-color: transparent;
     color:#00b8c7;
@@ -793,8 +797,7 @@ h6{
     justify-content: center;
 
     img {
-      height: 10px;
-      margin-left: 5px;
+      height: 12px;
     }
   }
 
@@ -823,6 +826,10 @@ h6{
     &:after{
       content: url('/img/SC_ic_flechaselect_white.svg');
     }
+  }
+  img {
+    height: 10px;
+    margin-right: 5px;
   }
 }
 

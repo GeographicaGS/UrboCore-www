@@ -44,6 +44,8 @@ App.Router = Backbone.Router.extend({
       'admin/scope/:scope/:category/:entity/:variable': 'adminVariable',
       'admin/logs': 'adminLogs',
       'admin/logs/user/:id_user': 'adminLogsUser',
+      'admin/support': 'adminSupport',
+      'admin/support/:id_question': 'adminSupportDetail',
 
       // Frames
       ':scope/frames/:id': 'frame',
@@ -307,6 +309,16 @@ App.Router = Backbone.Router.extend({
     var v = new App.View.Admin.Logs({id_user:id_user}).render();
     App.showView(v);
   },
+
+  adminSupport: function(){
+    var v = new App.View.Admin.Support().render();
+    App.showView(v);
+  },
+
+  adminSupportDetail: function(id_question){
+    var v = new App.View.Admin.SupportDetail({ id_question: id_question }).render();
+    App.showView(v);
+  },  
 
   defaultRoute: function(){
     App.showView(new App.View.NotFound());
