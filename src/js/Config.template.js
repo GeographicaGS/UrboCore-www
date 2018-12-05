@@ -31,5 +31,7 @@ App.config = {
   'layout_header': false, // Used to override the header template - Example: 'custom_header_template'
   'layout_footer': false, // Used to override the footer template - Example: 'custom_footer_template'
   'map_zoom': 17,
-  'maps_prefix': 'dev_'
+  'maps_prefix': 'dev_',
+  'support_section': false, // Used to show/hide the support section
+  'download_config_file': false, // Used to show/hide the action to download the connector's config file
 };
