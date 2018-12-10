@@ -135,9 +135,9 @@ App.Router = Backbone.Router.extend({
         } else {
           App.mv().start(function () {
             this.navigate('', { trigger: true });
-          });
+          }.bind(this));
         }
-      });
+      }.bind(this));
     
     } else {
       this.navigate('login', { trigger: true });
