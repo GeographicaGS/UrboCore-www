@@ -127,9 +127,9 @@ App.Router = Backbone.Router.extend({
   
     if(queryParams !== {}) {
       var user = queryParams.user || '';
-      var pass = queryParams.pass || '';
+      var pass = queryParams.pass || ''; // pass in MD5
   
-      this._auth.login(user, md5(pass), function (err) {
+      this._auth.login(user, pass, function (err) {
         if (err) {
           this.navigate('login', { trigger: true });
         } else {
