@@ -38,38 +38,43 @@
   	});
   }
 
-  metadata.prototype.getScope = function(scope_id,cb){
+  metadata.prototype.getScope = function(scope_id, cb){
     var scope = this._metadataCollection.get(scope_id);
-    // If no scope found
+    
+    // If scope doesn't found in the collection
+    // we use other way to find it
     if(!scope){
-      this._metadataCollection.where({multi: true}).find(function(parent){
-        scope = parent.get('childs').get(scope_id);
-        return scope;
-      });
+      this._metadataCollection
+        .where({multi: true})
+        .find(function(parent){
+          scope = parent.get('childs').get(scope_id);
+          return scope;
+        });
     }
-    var error = function(e){
-      var err = new Error('Something went wrong fetching scope');
-      throw err;
-    }
-    if(scope === undefined){
+
+    // If scope doesn't found in the collection
+    // we get all data from server
+    if (scope === undefined){
       var _this = this;
-      scope = new App.Model.Metadata.Scope({id: scope_id}).fetch({
-        success: function(scope){
-          _this._metadataCollection.push(scope);
-          if (cb) cb();
-        },
-        error: error
-      });
-
-      //this._metadataCollection.push(scope);
-
+      scope = new App.Model.Metadata.Scope({id: scope_id})
+        .fetch({
+          success: function(scope){
+            _this._metadataCollection.push(scope);
+            if (cb) cb();
+          },
+          error: function(e){
+            var err = new Error('Something went wrong fetching scope');
+            throw err;
+          }
+        });
     }
+
     return scope; // Should we return it as Model or JSON ?
   }
 
   metadata.prototype.getCategory = function(category_id){
     var result = this.getScope(App.currentScope).get('categories').get(category_id);
-    return result ? result:null;
+    return result ? result : null;
   }
 
   metadata.prototype.getEntity = function(entity_id){
