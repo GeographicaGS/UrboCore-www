@@ -42,7 +42,8 @@ App.View.Widgets.Frame.BaseFrame = App.View.Widgets.Base.extend({
       timeMode: options.frameModel.get('datatype'),
       refreshTime: 3000000,
       dimension: 'allWidth bgWhite bgWhiteHover allHeight',
-      extraMenu: extraMenu
+      extraMenu: extraMenu,
+      classname: 'custom',
     });
     App.View.Widgets.Base.prototype.initialize.call(this, options);
     
