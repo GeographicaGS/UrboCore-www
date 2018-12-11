@@ -450,8 +450,6 @@ App._embedIni = function(){
   $('body').attr('mode',this.mode);
   this.auth = new App.Auth();
   this.router = new App.Router();
-  // Load metadata
-  this._metadata.start(function(){});  
   Backbone.history.start({ pushState: true, root: '/' + App.lang + '/' });
 }
 
