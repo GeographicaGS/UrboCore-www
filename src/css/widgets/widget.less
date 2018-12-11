@@ -638,7 +638,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         width: 100%;
-        display: block;        
+        display: block;
       }
 
       .info {
@@ -657,7 +657,7 @@
         .image {
           max-height: 240px;
           margin-left: auto;
-          margin-right: auto;         
+          margin-right: auto;
         }
 
         .iframe {
@@ -1379,16 +1379,24 @@
     }
     .title {
       padding-left: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
-      display: block;
       img {
         float: left;
       }
     }
   }
+
+  &.custom {
+    .widget_header {
+      .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+
   .widget_content {
     // overflow: visible;
     &.clock {
