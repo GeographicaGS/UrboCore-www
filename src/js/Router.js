@@ -29,6 +29,7 @@ App.Router = Backbone.Router.extend({
       '' : 'ini',
       'home' : 'home',
       'login' : 'login',
+      'login_external?(user=:user)(&pass=:pass)' : 'loginExternal',
       'embed/v1/:scope' : 'embedWidget',
       ':scope/scope' : 'scopes',
 
@@ -43,6 +44,8 @@ App.Router = Backbone.Router.extend({
       'admin/scope/:scope/:category/:entity/:variable': 'adminVariable',
       'admin/logs': 'adminLogs',
       'admin/logs/user/:id_user': 'adminLogsUser',
+      'admin/support': 'adminSupport',
+      'admin/support/:id_question': 'adminSupportDetail',
 
       // Frames
       ':scope/frames/:id': 'frame',
@@ -117,6 +120,28 @@ App.Router = Backbone.Router.extend({
   login: function(){
     var v = new App.View.Login({'headerView':App.header});
     App.showView(v.render());
+  },
+
+  loginExternal: function() {
+    var queryParams = App.Utils.queryParamsToObject();
+  
+    if(queryParams !== {}) {
+      var user = queryParams.user || '';
+      var pass = queryParams.pass || ''; // pass in MD5
+  
+      this._auth.login(user, pass, function (err) {
+        if (err) {
+          this.navigate('login', { trigger: true });
+        } else {
+          App.mv().start(function () {
+            this.navigate('', { trigger: true });
+          }.bind(this));
+        }
+      }.bind(this));
+    
+    } else {
+      this.navigate('login', { trigger: true });
+    }
   },
 
   scopes: function(scope) {
@@ -285,6 +310,16 @@ App.Router = Backbone.Router.extend({
     App.showView(v);
   },
 
+  adminSupport: function(){
+    var v = new App.View.Admin.Support().render();
+    App.showView(v);
+  },
+
+  adminSupportDetail: function(id_question){
+    var v = new App.View.Admin.SupportDetail({ id_question: id_question }).render();
+    App.showView(v);
+  },  
+
   defaultRoute: function(){
     App.showView(new App.View.NotFound());
   },
@@ -301,10 +336,12 @@ App.Router = Backbone.Router.extend({
     var opts = App.Utils.queryParamsToObject();
     opts.id_scope = scope;
     this.setCurrentScope(scope);
-    App.mv().getScope(scope, function(){
-      var v = new App.View.Widgets.Embed(opts);
-      App.showView(v.render());
+    // Load metadata
+    App.mv().start(function (collection) {
+      App.mv().getScope(scope, function(scope) {
+        var v = new App.View.Widgets.Embed(opts);
+        App.showView(v.render());
+      });
     });
-
   }
 });

@@ -1,7 +1,7 @@
 <%if(link){%>
   <a jslink href="<%=link%>" class="noOutline">
 <%}%>
-<div class="widget active <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+<div class="widget active <%=classname === 'custom' ? 'custom' : '' %> <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
   <div class='botons'>
     <% if (timeMode=='now') {%>
       <span class='tooltipIcon realTime'>
@@ -58,7 +58,10 @@
 
   </div>
   <div class="widget_header main">
-    <div class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>">
+    <div
+      class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>"
+      title="<%=title%>"
+      >
       <% if(category){%>
         <h3><%=category%></h3>
       <%}%>

@@ -38,6 +38,9 @@
         </li>
       </ul>
     <%}%>
+    <% if (App.config.support_section) { %>
+    <a class="support" href="#"><%=__('Support')%></a>
+    <% } %>
     <a class="alerts" href="#" style="display:none"><%=__('Alertas')%></a>
 
     <a class="lang uppercase" popup="lang" href="#"><%=App.lang%></a>

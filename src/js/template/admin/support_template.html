@@ -1,0 +1,51 @@
+<div class="admin">
+  <div class="container">
+    <!-- Header -->
+    <div class="row">
+      <div class="col-md-12 header">
+        <h1 class="underlined no-border"><%= __('Support') %></h1>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="tabs">
+          <li class="active">
+            <%= __('All') %>
+          </li>
+          <li data-type="vertical">
+            <%= __('Vertical') %>
+          </li>
+          <li data-type="scope">
+            <%= __('Scopes') %>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="row items">
+      <div class="col-md-3 vertical">
+        <a href="/admin/support/question1" class="mini-box" jslink>
+          <h4 class="category">
+            <%= __('Vertical') %>
+          </h4>
+          <h3 class="title">
+            <%= __('How deploy a connector?') %>
+          </h3>
+        </a>
+      </div>
+      <div class="col-md-3 vertical">
+        <a href="/admin/support/question2" class="mini-box" jslink>
+          <h4 class="category">
+            <%= __('Vertical') %>
+          </h4>
+          <h3 class="title">
+            <%= __('Connectors common questions') %>
+          </h3>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

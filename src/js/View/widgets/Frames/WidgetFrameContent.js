@@ -41,6 +41,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
   _template: _.template( $('#widgets-Frame-widget_frame_edit_template').html() ),
 
   events: {
+    'change input[name="descriptionFile"]': '_changeFile',
+    'click #optionsDescriptionType input[type="radio"]': '_changeDescriptionType',
     'click .button.save': '_saveAndExit',
     'click .button.cancel': '_cancelAndExit'
   },
@@ -64,6 +66,43 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
 
     return this;
   },
+
+  _changeDescriptionType: function(e) {
+    var wrapperDescriptionFile = this.$('#wrapperDescriptionFile');
+    var wrapperDescription = this.$('#wrapperDescription');
+    var description = this.$('#description');
+
+    if (e.currentTarget.value === 'image') {
+      wrapperDescriptionFile.removeClass('hide');
+      wrapperDescription.addClass('hide');
+    } else { 
+      if (description.length > 0) {
+        description[0].value = '';
+      }
+      wrapperDescriptionFile.addClass('hide');
+      wrapperDescription.removeClass('hide');
+    }
+  },
+
+  _changeFile: function(e) {
+    var files = _.filter(e.currentTarget.files, function(file) {
+      return RegExp(/image\/(jpeg|gif|png|jpg)/i).test(file.type)
+        && parseInt(file.size/1024, 10) < 100;
+    });
+
+    if (files.length > 0) {
+      App.Utils.imgToBase64(files[0])
+        .then(function(data) {
+          var description = this.$('#description');
+          if (description.length > 0) {
+            description[0].value = data;
+          }
+        }.bind(this));
+    } else {
+      alert(__('Ocurrio un error al subir. Las causas pueden ser: \n\n1. Tipo de fichero que intenta subir no está soportado. Los ficheros soportados son JPG, GIF o PNG.\n\n2. Tamaño de la imagen excede de los 100KBs.'));
+      e.currentTarget.value = '';
+    }
+  }, 
 
   _cancelAndExit: function (e) {
     e.preventDefault();
@@ -93,8 +132,8 @@ App.View.Widgets.Frame.FrameEdit = Backbone.View.extend({
           _this.collection.trigger('update');
           _this.trigger('close', {});
         },
-        failure: function (error) {
-          console.log('Error: ' + error);
+        error: function (error) {
+          alert(__('Ha ocurrido un error en la creación del Widget.'));
         }
       });
     }
