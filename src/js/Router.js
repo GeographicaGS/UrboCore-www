@@ -336,10 +336,12 @@ App.Router = Backbone.Router.extend({
     var opts = App.Utils.queryParamsToObject();
     opts.id_scope = scope;
     this.setCurrentScope(scope);
-    App.mv().getScope(scope, function(){
-      var v = new App.View.Widgets.Embed(opts);
-      App.showView(v.render());
+    // Load metadata
+    App.mv().start(function (collection) {
+      App.mv().getScope(scope, function(scope) {
+        var v = new App.View.Widgets.Embed(opts);
+        App.showView(v.render());
+      });
     });
-
   }
 });

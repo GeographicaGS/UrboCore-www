@@ -30,7 +30,7 @@
     // Load *all* metadata before starting
   	this._metadataCollection.fetch({reset:true,
   		success:function(collection){
-        return cb();
+        return cb(collection);
   		},
   		error:function(){
   			console.error('Cannot get metadata variables');
@@ -69,7 +69,9 @@
         });
     }
 
-    return scope; // Should we return it as Model or JSON ?
+    return typeof cb === 'function'
+      ? cb(scope)
+      : scope;
   }
 
   metadata.prototype.getCategory = function(category_id){
@@ -182,7 +184,6 @@
   }
 
   metadata.prototype.validateInMetadata = function(elements){
-
     var valid = true;
     if('categories' in elements){
       var categories = (typeof elements.categories !== 'object') ? elements.categories : [elements.categories];
