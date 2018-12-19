@@ -533,6 +533,21 @@ msgstr "Live data"
 msgid "Propósito"
 msgstr "Purpose"
 
+msgid "Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado"
+msgstr "Show the average value of bicycle use in a given period of time"
+
+msgid "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado."
+msgstr "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado."
+
+msgid "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa el tiempo transcurrido desde la recogida anterior, en el eje Y el nivel de llenado en el momento de la recogida."
+msgstr "Each point corresponds to a collection of a container in the selected date range. In the X axis the time elapsed from the previous collection is represented, in the Y axis the filling level at the time of collection."
+
+msgid "Si tenemos puntos verdes significa que los contenedores se recogen con mucha frecuencia sin llegar a estar llenos. Si tenemos puntos naranjas o rojos significa que los contenedores deberían recogerse con mayor frecuencia."
+msgstr "If we have green points means that the containers are collected very often without being full. If we have orange or red points it means that the containers should be collected more frequently."
+
+msgid "El objetivo del gestor debe ser buscar un equilibrio adaptado a la realidad del sistema."
+msgstr "The manager's objective must be to find a balance adapted to the reality of the system."
+
 #: template/dumps/map_info_current_template.html:8
 msgid ""
 "Detectar qué contenedores tienen en ese mismo instante un nivel de llenado "
@@ -1681,6 +1696,63 @@ msgstr "Congested"
 msgid "Intensidad"
 msgstr "Intensity"
 
+msgid "Carga"
+msgstr "Load"
+
+msgid "Intensidad relativa"
+msgstr "Relative intensity"
+
+msgid "Carga relativa"
+msgstr "Relative load"
+
+msgid "Ocupación relativa"
+msgstr "Relative occupacity"
+
+msgid "Fluido"
+msgstr "Fluid"
+
+msgid "Lento"
+msgstr "Slow"
+
+msgid "Retenciones"
+msgstr "Withholdings"
+
+msgid "Congestión"
+msgstr "Congestion"
+
+msgid "Mucho menos que la media"
+msgstr "Much less than the average"
+
+msgid "Menos que la media"
+msgstr "Less than the average"
+
+msgid "En la media"
+msgstr "In the average"
+
+msgid "Más que la media"
+msgstr "More than the average"
+
+msgid "Mucho más que la media"
+msgstr "Much more than the average"
+
+msgid "Obra"
+msgstr "Work"
+
+msgid "Accidente"
+msgstr "Accident"
+
+msgid "Alerta"
+msgstr "Alert"
+
+msgid "Evento"
+msgstr "Event"
+
+msgid "Previsión"
+msgstr "Forecast"
+
+msgid "Estable"
+msgstr "Stable"
+
 #: template/transport/map_popup_template.html:3
 msgid "Vía monitorizada"
 msgstr "Monitorized lane"
@@ -1690,6 +1762,21 @@ msgstr "Monitorized lane"
 #: View/widgets/Transport/WidgetCurrentTrafficView.js:7
 msgid "Intensidad del tráfico"
 msgstr "Traffic density"
+
+msgid "Carga de las vías"
+msgstr "Lanes' load"
+
+msgid "Ocupación de las vías"
+msgstr "Lanes' occupation"
+
+msgid "Valor máximo"
+msgstr "Maximum value"
+
+msgid "Valor medio"
+msgstr "Average value"
+
+msgid "Valor mínimo"
+msgstr "Minimum value"
 
 #: template/transport/map_popup_template.html:19
 msgid "Velocidad media"
@@ -2626,6 +2713,9 @@ msgstr "Waste Management Indicators"
 msgid "Mapa de calor del índice de eficiencia"
 msgstr "Heat Map of efficiency index"
 
+msgid "Mapa de calor"
+msgstr "Heat Map"
+
 #: View/Panels/Environment/EnvironmentHistoricPanelView.js:9
 msgid "Índice de Calidad del Aire: Histórico"
 msgstr "Air quality index: historic"
@@ -3289,7 +3379,7 @@ msgstr "Served population stations ranking"
 #: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:7
 #, fuzzy
 #| msgid "Bicicletas disponibles y alquiladas"
-msgid "Evolución de bicicletas disponibles y alquiladas · Porcentaje de uso"
+msgid "Evolución de bicicletas disponibles y alquiladas - Porcentaje de uso"
 msgstr "Available and hired bikes"
 
 #: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:53
@@ -3345,7 +3435,28 @@ msgstr "Non congested"
 
 #: View/widgets/Transport/WidgetTrafficCongestedRanking.js:7
 msgid "Ranking de vías por intensidad del tráfico"
-msgstr "Lanes raking by traffic intensity"
+msgstr "Routes raking by traffic intensity"
+
+msgid "Ranking de vías (top 5) por intensidad de tráfico"
+msgstr "Routes raking (top 5 ) by traffic intensity"
+
+msgid "Ranking de vías (top 5) por carga"
+msgstr "Routes raking (top 5 ) by overload"
+
+msgid "Ranking de vías (top 5) por ocupación"
+msgstr "Routes raking (top 5 ) by occupation"
+
+msgid "Vías congestionadas monitorizadas"
+msgstr "Monitored overloaded routes"
+
+msgid "Nivel de servicio"
+msgstr "Service level"
+
+msgid "Variable relativa"
+msgstr "Relative variable"
+
+msgid "Modificador del color"
+msgstr "Color modifier"
 
 #: View/widgets/Transport/WidgetTrafficCongestedRanking.js:52
 msgid "Vias monitorizadas congestionadas"
@@ -3521,6 +3632,9 @@ msgstr "Excellent"
 # LoginOverride.js
 msgid "Iniciar sesión con IDM"
 msgstr "Login with IDM"
+
+msgid "Tráfico"
+msgstr "Traffic"
 
 msgid "Tráfico - Mapa"
 msgstr "Traffic - Map"
