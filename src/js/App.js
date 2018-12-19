@@ -60,7 +60,7 @@ $(function() {
     if (jqxhr.status == 404) {
       //App.router.navigate('notfound',{trigger: true});
     }
-    else if (jqxhr.status == 403 || jqxhr.stats == 401) {
+    else if (jqxhr.status == 403 || jqxhr.stats == 401) {
       App.auth.logout();
       App.router.navigate('login',{trigger: true});
     }
@@ -238,7 +238,7 @@ App.nbf = function (n, options){
 
   _.defaults(options,default_opts);
 
-  var lang = App.lang || 'es';
+  var lang = App.lang || 'es';
   if (n===null){
       return "--";
   }
