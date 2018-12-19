@@ -482,24 +482,25 @@ App.d3Format = d3.locale({
         "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 });
 
-// LOAD TRANSLATE - Stop Execution while translation is loaded
-async function loadTranslate() {
-  App.lang = App.detectCurrentLanguage();
-  if (App.lang){
-    $.getJSON('/locale/' + App.lang + '.json')
-      .done(function(locale){
-        var jed = new Jed(locale);
-        __ = function(d) {
-          return jed.gettext(d);
-        }
-        return true;
-      })
-  }
+// LOAD TRANSLATE
+App.lang = App.detectCurrentLanguage();
+if (App.lang){
+  $.getJSON('/locale/' + App.lang + '.json')
+    .done(function(locale){
+      var jed = new Jed(locale);
+      __ = function(d) {
+        return jed.gettext(d);
+      }
+      return true;
+    })
 }
 
-(async () => {
-  await loadTranslate();
-})();
+// TODO - DELETE THIS
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+  while (currentTime + miliseconds >= new Date().getTime()) {}
+}
+sleep(2000);
 
 // LOADED AFTER DOM INIT
 $(function() {
