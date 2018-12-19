@@ -58,29 +58,7 @@ var __ = function(d) {
   return d;
 }
 
-App.resizeMe = function(){
-
-};
-
-App.detectCurrentLanguage = function(){
-  var url = document.URL.replace('/#','/');
-  // Detect lang analyzing the URL
-  if (url.indexOf('/es/') != -1 || url.endsWith('/es')) {
-    return 'es';
-  }
-  else if (url.indexOf('/en/') != -1 || url.endsWith('/en')) {
-    return 'en';
-  }
-  else if (url.indexOf('/it/') != -1 || url.endsWith('/it')) {
-    return 'it';
-  }
-  else if (url.indexOf('/fr/') != -1 || url.endsWith('/fr')) {
-    return 'fr';
-  }
-  else {
-    return 'es';
-  }
-};
+App.resizeMe = function(){};
 
 App.showView = function(view) {
   var oldView = this.currentView;
@@ -484,18 +462,35 @@ App.d3Format = d3.locale({
         "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 });
 
-// LOAD TRANSLATE
-App.lang = App.detectCurrentLanguage();
-if (App.lang){
-  $.getJSON('/locale/' + App.lang + '.json')
-    .done(function(locale){
-      var jed = new Jed(locale);
-      __ = function(d) {
-        return jed.gettext(d);
-      }
-      return true;
-    })
-}
+// App.detectCurrentLanguage = function(){
+//   var url = document.URL.replace('/#','/');
+//   // Detect lang analyzing the URL
+//   if (url) {
+//     if (url.indexOf('/es/') != -1 || url.endsWith('/es')) {
+//       return 'es';
+//     }
+//     else if (url.indexOf('/en/') != -1 || url.endsWith('/en')) {
+//       return 'en';
+//     }
+//     else if (url.indexOf('/it/') != -1 || url.endsWith('/it')) {
+//       return 'it';
+//     }
+//     else if (url.indexOf('/fr/') != -1 || url.endsWith('/fr')) {
+//       return 'fr';
+//     }
+//   } else {
+//     return 'es';
+//   }
+// };
+
+App.lang = 'en';
+$.getJSON('/locale/' + App.lang + '.json')
+.done(function(locale){
+  var jed = new Jed(locale);
+  __ = function(d) {
+    return jed.gettext(d);
+  }
+})
 
 // TODO - DELETE THIS
 function sleep(miliseconds) {
@@ -543,7 +538,6 @@ $(function() {
   else if (location.pathname=='/')
     history.pushState({}, "entry page", 'es/home');
 
-  // INIT APP
   App.ini();
 
   $(document).resize(function(){
