@@ -58,7 +58,9 @@ var __ = function(d) {
   return d;
 }
 
-App.resizeMe = function(){};
+App.resizeMe = function(){
+
+};
 
 App.detectCurrentLanguage = function(){
   var url = document.URL.replace('/#','/');
