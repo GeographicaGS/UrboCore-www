@@ -54,11 +54,97 @@ Backbone.Collection.prototype.fetch = function(options){
   fetchCollection.call(this,options);
 }
 
+$(function() {
+
+  $(document).ajaxError(function(event, jqxhr) {
+    if (jqxhr.status == 404) {
+      //App.router.navigate('notfound',{trigger: true});
+    }
+    else if (jqxhr.status == 403 || jqxhr.stats == 401) {
+      App.auth.logout();
+      App.router.navigate('login',{trigger: true});
+    }
+    else {
+      //App.router.navigate('error',{trigger: true});
+    }
+  });
+
+  $('body').on('click','a',function(e){
+    var attr = $(this).attr('jslink'),
+      href = $(this).attr('href');
+
+    if (attr!= undefined && attr!='undefined'){
+      e.preventDefault();
+      if (href=='#back') {
+        history.back();
+      }
+      if (attr)
+        App.getNavBar().set('backurl',attr);
+      else
+        App.getNavBar().set('backurl',Backbone.history.getFragment());
+
+      App.router.navigate(href,{trigger: true});
+    }
+  });
+
+  if (location.hash)
+    history.pushState({}, "entry page", location.hash.substring(1));
+  else if (location.pathname=='/')
+    history.pushState({}, "entry page", 'es/home');
+
+  App.lang = App.detectCurrentLanguage();
+
+  if (App.lang){
+    $.getJSON('/locale/' + App.lang + '.json')
+    .done(function(locale){
+      var jed = new Jed(locale);
+      __ = function(d) {
+        return jed.gettext(d);
+      }
+      App.ini();
+    })
+    .fail(function() {
+      App.ini();
+    });
+  }
+  else{
+    App.ini();
+  }
+
+  $(document).resize(function(){
+    App.resizeMe();
+  });
+
+});
+
+App.resizeMe = function(){
+
+};
+
 var __ = function(d) {
   return d;
 }
 
-App.resizeMe = function(){};
+App.detectCurrentLanguage = function(){
+  var url = document.URL.replace('/#','/');
+  // Detect lang analyzing the URL
+  if (url.indexOf('/es/') != -1 || url.endsWith('/es')) {
+    return 'es';
+  }
+  else if (url.indexOf('/en/') != -1 || url.endsWith('/en')) {
+    return 'en';
+  }
+  else if (url.indexOf('/it/') != -1 || url.endsWith('/it')) {
+    return 'it';
+  }
+  else if (url.indexOf('/fr/') != -1 || url.endsWith('/fr')) {
+    return 'fr';
+  }
+  else {
+    return 'es';
+  }
+};
+
 
 App.showView = function(view) {
   var oldView = this.currentView;
@@ -152,7 +238,7 @@ App.nbf = function (n, options){
 
   _.defaults(options,default_opts);
 
-  var lang = App.lang || 'es';
+  var lang = App.lang || 'es';
   if (n===null){
       return "--";
   }
@@ -460,90 +546,6 @@ App.d3Format = d3.locale({
         "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-});
-
-// App.detectCurrentLanguage = function(){
-//   var url = document.URL.replace('/#','/');
-//   // Detect lang analyzing the URL
-//   if (url) {
-//     if (url.indexOf('/es/') != -1 || url.endsWith('/es')) {
-//       return 'es';
-//     }
-//     else if (url.indexOf('/en/') != -1 || url.endsWith('/en')) {
-//       return 'en';
-//     }
-//     else if (url.indexOf('/it/') != -1 || url.endsWith('/it')) {
-//       return 'it';
-//     }
-//     else if (url.indexOf('/fr/') != -1 || url.endsWith('/fr')) {
-//       return 'fr';
-//     }
-//   } else {
-//     return 'es';
-//   }
-// };
-
-App.lang = 'en';
-$.getJSON('/locale/' + App.lang + '.json')
-.done(function(locale){
-  var jed = new Jed(locale);
-  __ = function(d) {
-    return jed.gettext(d);
-  }
-})
-
-// TODO - DELETE THIS
-function sleep(miliseconds) {
-  var currentTime = new Date().getTime();
-  while (currentTime + miliseconds >= new Date().getTime()) {}
-}
-sleep(2000);
-
-// LOADED AFTER DOM INIT
-$(function() {
-
-  $(document).ajaxError(function(event, jqxhr) {
-    if (jqxhr.status == 404) {
-      //App.router.navigate('notfound',{trigger: true});
-    }
-    else if (jqxhr.status == 403 || jqxhr.stats == 401) {
-      App.auth.logout();
-      App.router.navigate('login',{trigger: true});
-    }
-    else {
-      //App.router.navigate('error',{trigger: true});
-    }
-  });
-
-  $('body').on('click','a',function(e){
-    var attr = $(this).attr('jslink'),
-      href = $(this).attr('href');
-
-    if (attr!= undefined && attr!='undefined'){
-      e.preventDefault();
-      if (href=='#back') {
-        history.back();
-      }
-      if (attr)
-        App.getNavBar().set('backurl',attr);
-      else
-        App.getNavBar().set('backurl',Backbone.history.getFragment());
-
-      App.router.navigate(href,{trigger: true});
-    }
-  });
-
-  if (location.hash)
-    history.pushState({}, "entry page", location.hash.substring(1));
-  else if (location.pathname=='/')
-    history.pushState({}, "entry page", 'es/home');
-
-  App.ini();
-
-  $(document).resize(function(){
-    App.resizeMe();
-  });
-
 });
 
 // Click invoker for d3 from jQuery
