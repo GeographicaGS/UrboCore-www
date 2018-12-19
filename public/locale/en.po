@@ -279,6 +279,9 @@ msgstr "From"
 msgid "hasta"
 msgstr "to"
 
+msgid "Hasta"
+msgstr "To"
+
 #: template/date_template.html:15
 msgid "Rango predefinidos"
 msgstr "Predefined rank"
@@ -1705,6 +1708,9 @@ msgstr "Relative intensity"
 msgid "Carga relativa"
 msgstr "Relative load"
 
+msgid "Carga media"
+msgstr "Average load"
+
 msgid "Ocupación relativa"
 msgstr "Relative occupacity"
 
@@ -1954,10 +1960,8 @@ msgid "Título"
 msgstr ""
 
 #: template/widgets/Frame/widget_frame_edit_template.html:13
-#, fuzzy
-#| msgid "Dirección"
 msgid "Descripción"
-msgstr "Address"
+msgstr "Description"
 
 #: template/widgets/Frame/widget_frame_edit_template.html:21
 #, fuzzy
@@ -3307,6 +3311,9 @@ msgstr "Hourly occupancy by zones"
 
 #: View/widgets/Parking/WidgetTimeOccupationZones.js:37
 msgid "Ocupación media (%)"
+msgstr "Average occupancy (%)"
+
+msgid "Ocupación media"
 msgstr "Average occupancy (%)"
 
 #: View/widgets/Parking/WidgetTimeOccupationZones.js:47

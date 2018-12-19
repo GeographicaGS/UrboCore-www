@@ -130,7 +130,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
           var value = _this.__replacePropertyByValue(property,clicked);
           if (value != undefined) {
             return {
-              label: property.label,
+              label: property.label ? __(property.label) : '',
               value: value,
               units: property.units
             }
