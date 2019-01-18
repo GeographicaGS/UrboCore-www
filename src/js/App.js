@@ -108,8 +108,7 @@ $(function() {
         App.Utils.loadBlockedScripts()
         App.ini();
       });
-  }
-  else{
+  } else {
     App.Utils.loadBlockedScripts()
     App.ini();
   }
