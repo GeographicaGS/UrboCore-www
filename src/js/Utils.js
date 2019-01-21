@@ -345,3 +345,33 @@ App.Utils.imgToBase64 = function(file) {
     };
   });
 }
+
+/**
+ * Generate the "script" tag from different files to load them dynamically
+ *
+ * @param {String} type - <optional> string to identify the script to load
+ */
+App.Utils.loadBlockedScripts = function(type) {
+	var currentType = typeof type === 'string'
+		? type
+		: 'javascript/blocked'
+
+	if (document) {
+		var scripts = document.getElementsByTagName('SCRIPT');
+		var scriptsToLoad = [];
+
+		for (var i = 0; i < scripts.length; i++) {
+			if (scripts[i].getAttribute('src') && scripts[i].getAttribute('type') === currentType) {
+				var currentScript = document.createElement('script');
+
+				currentScript.src = scripts[i].getAttribute('src');
+				currentScript.type = 'application/javascript';
+				scriptsToLoad.push(currentScript)
+			}
+		}
+
+		for (var i = 0; i < scriptsToLoad.length; i++) {
+			document.body.appendChild(scriptsToLoad[i]);
+		}
+	}
+};
