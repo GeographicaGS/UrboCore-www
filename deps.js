@@ -235,7 +235,7 @@ deps.JS = [
   srcJS + 'Metadata.js',
 
   // Router
-  srcJS + 'Router.js'
+  srcJS + 'Router.js@finish-main-block'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];

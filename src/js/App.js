@@ -96,18 +96,20 @@ $(function() {
 
   if (App.lang){
     $.getJSON('/locale/' + App.lang + '.json')
-    .done(function(locale){
-      var jed = new Jed(locale);
-      __ = function(d) {
-        return jed.gettext(d);
-      }
-      App.ini();
-    })
-    .fail(function() {
-      App.ini();
-    });
-  }
-  else{
+      .done(function (locale) {
+        var jed = new Jed(locale);
+        __ = function(d) {
+          return jed.gettext(d);
+        }
+        App.Utils.loadBlockedScripts()
+        App.ini();
+      })
+      .fail(function() {
+        App.Utils.loadBlockedScripts()
+        App.ini();
+      });
+  } else {
+    App.Utils.loadBlockedScripts()
     App.ini();
   }
 
