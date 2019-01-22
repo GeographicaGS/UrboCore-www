@@ -20,6 +20,15 @@
 
 'use strict';
 
+/**
+ * This View is used into the route 'categoryDashboard', any 'panel'
+ * that we create must extend from this Object.
+ * 
+ * A 'panel' is the unit where all widgets are loaded.
+ * 
+ * A 'vertical' has to have at least a panel named 'master' and
+ * we will envolve it in the Object 'App.View.Panels.<vertical_name>.Master'
+ */
 App.View.Panels.Base = App.View.Container.extend({
   _template: _.template( $('#dashboard_template').html() ),
 
