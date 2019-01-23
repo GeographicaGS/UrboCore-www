@@ -41,7 +41,7 @@ deps.JS = [
   srcJS + 'App.js',
 
   // Utils
-  srcJS + 'Utils.js',
+  srcJS + 'Utils.js@finish-main-block',
 
   // Views
   srcJS + 'View/BaseView.js',
@@ -184,7 +184,6 @@ deps.JS = [
   srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
-  
 
   // Models
   srcJS + 'Model/BaseModel.js',
@@ -235,7 +234,7 @@ deps.JS = [
   srcJS + 'Metadata.js',
 
   // Router
-  srcJS + 'Router.js@finish-main-block'
+  srcJS + 'Router.js'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
