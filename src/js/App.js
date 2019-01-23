@@ -109,22 +109,19 @@ App.ini = function() {
         }
         // Load the scripts that was blocked
         // in the initial load
-        App.Utils.loadBlockedScripts()
-          .then(function () {
-            continueLoadApp.apply(_this);
-          });
+        App.Utils.loadBlockedScripts(null, function() {
+          continueLoadApp.apply(_this);
+        })
       })
       .fail(function() {
-        App.Utils.loadBlockedScripts()
-          .then(function () {
-            continueLoadApp.apply(_this);
-          });
+        App.Utils.loadBlockedScripts(null, function() {
+          continueLoadApp.apply(_this);
+        });
       });
   } else {
-    App.Utils.loadBlockedScripts()
-      .then(function () {
-        continueLoadApp.apply(_this);
-      });
+    App.Utils.loadBlockedScripts(null, function() {
+      continueLoadApp.apply(_this);
+    });
   }
 
   // Once time the language is loaded, we can

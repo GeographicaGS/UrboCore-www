@@ -350,26 +350,24 @@ App.Utils.imgToBase64 = function(file) {
  * Generate the "script" tag from different files to load them dynamically
  *
  * @param {String} type - <optional> string to identify the script to load
- * @return {Promise}
+ * @param {Function} cb - callback function to response
  */
-App.Utils.loadBlockedScripts = function(type) {
+App.Utils.loadBlockedScripts = function(type, cb) {
   var currentType = typeof type === 'string'
     ? type
     : 'javascript/blocked';
 
   if (document) {
-    return new Promise((resolve) => {
-      var blockedScripts = Array.from(document.getElementsByTagName('SCRIPT'))
-        .filter( function(script) {
-          return script.getAttribute('src') && script.getAttribute('type') === currentType
-        });
-
-      // Load all script files and we sure
-      // all files was loaded (recursive function)
-      loadAllScripts(blockedScripts, 0, function () {
-        resolve();
+    var blockedScripts = Array.from(document.getElementsByTagName('SCRIPT'))
+      .filter( function(script) {
+        return script.getAttribute('src') && script.getAttribute('type') === currentType
       });
-    })
+
+    // Load all script files and we sure
+    // all files was loaded (recursive function)
+    loadAllScripts(blockedScripts, 0, function () {
+      cb();
+    });
   }
   
   /**
