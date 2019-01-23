@@ -44,19 +44,7 @@ var availableColors = [
   "#17becf",
   "#9edae5"
 ];
-
-/**
- * Now the error with the translation and the "third"
- * verticals is fixed but is necessary fix it in the
- * core components
- * 
- * TODO - Must be delete
- * 
- * @param {String} d 
- */
-var __ = function (d) {
-  return d;
-}
+var __; // function to translate
 
 /**
  * Get the payload to the server request
@@ -105,24 +93,61 @@ Backbone.View.prototype.close = function(){
 /**
  * Initial method when the APP is launched
  */
-App.ini = function(){
-  window.document.title = __(App.config.title || 'Urbo - Solution for Smart Cities');
-  App._updateFavicon();
-  $('body').attr('layout',App.config.layout);
-  // Detect browser here
-  if(!this.isSupportedBrowser()){
-    window.location.href = "/browser_error.html";
-  } else {
-    this._filters = {};
-    this.$main = $('main');
-    this.ctx = new App.Model.Context();
-    this.highRangeCtx = new App.Model.Context();
-    this._metadata = new App.Metadata();
+App.ini = function() {
 
-    if (window.location.pathname.indexOf('/embed/v1/') === -1) {
-      this._standardIni();
+  var _this = this;
+
+  // Before any actions, we must load
+  // the JSON file with the language
+  App.lang = App.detectCurrentLanguage();
+
+  if (App.lang) {
+    $.getJSON('/locale/' + App.lang + '.json')
+      .done(function (locale) {
+        __ = function(d) {
+          return new Jed(locale).gettext(d);
+        }
+        // Load the scripts that was blocked
+        // in the initial load
+        App.Utils.loadBlockedScripts()
+          .then(function () {
+            continueLoadApp.apply(_this);
+          });
+      })
+      .fail(function() {
+        App.Utils.loadBlockedScripts()
+          .then(function () {
+            continueLoadApp.apply(_this);
+          });
+      });
+  } else {
+    App.Utils.loadBlockedScripts()
+      .then(function () {
+        continueLoadApp.apply(_this);
+      });
+  }
+
+  // Once time the language is loaded, we can
+  // continue with the App loading
+  function continueLoadApp() {
+    window.document.title = __(App.config.title || 'Urbo - Solution for Smart Cities');
+    App._updateFavicon();
+    $('body').attr('layout', App.config.layout);
+    // Detect browser here
+    if(!this.isSupportedBrowser()){
+      window.location.href = "/browser_error.html";
     } else {
-      this._embedIni();
+      this._filters = {};
+      this.$main = $('main');
+      this.ctx = new App.Model.Context();
+      this.highRangeCtx = new App.Model.Context();
+      this._metadata = new App.Metadata();
+  
+      if (window.location.pathname.indexOf('/embed/v1/') === -1) {
+        this._standardIni();
+      } else {
+        this._embedIni();
+      }
     }
   }
 };
@@ -660,26 +685,6 @@ $(function() {
     history.pushState({}, 'entry page', 'es/home');
   }
 
-  App.lang = App.detectCurrentLanguage();
-
-  if (App.lang){
-    $.getJSON('/locale/' + App.lang + '.json')
-      .done(function (locale) {
-        var jed = new Jed(locale);
-        __ = function(d) {
-          return jed.gettext(d);
-        }
-        // Load the scripts that was blocked
-        // in the initial load
-        App.Utils.loadBlockedScripts()
-        App.ini();
-      })
-      .fail(function() {
-        App.Utils.loadBlockedScripts()
-        App.ini();
-      });
-  } else {
-    App.Utils.loadBlockedScripts()
-    App.ini();
-  }
+  // Init the application
+  App.ini();
 });

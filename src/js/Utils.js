@@ -350,28 +350,46 @@ App.Utils.imgToBase64 = function(file) {
  * Generate the "script" tag from different files to load them dynamically
  *
  * @param {String} type - <optional> string to identify the script to load
+ * @return {Promise}
  */
 App.Utils.loadBlockedScripts = function(type) {
-	var currentType = typeof type === 'string'
-		? type
-		: 'javascript/blocked'
+  var currentType = typeof type === 'string'
+    ? type
+    : 'javascript/blocked';
 
-	if (document) {
-		var scripts = document.getElementsByTagName('SCRIPT');
-		var scriptsToLoad = [];
+  if (document) {
+    return new Promise((resolve) => {
+      var blockedScripts = Array.from(document.getElementsByTagName('SCRIPT'))
+        .filter( function(script) {
+          return script.getAttribute('src') && script.getAttribute('type') === currentType
+        });
 
-		for (var i = 0; i < scripts.length; i++) {
-			if (scripts[i].getAttribute('src') && scripts[i].getAttribute('type') === currentType) {
-				var currentScript = document.createElement('script');
+      // Load all script files and we sure
+      // all files was loaded (recursive function)
+      loadAllScripts(blockedScripts, 0, function () {
+        resolve();
+      });
+    })
+  }
+  
+  /**
+   * Recursive function
+   * 
+   * Load an array script files it ensures that all files
+   * was loaded
+   * @param {Array} scripts - array the scripts files
+   * @param {Number} index - 
+   * @param {Function} cb 
+   */
+  function loadAllScripts(scripts, index, cb) {
+    if (scripts[index]) {
+      $.getScript(scripts[index].src, function() {
+        index++;
+        loadAllScripts(scripts, index, cb);
+      });
+    } else {
+      cb();
+    }
+  }
 
-				currentScript.src = scripts[i].getAttribute('src');
-				currentScript.type = 'application/javascript';
-				scriptsToLoad.push(currentScript)
-			}
-		}
-
-		for (var i = 0; i < scriptsToLoad.length; i++) {
-			document.body.appendChild(scriptsToLoad[i]);
-		}
-	}
 };

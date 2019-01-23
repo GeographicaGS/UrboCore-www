@@ -41,7 +41,7 @@ deps.JS = [
   srcJS + 'App.js',
 
   // Utils
-  srcJS + 'Utils.js',
+  srcJS + 'Utils.js@finish-main-block',
 
   // Views
   srcJS + 'View/BaseView.js',
@@ -184,7 +184,6 @@ deps.JS = [
   srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
-  
 
   // Models
   srcJS + 'Model/BaseModel.js',
