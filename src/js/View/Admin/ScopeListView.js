@@ -49,7 +49,6 @@ App.View.Admin.ScopeList = Backbone.View.extend({
 
   _createScope: function(e) {
     e.preventDefault();
-    debugger
     var createScopeView = new App.View.Admin.ScopeCreate();
 
     var modalView = new App.View.Modal({
@@ -65,7 +64,6 @@ App.View.Admin.ScopeList = Backbone.View.extend({
   },
 
   _onCreateScopeClosed: function(e) {
-    debugger
     if(e.data && e.data.id) {
       this.collection.fetch({
         success: function(){
