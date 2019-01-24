@@ -18,7 +18,7 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-(function(){
+(function() {
 
   /**
    * Metadata has all information about 'scopes',
@@ -27,7 +27,7 @@
    * This Object will be fill in the APP initialization,
    * because this information will be used in future actions.
    */
-  var metadata = function(){
+  var metadata = function() {
     this._metadataCollection = new App.Collection.Metadata.Scope();
     this._metadataCatalog = new App.Collection.Metadata.Catalog();
   }
@@ -44,7 +44,9 @@
       {
         reset:true,
         success:function(collection) {
-          return cb(collection);
+          return typeof cb === 'function'
+            ? cb(collection)
+            : collection;
         },
         error:function() {
           console.error('Cannot get metadata variables');
@@ -65,10 +67,10 @@
     
     // If we didn't look for the current scope into
     // the collection, we will try other way to get it
-    if(!scope){
+    if(!scope) {
       this._metadataCollection
         .where({multi: true})
-        .find(function(parent){
+        .find(function(parent) {
           scope = parent.get('childs').get(scope_id);
           return scope;
         });
@@ -76,15 +78,15 @@
 
     // If scope doesn't found in the collection
     // we get all data from server
-    if (scope === undefined){
+    if (scope === undefined) {
       var _this = this;
       scope = new App.Model.Metadata.Scope({ id: scope_id })
         .fetch({
-          success: function(scope){
+          success: function(scope) {
             _this._metadataCollection.push(scope);
             if (cb) cb();
           },
-          error: function(e){
+          error: function(e) {
             var err = new Error('Something went wrong fetching scope');
             throw err;
           }
@@ -136,7 +138,7 @@
    */
   metadata.prototype.getVariable = function(variable_id) {
     // TODO: Remove this hack
-    if(variable_id == 'seconds'){
+    if(variable_id == 'seconds') {
       return new Backbone.Model({
         'id':'seconds',
         'name':'Tiempo de encendido',
@@ -149,7 +151,7 @@
       .get('categories')
       .any(function(cat) {
         var temp = cat.get('entities')
-          .find(function(ent){
+          .find(function(ent) {
             return ent.get('variables').get(variable_id);
           });
           if(temp) {
@@ -197,7 +199,7 @@
   metadata.prototype.getCatalogEntity = function(entity_id) {
     var element;
     var result = this._metadataCatalog
-      .find(function(cat){
+      .find(function(cat) {
         element = cat.get('entities').get(entity_id);
         return element;
       });
@@ -214,7 +216,7 @@
   metadata.prototype.getCatalogVariable = function(variable_id) {
     var element;
     var result = this._metadataCatalog
-      .any(function(cat){
+      .any(function(cat) {
         var temp = cat
           .get('entities')
           .find(function(ent) {
@@ -250,41 +252,41 @@
     return additionalInfo;
   }
 
-  metadata.prototype.createScope = function(data, options){
+  metadata.prototype.createScope = function(data, options) {
     var scopeModel = new App.Model.Metadata.Scope(data, {
       collection: this._metadataCollection,
     });
     var _this = this;
     scopeModel.save(null,{
-      success: function(){
+      success: function() {
         _this._metadataCollection.push(scopeModel);
         options.success(scopeModel);
       },
-      error: function(err){
+      error: function(err) {
         options.error(err);
       }
     });
   }
 
-  metadata.prototype.validateInMetadata = function(elements){
+  metadata.prototype.validateInMetadata = function(elements) {
     var valid = true;
-    if('categories' in elements){
+    if('categories' in elements) {
       var categories = (typeof elements.categories !== 'object') ? elements.categories : [elements.categories];
-      _.each(categories, (function(category){
+      _.each(categories, (function(category) {
         valid = valid && this.getCategory(category);
       }).bind(this));
     }
 
-    if('entities' in elements){
+    if('entities' in elements) {
       var entities = (typeof elements.entities !== 'object') ? elements.entities : [elements.entities];
-      _.each(entities, (function(entity){
+      _.each(entities, (function(entity) {
         valid = valid && this.getEntity(entity);
       }).bind(this));
     }
 
-    if('variables' in elements){
+    if('variables' in elements) {
       var variables = (typeof elements.variables !== 'object') ? elements.variables : [elements.variables];
-      _.each(variables, (function(variable){
+      _.each(variables, (function(variable) {
         valid = valid && this.getVariable(variable);
       }).bind(this));
     }
@@ -292,7 +294,7 @@
 
   }
 
-  metadata.prototype.removeScope = function(scope_id, cb, parentScope){
+  metadata.prototype.removeScope = function(scope_id, cb, parentScope) {
     cb = cb || null;
     var deletedScope;
     if(!parentScope)
@@ -304,7 +306,7 @@
 
   metadata.prototype._entitiesMetadata = {}
 
-  metadata.prototype.getEntityMetadata = function(id_entity){
+  metadata.prototype.getEntityMetadata = function(id_entity) {
     return this._entitiesMetadata[id_entity] || {};
   }
 
