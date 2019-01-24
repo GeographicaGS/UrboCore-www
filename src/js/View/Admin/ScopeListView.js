@@ -49,18 +49,14 @@ App.View.Admin.ScopeList = Backbone.View.extend({
 
   _createScope: function(e) {
     e.preventDefault();
-    var createScopeView = new App.View.Admin.ScopeCreate();
-
-    var modalView = new App.View.Modal({
+    // Show modal
+    new App.View.Modal({
       modalTitle: __('Crear ámbito'),
-      modalContent: createScopeView
+      modalContent: new App.View.Admin.ScopeCreate(),
+      showModalFooter: false
     });
-
-    // this.$el.append(this._popUpView.render().$el);
-    // this._popUpView.toggle();
-
-    this.listenTo(modalView, 'modal:close', this._onCreateScopeClosed);
-    // Backbone.on('modal:close', this._onCreateScopeClosed, this);
+    // Associated event 'modal:close' to one function
+    App.events.on('modal:close', this._onCreateScopeClosed, this);
   },
 
   _onCreateScopeClosed: function(e) {

@@ -1,14 +1,32 @@
-<div class="overlay"></div>
-<div class="modal <%= modalClass %>">
-  <div class="row">
-    <div class="col-xs-10 header"><%= modalTitle %></div>
-    <div class="col-xs-2 exitButton">
-      <img src="/img/SM_cerrar_intenso.svg" alt="<%= __('Cerrar') %>'">
-    </div>
+<div class="app-modal-overlay"></div>
+<div class="app-modal <%= modalClass %>">
+  <div class="app-modal-header <% if (!showModalHeader) { %> hide <% } %>">
+    <h3 class="title">
+      <%= modalTitle %>
+    </h3>
+    <span class="cross">
+      <img class="close-modal"
+           src="/img/SM_cerrar_intenso.svg"
+           alt="<%= __('Cerrar') %>'">
+    </span>
   </div>
-  <div class="content">
+  <div class="app-modal-content">
     <% if (!isContentBackboneView) { %>
       <%= modalContent %>
     <% } %>
   </div>
+  <div class="app-modal-footer <% if (!showModalFooter) { %> hide <% } %>">
+    <button 
+      type="button"
+      class="button empty noBorder <% if (!showModalButtonCancel) { %> hide <% } %>"
+      id="buttonCancel">
+      <%= __('Cancelar') %>
+    </button>
+    <button
+      type="button"
+      class="button <% if (!showModalButtonOk) { %> hide <% } %>"
+      id="buttonOk">
+      <%= __('Ok') %>
+    </button>
+  </div>  
 </div>

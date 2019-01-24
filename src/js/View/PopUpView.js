@@ -27,28 +27,31 @@ App.View.Modal = Backbone.View.extend({
     modalClass: '', // Class css apply to modal wrapper
     modalContent: '', // Modal content, can be String or Backbone View
     isContentBackboneView: false, // Is Content a Backbone View?,
-    parentModal: 'body' // Is the DOM element where the Modal will be append
+    parentModal: 'body', // Is the DOM element where the Modal will be append,
+    showModalHeader: true, // Show header modal with the title and cross image
+    showModalFooter: true, // Show footer modal with the actions buttons
+    showModalButtonOk: true, // Show action 'OK' button
+    showModalButtonCancel: true,// Show action 'Cancel' button
   },
 
   template: _.template($('#modal_template').html()),
 
   initialize: function(options) {
-    _.bindAll(this, 'render', 'toggle');
     this.attributes = Object.assign({}, this.attributes, options || {});
+    _.bindAll(this, 'render');
     this.render();
   },
 
   events: {
-    'click .overlay, .exitButton img' : 'closeModal'
+    'click .overlay, .close-modal' : 'closeModal',
+    'click #buttonCancel' : 'onButtonCancel',
+    'click #buttonOk' : 'onButtonOk'
   },
 
   /**
    * Draw the Modal in the DOM
    */
   render: function() {
-
-    var currentParentModal = this.attributes.parentModal;
-
     this.attributes.isContentBackboneView = typeof this.attributes.modalContent === 'object'
       && typeof this.attributes.modalContent.render === 'function'
 
@@ -59,37 +62,50 @@ App.View.Modal = Backbone.View.extend({
 
     // If the content is an 'Backbone.View' Object
     if (this.attributes.isContentBackboneView) {
-      this.$('.content').append(this.attributes.modalContent.render().$el);
+      this.$('.app-modal-content').append(this.attributes.modalContent.render().$el);
     }
-
-    // Show modal
-    this.toggle();
 
     return this;
   },
 
   /**
-   * Change the modal visibility
+   * Push on "cancel" button
    * 
-   * @param {Boolean} show - show or hide?
+   * @param {Object} e - event triggered
    */
-  toggle: function() {
-    this.$('.modal').toggle();
-    this.$('.overlay').toggle();
+  onButtonOk: function (e) {
+    // We create a global event
+    App.events.trigger('modal:click:ok', e);
+    this.closeModal(e);
+  },
+
+  /**
+   * Push on "cancel" button
+   * 
+   * @param {Object} e - event triggered
+   */
+  onButtonCancel: function (e) {
+    // We create a global event
+    App.events.trigger('modal:click:cancel', e);
+    this.closeModal(e);
   },
 
   /**
    * Close modal and remove and destroy any
    * associated event to it
+   * 
    * @param {*} e - event triggered
    */
   closeModal: function(e) {
     e.preventDefault();
+    // Remove the Backbone View from DOM and every
+    // associated events to it
     if (this.attributes.isContentBackboneView) {
       this.attributes.modalContent.close();
     }
     this.close();
-    this.trigger('modal:close', { e: e });
+    // We create a global event
+    App.events.trigger('modal:close', e);
   }
 });
 

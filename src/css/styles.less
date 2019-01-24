@@ -1113,7 +1113,7 @@ h4{
 }
 
 #ui-datepicker-div{
-  background-color: #f6f6f6;
+  background-color: @greyLighter;
   border: 1px solid #909599;
   border-top: none;
   border-radius: 2px;
@@ -1438,7 +1438,7 @@ input[type=text]:-moz-placeholder{
   text-align: right;
 }
 
-//Clases para modales/ popups
+// Clases para modales/ popups
 .overlay{
    display: none;
    position: fixed;
@@ -1525,6 +1525,77 @@ input[type=text]:-moz-placeholder{
     width: auto;
   }
 }
+
+// Modales / Popups (nueva)
+// TODO - Eliminar anterior clase ".modal" y asociados
+// cuando todo se haya migrado a la nueva modal
+.app-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index:1001;
+}
+
+.app-modal {
+  max-height: ~ "calc(100vh - 24%)";
+  position: fixed;
+  top: 12%;
+  left: 50%;
+  width: 50%;
+  min-width: 640px;
+  transform: translateX(-50%);
+  background: @white;
+  z-index: 1002;
+  overflow: auto;
+  .app-modal-header {
+    display: flex;
+    flex-direction: row;
+    min-height: 20px;
+    padding: 16px;
+    border-bottom: 1px solid @greyLight2;
+    .title {
+      display: flex;
+      flex-basis: 90%;
+      justify-content: flex-start;
+      font-size: 20px;
+      font-weight: normal;
+      line-height: 20px;
+      height: 20px;
+      color:@blue;
+      margin: 0;
+      padding: 0;
+    }
+    .cross {
+      display: flex;
+      flex-basis: 10%;
+      justify-content: flex-end;
+      height: 20px;
+      img {
+        width: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+  .app-modal-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 50px;
+    padding: 16px;
+    & > div {
+      width: 100%;
+    }
+  }
+  .app-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    background: @greyLighter;
+    padding: 16px;
+  }
+}
+// FIN - Modales / Popups (nueva)
 
 .searchToolBox {
   margin-top:13px;
