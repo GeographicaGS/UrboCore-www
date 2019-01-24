@@ -1,0 +1,14 @@
+<div class="overlay"></div>
+<div class="modal <%= modalClass %>">
+  <div class="row">
+    <div class="col-xs-10 header"><%= modalTitle %></div>
+    <div class="col-xs-2 exitButton">
+      <img src="/img/SM_cerrar_intenso.svg" alt="<%= __('Cerrar') %>'">
+    </div>
+  </div>
+  <div class="content">
+    <% if (!isContentBackboneView) { %>
+      <%= modalContent %>
+    <% } %>
+  </div>
+</div>

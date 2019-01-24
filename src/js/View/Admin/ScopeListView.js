@@ -49,28 +49,31 @@ App.View.Admin.ScopeList = Backbone.View.extend({
 
   _createScope: function(e) {
     e.preventDefault();
-
-    if(this._popUpView == undefined) {
-      this._popUpView = new App.View.PopUp();
-    }
+    debugger
     var createScopeView = new App.View.Admin.ScopeCreate();
-    this._popUpView.internalView = createScopeView;
 
-    this.$el.append(this._popUpView.render().$el);
+    var modalView = new App.View.Modal({
+      modalTitle: __('Crear ámbito'),
+      modalContent: createScopeView
+    });
 
-    this.listenTo(createScopeView, 'close', this._onCreateScopeClosed);
+    // this.$el.append(this._popUpView.render().$el);
+    // this._popUpView.toggle();
 
-    this._popUpView.show();
+    this.listenTo(modalView, 'modal:close', this._onCreateScopeClosed);
+    // Backbone.on('modal:close', this._onCreateScopeClosed, this);
   },
 
-  _onCreateScopeClosed: function(e){
-    this._popUpView.closePopUp();
-    if(e.data && e.data.id){
-      this.collection.fetch({success: function(){
-        App.router.navigate('/admin/scope/' + e.data.id, {trigger: true});
-      }});
+  _onCreateScopeClosed: function(e) {
+    debugger
+    if(e.data && e.data.id) {
+      this.collection.fetch({
+        success: function(){
+          App.router.navigate('/admin/scope/' + e.data.id, {trigger: true});
+        }
+      });
     }else{
-      this.collection.fetch({reset: true});
+      this.collection.fetch({ reset: true });
     }
   },
 

@@ -29,7 +29,7 @@ App.View.Admin.ScopeCreate = Backbone.View.extend({
     'submit form': '_submit',
   },
 
-  initialize: function(options){
+  initialize: function(options) {
     this.options = options || {};
     this.render();
   },

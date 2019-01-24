@@ -20,6 +20,86 @@
 
 'use strict';
 
+App.View.Modal = Backbone.View.extend({
+
+  attributes: {
+    modalTitle: __('Información'), // Modal title
+    modalClass: '', // Class css apply to modal wrapper
+    modalContent: '', // Modal content, can be String or Backbone View
+    modalVisibility: false, // Is modal visible?
+    isContentBackboneView: false, // Is Content a Backbone View?,
+    parentModal: 'body' // Is the DOM element where the Modal will be append
+  },
+
+  template: _.template($('#modal_template').html()),
+
+  initialize: function(options) {
+    _.bindAll(this, 'render', 'toggle');
+    this.attributes = Object.assign({}, this.attributes, options || {});
+    this.render();
+  },
+
+  events: {
+    'click .overlay, .exitButton img' : 'closeModal'
+  },
+
+  /**
+   * Draw the Modal in the DOM
+   */
+  render: function() {
+    // If the content is an 'Backbone.View' Object
+    if (typeof this.attributes.modalContent === 'object'
+      && typeof this.attributes.modalContent.render === 'function') {
+      debugger
+      var contentHTML = this.attributes.modalContent.render().el;
+      this.$('.content').html(contentHTML);
+      this.attributes.isContentBackboneView = true;
+    }
+
+    // Append in the DOM
+    $(this.attributes.parentModal).append(
+      this.$el.html(this.template(this.attributes))
+    );
+
+    // Show modal
+    this.toggle();
+
+    return this;
+
+    // if(this.model)
+    //   templateData.m = this.model.toJSON();
+    // this.$el.html(this._template(templateData));
+    // if(this.internalView != undefined) {
+    //   // var internalView = this.internalView;
+    //   this.$el.find(".modalContent").html(this.internalView.render().$el);
+    // }
+    // return this;
+  },
+
+  /**
+   * Change the modal visibility
+   * 
+   * @param {Boolean} show - show or hide?
+   */
+  toggle: function() {
+    this.$('.modal').toggle();
+    this.$('.overlay').toggle();
+  },
+
+  /**
+   * Close modal and remove and destroy any
+   * associated event to it
+   * @param {*} ev - event triggered
+   */
+  closeModal: function(ev) {
+    ev.preventDefault();
+    if (this.attributes.isContentBackboneView) {
+      this.attributes.modalContent.close();
+    }
+    this.close();
+  }
+});
+
 App.View.PopUp = Backbone.View.extend({
 
   _template: _.template( $('#pop_up_template').html() ),
@@ -133,6 +213,7 @@ App.View.PopUpPublish = Backbone.View.extend({
     if(this.internalView != undefined) {
       this.internalView.close();
     }
+    Backbone.trigger('modal:close');
   }
 
 });
