@@ -24,17 +24,15 @@ App.View.Admin.ScopeList = Backbone.View.extend({
   _template: _.template( $('#admin-scope_list_template').html() ),
 
   events: {
-    'click .newScope': '_createScope',
-    'click .link': '_gotoScope',
-    'click .remove': '_removeScope'
+    'click .newScope': 'onNewScope',
+    'click .link': 'onGoToScope',
+    'click .remove': 'onRemoveScope'
   },
 
   initialize: function(){
     this.collection = new App.Collection.Metadata.Scope();
     this.listenTo(this.collection, 'reset', this.render);
-    this.collection.fetch({reset: true});
-    // this.collection = App.mv()._metadataCollection;
-    // this.render();
+    this.collection.fetch( { reset: true });
   },
 
   render: function(){
@@ -47,47 +45,99 @@ App.View.Admin.ScopeList = Backbone.View.extend({
     return this;
   },
 
-  _createScope: function(e) {
+  /**
+   * Show the scope form inside from the modal
+   * 
+   * @param {Object} e - triggered event
+   */
+  onNewScope: function(e) {
     e.preventDefault();
+    var scopeCreateView = new App.View.Admin.ScopeCreate();
     // Show modal
-    new App.View.Modal({
+    var modalView = new App.View.Modal({
       modalTitle: __('Crear ámbito'),
-      modalContent: new App.View.Admin.ScopeCreate(),
+      modalContent: scopeCreateView,
       showModalFooter: false
     });
-    // Associated event 'modal:close' to one function
-    App.events.on('modal:close', this._onCreateScopeClosed, this);
+
+    // The event trigger when the proccess is cancel
+    this.listenTo(scopeCreateView, 'form:cancel', function (e) {
+      modalView.closeModal.apply(modalView);
+    });
+
+    // The events trigger when the proccess is successfully finished
+    this.listenTo(scopeCreateView, 'form:save', function (e) {
+      this.handlerScopeCreated(e);
+    }.bind(this));
   },
 
-  _onCreateScopeClosed: function(e) {
-    if(e.data && e.data.id) {
+  /**
+   * When the create or edit proccessis successfully finished
+   * we trigger this function
+   * 
+   * @param {Object} e 
+   */
+  handlerScopeCreated: function(e) {
+    if(e && e.data && e.data.id) {
       this.collection.fetch({
         success: function(){
-          App.router.navigate('/admin/scope/' + e.data.id, {trigger: true});
+          App.router.navigate('/admin/scope/' + e.data.id, { trigger: true });
         }
       });
-    }else{
+    } else {
       this.collection.fetch({ reset: true });
     }
   },
 
-  _gotoScope: function(e){
+  /**
+   * Go to the scope detail page
+   * 
+   * @param {Object} e 
+   */
+  onGoToScope: function(e){
     e.preventDefault();
-    var scopeId = e.currentTarget.attributes['data-scope'] ? e.currentTarget.attributes['data-scope'].value : '';
+    var scopeId = e.currentTarget.attributes['data-scope']
+      ? e.currentTarget.attributes['data-scope'].value
+      : '';
+
     if(scopeId){
       App.router.navigate('/admin/scope/' + scopeId, {trigger: true});
     }
   },
 
-  _removeScope: function(e){
+  /**
+   * Remove a Scope from list
+   * 
+   * @param {object} e 
+   */
+  onRemoveScope: function(e){
     e.preventDefault();
-    var scopeId = e.currentTarget.attributes['data-scope'] ? e.currentTarget.attributes['data-scope'].value : '';
-    if(scopeId){
-      if(window.confirm(__('¿Estás seguro de eliminar este ámbito?\nSe perderán todas las configuraciones de este ámbito.'))){
-        var _this = this;
-        App.mv().removeScope(scopeId, function(){ _this.collection.fetch({reset: true}); });
-      }
-    }
-  }
+    var scopeId = e.currentTarget.attributes['data-scope']
+      ? e.currentTarget.attributes['data-scope'].value
+      : '';
 
+    if(scopeId){
+      // Show modal
+      var modalView = new App.View.Modal({
+        modalContent: __('¿Estás seguro de eliminar este ámbito?\nSe perderán todas las configuraciones de este ámbito.')
+      });
+
+      // The event trigger when the user push on OK
+      this.listenTo(modalView, 'modal:click:ok', function (e) {
+        this.handlerRemoveScope(scopeId);
+      }.bind(this));
+    }
+  },
+
+  /**
+   * Handler to remove scope from database
+   * 
+   * @param {String} scopeId - Scope to remove
+   */
+  handlerRemoveScope: function (scopeId) {
+    var _this = this;
+    App.mv().removeScope(scopeId, function() {
+      _this.collection.fetch({ reset: true });
+    });
+  }
 });

@@ -28,30 +28,30 @@
 
 @font : 'Source Sans Pro', sans-serif;
 
-@geographica:   #82b600;
-@blue:         #00475d;
-@blue2:       #003146;
-@turquoise :   #00b8c7;
-@primary:         #00475d;
-@accent :   #00b8c7;
-@white:       #ffffff;
+@geographica: #82b600;
+@blue: #00475d;
+@blue2: #003146;
+@turquoise: #00b8c7;
+@primary: #00475d;
+@accent: #00b8c7;
+@white: #ffffff;
 @greyLighter: #f6f6f6;
-@lightgrey:   #eeeeee;
-@greyLight2:  #dddddf;
-@grey2:        #ccccce;
-@grey3:       #aaaaae;
-@greyBluish:  #97a1a7;
-@grey4:        #909599;
-@grey:        #808086;
-@greyDark:    #55555d;
-@black:        #000000;
-@black2:     #27262e;
+@lightgrey: #eeeeee;
+@greyLight2: #dddddf;
+@grey2: #ccccce;
+@grey3: #aaaaae;
+@greyBluish: #97a1a7;
+@grey4: #909599;
+@grey: #808086;
+@greyDark: #55555d;
+@black: #000000;
+@black2: #27262e;
 @lightBlue: #f2fbfd;
 
-@okColor:   #00cc00;
-@warningColor:#ff9900;
-@errorColor:     #ff3300;
-@lightblue:   #336c7d;
+@okColor: #00cc00;
+@warningColor: #ff9900;
+@errorColor: #ff3300;
+@lightblue: #336c7d;
 
 @transitionFuncStandard: ease-out;
 @transitionFuncAlternative: linear;
@@ -59,6 +59,8 @@
 @transitionTimeFast: .15s;
 @transitionTimeNormal: .5s;
 @transitionTimeSlow: 1s;
+
+@size-margin-main: 15px;
 
 .alertColor(@range) when (@range = 'ok') {
   @alertColor: #00cc00;
@@ -1554,7 +1556,7 @@ input[type=text]:-moz-placeholder{
     display: flex;
     flex-direction: row;
     min-height: 20px;
-    padding: 16px;
+    padding: @size-margin-main;
     border-bottom: 1px solid @greyLight2;
     .title {
       display: flex;
@@ -1583,7 +1585,9 @@ input[type=text]:-moz-placeholder{
     display: flex;
     flex-direction: column;
     min-height: 50px;
-    padding: 16px;
+    padding: @size-margin-main;
+    line-height: 24px;
+    font-size: 16px;
     & > div {
       width: 100%;
     }
@@ -1592,7 +1596,7 @@ input[type=text]:-moz-placeholder{
     display: flex;
     justify-content: flex-end;
     background: @greyLighter;
-    padding: 16px;
+    padding: @size-margin-main;
   }
 }
 // FIN - Modales / Popups (nueva)

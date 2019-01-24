@@ -1,6 +1,7 @@
-<div id="errorsServer">
-</div>
-<div class="admin-form col-md-12">
+<!-- Error server -->
+<div id="errorsServer"></div>
+<!-- Form -->
+<div class="admin-form">
   <form class="form_horizontal">
 
     <div class="form-group row">
@@ -30,15 +31,9 @@
       <label for="inputZoom" class="col-sm-3 control-label"><%= __('Zoom') %></label>
       <input type="number" class="col-sm-9 form-control" id="inputZoom" name="zoom" required>
     </div>
-    <!-- <div class="form-group row noMulti">
-      <label for="inputDB" class="col-sm-3 control-label"><%= __('Almacén de datos') %></label>
-      <input type="text" class="col-sm-9 form-control" id="inputDB" name="db" required>
-    </div> -->
-
-    <div class="separator"></div>
 
     <div class="form-group row">
-      <div class="col-sm-12 buttons-row">
+      <div class="buttons-row">
         <button class="button empty noBorder exitButton"><%= __('Cancelar') %></button>
         <button type="submit" class="button"><%= __('Crear') %></button>
       </div>

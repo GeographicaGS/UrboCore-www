@@ -74,8 +74,8 @@ App.View.Modal = Backbone.View.extend({
    * @param {Object} e - event triggered
    */
   onButtonOk: function (e) {
-    // We create a global event
-    App.events.trigger('modal:click:ok', e);
+    // We create a event
+    this.trigger('modal:click:ok', e);
     this.closeModal(e);
   },
 
@@ -85,8 +85,8 @@ App.View.Modal = Backbone.View.extend({
    * @param {Object} e - event triggered
    */
   onButtonCancel: function (e) {
-    // We create a global event
-    App.events.trigger('modal:click:cancel', e);
+    // We create a event
+    this.trigger('modal:click:cancel', e);
     this.closeModal(e);
   },
 
@@ -97,15 +97,15 @@ App.View.Modal = Backbone.View.extend({
    * @param {*} e - event triggered
    */
   closeModal: function(e) {
-    e.preventDefault();
+    e && e.preventDefault();
+    // We create a event
+    this.trigger('modal:close', e);
     // Remove the Backbone View from DOM and every
     // associated events to it
     if (this.attributes.isContentBackboneView) {
       this.attributes.modalContent.close();
     }
     this.close();
-    // We create a global event
-    App.events.trigger('modal:close', e);
   }
 });
 
