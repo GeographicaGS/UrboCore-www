@@ -25,6 +25,16 @@ var app = app || {};
 App.Router = Backbone.Router.extend({
 
   routes: {
+    // Admin sections
+    'admin/users': 'adminUsers',
+    'admin/scopes': 'adminScopesList',
+    'admin/scope/:scope': 'adminScope',
+    'admin/scope/:scope/:category': 'adminCategory',
+    'admin/scope/:scope/:category/:entity/:variable': 'adminVariable',
+    'admin/logs': 'adminLogs',
+    'admin/logs/user/:id_user': 'adminLogsUser',
+    'admin/support': 'adminSupport',
+    'admin/support/:id_question': 'adminSupportDetail',
     // Main sections App
     '' : 'ini',
     'home' : 'home',
@@ -39,16 +49,6 @@ App.Router = Backbone.Router.extend({
     ':scope/custom/:category/:entity/:id(/:section)': 'customdevice',
     ':scope/:entity/:id(/:section)': 'device',
     'credentials': 'credentials',
-    // Admin sections
-    'admin/users': 'adminUsers',
-    'admin/scopes': 'adminScopesList',
-    'admin/scope/:scope': 'adminScope',
-    'admin/scope/:scope/:category': 'adminCategory',
-    'admin/scope/:scope/:category/:entity/:variable': 'adminVariable',
-    'admin/logs': 'adminLogs',
-    'admin/logs/user/:id_user': 'adminLogsUser',
-    'admin/support': 'adminSupport',
-    'admin/support/:id_question': 'adminSupportDetail',
     // Others routes
     'embed/v1/:scope' : 'embedWidget',
     'notfound': 'notfound',
@@ -321,13 +321,13 @@ App.Router = Backbone.Router.extend({
    * @param {String} category - current category (vertical)
    * @param {String} panel - current panel (default master) 
    */
-  categoryDashboard: function(scope, category, panel){
+  categoryDashboard: function(scope, category, panel) {
     this.setCurrentScope(scope);
     var defaultPanel = 'master';
     var metadataScope = App.mv().getScope(scope);
     var categoryClassName = App.Utils.capitalizeFirstLetter(category);
 
-    if (typeof panel === 'undefined') {
+    if (!panel) {
       panel = defaultPanel;
     }
 
@@ -361,7 +361,7 @@ App.Router = Backbone.Router.extend({
     );
   },
 
-  map: function(scope,variables){
+  map: function(scope,variables) {
     this.setCurrentScope(scope);
     App.showView(
       new App.View.Map({ 
@@ -371,7 +371,7 @@ App.Router = Backbone.Router.extend({
     );
   },
 
-  device: function(scope,entity,id,section){
+  device: function(scope,entity,id,section) {
     this.setCurrentScope(scope);
 
     if (['lastdata','raw','period','other'].indexOf(section)==-1)
@@ -381,7 +381,7 @@ App.Router = Backbone.Router.extend({
     App.showView(view.render());
   },
 
-  customdevice: function(scope,category,entity,id,section){
+  customdevice: function(scope,category,entity,id,section) {
     this.setCurrentScope(scope);
     var categoryCapitalize = App.Utils.capitalizeFirstLetter(category)
     var model = new App.Model.Device({'scope':scope, 'entity':entity,'id': id,'tab': section});
@@ -389,7 +389,7 @@ App.Router = Backbone.Router.extend({
     App.showView(view.render());
   },
 
-  credentials: function(){
+  credentials: function() {
     App.showView(new App.View.CredentialList());
   },
 
@@ -402,7 +402,7 @@ App.Router = Backbone.Router.extend({
    *
    * Show the list users
    */
-  adminUsers: function(){
+  adminUsers: function() {
     App.showView(new App.View.UserList());
   },
 
@@ -411,7 +411,7 @@ App.Router = Backbone.Router.extend({
    *
    * Show the list scopes
    */
-  adminScopesList: function(){
+  adminScopesList: function() {
     App.showView(new App.View.Admin.ScopeList());
   },
 
@@ -422,7 +422,7 @@ App.Router = Backbone.Router.extend({
    *
    * @param {String} scope - current scope
    */  
-  adminScope: function(scope){
+  adminScope: function(scope) {
     this.setCurrentScope(scope);
     App.showView(new App.View.Admin.Scope({ scope: scope }));
   },
@@ -436,7 +436,7 @@ App.Router = Backbone.Router.extend({
    * @param {String} scope - current scope
    * @param {String} category - current category
    */
-  adminCategory: function(scope, category){
+  adminCategory: function(scope, category) {
     this.setCurrentScope(scope);
     App.showView(
       new App.View.Admin.Category({
@@ -457,7 +457,7 @@ App.Router = Backbone.Router.extend({
    * @param {String} entity - current scope
    * @param {String} variable - current scope
    */
-  adminVariable: function(scope, category, entity, variable){
+  adminVariable: function(scope, category, entity, variable) {
     this.setCurrentScope(scope);
     App.showView(
       new App.View.Admin.Variable({
@@ -474,7 +474,7 @@ App.Router = Backbone.Router.extend({
    *
    * Show the logs page with all access from different users
    */
-  adminLogs: function(){
+  adminLogs: function() {
     App.showView(new App.View.Admin.Logs().render());
   },
 
@@ -484,7 +484,7 @@ App.Router = Backbone.Router.extend({
    * Show the logs page with all access from current user
    * @param {String} id_user - current user
    */
-  adminLogsUser: function(id_user){
+  adminLogsUser: function(id_user) {
     App.showView(new App.View.Admin.Logs({ id_user: id_user }).render());
   },
 
@@ -494,7 +494,7 @@ App.Router = Backbone.Router.extend({
    * Show the support page with information (FAQ)
    * about the app for all administrator users
    */
-  adminSupport: function(){
+  adminSupport: function() {
     App.showView(new App.View.Admin.Support().render());
   },
 
@@ -504,7 +504,7 @@ App.Router = Backbone.Router.extend({
    * Show the detail support page about the current question
    * @param {String} id_question - current question
    */
-  adminSupportDetail: function(id_question){
+  adminSupportDetail: function(id_question) {
     App.showView(new App.View.Admin.SupportDetail({ id_question: id_question }).render());
   },
 
@@ -523,7 +523,7 @@ App.Router = Backbone.Router.extend({
    * 
    * @param {String} scope - current scope
    */
-  embedWidget: function(scope){
+  embedWidget: function(scope) {
     var opts = App.Utils.queryParamsToObject();
 
     opts.id_scope = scope;
@@ -541,7 +541,7 @@ App.Router = Backbone.Router.extend({
    *
    * Show the 'not found' page
    */
-  notfound: function(){
+  notfound: function() {
     App.showView(new App.View.NotFound());
   },
 
@@ -550,7 +550,7 @@ App.Router = Backbone.Router.extend({
    *
    * Show the error page
    */
-  error: function(){
+  error: function() {
     App.showView(new App.View.Error());
   },
 
@@ -560,7 +560,7 @@ App.Router = Backbone.Router.extend({
    * If the user put a wrong URL in the browser
    * this action will be launched
    */
-  defaultRoute: function(){
+  defaultRoute: function() {
     App.showView(new App.View.NotFound());
   }
 
