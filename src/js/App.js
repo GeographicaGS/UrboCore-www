@@ -44,7 +44,10 @@ var availableColors = [
   "#17becf",
   "#9edae5"
 ];
-var __; // function to translate
+// function to translate
+var __ = function(d) {
+  return d;
+};
 
 /**
  * Get the payload to the server request

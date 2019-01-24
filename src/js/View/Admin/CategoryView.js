@@ -48,7 +48,9 @@ App.View.Admin.Category = Backbone.View.extend({
       },
       breadcrumb : [{
         url: 'admin/scope/' + this.scope + '/' + this.category,
-        title : this.model.get('name')
+        title : this.model
+          ? this.model.get('name')
+          : __('Categoría')
       },
       {
         url: 'admin/scope/' + this.scope,
