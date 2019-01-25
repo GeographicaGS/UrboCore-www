@@ -20,6 +20,10 @@
 
 'use strict';
 
+/**
+ * Backbone.View that show the 'scopes' list
+ * inside the Admin's routes
+ */
 App.View.Admin.ScopeList = Backbone.View.extend({
   _template: _.template( $('#admin-scope_list_template').html() ),
 
@@ -75,7 +79,7 @@ App.View.Admin.ScopeList = Backbone.View.extend({
    * When the create or edit proccessis successfully finished
    * we trigger this function
    * 
-   * @param {Object} e 
+   * @param {Object} e - triggered event
    */
   handlerScopeCreated: function(e) {
     if(e && e.data && e.data.id) {
@@ -92,7 +96,7 @@ App.View.Admin.ScopeList = Backbone.View.extend({
   /**
    * Go to the scope detail page
    * 
-   * @param {Object} e 
+   * @param {Object} e - triggered event 
    */
   onGoToScope: function(e){
     e.preventDefault();
@@ -108,7 +112,7 @@ App.View.Admin.ScopeList = Backbone.View.extend({
   /**
    * Remove a Scope from list
    * 
-   * @param {object} e 
+   * @param {object} e - triggered event
    */
   onRemoveScope: function(e){
     e.preventDefault();

@@ -49,8 +49,12 @@
 @lightBlue: #f2fbfd;
 
 @okColor: #00cc00;
+@okColorLight2: #4dff4d;
+@okColorLight3: #e6ffe6;
 @warningColor: #ff9900;
 @errorColor: #ff3300;
+@errorColorLight2: #ff8566;
+@errorColorLight3: #ffd6cc;
 @lightblue: #336c7d;
 
 @transitionFuncStandard: ease-out;
@@ -1906,6 +1910,37 @@ div.cartodb-timeslider{
     height: 100%;
     background-color: @turquoise;
     border-radius: 2px;
+  }
+}
+
+.alert {
+  font-size: 14px;
+  color: @greyDark;
+  line-height: 18px;
+  border: 1px solid @greyLight2;
+  background-color: @greyLighter;
+  padding: 12px;
+  margin-bottom: 20px;
+  & h4 {
+    margin-top: 0;
+    color: inherit;  
+  }
+  &> p,
+  &> ul {
+    margin-bottom: 0;
+  }
+  &> p + p {
+    margin-top: 5px;
+  }
+  &.success {
+    color: @okColor;
+    background-color: @okColorLight3;
+    border-color: @okColorLight2;
+  }
+  &.error {
+    color: @errorColor;
+    background-color: @errorColorLight3;
+    border-color: @errorColorLight2;
   }
 }
 

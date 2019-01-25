@@ -22,22 +22,33 @@
 
 /**
  * Backbone.View that show a form to create or edit 'scopes'
+ * inside the Admin's routes
  */
-App.View.Admin.ScopeCreate = Backbone.View.extend({
-  _template: _.template($('#admin-scope_create_template').html()),
+App.View.Admin.ScopeCreate = App.View.FormView.extend({
 
+  // View's Params
+
+  template: _.template($('#admin-scope_create_template').html()),
   events: {
-    'change input[name=isMultiScope]': 'toggleMultiScope',
-    'click .exitButton': 'onCancelButton',
+    'change input[name=multi]': 'toggleMultiScope',
+    'click .cancelButton': 'onCancelButton',
     'submit form': 'onSubmitButton',
   },
 
+  // View's Funcions
+
   initialize: function(options) {
     this.options = options || {};
+    App.View.FormView.prototype.initialize.call(this, { model: new App.Model.Scope() });
   },
 
+  /**
+   * Draw the template into the DOM
+   * 
+   * @return {Object} this - to chain other 'render' functions
+   */
   render: function() {
-    this.$el.html(this._template({ parentScope: this.options.parentScope || null }));
+    this.$el.html(this.template({ parentScope: this.options.parentScope || null }));
     return this;
   },
 
@@ -49,13 +60,9 @@ App.View.Admin.ScopeCreate = Backbone.View.extend({
   toggleMultiScope: function(e) {
     e.preventDefault();
     if (e.currentTarget.checked) {
-      this.$('.noMulti input, .noMulti label')
-        .attr('disabled', 'disabled')
-        .removeAttr('required');
+      this.$('.noMulti').addClass('hide');
     } else {
-      this.$('.noMulti input, .noMulti label')
-        .removeAttr('disabled')
-        .attr('required', 'required');
+      this.$('.noMulti').removeClass('hide');
     }
   },
 
@@ -77,33 +84,63 @@ App.View.Admin.ScopeCreate = Backbone.View.extend({
   onSubmitButton: function(e) {
     e.preventDefault();
 
-    // TODO: Save element
-    var data = {
-      name: e.currentTarget.name.value,
-      multi: e.currentTarget.isMultiScope ? e.currentTarget.isMultiScope.checked:false
-    };
+    var dataForm = this.convertFormToJSON(e.currentTarget);
 
-    if (!data.multi) {
-      data.location = [
-        parseFloat(e.currentTarget.lat.value),
-        parseFloat(e.currentTarget.lon.value)
-      ];
-      data.zoom = parseInt(e.currentTarget.zoom.value);
-      // data.db = e.currentTarget.db.value;
-    }
+    // Clean server error
+    this.toggleServerError(false, null);
 
+    // we parse some data in dataForm
+    dataForm.multi = Boolean(dataForm.multi);
+    dataForm.location[0].replace(',', '.');
+    dataForm.location[1].replace(',', '.');
+
+    // Other data to model
     if (this.options.parentScope) {
-      data.parent_id = this.options.parentScope;
+      dataForm.parent_id = this.options.parentScope;
     }
 
+    // validate data
+    this.model.set(dataForm);
+    if (this.model.isValid()) {
+      this.createScope(dataForm);
+    } else {
+      this.showErrors();
+    }
+  },
+
+  /**
+   * Create a new 'scope' in database
+   * 
+   * @param {Object} data - scope data
+   */
+  createScope(data) {
     var _this = this;
     App.mv().createScope(data, {
       success: function(newScope) {
         _this.trigger('form:save', { data: newScope });
       },
       error: function() {
-        console.log('Error!');
+        _this.toggleServerError(true, __('Hubo un error al intentar crear el ámbito'));
       }
-    })
+    });
+  },
+
+  /**
+   * Show the server error in DOM
+   *
+   * @param {Boolean} showError - ¿show error?
+   * @param {String} msg -  error message
+   */
+  toggleServerError(showError, msg) {
+    var serverError = this.$('#server-error');
+    
+    if(serverError) {
+      if (showError) {
+        $(serverError).removeClass('hide');
+        $(serverError).html(msg);
+      } else {
+        $(serverError).addClass('hide');
+      }
+    }
   }
 });
