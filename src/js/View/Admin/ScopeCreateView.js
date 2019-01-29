@@ -20,68 +20,127 @@
 
 'use strict';
 
-App.View.Admin.ScopeCreate = Backbone.View.extend({
-  _template: _.template( $('#admin-scope_create_template').html() ),
+/**
+ * Backbone.View that show a form to create or edit 'scopes'
+ * inside the Admin's routes
+ */
+App.View.Admin.ScopeCreate = App.View.FormView.extend({
 
+  // View's Params
+
+  template: _.template($('#admin-scope_create_template').html()),
   events: {
-    'change input[name=isMultiScope]': '_toggleMultiScope',
-    'click .exitButton': '_cancel',
-    'submit form': '_submit',
+    'change input[name=multi]': 'toggleMultiScope',
+    'click .cancelButton': 'onCancelButton',
+    'submit form': 'onSubmitButton',
   },
 
-  initialize: function(options){
+  // View's Funcions
+
+  initialize: function(options) {
     this.options = options || {};
-    this.render();
+    App.View.FormView.prototype.initialize.call(this, { model: new App.Model.Scope() });
   },
 
-  render: function(){
-    this.$el.html(this._template({parentScope: this.options.parentScope || null}));
+  /**
+   * Draw the template into the DOM
+   * 
+   * @return {Object} this - to chain other 'render' functions
+   */
+  render: function() {
+    this.$el.html(this.template({ parentScope: this.options.parentScope || null }));
     return this;
   },
 
-  _toggleMultiScope: function(e){
+  /**
+   * To change the form's DOM elements about 'multiscope'
+   * 
+   * @param {Object} e - triggered event
+   */
+  toggleMultiScope: function(e) {
     e.preventDefault();
-    if(e.currentTarget.checked){
-      this.$('.noMulti input, .noMulti label').attr('disabled', 'disabled').removeAttr('required');
-    }else{
-      this.$('.noMulti input, .noMulti label').removeAttr('disabled').attr('required', 'required');
+    if (e.currentTarget.checked) {
+      this.$('.noMulti').addClass('hide');
+    } else {
+      this.$('.noMulti').removeClass('hide');
     }
   },
 
-  _cancel: function(e){
+  /**
+   * Cancel and close edit form
+   * 
+   * @param {Object} e 
+   */
+  onCancelButton: function(e) {
     e.preventDefault();
-    this.trigger('close', {});
+    this.trigger('form:cancel', null);
   },
 
-  _submit: function(e){
+  /**
+   * Submit the form and create or edit a scope
+   *
+   * @param {Object} e 
+   */
+  onSubmitButton: function(e) {
     e.preventDefault();
 
-    // TODO: Save element
-    var data = {
-      name: e.currentTarget.name.value,
-      multi: e.currentTarget.isMultiScope ? e.currentTarget.isMultiScope.checked:false
-    };
-    if(!data.multi){
-      data.location = [
-        parseFloat(e.currentTarget.lat.value),
-        parseFloat(e.currentTarget.lon.value)
-      ];
-      data.zoom = parseInt(e.currentTarget.zoom.value);
-      // data.db = e.currentTarget.db.value;
+    var dataForm = this.convertFormToJSON(e.currentTarget);
+
+    // Clean server error
+    this.toggleServerError(false, null);
+
+    // we parse some data in dataForm
+    dataForm.multi = Boolean(dataForm.multi);
+    dataForm.location[0].replace(',', '.');
+    dataForm.location[1].replace(',', '.');
+
+    // Other data to model
+    if (this.options.parentScope) {
+      dataForm.parent_id = this.options.parentScope;
     }
 
-    if(this.options.parentScope){
-      data.parent_id = this.options.parentScope;
+    // validate data
+    this.model.set(dataForm);
+    if (this.model.isValid()) {
+      this.createScope(dataForm);
+    } else {
+      this.showErrors();
     }
+  },
 
+  /**
+   * Create a new 'scope' in database
+   * 
+   * @param {Object} data - scope data
+   */
+  createScope(data) {
     var _this = this;
     App.mv().createScope(data, {
-      success: function(newScope){
-        _this.trigger('close', {data: newScope});
+      success: function(newScope) {
+        _this.trigger('form:save', { data: newScope });
       },
-      error: function(){
-        console.log('Error!');
+      error: function() {
+        _this.toggleServerError(true, __('Hubo un error al intentar crear el ámbito'));
       }
-    })
+    });
   },
+
+  /**
+   * Show the server error in DOM
+   *
+   * @param {Boolean} showError - ¿show error?
+   * @param {String} msg -  error message
+   */
+  toggleServerError(showError, msg) {
+    var serverError = this.$('#server-error');
+    
+    if(serverError) {
+      if (showError) {
+        $(serverError).removeClass('hide');
+        $(serverError).html(msg);
+      } else {
+        $(serverError).addClass('hide');
+      }
+    }
+  }
 });

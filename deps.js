@@ -66,6 +66,7 @@ deps.JS = [
   srcJS + 'View/DashboardView.deprecated.js',
   srcJS + 'View/PopUpView.js',
   srcJS + 'View/MenuPanelView.js',
+  srcJS + 'View/FormView.js',
   srcJS + 'View/EmbedView.js',
 
   // FILTERS
