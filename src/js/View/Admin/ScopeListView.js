@@ -72,6 +72,7 @@ App.View.Admin.ScopeList = Backbone.View.extend({
     // The events trigger when the proccess is successfully finished
     this.listenTo(scopeCreateView, 'form:save', function (e) {
       this.handlerScopeCreated(e);
+      modalView.closeModal.apply(modalView);
     }.bind(this));
   },
 

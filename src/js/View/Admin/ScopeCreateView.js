@@ -91,8 +91,8 @@ App.View.Admin.ScopeCreate = App.View.FormView.extend({
 
     // we parse some data in dataForm
     dataForm.multi = Boolean(dataForm.multi);
-    dataForm.location[0].replace(',', '.');
-    dataForm.location[1].replace(',', '.');
+    dataForm.location[0] = dataForm.location[0].replace(',', '.');
+    dataForm.location[1] = dataForm.location[1].replace(',', '.');
 
     // Other data to model
     if (this.options.parentScope) {
