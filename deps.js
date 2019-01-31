@@ -41,7 +41,7 @@ deps.JS = [
   srcJS + 'App.js',
 
   // Utils
-  srcJS + 'Utils.js',
+  srcJS + 'Utils.js@finish-main-block',
 
   // Views
   srcJS + 'View/BaseView.js',
@@ -66,6 +66,7 @@ deps.JS = [
   srcJS + 'View/DashboardView.deprecated.js',
   srcJS + 'View/PopUpView.js',
   srcJS + 'View/MenuPanelView.js',
+  srcJS + 'View/FormView.js',
   srcJS + 'View/EmbedView.js',
 
   // FILTERS
@@ -184,7 +185,6 @@ deps.JS = [
   srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
-  
 
   // Models
   srcJS + 'Model/BaseModel.js',

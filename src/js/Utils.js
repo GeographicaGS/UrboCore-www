@@ -123,7 +123,9 @@ App.Utils = {
   },
 
   capitalizeFirstLetter: function(s) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
+    return typeof s === 'string'
+      ? s.charAt(0).toUpperCase() + s.slice(1)
+      : s;
   },
 
   getCartoAccount: function(category){
@@ -373,3 +375,49 @@ App.Utils.toCamelCase = function(string) {
     .replace(new RegExp(/\s/, 'g'), '')
     .replace(new RegExp(/\w/), s => s.toUpperCase());
 }
+
+/**
+ * Generate the "script" tag from different files to load them dynamically
+ *
+ * @param {String} type - <optional> string to identify the script to load
+ * @param {Function} cb - callback function to response
+ */
+App.Utils.loadBlockedScripts = function(type, cb) {
+  var currentType = typeof type === 'string'
+    ? type
+    : 'javascript/blocked';
+
+  if (document) {
+    var blockedScripts = Array.from(document.getElementsByTagName('SCRIPT'))
+      .filter( function(script) {
+        return script.getAttribute('src') && script.getAttribute('type') === currentType
+      });
+
+    // Load all script files and we sure
+    // all files was loaded (recursive function)
+    loadAllScripts(blockedScripts, 0, function () {
+      cb();
+    });
+  }
+
+  /**
+   * Recursive function
+   *
+   * Load an array script files it ensures that all files
+   * was loaded
+   * @param {Array} scripts - array the scripts files
+   * @param {Number} index -
+   * @param {Function} cb
+   */
+  function loadAllScripts(scripts, index, cb) {
+    if (scripts[index]) {
+      $.getScript(scripts[index].src, function() {
+        index++;
+        loadAllScripts(scripts, index, cb);
+      });
+    } else {
+      cb();
+    }
+  }
+
+};

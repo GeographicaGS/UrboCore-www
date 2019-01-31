@@ -18,35 +18,59 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-(function(){
+(function() {
 
-  var metadata = function(){
+  /**
+   * Metadata has all information about 'scopes',
+   * 'catalogs' and others.
+   * 
+   * This Object will be fill in the APP initialization,
+   * because this information will be used in future actions.
+   */
+  var metadata = function() {
     this._metadataCollection = new App.Collection.Metadata.Scope();
     this._metadataCatalog = new App.Collection.Metadata.Catalog();
-	}
-
-  metadata.prototype.start = function(cb){
-
-    // Load *all* metadata before starting
-  	this._metadataCollection.fetch({reset:true,
-  		success:function(collection){
-        return cb(collection);
-  		},
-  		error:function(){
-  			console.error('Cannot get metadata variables');
-  		}
-  	});
   }
 
-  metadata.prototype.getScope = function(scope_id, cb){
+  /**
+   * Initialize all data about metadata
+   *
+   * @param {Function} cb - callback function
+   */
+  metadata.prototype.start = function(cb) {
+
+    // Get data about 'scopes'
+    this._metadataCollection.fetch(
+      {
+        reset:true,
+        success:function(collection) {
+          return typeof cb === 'function'
+            ? cb(collection)
+            : collection;
+        },
+        error:function() {
+          console.error('Cannot get metadata variables');
+        }
+      }
+    );
+  }
+
+  /**
+   * Get all data about current scope (scope_id)
+   *
+   * @param {String} scope_id - identification current scope
+   * @param {Function} cb - callback function
+   * @return {Function | Object} callback function or Object
+   */
+  metadata.prototype.getScope = function(scope_id, cb) {
     var scope = this._metadataCollection.get(scope_id);
     
-    // If scope doesn't found in the collection
-    // we use other way to find it
-    if(!scope){
+    // If we didn't look for the current scope into
+    // the collection, we will try other way to get it
+    if(!scope) {
       this._metadataCollection
         .where({multi: true})
-        .find(function(parent){
+        .find(function(parent) {
           scope = parent.get('childs').get(scope_id);
           return scope;
         });
@@ -54,15 +78,15 @@
 
     // If scope doesn't found in the collection
     // we get all data from server
-    if (scope === undefined){
+    if (scope === undefined) {
       var _this = this;
-      scope = new App.Model.Metadata.Scope({id: scope_id})
+      scope = new App.Model.Metadata.Scope({ id: scope_id })
         .fetch({
-          success: function(scope){
+          success: function(scope) {
             _this._metadataCollection.push(scope);
             if (cb) cb();
           },
-          error: function(e){
+          error: function(e) {
             var err = new Error('Something went wrong fetching scope');
             throw err;
           }
@@ -74,24 +98,47 @@
       : scope;
   }
 
-  metadata.prototype.getCategory = function(category_id){
-    var result = this.getScope(App.currentScope).get('categories').get(category_id);
+  /**
+   * Get all data about current category (category_id)
+   *
+   * @param {String} category_id - identification current category
+   * @return {Object} - current category
+   */
+  metadata.prototype.getCategory = function(category_id) {
+    var result = this.getScope(App.currentScope)
+      .get('categories')
+      .get(category_id);
+
     return result ? result : null;
   }
 
-  metadata.prototype.getEntity = function(entity_id){
+  /**
+   * Get all data about current entity (entity_id)
+   *
+   * @param {String} entity_id - identification current entity
+   * @return {Object} - current entity
+   */
+  metadata.prototype.getEntity = function(entity_id) {
     var element;
     var result = this.getScope(App.currentScope)
-      .get('categories').find(function(cat){
+      .get('categories')
+      .find(function(cat) {
         element = cat.get('entities').get(entity_id);
         return element;
       });
-    return result ? element:null;
+
+    return result ? element : null;
   }
 
-  metadata.prototype.getVariable = function(variable_id){
+  /**
+   * Get all data about current variable (variable_id)
+   *
+   * @param {String} variable_id - identification current entity
+   * @return {Object} - current variable
+   */
+  metadata.prototype.getVariable = function(variable_id) {
     // TODO: Remove this hack
-    if(variable_id == 'seconds'){
+    if(variable_id == 'seconds') {
       return new Backbone.Model({
         'id':'seconds',
         'name':'Tiempo de encendido',
@@ -101,50 +148,88 @@
 
     var element;
     var result = this.getScope(App.currentScope)
-      .get('categories').any(function(cat){
-        var temp = cat.get('entities').find(function(ent){
-          return ent.get('variables').get(variable_id);
-        });
-        if(temp)
-          element = temp.get('variables').get(variable_id);
+      .get('categories')
+      .any(function(cat) {
+        var temp = cat.get('entities')
+          .find(function(ent) {
+            return ent.get('variables').get(variable_id);
+          });
+          if(temp) {
+            element = temp.get('variables').get(variable_id);
+          }
         return temp;
       });
-    return result ? element:null;
+    return result ? element : null;
   }
 
-  metadata.prototype.getCatalog = function(){
+  /**
+   * Get collection about catalog
+   *
+   * @return {Array} - collection catalog
+   */
+  metadata.prototype.getCatalog = function() {
     return this._metadataCatalog;
   };
 
-  metadata.prototype.setCatalog = function(catalog){
+  /**
+   * Set collection into '_metadataCatalog'
+   * @param {Array} catalog - catalog to save
+   */
+  metadata.prototype.setCatalog = function(catalog) {
     this._metadataCatalog = catalog;
   }
 
-  metadata.prototype.getCatalogCategory = function(category_id){
+  /**
+   * Get category's catalog
+   *
+   * @param {String} category_id - identification catalog
+   * @return {Array} - collection catalog
+   */
+  metadata.prototype.getCatalogCategory = function(category_id) {
     var result = this._metadataCatalog.get(category_id);
-    return result ? result:null;
+    return result ? result : null;
   };
 
-  metadata.prototype.getCatalogEntity = function(entity_id){
+  /**
+   * Get entity's catalog
+   *
+   * @param {String} entity_id - identification entity
+   * @return {Object}
+   */
+  metadata.prototype.getCatalogEntity = function(entity_id) {
     var element;
-    var result = this._metadataCatalog.find(function(cat){
-      element = cat.get('entities').get(entity_id);
-      return element;
-    });
-    return result ? element:null;
+    var result = this._metadataCatalog
+      .find(function(cat) {
+        element = cat.get('entities').get(entity_id);
+        return element;
+      });
+
+    return result ? element : null;
   }
 
-  metadata.prototype.getCatalogVariable = function(variable_id){
+  /**
+   * Get variable's catalog
+   *
+   * @param {String} variable_id - identification variable
+   * @return {Object}
+   */
+  metadata.prototype.getCatalogVariable = function(variable_id) {
     var element;
-    var result = this._metadataCatalog.any(function(cat){
-      var temp = cat.get('entities').find(function(ent){
-        return ent.get('variables').get(variable_id);
+    var result = this._metadataCatalog
+      .any(function(cat) {
+        var temp = cat
+          .get('entities')
+          .find(function(ent) {
+            return ent.get('variables').get(variable_id);
+          });
+        
+        if(temp) {
+          element = temp.get('variables').get(variable_id);
+        }
+        return temp;
       });
-      if(temp)
-        element = temp.get('variables').get(variable_id);
-      return temp;
-    });
-    return result ? element:null;
+
+    return result ? element : null;
   }
 
   metadata.prototype._additionalInfoCatalog = {
@@ -167,41 +252,41 @@
     return additionalInfo;
   }
 
-  metadata.prototype.createScope = function(data, options){
+  metadata.prototype.createScope = function(data, options) {
     var scopeModel = new App.Model.Metadata.Scope(data, {
       collection: this._metadataCollection,
     });
     var _this = this;
     scopeModel.save(null,{
-      success: function(){
+      success: function() {
         _this._metadataCollection.push(scopeModel);
         options.success(scopeModel);
       },
-      error: function(err){
+      error: function(err) {
         options.error(err);
       }
     });
   }
 
-  metadata.prototype.validateInMetadata = function(elements){
+  metadata.prototype.validateInMetadata = function(elements) {
     var valid = true;
-    if('categories' in elements){
+    if('categories' in elements) {
       var categories = (typeof elements.categories !== 'object') ? elements.categories : [elements.categories];
-      _.each(categories, (function(category){
+      _.each(categories, (function(category) {
         valid = valid && this.getCategory(category);
       }).bind(this));
     }
 
-    if('entities' in elements){
+    if('entities' in elements) {
       var entities = (typeof elements.entities !== 'object') ? elements.entities : [elements.entities];
-      _.each(entities, (function(entity){
+      _.each(entities, (function(entity) {
         valid = valid && this.getEntity(entity);
       }).bind(this));
     }
 
-    if('variables' in elements){
+    if('variables' in elements) {
       var variables = (typeof elements.variables !== 'object') ? elements.variables : [elements.variables];
-      _.each(variables, (function(variable){
+      _.each(variables, (function(variable) {
         valid = valid && this.getVariable(variable);
       }).bind(this));
     }
@@ -209,8 +294,7 @@
 
   }
 
-
-  metadata.prototype.removeScope = function(scope_id, cb, parentScope){
+  metadata.prototype.removeScope = function(scope_id, cb, parentScope) {
     cb = cb || null;
     var deletedScope;
     if(!parentScope)
@@ -220,13 +304,14 @@
     deletedScope.destroy({success: cb});
   }
 
-  metadata.prototype._entitiesMetadata = {
-  }
+  metadata.prototype._entitiesMetadata = {}
 
-  metadata.prototype.getEntityMetadata = function(id_entity){
+  metadata.prototype.getEntityMetadata = function(id_entity) {
     return this._entitiesMetadata[id_entity] || {};
   }
 
+  // To use this Object in other sides from the application,
+  // we wrap it into 'App.Metadata'
   App.Metadata = metadata;
 
 })()
