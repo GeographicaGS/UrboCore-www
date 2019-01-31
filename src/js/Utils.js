@@ -365,15 +365,18 @@ App.Utils.imgToBase64 = function(file) {
  * @return {String} parsed string
  */
 App.Utils.toCamelCase = function(string) {
-  return `${string}`
+  return string
     .replace(new RegExp(/[-_]+/, 'g'), ' ')
     .replace(new RegExp(/[^\w\s]/, 'g'), '')
     .replace(
-      new RegExp(/\s+(.)(\w+)/, 'g'),
-      ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
+      new RegExp(/\s+(.)(\w+)/, 'g'), function ($1, $2, $3) {
+        return $2.toUpperCase() + $3.toLowerCase()
+      }
     )
     .replace(new RegExp(/\s/, 'g'), '')
-    .replace(new RegExp(/\w/), s => s.toUpperCase());
+    .replace(new RegExp(/\w/), function(s) {
+      return s.toUpperCase()
+    });
 }
 
 /**

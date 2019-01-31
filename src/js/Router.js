@@ -105,7 +105,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> ''
-   * 
+   *
    * Default function
    */
   ini: function() {
@@ -114,7 +114,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'home'
-   * 
+   *
    * Initial page (view) after login in the app
    */
   home: function() {
@@ -139,7 +139,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'login'
-   * 
+   *
    * Login formulary
    */
   login: function() {
@@ -156,7 +156,7 @@ App.Router = Backbone.Router.extend({
   loginExternal: function() {
     // get parameters from URL
     var queryParams = App.Utils.queryParamsToObject();
-  
+
     if(queryParams !== {}) {
       var user = queryParams.user || '';
       var pass = queryParams.pass || ''; // pass in MD5
@@ -179,10 +179,10 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'scopes'
-   * 
+   *
    * When the current scope has others associated child scopes.
    * Show the list children scopes
-   * 
+   *
    * @param {String} scope - current scope to show
    */
   scopes: function(scope) {
@@ -194,18 +194,18 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'correlations'
-   * 
+   *
    * The unique point founded about this route is the 'urbo-telefonica' repository
    * under the verticals 'parking' and 'dump'.
-   * 
+   *
    * @param {Boolean} multiScope - is multiple Scope?
    * @param {String} scope - current scope to show
    */
   correlations: function(multiScope, scope) {
     this.setCurrentScope(scope);
 
-    var m = new Backbone.Model({ 
-      scope: scope, 
+    var m = new Backbone.Model({
+      scope: scope,
       multiScope: multiScope
     });
     var v = new App.View.Correlations({model:m});
@@ -214,7 +214,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'frame'
-   * 
+   *
    * @param {String} scope - current scope to show
    * @param {String} frameId - identificacion frame
    */
@@ -231,7 +231,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'frameVertical'
-   * 
+   *
    * @param {String} scope - current scope to show
    * @param {String} category - identificacion frame
    * @param {String} frameId - identificacion frame
@@ -263,7 +263,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'dashboard'
-   * 
+   *
    * Show the different categories (verticals) from current Scope
    * @param {String} scope - current scope
    */
@@ -289,7 +289,7 @@ App.Router = Backbone.Router.extend({
 
   /**
    * Function to route --> 'welcomeDashboard'
-   * 
+   *
    * Show the different categories (verticals) from current Scope
    * @param {String} scope - current scope
    */
@@ -301,25 +301,25 @@ App.Router = Backbone.Router.extend({
       scope: scope,
       categories: categories
     });
-    
+
     // Draw the view (list categories - verticals) in the 'main' DOM element
     App.showView(new App.View.CategoriesList({ model: backboneModel }));
   },
 
   /**
    * Function to route --> 'categoryDashboard'
-   * 
+   *
    * Show the selected panel (by default is 'master') from current category.
    * You can have different panels into an same category (vertical),
    * these panels must be created into the object 'App.View.Panels'
    * inside your vertical.
-   * 
+   *
    * Any vertical must have almost one panel called 'master'
    * "App.View.Panels.<vertical_name>.Master"
-   * 
+   *
    * @param {String} scope - current scope
    * @param {String} category - current category (vertical)
-   * @param {String} panel - current panel (default master) 
+   * @param {String} panel - current panel (default master)
    */
   categoryDashboard: function(scope, category, panel) {
     this.setCurrentScope(scope);
@@ -364,28 +364,67 @@ App.Router = Backbone.Router.extend({
   map: function(scope,variables) {
     this.setCurrentScope(scope);
     App.showView(
-      new App.View.Map({ 
+      new App.View.Map({
         scope:scope,
         variables: variables
       })
     );
   },
 
-  device: function(scope,entity,id,section) {
+  /**
+   * To show detailt about a device
+   *
+   * @param {String} scope - current scope
+   * @param {String} entity - current entity
+   * @param {String} id - idenfitication device (sensor)
+   * @param {String} section - section inside the view (tab)
+   */
+  device: function(scope, entity, id, section) {
     this.setCurrentScope(scope);
 
-    if (['lastdata','raw','period','other'].indexOf(section)==-1)
+    if (['lastdata','raw','period','other'].indexOf(section) === -1) {
       section = 'lastdata';
-    var model = new App.Model.Device({'scope':scope, 'entity':entity,'id': id,'tab': section});
-    var view = new App.View.Device({'model': model});
+    }
+
+    var model = new App.Model.Device({
+      scope: scope,
+      entity: entity,
+      id: id,
+      tab: section
+    });
+
+    var view = new App.View.Device({
+      model: model
+    });
+
     App.showView(view.render());
   },
 
-  customdevice: function(scope,category,entity,id,section) {
+  /**
+   * To show detailt about a device (custom view)
+   *
+   * @param {String} scope - current scope
+   * @param {String} category - current category (vertical)
+   * @param {String} entity - current entity
+   * @param {String} id - idenfitication device (sensor)
+   * @param {String} section - section inside the view (tab)
+   */
+  customdevice: function(scope, category, entity, id, section) {
     this.setCurrentScope(scope);
+
     var categoryCapitalize = App.Utils.capitalizeFirstLetter(category)
-    var model = new App.Model.Device({'scope':scope, 'entity':entity,'id': id,'tab': section});
-    var view = new App.View.Device[categoryCapitalize].Custom({'model': model});
+
+    var model = new App.Model.Device({
+      scope: scope,
+      entity: entity,
+      id: id,
+      tab: section
+    });
+
+    var view = new App.View.Device[categoryCapitalize].Custom({
+      model: model
+    });
+
     App.showView(view.render());
   },
 
@@ -421,7 +460,7 @@ App.Router = Backbone.Router.extend({
    * Show the detail view from current scope
    *
    * @param {String} scope - current scope
-   */  
+   */
   adminScope: function(scope) {
     this.setCurrentScope(scope);
     App.showView(new App.View.Admin.Scope({ scope: scope }));
@@ -440,8 +479,8 @@ App.Router = Backbone.Router.extend({
     this.setCurrentScope(scope);
     App.showView(
       new App.View.Admin.Category({
-        scope: scope, 
-        category: category 
+        scope: scope,
+        category: category
       })
     );
   },
@@ -464,7 +503,7 @@ App.Router = Backbone.Router.extend({
         scope: scope,
         category: category,
         entity: entity,
-        variable: variable 
+        variable: variable
       })
     );
   },
@@ -518,9 +557,9 @@ App.Router = Backbone.Router.extend({
    * When we publish a widget to use in other
    * domain (this widget is loaded through an iframe),
    * the widget calls to this URL.
-   * 
+   *
    * The APP's function '_embedIni' is launched
-   * 
+   *
    * @param {String} scope - current scope
    */
   embedWidget: function(scope) {
