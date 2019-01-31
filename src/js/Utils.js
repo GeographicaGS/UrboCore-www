@@ -50,7 +50,7 @@ App.Utils = {
     var thresholdTime = this.thresholdToDataChartInHours;
     var differenceInHours = finish.diff(start, "hour");
     if(differenceInHours <= thresholdTime) {
-      stepsAvailable.push('15m');      
+      stepsAvailable.push('15m');
       stepsAvailable.push('1h');
     }
     if(differenceInHours / 2 <= thresholdTime) {
@@ -186,10 +186,10 @@ App.Utils = {
   /**
   * Speech text using speechSynthesis Web API
   * https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
-  * 
+  *
   * @param {string} text
   * @param {object} options
-  * 
+  *
   */
 
   speechSynthesis: function(text, options) {
@@ -207,7 +207,7 @@ App.Utils = {
 
       // Setting values
       var speech = new SpeechSynthesisUtterance();
-      var voices = window.speechSynthesis.getVoices();      
+      var voices = window.speechSynthesis.getVoices();
 
       speech.volume = options.volume; // 0 to 1 - step 0.1
       speech.lang = options.lang; // Language Culture Name
@@ -220,7 +220,7 @@ App.Utils = {
 
       // Play
       speechSynthesis.speak(speech);
-    
+
     } else {
       console.log("speechSynthesis not supported")
     }
@@ -329,8 +329,8 @@ App.Utils.objectPath = function(obj, path, set) {
 
 /**
  * Transform a file from input file to base64
- * @param <object> - file object
- * @return Promise
+ * @param {Object} file - file object
+ * @return {Promise}
  */
 App.Utils.imgToBase64 = function(file) {
   return new Promise(function (resolve, reject) {
@@ -344,4 +344,32 @@ App.Utils.imgToBase64 = function(file) {
       reject(error);
     };
   });
+}
+
+/**
+ * Transform a string to "Camelcase"
+ *
+ * Examples
+ * ==========
+ * 'foo bar' --> 'FooBar'
+ * 'Foo Bar' --> 'FooBar'
+ * 'fooBar' --> 'FooBar'
+ * 'FooBar' --> 'FooBar'
+ * '--foo-bar--' --> 'FooBar'
+ * '__FOO_BAR__' --> 'FooBar'
+ * '!--foo-¿?-bar--121-**%' --> 'FooBar121'
+ *
+ * @param {String} string - string to parse
+ * @return {String} parsed string
+ */
+App.Utils.toCamelCase = function(string) {
+  return `${string}`
+    .replace(new RegExp(/[-_]+/, 'g'), ' ')
+    .replace(new RegExp(/[^\w\s]/, 'g'), '')
+    .replace(
+      new RegExp(/\s+(.)(\w+)/, 'g'),
+      ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
+    )
+    .replace(new RegExp(/\s/, 'g'), '')
+    .replace(new RegExp(/\w/), s => s.toUpperCase());
 }
