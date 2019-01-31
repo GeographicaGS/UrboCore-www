@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -52,7 +52,7 @@
       padding: 5px 5px 10px 45px;
     }
   }
-  
+
   h4{
     cursor: pointer;
     white-space: nowrap;
@@ -189,7 +189,7 @@
           content: '';
         }
         &.less:before {
-          background-image: url('/img/white/SC_icpanel_menos.svg');          
+          background-image: url('/img/white/SC_icpanel_menos.svg');
         }
 
       }
@@ -219,7 +219,11 @@
       }
 
       &.disabled {
-        color: @grey3;
+        color: @lightgrey;
+        .name,
+        .total {
+          color: @lightgrey;
+        }
       }
     }
   }
@@ -258,7 +262,7 @@
 }
 
 .filter{
-  
+
   .shadow_std;
   position: absolute;
   top: 10px;
@@ -272,6 +276,7 @@
   border: 1px solid @grey4;
   border-radius: 2px;
   transition: width .25s linear;
+  padding-bottom: 23px;
 
   > div {
     flex: 1 1 100%;
@@ -340,20 +345,32 @@
     transition: max-height .25s linear, opacity .1s linear;
     .element{
       .header{
-        .title{
-          display: block;
-          height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .title {
           background-color: @white;
           line-height: 34px;
-          color:@greyDark;
+          color: @greyDark;
           padding: 0 36px 0 16px;
-          img{
+          img {
             width: 26px;
             height: 26px;
             position: relative;
             top: 7px;
             margin-right: 6px;
           }
+        }
+        .count {
+          text-align: center;
+          font-size: 14px;
+          color: @grey;
+          line-height: 24px;
+          height: 24px;
+          padding: 0 7px;
+          margin: 7px 16px 0 0;
+          border-radius: 12px;
+          background-color: @lightgrey;
         }
       }
 
