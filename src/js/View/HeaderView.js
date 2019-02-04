@@ -87,7 +87,7 @@ App.View.HeaderView = Backbone.View.extend({
   },
 
   _goUsers:function(){
-    App.router.navigate('users',{trigger: true});
+    App.router.navigate('/admin/users',{trigger: true});
     this.$('.admin_popup').removeClass('active');
   },
 

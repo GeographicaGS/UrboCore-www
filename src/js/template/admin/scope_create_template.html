@@ -1,48 +1,82 @@
-<div id="errorsServer">
+<!-- Server error -->
+<div class="alert error hide"
+     id="server-error">
 </div>
-<div class="admin-form col-md-12">
-  <h1><%= __('Crear nuevo ámbito') %></h1>
-	<form class="form_horizontal">
+<!-- Form -->
+<form class="admin-form">
 
-		<div class="form-group row">
-			<div class="col-md-4 col-md-push-3">
-        <% if(!parentScope){ %>
-				<div class="form-check">
-				  <label class="form-check-label">
-				    <input class="form-check-input isMultiScope" name="isMultiScope" type="checkbox">
-				    <%= __('Multiambito') %>
-				  </label>
-				</div>
-        <% } %>
-			</div>
-		</div>
-
-		<div class="form-group row">
-      <label for="inputName" class="col-sm-3 control-label"><%= __('Nombre') %></label>
-	    <input type="text" class="col-sm-9 form-control" id="inputName" name="name" required>
+  <div class="form-group row">
+    <div class="col-sm-4 col-sm-push-3">
+      <% if(!parentScope){ %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox"
+                class="form-check-input"
+                name="multi"
+                value="1">
+          <%= __('Multiambito') %>
+        </label>
+      </div>
+      <% } %>
     </div>
+  </div>
 
-    <div class="form-group row noMulti">
-      <label for="inputLat" class="col-sm-3 control-label"><%= __('Latitud / Longitud') %></label>
-	    <input type="number" class="col-sm-4 form-control" id="inputLat" name="lat" step=".01" required>
-	    <input type="number" class="col-sm-4 col-md-push-1 form-control" id="inputLon" name="lon" step=".01" required>
+  <div class="form-group row">
+    <label class="col-sm-3 control-label">
+      <%= __('Nombre') %>
+    </label>
+    <div class="col-sm-9">
+      <input type="text"
+            class="form-control"
+            name="name">
+      <!-- To show validation errors -->
+      <span class="help-block hide"></span>
     </div>
-    <div class="form-group row noMulti">
-      <label for="inputZoom" class="col-sm-3 control-label"><%= __('Zoom') %></label>
-      <input type="number" class="col-sm-9 form-control" id="inputZoom" name="zoom" required>
+  </div>
+
+  <div class="form-group row noMulti">
+    <label class="col-sm-3 control-label">
+      <%= __('Latitud / Longitud') %>
+    </label>
+    <div class="col-sm-4">
+      <input type="text"
+            class="form-control"
+            name="location[]">
     </div>
-    <!-- <div class="form-group row noMulti">
-      <label for="inputDB" class="col-sm-3 control-label"><%= __('Almacén de datos') %></label>
-	    <input type="text" class="col-sm-9 form-control" id="inputDB" name="db" required>
-    </div> -->
+    <div class="col-sm-5">
+      <input type="text"
+        class="form-control"
+        name="location[]">
+      <!-- To show validation errors -->
+      <span class="help-block hide"></span>
+    </div>
+  </div>
+  <div class="form-group row noMulti">
+    <label class="col-sm-3 control-label">
+      <%= __('Zoom') %>
+    </label>
+    <div class="col-sm-9">
+      <input type="text"
+        class="form-control"
+        name="zoom">
+      <!-- To show validation errors -->
+      <span class="help-block hide"></span>
+    </div>
+  </div>
 
-    <div class="separator"></div>
-
-    <div class="form-group row">
-			<div class="col-sm-12 buttons-row">
-	      <button class="button empty noBorder exitButton"><%= __('Cancelar') %></button>
-	      <button type="submit" class="button"><%= __('Crear') %></button>
-	    </div>
-	  </div>
-  </form>
-</div>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <div class="buttons-row">
+        <button 
+          type="button"
+          class="button empty noBorder cancelButton">
+          <%= __('Cancelar') %>
+        </button>
+        <button type="submit"
+                class="button">
+          <%= __('Crear') %>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

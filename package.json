@@ -20,7 +20,7 @@
     "babili": "^0.1.4",
     "fs-extra": "^5.0.0",
     "nodemon": "^1.14.11",
-    "sting-builder": "^1.2.0"
+    "sting-builder": "^1.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

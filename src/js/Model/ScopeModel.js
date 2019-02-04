@@ -21,31 +21,69 @@
 'use strict';
 
 App.Model.Scope = Backbone.Model.extend({
+
+  // Defaults value model
+  defaults: {
+    id: null,
+    name: null,
+    location: [],
+    multi: null,
+    zoom: null
+  },
+
   initialize: function(options) {
-    this.options = options;
-    this.set({
-      categories: App.Collection.ScopeMetadata({id_scope: options.id}).fetch()
-    });
+    this.options = options || {};
+    if (this.options.id) {
+      this.set({
+        categories: App.Collection.ScopeMetadata({id_scope: options.id}).fetch()
+      });
+    }
   },
 
   url: App.config.api_url + '/scopes',
 
-  // parse: function(responseEntry) {
-  //   var response = responseEntry;
-  //   if(response.childs != undefined && response.childs.length > 0) {
-  //     var scopeOsuna = undefined;
-  //     _.each(response.childs, function(scope) {
-  //       if(scope.id == 'osuna') {
-  //         scopeOsuna = scope;
-  //       }
-  //     });
-  //     scopeOsuna.categories.push('waste_d');
-  //   } else if(response.id == 'osuna'){
-  //     if(response.categories != undefined) {
-  //       response.categories.push('waste_d');
-  //     }
-  //   }
-  //   return response;
-  // }
+  /**
+   * Validations to model fields
+   * 
+   * @param {Object} fields - differents model fields
+   * @return {Array | Boolean} - Array with errors or always is fine (without errors)
+   */  
+  validate: function(fields) {
+    var errors = [];
+
+    // 'name' field
+    if (fields.name.length < 3) {
+      errors.push({ 
+        name: 'name',
+        msg: __('El campo no puede tener menos de 3 caracteres')
+      });
+    }
+
+    if (fields.multi === false) {
+      // 'location' field
+      var regFloat = new RegExp('^[-+]?[0-9]*\.?[0-9]+$'); //Float number
+      if (fields.location.length !== 2
+        || !regFloat.test(fields.location[0])
+        || !regFloat.test(fields.location[1])) {
+        errors.push({ 
+          name: 'location',
+          msg: __('Los valores no son correctos')
+        });
+      }
+
+      // 'zoom' field
+      var regInteger = new RegExp('^[0-9]+$'); //Integer number
+      if (!regInteger.test(fields.zoom)
+        || parseInt(fields.zoom, 10) < 0
+        || parseInt(fields.zoom, 10) > 16) {
+        errors.push({ 
+          name: 'zoom',
+          msg: __('Debes indicar un número entero entre 0 y 16')
+        });
+      }
+    }
+
+    return errors.length > 0 ? errors : false;
+  }
 
 });

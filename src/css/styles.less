@@ -28,30 +28,34 @@
 
 @font : 'Source Sans Pro', sans-serif;
 
-@geographica:   #82b600;
-@blue:         #00475d;
-@blue2:       #003146;
-@turquoise :   #00b8c7;
-@primary:         #00475d;
-@accent :   #00b8c7;
-@white:       #ffffff;
+@geographica: #82b600;
+@blue: #00475d;
+@blue2: #003146;
+@turquoise: #00b8c7;
+@primary: #00475d;
+@accent: #00b8c7;
+@white: #ffffff;
 @greyLighter: #f6f6f6;
-@lightgrey:   #eeeeee;
-@greyLight2:  #dddddf;
-@grey2:        #ccccce;
-@grey3:       #aaaaae;
-@greyBluish:  #97a1a7;
-@grey4:        #909599;
-@grey:        #808086;
-@greyDark:    #55555d;
-@black:        #000000;
-@black2:     #27262e;
+@lightgrey: #eeeeee;
+@greyLight2: #dddddf;
+@grey2: #ccccce;
+@grey3: #aaaaae;
+@greyBluish: #97a1a7;
+@grey4: #909599;
+@grey: #808086;
+@greyDark: #55555d;
+@black: #000000;
+@black2: #27262e;
 @lightBlue: #f2fbfd;
 
-@okColor:   #00cc00;
-@warningColor:#ff9900;
-@errorColor:     #ff3300;
-@lightblue:   #336c7d;
+@okColor: #00cc00;
+@okColorLight2: #4dff4d;
+@okColorLight3: #e6ffe6;
+@warningColor: #ff9900;
+@errorColor: #ff3300;
+@errorColorLight2: #ff8566;
+@errorColorLight3: #ffd6cc;
+@lightblue: #336c7d;
 
 @transitionFuncStandard: ease-out;
 @transitionFuncAlternative: linear;
@@ -59,6 +63,8 @@
 @transitionTimeFast: .15s;
 @transitionTimeNormal: .5s;
 @transitionTimeSlow: 1s;
+
+@size-margin-main: 15px;
 
 .alertColor(@range) when (@range = 'ok') {
   @alertColor: #00cc00;
@@ -1113,7 +1119,7 @@ h4{
 }
 
 #ui-datepicker-div{
-  background-color: #f6f6f6;
+  background-color: @greyLighter;
   border: 1px solid #909599;
   border-top: none;
   border-radius: 2px;
@@ -1438,7 +1444,7 @@ input[type=text]:-moz-placeholder{
   text-align: right;
 }
 
-//Clases para modales/ popups
+// Clases para modales/ popups
 .overlay{
    display: none;
    position: fixed;
@@ -1525,6 +1531,79 @@ input[type=text]:-moz-placeholder{
     width: auto;
   }
 }
+
+// Modales / Popups (nueva)
+// TODO - Eliminar anterior clase ".modal" y asociados
+// cuando todo se haya migrado a la nueva modal
+.app-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index:1001;
+}
+
+.app-modal {
+  max-height: ~ "calc(100vh - 24%)";
+  position: fixed;
+  top: 12%;
+  left: 50%;
+  width: 50%;
+  min-width: 640px;
+  transform: translateX(-50%);
+  background: @white;
+  z-index: 1002;
+  overflow: auto;
+  .app-modal-header {
+    display: flex;
+    flex-direction: row;
+    min-height: 20px;
+    padding: @size-margin-main;
+    border-bottom: 1px solid @greyLight2;
+    .title {
+      display: flex;
+      flex-basis: 90%;
+      justify-content: flex-start;
+      font-size: 20px;
+      font-weight: normal;
+      line-height: 20px;
+      height: 20px;
+      color:@blue;
+      margin: 0;
+      padding: 0;
+    }
+    .cross {
+      display: flex;
+      flex-basis: 10%;
+      justify-content: flex-end;
+      height: 20px;
+      img {
+        width: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+  .app-modal-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 50px;
+    padding: @size-margin-main;
+    line-height: 24px;
+    font-size: 16px;
+    & > div {
+      width: 100%;
+    }
+  }
+  .app-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    background: @greyLighter;
+    padding: @size-margin-main;
+  }
+}
+// FIN - Modales / Popups (nueva)
 
 .searchToolBox {
   margin-top:13px;
@@ -1831,6 +1910,37 @@ div.cartodb-timeslider{
     height: 100%;
     background-color: @turquoise;
     border-radius: 2px;
+  }
+}
+
+.alert {
+  font-size: 14px;
+  color: @greyDark;
+  line-height: 18px;
+  border: 1px solid @greyLight2;
+  background-color: @greyLighter;
+  padding: 12px;
+  margin-bottom: 20px;
+  & h4 {
+    margin-top: 0;
+    color: inherit;  
+  }
+  &> p,
+  &> ul {
+    margin-bottom: 0;
+  }
+  &> p + p {
+    margin-top: 5px;
+  }
+  &.success {
+    color: @okColor;
+    background-color: @okColorLight3;
+    border-color: @okColorLight2;
+  }
+  &.error {
+    color: @errorColor;
+    background-color: @errorColorLight3;
+    border-color: @errorColorLight2;
   }
 }
 
