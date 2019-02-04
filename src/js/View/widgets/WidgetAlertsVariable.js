@@ -25,6 +25,7 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
 
   events: {
     'click .alertWidget': 'onclick',
+    'click .buttonAlertVariable': 'buttonclick',
   },
 
   initialize: function(options) {
@@ -36,6 +37,12 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
   onclick: function(e) {
     if(typeof this.options.onclick === 'function') {
       this.options.onclick(e);
+    }
+  },
+
+  buttonclick: function(e) {
+    if(this.options.buttonlink) {
+      window.location.href = this.options.buttonlink;
     }
   },
 
