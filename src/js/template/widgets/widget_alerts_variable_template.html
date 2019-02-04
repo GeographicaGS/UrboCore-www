@@ -7,7 +7,7 @@
           <div class="detail-content">
             <%= item['warning_description'] || 'No hay alerta de consumo' %>
             <% if (options.workOrder && item.warning_level != 0) { %>
-              <button>Crear orden de trabajo</button>
+              <button class="buttonAlertVariable">Crear orden de trabajo</button>
             <% } %>
           </div>
         </div>
