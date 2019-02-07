@@ -49,7 +49,7 @@ App.View.Login = Backbone.View.extend({
     }
 
     // Encryption MD5
-    password = App.config.encryption_md5 === false
+    password = App.config.sendNotEncryptedPassword === true
       ? password
       : md5(password);
 
