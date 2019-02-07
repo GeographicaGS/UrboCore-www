@@ -34,4 +34,5 @@ App.config = {
   'maps_prefix': 'dev_',
   'support_section': false, // Used to show/hide the support section
   'download_config_file': false, // Used to show/hide the action to download the connector's config file
+  'sendNotEncryptedPassword': false // Used to send the password encrypted in md5 in login
 };

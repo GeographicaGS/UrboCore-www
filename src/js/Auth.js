@@ -1,129 +1,129 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-(function(){
+(function () {
 
-  var auth = function(){
+  var auth = function () {
 
     this._renewGapSeconds = 120;
 
-    try{
+    try {
       this._data = JSON.parse(localStorage.getItem('auth')) || {};
     }
-    catch(err){
+    catch (err) {
       this._data = {};
     }
   };
 
-  auth.prototype.start = function(cb){
+  auth.prototype.start = function (cb) {
     if (!this.isLogged())
       // go to login
       return cb(false);
 
     // The user has logged and we've some data from him. Let's check it out.
     var diff = parseInt((new Date(this._data.expires) - new Date()) / 1000);
-    if (diff < this._renewGapSeconds){
+    if (diff < this._renewGapSeconds) {
       // remove token
       this.logout();
       cb(false);
     }
-    else{
+    else {
       this.refreshPermissionGraph()
       cb(true);
     }
   }
 
-  auth.prototype.isLogged = function(){
-    return ! _.isEmpty(this._data);
+  auth.prototype.isLogged = function () {
+    return !_.isEmpty(this._data);
   }
 
-  auth.prototype.refreshPermissionGraph = function(){
+  auth.prototype.refreshPermissionGraph = function () {
     var _this = this;
-    $.ajax(App.config.api_url + '/auth/user/graph',{
-      headers:{
+    $.ajax(App.config.api_url + '/auth/user/graph', {
+      headers: {
         'X-Access-Token': this.getToken()
       }
     })
-    .done(function( data, textStatus, jqXHR ) {
+      .done(function (data, textStatus, jqXHR) {
 
-      _this.save();
-    })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
-      console.error('Cannot refresh premission graph');
-      window.location = '/';
-    });
+        _this.save();
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('Cannot refresh premission graph');
+        window.location = '/';
+      });
   }
 
-  auth.prototype._getChilds = function(node,data){
+  auth.prototype._getChilds = function (node, data) {
     var r = [];
-    var childs = _.where(data,{parent: node.id});
+    var childs = _.where(data, { parent: node.id });
 
-    for (var i in childs){
-      r.push(this._getChilds(childs[i],data));
+    for (var i in childs) {
+      r.push(this._getChilds(childs[i], data));
     }
 
     return {
-      'name' : node.name,
-      'write' : node.write,
-      'read' : node.read,
-      'childs' : r
+      'name': node.name,
+      'write': node.write,
+      'read': node.read,
+      'childs': r
     };
   }
 
-  auth.prototype._graphToTree = function(data){
-    return this._getChilds(data[0],data);
+  auth.prototype._graphToTree = function (data) {
+    return this._getChilds(data[0], data);
   }
 
-  auth.prototype.logout = function(){
+  auth.prototype.logout = function () {
     localStorage.removeItem('auth');
   }
 
-  auth.prototype.getToken = function(){
+  auth.prototype.getToken = function () {
     return this._data.token;
   }
 
-  auth.prototype.getUser = function(){
+  auth.prototype.getUser = function () {
     return this._data.user;
   }
 
-  auth.prototype.setRenewer = function(){
+  auth.prototype.setRenewer = function () {
     var diff = new Date(this._data.expires) - new Date();
     var _this = this;
-    setTimeout(function(){
+    setTimeout(function () {
       console.log('Token auto renew');
       this.refreshPermissionGraph();
-    },diff-this._renewGapSeconds*1000);
+    }, diff - this._renewGapSeconds * 1000);
   }
 
-  auth.prototype.save = function(){
-    localStorage.setItem('auth',JSON.stringify(this._data));
+  auth.prototype.save = function () {
+    localStorage.setItem('auth', JSON.stringify(this._data));
   }
 
-  auth.prototype.oauthLogin = function (token,expires, cb) {
+  auth.prototype.oauthLogin = function (token, expires, cb) {
     var _this = this;
-    $.ajax(App.config.api_url + '/auth/user/graph_oauth',{
+    $.ajax(App.config.api_url + '/auth/user/graph_oauth', {
       method: 'GET',
       data: {
         "access_token": token
       }
-    }).done(function(data) {
+    }).done(function (data) {
       _this._data = data;
       _this._data.token = token;
       _this._data.expires = expires;
@@ -133,54 +133,54 @@
     });
   }
 
-  auth.prototype.login = function(email,password,cb){
+  auth.prototype.login = function (email, password, cb) {
 
     var _this = this;
-    $.ajax(App.config.api_url + '/auth/token/new',{
+    $.ajax(App.config.api_url + '/auth/token/new', {
       method: 'POST',
       data: {
-        "email" : email,
-        "password" : password
+        "email": email,
+        "password": password
       }
     })
-    .done(function( data, textStatus, jqXHR ) {
-      //console.log('Login completed');
-      _this._data = data;
-      _this._data.password = password;
-      _this.save();
-      _this.setRenewer();
-      if (cb) cb();
-    })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
-      if (cb) cb(jqXHR);
-    });
+      .done(function (data, textStatus, jqXHR) {
+        //console.log('Login completed');
+        _this._data = data;
+        _this._data.password = password;
+        _this.save();
+        _this.setRenewer();
+        if (cb) cb();
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        if (cb) cb(jqXHR);
+      });
   }
 
-  auth.prototype.getUser = function(){
+  auth.prototype.getUser = function () {
     return this._data.user;
   }
 
-  auth.prototype._getNodePlainChilds = function(node,list){
+  auth.prototype._getNodePlainChilds = function (node, list) {
 
-    for (var i in childs){
+    for (var i in childs) {
       this._getNodePlainChilds(node)
     }
     delete node.childs;
     list.push(node);
   }
 
-  auth.prototype._searchValidElements = function(opts,node){
+  auth.prototype._searchValidElements = function (opts, node) {
     var valids = [],
       ops = opts.ops;
 
-    for (var i in ops){
-      if (node[ops[i]] && opts.elements.indexOf(node.name)!=-1){
+    for (var i in ops) {
+      if (node[ops[i]] && opts.elements.indexOf(node.name) != -1) {
         valids.push(node.name);
       }
     }
 
-    for (var i in node.childs){
-      var childvalids = this._searchValidElements(opts,node.childs[i]);
+    for (var i in node.childs) {
+      var childvalids = this._searchValidElements(opts, node.childs[i]);
       valids = valids.concat(childvalids);
     }
 
@@ -195,12 +195,12 @@
       ops: ['read','write']. Default to ['read']
     }
   */
-  auth.prototype.validElements = function (opts){
-    opts.ops = opts.ops || ['read'];
+  auth.prototype.validElements = function (opts) {
+    opts.ops = opts.ops || ['read'];
     // find the scope node
-    var scopenode = _.findWhere(this._data.graph.childs,{name: opts.scope});
+    var scopenode = _.findWhere(this._data.graph.childs, { name: opts.scope });
     // get all validElements
-    return this._searchValidElements(opts,scopenode);
+    return this._searchValidElements(opts, scopenode);
   }
 
   App.Auth = auth;
@@ -214,35 +214,35 @@ var backboneSync = Backbone.sync
 Backbone.sync = function (method, model, options) {
   var disableCheck = model.__disableBackboneSyncInterceptor;
   var disableInterceptor = typeof disableCheck === 'function' ? disableCheck() : disableCheck;
-  if(!disableInterceptor) {
-    if(App.mode !== 'embed'){
+  if (!disableInterceptor) {
+    if (App.mode !== 'embed') {
       options.headers = {
         'X-Access-Token': App.auth.getToken(),
       }
-  
+
       // DeMA integration
-      if(App.config.with_dema) {
+      if (App.config.with_dema) {
         options.headers['DeMA-Access-PSK'] = App.config.with_dema;
       }
-  
-  
+
+
     } else {
       // Enrich object with query data
       var qparams = App.Utils.queryParamsToObject();
       var token = qparams.access_token_public;
-  
-      if(options.data) { // POST
+
+      if (options.data) { // POST
         options.data = atob(qparams.b);
         options.headers = {
           'X-Access-Token-Public': token
         }
       }
       else { // GET
-        options.data = {"access_token_public": token}
+        options.data = { "access_token_public": token }
       }
     }
     if (options.appendAuthorizationConnector) {
-        options.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjYyNTc2NzZ9.DTItdunTahmct1yK2uyPKG2WGRvK8R31iLMI1h9V4-0';
+      options.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjYyNTc2NzZ9.DTItdunTahmct1yK2uyPKG2WGRvK8R31iLMI1h9V4-0';
     }
   }
 
