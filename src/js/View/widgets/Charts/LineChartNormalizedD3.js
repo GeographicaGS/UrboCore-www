@@ -334,6 +334,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
 
   _drawElements: function () {
     var _this = this;
+    var _totalVariablesInChart = this.data.length;
     this.data.forEach(function (data) {
       switch (data.type) {
         case 'bar':
@@ -345,7 +346,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
           break;
         case 'line':
           if (!_this._internalData.disabledList[data.realKey]) {
-            _this._drawLine(data);
+            _this._drawLine(data, (_totalVariablesInChart === _this._internalData.elementsDisabled + 1));
           }
       }
     });
@@ -354,24 +355,26 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
   /**
    * Draw line into the chart
    * 
-   * @param {Array} data - data to draw into teh chart
+   * @param {Array} data - data to draw into the chart
+   * @param {Boolean} isUnique - There is unique line in chart
    */
-  _drawLine: function (data) {
+  _drawLine: function (data, isUnique) {
     /**
      * Function to get the correct domain (min and max point from chart)
      * 
      * @param {Array} chartValues
      * @param {Array} customDomain - array with min and max current point from chart
+     * @param {Boolean} isUnique - There is unique line in chart (we normalize every chart)
      * @return {Array} - min and max point from chart
      */
-    var getCurrentDomain = function(chartValues, customDomain) {
+    var getCurrentDomain = function(chartValues, customDomain, isUnique) {
       // Values in Y Axis from 
       var yAxisValues = chartValues
         .map(function (value) {
           return value.y;
         });
 
-      return customDomain && customDomain.length
+      return isUnique && customDomain && customDomain.length
         ? [customDomain[0][0], customDomain[0][1]]
         : [Math.min.apply(null, yAxisValues), Math.max.apply(null, yAxisValues)]
     }
@@ -402,7 +405,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
         })
         .y(function (d, idx) {
           var scale = d3.scale.linear()
-            .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain))
+            .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain, isUnique))
             .range([_this._chart.h, 0]);
       
           return scale(d.y);
@@ -419,7 +422,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
       .attr('cy', function (d) {
         var scale = d3.scale
           .linear()
-          .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain))
+          .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain, isUnique))
           .range([_this._chart.h, 0]);
     
         return scale(d.y);
