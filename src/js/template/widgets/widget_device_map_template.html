@@ -1,32 +1,37 @@
-<div class="widget map_device <%=titleLink ? 'link':'' %>">
-	<a href="<%=link%>" jslink>
-		<div class='botons'>
-	    <% if (timeMode=='now') {%>
-	      <span class='tooltipIcon realTime'>
-          <div class='text'>
+<div class="widget map_device <%=titleLink ? 'link': '' %>">
+  <a href="<%=link%>" jslink>
+    <div class="botons">
+      <% if (timeMode=='now') {%>
+        <span class="tooltipIcon realTime">
+          <div class="text">
             <span><%= __('Ahora') %><span>
           </div>
         </span>
-	    <% } else if (timeMode=='historic') { %>
-	      <%=_.template( $('#widgets-widget_date_template').html())() %>
-	    <% } %>
-	    <% if (infoTemplate) { %>
-	        <span class='tooltipIcon info' ></span>
-	        <span class='icon close info hide' ></span>
-	    <% } %>
-		</div>
-		<div class="options">
-			<img class="tool" src="/img/SC_admin.svg">
-			<img src="/img/SC_ampliar.svg">
-		</div>
-		<div class="widget_header">
-			<span><%=title%></span>
-		</div>
-		<div class='botons'>
-		</div>
-		<div class="map"></div>
-	</a>
-	<%if(titleLink){%>
-		<div class="viewMore"><%= __('Ver más en') %>&nbsp;<span><%=titleLink%></span></div>
-	<%}%>
+      <% } else if (timeMode=='historic') { %>
+        <%=_.template( $('#widgets-widget_date_template').html())() %>
+      <% } %>
+      <% if (infoTemplate) { %>
+        <span class='tooltipIcon info'></span>
+        <span class='icon close info hide'></span>
+      <% } %>
+    </div>
+    <div class="options">
+      <img class="tool" src="/img/SC_admin.svg">
+      <img src="/img/SC_ampliar.svg">
+    </div>
+    <div class="widget_header">
+      <span>
+        <%=title%>
+      </span>
+    </div>
+    <!-- <div class='botons'>
+    </div> -->
+    <div class="map"></div>
+  </a>
+  <%if(titleLink){%>
+    <div class="viewMore">
+      <%= __('Ver más en') %>&nbsp;
+      <span><%=titleLink%></span>
+    </div>
+  <%}%>
 </div>
