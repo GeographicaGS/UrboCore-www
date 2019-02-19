@@ -20,31 +20,46 @@
 
 'use strict';
 
+/**
+ * Used by the layers that make use of the API
+ */
 App.View.Map.Layer.MapboxGeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
-
-  initialize: function(config) {
+  initialize: function (config) {
     this.legendConfig = config.legend;
     this.layers = config.layers;
     this._ignoreOnLegend = config.ignoreOnLegend;
     this._idSource = config.source.id;
     this._ids = config.layers.map(l => l.id);
 
+    // Call parent init class
     App.View.Map.Layer.MapboxGLLayer.prototype
-      .initialize.call(this, config.source.model,
-      config.source.payload,config.legend, config.map);
+      .initialize.call(
+        this, 
+        config.source.model,
+        config.source.payload,
+        config.legend,
+        config.map
+      );
   },
 
-  _layersConfig: function() {
+  _layersConfig: function () {
     return this.layers;
   },
 
-  _success: function(model) {
-    var response = (model.changed && model.changed.response)? model.changed.response : {type: "FeatureCollection", features: []};
+  /**
+   * Callback triggered when the server response is 'success'
+   * 
+   * @param {Object} model - model with server data
+   */
+  _success: function (model) {
+    var response = (model.changed && model.changed.features)
+      ? model.changed
+      : { type: 'FeatureCollection', features: [] };
+
+    // Set the response into the source
     this._map.getSource(this._idSource).setData(response);
-    this._map._sources.find(function(src) {
-      return src.id === this._idSource;
-    }.bind(this)).data = {'type': 'geojson', 'data': response};
+
     return model;
   },
 });
