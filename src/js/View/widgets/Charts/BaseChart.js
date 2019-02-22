@@ -55,6 +55,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   initialize: function (options) {
     this.options = options.opts || new App.Model.BaseChartConfigModel({});
 
+    this.collection = options.data;
+    this.listenTo(this.collection,"reset",this._drawChart);
+
     this._initAggs();
 
     this._internalData = {
@@ -80,9 +83,6 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     }
 
     _.bindAll(this, '_tooltipContentGenerator');
-
-    this.collection = options.data;
-    this.listenTo(this.collection, 'reset', this._drawChart);
   },
 
   events: {

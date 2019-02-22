@@ -19,20 +19,30 @@
 // iot_support at tid dot es
 
 'use strict';
+
+/**
+ * Collection to get a CSV file from server
+ */
 App.Collection.TableToCsv = Backbone.Collection.extend({
 
-	initialize: function(models,options) {
-      this.options = options;
+  initialize: function (models, options) {
+    this.options = options;
   },
 
-  parse: function(response) {
-  	var blob = new Blob([response], {type:'text/csv'});
-		var csvUrl = window.URL.createObjectURL(blob);
-		var link = document.createElement("a");
-		link.setAttribute("href", csvUrl);
-		link.setAttribute("download", "download.csv");
+  /**
+   * To download the CSV generated
+   * 
+   * @param {Array} response 
+   */
+  parse: function (response) {
+    var blob = new Blob([response], { type: 'text/csv' });
+    var csvUrl = window.URL.createObjectURL(blob);
+    var link = document.createElement('a');
+
+    link.setAttribute('href', csvUrl);
+    link.setAttribute('download', 'download.csv');
     document.body.appendChild(link);
-		link.click();
+    link.click();
     document.body.removeChild(link);
   }
 
