@@ -49,7 +49,7 @@ App.Model.User = Backbone.Model.extend({
         msg: 'El email no puede estar vacío'
       },
       pattern: {
-        pattern: /^([\w.\d]+)@((\w)+\.)+(\w)+$/,
+        pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
         msg: 'El formato del mensaje es incorrecto'
       }
     }
