@@ -19,19 +19,28 @@
 // iot_support at tid dot es
 
 App.Collection.Base = Backbone.Collection.extend({
-  initialize: function(models,options){
+  initialize: function (models, options) {
     this.options = options;
   }
 });
 
 App.Collection.Post = App.Collection.Base.extend({
-  fetch: function(options) {
-    options.type='POST';
-    options.contentType='application/json';
+  fetch: function (options) {
+    // To fix the problem with "type" param (now or historic) in the collections (MapsCollections)
+    if (options.type
+      && options.type.toLowerCase() !== 'get'
+      && options.type.toLowerCase() !== 'post'
+      && options.type.toLowerCase() !== 'put'
+      && options.type.toLowerCase() !== 'delete') {
+        options.typeHistoric = options.type;
+    }
+
+    options.type = 'POST';
+    options.contentType = 'application/json';
 
     // TODO: Fix Timeserie doesn't refresh BBox
     // var params = options.data || this.options.data;
-    // if(typeof params.filters == "undefined"){ params.data.filters = {}; }
+    // if(typeof params.filters == 'undefined'){ params.data.filters = {}; }
     //
     // if(App.ctx.get('bbox_status') && App.ctx.get('bbox')){
     //   params.filters.bbox = App.ctx.get('bbox');
@@ -51,11 +60,17 @@ App.Collection.PublishedWidget = App.Collection.Base.extend({
 });
 
 App.Collection.MapsCollection = App.Collection.Post.extend({
-  url: function(options) {
-    return App.config.api_url + "/" + this.options.scope + "/maps/" + this.options.entity + "/" + this.options.type; 
+  url: function (options) {
+    // To fix the problem with "type" param (now or historic) in the collections
+    // The parameter "type" is used to do request (POST, PUT, DELETE) and here to make the URL (bad idea)
+    var typeHistoric = this.options.typeHistoric
+      ? this.options.typeHistoric
+      : this.options.type;
+
+    return App.config.api_url + '/' + this.options.scope + '/maps/' + this.options.entity + '/' + typeHistoric;
   },
 
-  fetch: function(options) {
+  fetch: function (options) {
     options.data.filters.conditions = options.data.filters.conditions || {};
     return App.Collection.Post.prototype.fetch.call(this, options);
   }
