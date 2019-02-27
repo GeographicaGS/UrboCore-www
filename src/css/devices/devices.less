@@ -512,7 +512,7 @@
       display: flex;
       align-items: center;
       color: #fff;
-      font-size: 14px;      
+      font-size: 14px;
       font-weight: 600;
       span {
         display: flex;
@@ -526,6 +526,70 @@
         font-size: 14px;
         margin-right: 4px;
         font-weight: 500;
+      }
+    }
+  }
+  // Is like "widget-simple-data" but with more
+  // stuff to show :D
+  .widget-simple-data-complex {
+    .co_chart {
+      display: flex;
+      .co_value {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        .attribute {
+          width: 50%;
+          font-size: 32px;
+          line-height: 32px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          color: #FFF;
+          font-weight: 200;
+          text-align: left;
+          .head-attribute {
+            .label-attribute {
+              display: block;
+              font-size: 14px;
+              line-height: 14px;
+              text-transform: uppercase;
+            }  
+          }
+          .content-attribute {
+            .value-attribute {
+              display: inline-block;
+              font-size: 36px;
+              line-height: 36px;
+            }
+            .units-attribute {
+              display: inline-block;
+              font-size: 24px;
+              line-height: 24px;
+              color: @grey4;
+            }
+          }
+          &.big {
+            .value-attribute {
+              font-size: 60px;
+              line-height: 60px;
+            }
+            .units-attribute {
+              font-size: 36px;
+              line-height: 36px;
+            }
+          }
+          &:first-child {
+            border-right: 1px solid rgba(255,255,255,.2);
+          }
+          &:last-child {
+            border-right: 0px;
+          }
+          &+ .attribute {
+            text-align: right;
+          }
+        }
       }
     }
   }

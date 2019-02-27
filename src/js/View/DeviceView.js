@@ -435,44 +435,127 @@ App.View.LastDataWidgetSimple = App.View.LastDataWidget.extend({
   }
 });
 
-App.View.LastDataWidgetMap = App.View.LastDataWidget.extend({
-  _template: _.template( $('#devices-lastdata_map_template').html() ),
+/**
+ * This view show a Widget like "LastDataWidgetSimple" but with more stuffs :D
+ */
+App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
 
+  _template: _.template( $('#devices-lastdata_chart_complex_template').html() ),
 
   initialize: function(options) {
+    // Get metadata params
+    // and we complete the parameters
+    if (this.model.has('params')) {
+      var currentParams = this.model.get('params');
+      var parseCurrentParams = _.reduce(currentParams, function (sumParams, param) {
+        var currentMetadata = App.Utils.toDeepJSON(App.mv().getVariable(param.id));
+        
+        sumParams.push({
+          id: param.id,
+          value: param.value,
+          label: currentMetadata.name,
+          units: currentMetadata.units,
+          extraData: param.extraData || null,
+        });
+
+        return sumParams;
+      }.bind(this), []);
+      // remove from model the old parameter
+      this.model.unset('params');
+      // create new parameters with the new data
+      this.model.set('params', parseCurrentParams);
+      // Set titleWidget
+      if (!this.model.has('title')) {
+        this.model.set('title', parseCurrentParams[0].label);
+        this.model.set('customTitle', true);
+      }
+    }
 
   },
 
   render: function(){
+    this.$el.html(this._template(this.model.toJSON()));
+
+    return this;
+  }
+});
+
+App.View.LastDataWidgetMap = App.View.LastDataWidget.extend({
+  _template: _.template( $('#devices-lastdata_map_template').html() ),
+
+  initialize: function(options) {
+
+    // Default options (new options)
+    options = _.defaults(options, {
+      icons: [], // to draw more than one icon
+      lat: null, // center map (latitude)
+      lng: null // center map (longitude)
+    });
+
+    // Initialize model with data from the "options"
+    if (!this.model) {
+      this.model = new Backbone.Model(options);
+    } else {
+      if (this.model.has('icon')) {
+        this.model.set('icons', [
+          {
+            icon: this.model.get('icon'),
+            lat: this.model.get('lat'),
+            lng: this.model.get('lng')
+          }
+        ]);
+      }
+    }
+  },
+
+  render: function() {
+
+    // Apply render function parent
     App.View.LastDataWidget.prototype.render.apply(this);
 
     // TODO: Create MAP
     this.map = new L.Map(this.$('#devicemap')[0], {
-      zoomControl : false,
+      zoomControl: false,
       dragging: false,
       touchZoom: false,
       scrollWheelZoom: false,
       doubleClickZoom: false,
-      boxZoom:false,
-      attributionControl : false
+      boxZoom: false,
+      attributionControl: false
     });
 
+    // Add base layer
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
     }).addTo(this.map);
 
-    var icon = L.icon({
-      iconUrl: '/img/' + this.model.get('icon'),
-      iconSize:     [24, 24],
-      iconAnchor:   [12, 12],
-      popupAnchor:  [0, 0]
-    });
+    // Add icons to map
+    var icons = this.model.get('icons');
+    if (icons.length) {
+      _.each(icons, function(icon) {
+        var iconOptions = L.icon({
+          iconUrl: '/img/' + icon.icon,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+          popupAnchor: [0, 0],
+          className: icon.className || '',
+        });
+        var iconPosition = [
+          icon.lat,
+          icon.lng
+        ];
+  
+        // Add marker (icon)
+        L.marker(iconPosition, {
+          icon: iconOptions
+        })
+        .addTo(this.map);
+      }.bind(this));
 
-    var pos = [this.model.get('lat'),this.model.get('lng')];
-    L.marker(pos, {icon: icon}).addTo(this.map);
-    this.map.setView(pos, 16);
+      // Set center the map
+      this.map.setView([this.model.get('lat'), this.model.get('lng')], 16);
+    }
 
     return this;
-
   }
 
 });
