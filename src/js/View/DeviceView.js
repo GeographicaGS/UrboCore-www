@@ -464,7 +464,7 @@ App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
       this.model.unset('params');
       // create new parameters with the new data
       this.model.set('params', parseCurrentParams);
-      // Set titleWidget
+      // Set title for widget
       if (!this.model.has('title')) {
         this.model.set('title', parseCurrentParams[0].label);
         this.model.set('customTitle', true);
@@ -473,7 +473,7 @@ App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
 
   },
 
-  render: function(){
+  render: function() {
     this.$el.html(this._template(this.model.toJSON()));
 
     return this;

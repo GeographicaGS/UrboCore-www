@@ -540,12 +540,12 @@
         justify-content: space-between;
         width: 100%;
         .attribute {
-          width: 50%;
           font-size: 32px;
           line-height: 32px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          flex-basis: auto;
           color: #FFF;
           font-weight: 200;
           text-align: left;
@@ -582,6 +582,7 @@
           }
           &:first-child {
             border-right: 1px solid rgba(255,255,255,.2);
+            padding-right: 30px;
           }
           &:last-child {
             border-right: 0px;
@@ -590,6 +591,15 @@
             text-align: right;
           }
         }
+      }
+    }
+    .co_chart-footer {
+      padding-top: 5px;
+      span {
+        font-size: 32px;
+        font-weight: 200;
+        line-height: 32px;
+        color: @grey4;
       }
     }
   }
