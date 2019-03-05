@@ -442,6 +442,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           if(!_this._internalData.disabledList[data.realKey]){
             _this._drawLine(data);
           }
+        case 'point':
+          if(!_this._internalData.disabledList[data.realKey]){
+            _this._drawPoint(data);
+          }
       }
     });
   },
@@ -482,7 +486,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
 
     this._chart.line.push(line);
-  },
+  },  
 
   _drawSimpleBar: function(data){
     var _this = this;
@@ -537,6 +541,34 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('data-idx', function(d, idx) {return idx; })
       ;
     this._chart.bars.push(bar);
+  },
+
+  /**
+   * Draw points into the chart
+   * 
+   * @param {Array} data - data to show
+   */
+  _drawPoint: function(data){
+    var _this = this;
+    this._chart.line = this._chart.line || [];
+    var line = this._chart.svg.append('g').selectAll('.lineGroup')
+      .data([data]).enter()
+      .append('g')
+        .attr('class', 'lineGroup')
+        .attr('key', function(d){ return d.realKey; })
+        .style('fill', function(d, idx) { return _this._getColor(this.__data__, idx); })
+        .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); });
+
+    line.selectAll('.point')
+      .data(data.values).enter()
+      .append('circle')
+        .attr('class', 'point')
+        .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
+        .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
+        .attr('r', 3)
+        .attr('data-y', function(d, idx) {return d.y});
+
+    this._chart.line.push(line);
   },
 
   _formatXAxis: function(){
