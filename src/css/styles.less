@@ -770,6 +770,36 @@ h6{
   // }
 }
 
+.selector {
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 185px;
+  background-color:#f2f2f4;
+  color: @primary;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 16px;
+  border-radius: 2px;
+  justify-content: space-between;
+
+  &.dropdown {
+    &:after{
+      content: url('/img/SC_ic_arrow-drop-down.svg');
+      flex: 0 0 20px;
+      height: 20px;
+
+    }
+
+    &.active {
+      &:after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
 .button{
   cursor: pointer;
   display: inline-block;
