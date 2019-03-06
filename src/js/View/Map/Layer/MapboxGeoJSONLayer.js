@@ -53,12 +53,15 @@ App.View.Map.Layer.MapboxGeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.extend(
    * @param {Object} model - model with server data
    */
   _success: function (model) {
-    var response = (model.changed && model.changed.features)
-      ? model.changed
+    var response = (model.changed && model.changed.response)
+      ? model.changed.response
       : { type: 'FeatureCollection', features: [] };
 
     // Set the response into the source
     this._map.getSource(this._idSource).setData(response);
+    this._map._sources.find(function(src) {	
+      return src.id === this._idSource;	
+    }.bind(this)).data = {'type': 'geojson', 'data': response};
 
     return model;
   },
