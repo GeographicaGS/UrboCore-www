@@ -1,0 +1,50 @@
+<div class="widget widget-simple-data-complex reduced">
+  <div class="botons">
+    <span class="tooltipIcon realTime">
+      <div class="text">
+        <span>
+          <%= __('Ahora') %>
+          <span></span>
+        </span>
+      </div>
+    </span>
+  </div>
+  <!-- Title -->
+  <h4 class="mb20">
+    <%= __(title) %>
+  </h4>
+  <!-- Data -->
+  <div class="co_chart">
+    <div class="co_value">
+      <!-- Parameters -->
+      <% _.each(params, function(param, index) { %>
+      <div class="attribute <% if (index === 0) { %> big <% } %>">
+        <% if (typeof customTitle === 'undefined') { %>
+        <div class="head-attribute">
+          <span class="label-attribute"><%= param.label %></span>
+        </div>
+        <% } %>
+        <div class="content-attribute">
+          <% if (typeof param.extraData !== 'undefined' && param.extraData !== null) { %>
+          <span class="value-extra-data">
+            <%= param.extraData %>
+          </span>
+          <% } %>
+          <span class="value-attribute">
+            <%= param.value == 'null' ? App.nbf(null) : App.nbf(param.value) %>
+          </span>
+          <span class="units-attribute"><%= param.units %></span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+  <!-- Footer -->
+  <% if (typeof footer !== 'undefined' && footer !== null) { %>
+  <div class='co_chart-footer'>
+    <span>
+      <%= footer %>
+    </span>
+  </div>
+  <% } %>
+</div>
