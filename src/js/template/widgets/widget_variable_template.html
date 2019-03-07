@@ -13,8 +13,10 @@
         </div>
         <% } %>
       <span class='units'><%= App.mv().getVariable(variable).get('units') %> </span>
-
     </div>
+    <% if (label) { %>
+      <span class='label'><%= label %> </span>
+    <% } %>
   </div>
 
   <% if (max || min) { %>
