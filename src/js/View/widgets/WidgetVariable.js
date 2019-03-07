@@ -36,10 +36,30 @@ App.View.Widgets.Variable = Backbone.View.extend({
         d.value = data.value[_this.options.agg.toUpperCase()];
         d.max = _this.options.max || data.value['MAX'];
         d.min = _this.options.min || data.value['MIN'];
-        if (_this.options.refValue)
+
+        // label (text together units)
+        d.label = (_this.options.label)
+          ? _this.options.label
+          : null;
+        // parse value
+        if (typeof _this.options.parseValue === 'function') {
+          d.value = _this.options.parseValue(d.value);
+        }
+        // parse max value
+        if (typeof _this.options.parseMaxValue === 'function') {
+          d.max = _this.options.parseMaxValue(d.max);
+        }
+        // parse min value
+        if (typeof _this.options.parseMinValue === 'function') {
+          d.min = _this.options.parseMinValue(d.min);
+        }
+        // show reference percentage
+        if (_this.options.refValue) {
           d.refPerc = 100 * (d.value/_this.options.refValue -1);
-        else
+        } else {
           d.refPerc = null;
+        }
+
         _this.$el.html(_this._template(d));
       }
     });
