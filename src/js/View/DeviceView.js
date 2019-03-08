@@ -645,6 +645,13 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
   },
 
   initialize: function(options) {
+
+    // merge with "default" options
+    options = _.defaults(options, {
+      hideVariableEmpty: false,
+    });
+    this.options = options;
+
     var _this = this;
     this.metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
     this.entityVariables = _.filter(this.metadata, function(el){
@@ -701,10 +708,15 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
       },
       success:function(data){
         _this.$('ul.row .loading').remove();
-        if(el.length > 0)
-          el.replaceWith(_this._template({m:data.toJSON()}));
-        else
-          _this.$('ul.row').append(_this._template({m:data.toJSON()}));
+        // Show widget if the condition is agree
+        if (!_this.options.hideVariableEmpty
+            || (_this.options.hideVariableEmpty && data.get('value') !== null)) {
+          if(el.length > 0) {
+            el.replaceWith(_this._template({m:data.toJSON()}));
+          } else {
+            _this.$('ul.row').append(_this._template({m:data.toJSON()}));
+          }
+        }
       }
     });
   },
