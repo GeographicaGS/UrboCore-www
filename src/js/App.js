@@ -232,6 +232,8 @@ App.detectCurrentLanguage = function() {
     return 'it';
   } else if (url.indexOf('/fr/') != -1 || url.endsWith('/fr')) {
     return 'fr';
+  } else if (url.indexOf('/de/') != -1 || url.endsWith('/de')) {
+    return 'de';
   } else {
     return 'es';
   }
