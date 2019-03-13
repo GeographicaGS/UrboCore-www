@@ -1,0 +1,3646 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-08-24 08:02+0200\n"
+"PO-Revision-Date: 2019-03-12 17:44+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ../../src/js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: View\n"
+"X-Poedit-SearchPath-1: template\n"
+"X-Poedit-SearchPath-2: Collection\n"
+"X-Poedit-SearchPath-3: Model\n"
+"X-Poedit-SearchPath-4: App.js\n"
+"X-Poedit-SearchPath-5: .\n"
+
+#: template/admin/category_template.html:5
+msgid "Ficha de Vertical"
+msgstr "Vertical card"
+
+#: template/admin/category_template.html:14
+msgid "Vertical sin datos"
+msgstr "Vertical without data"
+
+#: template/admin/category_template.html:20
+msgid "Permisos de vertical"
+msgstr "Vertical permissions"
+
+#: template/admin/category_template.html:26
+msgid "Selecciona entidades"
+msgstr "Select entities"
+
+#: template/admin/category_template.html:37
+#: template/admin/category_template.html:57
+#: template/admin/scope_template.html:81
+msgid "Permisos"
+msgstr "Permissions"
+
+#: template/admin/category_template.html:55
+#: template/admin/scope_list_template.html:46
+#: template/admin/scope_template.html:79 template/admin/scope_template.html:104
+#: template/user/user_list_template.html:49
+msgid "Editar"
+msgstr "Edit"
+
+#: template/admin/logs_template.html:8 template/header_template.html:31
+msgid "Registro de accesos"
+msgstr "Access registry"
+
+#: template/admin/logs_template.html:16
+#: template/admin/scope_create_template.html:21
+#: template/admin/scope_template.html:13 template/user/new_user_template.html:6
+#: template/user/user_info_template.html:4
+#: View/Map/Transport/VehiclesView.js:109
+#: View/Map/Transport/VehiclesView.js:123 View/Map/Waste/SummaryMapView.js:238
+#: View/Map/Waste/SummaryMapView.js:274
+msgid "Nombre"
+msgstr "Name"
+
+#: template/admin/logs_template.html:20
+msgid "Último acceso"
+msgstr "Latest access"
+
+#: template/admin/permission_template.html:3
+msgid "Permisos de"
+msgstr "Permissions of"
+
+#: template/admin/permission_template.html:7
+msgid "Buscar usuarios"
+msgstr "Search users"
+
+#: template/admin/permission_template.html:10
+#: template/admin/scope_create_template.html:43
+#: template/user/new_user_template.html:85
+#: template/widgets/Frame/widget_frame_edit_template.html:39
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: template/admin/permission_template.html:11
+#: template/widgets/Frame/widget_frame_edit_template.html:40
+msgid "Aceptar"
+msgstr "Accept"
+
+#: template/admin/permission_user_template.html:3
+#: template/frames_dashboard_template.html:7
+msgid "Añadir"
+msgstr "Add"
+
+#: template/admin/permission_user_template.html:4
+msgid "Añadido"
+msgstr "Added"
+
+#: template/admin/scope_create_template.html:4
+msgid "Crear nuevo ámbito"
+msgstr "Create new scope"
+
+#: template/admin/scope_create_template.html:13
+msgid "Multiambito"
+msgstr "Multiscope"
+
+#: template/admin/scope_create_template.html:26
+msgid "Latitud / Longitud"
+msgstr "Latitude / Longitude"
+
+#: template/admin/scope_create_template.html:31
+#: template/admin/scope_template.html:29
+msgid "Zoom"
+msgstr "Zoom"
+
+#: template/admin/scope_create_template.html:35
+#: template/admin/scope_template.html:34
+msgid "Almacén de datos"
+msgstr "Data Storage"
+
+#: template/admin/scope_create_template.html:44
+msgid "Crear"
+msgstr "Create"
+
+#: template/admin/scope_list_template.html:5
+msgid "Listado de Ámbitos"
+msgstr "List of scopes"
+
+#: template/admin/scope_list_template.html:10
+msgid "Nuevo ámbito"
+msgstr "New scope"
+
+#: template/admin/scope_list_template.html:19
+msgid "Nombre del ámbito"
+msgstr "Name of the scope"
+
+#: template/admin/scope_list_template.html:20 View/CategoriesListView.js:14
+msgid "Verticales"
+msgstr "Vertikal"
+
+#: template/admin/scope_list_template.html:21
+#: template/user/user_list_template.html:4
+msgid "Usuarios"
+msgstr "Users"
+
+#: template/admin/scope_list_template.html:48
+#: template/admin/scope_template.html:59 template/admin/scope_template.html:106
+msgid "Eliminar"
+msgstr "Remove"
+
+#: template/admin/scope_template.html:5
+msgid "Datos del Ámbito"
+msgstr "Scope data"
+
+#: template/admin/scope_template.html:19
+msgid "Latitud"
+msgstr "Latitude"
+
+#: template/admin/scope_template.html:24 View/Map/Transport/VehiclesView.js:113
+msgid "Longitud"
+msgstr "Longitude"
+
+#: template/admin/scope_template.html:52
+#: template/pop_up_publish_template.html:5
+msgid "Publicar"
+msgstr "Publish"
+
+#: template/admin/scope_template.html:54
+msgid "Despublicar"
+msgstr "Unpublish"
+
+#: template/admin/scope_template.html:58
+msgid "Permisos del ámbito"
+msgstr "Scope permissions"
+
+#: template/admin/scope_template.html:69
+msgid "Selecciona verticales"
+msgstr "Select verticals"
+
+#: template/admin/scope_template.html:87 template/header_template.html:25
+#: template/multi_scope_list_template.html:8
+#: template/multi_scope_list_template.html:55
+#: template/scope_list_template.html:12
+#: template/user/user_list_template.html:17 View/Admin/CategoryView.js:39
+#: View/Admin/ScopeView.js:58 View/Admin/VariableView.js:45
+msgid "Ámbitos"
+msgstr "Scopes"
+
+#: template/admin/scope_template.html:111
+msgid "Añadir nuevo ámbito"
+msgstr "Add new scope"
+
+#: template/admin/variable_template.html:5
+msgid "Configurar vertical"
+msgstr "Configure vertical"
+
+#: template/admin/variable_template.html:17
+msgid "Permisos de variable"
+msgstr "Permissions of the variable"
+
+#: template/admin/variable_template.html:26
+msgid "Correcto"
+msgstr "Correct"
+
+#: template/admin/variable_template.html:38
+msgid "Aviso"
+msgstr "Warning"
+
+#: template/admin/variable_template.html:49
+#: View/Map/Dumps/CurrentMapView.js:134
+msgid "Alerta"
+msgstr "Alert"
+
+#: template/admin/variable_template.html:67
+#: View/widgets/Waste/WidgetIndicatorTable.js:62
+#: View/widgets/WidgetIndicatorTable.js:46
+msgid "Valor"
+msgstr "Value"
+
+#: template/base_table_template.html:3 template/indicator_table_template.html:3
+#: template/widgets/Waste/widget_indicator_table_template.html:7
+#: template/widgets/Waste/widget_issue_table_template.html:7
+#: template/widgets/widget_table_paginated_template.html:6
+msgid "Descargar CSV"
+msgstr "Download CSV"
+
+#: template/categories_list_template.html:8
+#: template/multi_scope_list_template.html:63
+#: template/scope_list_template.html:41
+msgid "vertical"
+msgstr "vertikal"
+
+#: template/categories_list_template.html:8
+#: template/multi_scope_list_template.html:63
+#: template/scope_list_template.html:41
+msgid "verticales"
+msgstr "vertikal"
+
+#: template/chart/base_chart_range_legend.html:21
+msgid "Menos"
+msgstr "Less"
+
+#: template/chart/base_chart_range_legend.html:23
+msgid "Más"
+msgstr "More"
+
+#: template/chart/base_context_chart.html:4
+#: template/chart/pie_context_chart.html:5
+#: template/widgets/WasteD/widget_multiVariable_chart.html:19
+#: template/widgets/widget_multiVariable_chart.html:19
+#: template/widgets/widget_multiVariable_stackedchart.html:16
+msgid "Periodo"
+msgstr "Zeitraum"
+
+#: template/correlations_template.html:5
+#: template/multi_scope_list_template.html:5
+msgid "Explorar mapa"
+msgstr "Explore map"
+
+#: template/correlations_template.html:7
+#: template/dashboard_split_template.html:10 template/dashboard_template.html:5
+#: template/frames_dashboard_template.html:11
+msgid "Otros verticales"
+msgstr "Other verticals"
+
+#: template/dashboard_split_template.html:16
+#: template/waste/operation/issue_template.html:8
+msgid "Pantalla completa"
+msgstr "Full screen"
+
+#: template/date_template.html:6
+msgid "Desde"
+msgstr "Von"
+
+#: template/date_template.html:10
+#: template/widgets/Waste/widget_issue_table_template.html:4
+#: template/widgets/widget_table_paginated_template.html:4
+msgid "hasta"
+msgstr "An"
+
+msgid "Hasta"
+msgstr "An"
+
+#: template/date_template.html:15
+msgid "Rango predefinidos"
+msgstr "vordefinierter Rank"
+
+#: template/date_template.html:17
+msgid "Hoy"
+msgstr "Heute"
+
+#: template/date_template.html:18
+msgid "Ayer"
+msgstr "Yesterday"
+
+#: template/date_template.html:20
+msgid "Últimos 3 días"
+msgstr "Letzte 3 Tage"
+
+#: template/date_template.html:21
+msgid "Últimos 7 días"
+msgstr "Letzte 3 Tage"
+
+#: template/date_template.html:22 template/date_template.html:24
+msgid "Último mes"
+msgstr "Letzter Monat"
+
+#: template/date_template.html:25
+msgid "Últimos 3 meses"
+msgstr "Last three months"
+
+#: template/date_template.html:26
+msgid "Último año"
+msgstr "Last year"
+
+#: template/devices/basic_template.html:20
+msgid "Datos básicos"
+msgstr "Basic data"
+
+#: template/devices/basic_template.html:21
+msgid "Promedios"
+msgstr "Averages"
+
+#: template/devices/basic_template.html:23
+msgid "Datos brutos"
+msgstr "Raw data"
+
+#: template/devices/basic_template.html:26
+msgid "Otros datos"
+msgstr "Other data"
+
+#: template/devices/lastdata_chart_template.html:7
+#: template/devices/lastdata_map_template.html:5
+#: template/environment/map_popup_iac_template.html:7
+#: template/environment/map_popup_noise_template.html:7
+#: template/environment/map_popup_weather_template.html:7
+#: template/map/click_template.html:9 template/map/legend_base_template.html:6
+#: template/parking/map_popup_template.html:7
+#: template/transport/bikes_popup_template.html:6
+#: template/transport/evolution_popup_template.html:6
+#: template/transport/map_popup_template.html:6
+#: template/watmeter_a/map_popup_template.html:6
+#: template/widgets/widget_base_template.html:9
+#: template/widgets/widget_device_map_template.html:7
+#: template/widgets/widget_gauge_template.html:5
+#: template/widgets/widget_generic_template.html:19
+#: template/widgets/widget_selectableVariable_template.html:7
+#: View/widgets/OLD_WidgetVariableView.js:22
+#: View/widgets/WidgetDeviceMapView.js:37
+#: View/widgets/WidgetStackedSingleBar.js:190
+msgid "Ahora"
+msgstr "Now"
+
+#: template/devices/lastdata_chart_template.html:17
+#: template/widgets/Waste/widget_lvi_gauge_template.html:30
+#: template/widgets/widget_gauge_template.html:14
+msgid "Hace"
+msgstr "Since"
+
+#: template/devices/lastdata_map_template.html:8
+msgid "Localización del dispositivo"
+msgstr "Device location"
+
+#: template/devices/period_template.html:2
+msgid "Resumen"
+msgstr "Summary"
+
+#: template/devices/period_template.html:5 template/devices/raw_template.html:3
+#: View/DeviceView.js:38 View/DeviceView.js:121
+msgid "Evolución"
+msgstr "Evolution"
+
+#: template/dumps/filling_level_frequency_daily_help.html:1
+msgid "Este widget trata de mostrarnos cómo se comporta nuestro sistema en lineas generales a determinadas horas del día."
+msgstr "This widget shows how the system behaves overall at certain hours."
+
+#: template/dumps/filling_level_frequency_daily_help.html:3
+msgid "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa la hora de la recogida, en el eje Y el nivel de llenado en el momento de la recogida."
+msgstr "Each point represents a container gathering in the selected dates. X axis represents the gathering hour, Y axis represents the fill level at gathering time."
+
+#: template/dumps/filling_level_frequency_daily_help.html:5
+msgid "Si tenemos muchos puntos verdes alrededor de una hora significa que los contenedores se recogen a dicha hora sin llegar a estar llenos. Si tenemos muchos puntos naranjas o rojos significa que es una hora donde se acumulan residuos en la calle puesto que los contenedores están llenos."
+msgstr "If there are too many green dots around one hour slot, it means that containers are gather at that time without beeing filled up. If there are too many red dots around a time slot, that means that there might be frequent overloads at that time."
+
+#: template/dumps/filling_level_frequency_daily_help.html:7
+#: template/dumps/filling_level_frequency_help.html:7
+msgid "El objetivo del gestor debe ser buscar un equilibrio adaptado a la realidad del sistema."
+msgstr "The objective of the manager must be to find a balance according to the system situation."
+
+#: template/dumps/filling_level_frequency_help.html:1
+msgid "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado."
+msgstr "This widget shows how well sized is the system, that is, to detect under or over sizing."
+
+#: template/dumps/filling_level_frequency_help.html:3
+msgid "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa el tiempo transcurrido desde la recogida anterior, en el eje Y el nivel de llenado en el momento de la recogida."
+msgstr "Each dot represents a container gathering in the selected dates. X axis represents the elapsed time since latest gathering, Y axis represents the fill level at gathering time."
+
+#: template/dumps/filling_level_frequency_help.html:5
+msgid "Si tenemos puntos verdes significa que los contenedores se recogen con mucha frecuencia sin llegar a estar llenos. Si tenemos puntos naranjas o rojos significa que los contenedores deberían recogerse con mayor frecuencia."
+msgstr "If there are too many green dots that means that cointaners are emptied too often, without being filled up. If there are too many orange or red dots, it means that the gathering should be made more frequently."
+
+#: template/dumps/map_historic_popup_template.html:18
+#: template/dumps/map_legend_current_template.html:2
+#: template/dumps/map_legend_filling_template.html:2
+#: template/dumps/map_legend_filling_torque_template.html:2
+#: View/Map/Waste/SummaryMapView.js:209
+#: View/widgets/Dumps/WidgetContainerFillingLevelComparison.js:50
+#: View/widgets/Dumps/WidgetContainerFillingWeightEvolution.js:55
+msgid "Nivel de llenado"
+msgstr "Fill level"
+
+#: template/dumps/map_historic_popup_template.html:21
+#, fuzzy, php-format
+#| msgid "Ha superado el 80% durante más de dos horas"
+msgid "Ha superado el 80% durante más de dos horas"
+msgstr "Over 80% for longer than 2 hours"
+
+#: template/dumps/map_historic_popup_template.html:23
+msgid "Ha superado el 80%"
+msgstr ""
+
+#: template/dumps/map_historic_popup_template.html:25
+msgid "Nunca ha superado el 80%"
+msgstr ""
+
+#: template/dumps/map_historic_popup_template.html:33
+msgid "Tipo de residuo"
+msgstr "Waste type"
+
+#: template/dumps/map_historic_popup_template.html:44
+#: template/map/entity_popup_template.html:59
+#: template/map/entity_popup_template.html:61
+msgid "Ver sensor"
+msgstr "View device"
+
+#: template/dumps/map_info_current_template.html:2
+#: template/dumps/map_info_dumps_template.html:2
+#: template/dumps/map_info_filling_template.html:2
+#: template/dumps/map_info_filling_torque_template.html:2
+#: template/dumps/map_info_ranking_template.html:2
+#: template/environment/map_info_historic_template.html:2
+#: template/environment/map_info_max_noise_template.html:2
+#: template/environment/map_info_meteo_historic_template.html:2
+#: template/environment/map_info_template.html:2
+#: template/lighting/map_info_historic_template.html:2
+#: template/lighting/map_info_template.html:2
+#: template/parking/map_info_evolution_template.html:2
+#: template/parking/map_info_template.html:2
+#: template/touring/map_poi_info_template.html:2
+#: template/touring/map_visitors_info_template.html:2
+#: template/transport/bikes_info_template.html:2
+#: template/transport/map_historic_info_template.html:2
+#: template/transport/map_info_evolution_template.html:2
+#: template/transport/map_info_template.html:2
+#: template/transport/map_info_vehicles_template.html:2
+#: template/watmeter_a/map_historic_info_template.html:2
+#: template/watmeter_a/map_info_template.html:2
+#: template/widgets/Waste/widget_info_filling_operation_template.html:3
+#: template/widgets/Waste/widget_info_filling_operation_template.html:19
+#: template/widgets/Waste/widget_info_filling_operation_template.html:30
+#: View/Map/Waste/SummaryMapView.js:249
+msgid "Tipo"
+msgstr "Type"
+
+#: template/dumps/map_info_current_template.html:3
+#: template/environment/map_info_template.html:3
+#: template/lighting/map_info_template.html:3
+#: template/parking/map_info_template.html:3
+#: template/transport/bikes_info_template.html:3
+#: template/transport/map_info_template.html:3
+#: template/transport/map_info_vehicles_template.html:3
+#: template/watmeter_a/map_info_template.html:3
+msgid "Datos en vivo"
+msgstr "Live data"
+
+#: template/dumps/map_info_current_template.html:7
+#: template/dumps/map_info_dumps_template.html:7
+#: template/dumps/map_info_filling_template.html:7
+#: template/dumps/map_info_filling_torque_template.html:7
+#: template/dumps/map_info_ranking_template.html:7
+#: template/environment/map_info_historic_template.html:7
+#: template/environment/map_info_max_noise_template.html:7
+#: template/environment/map_info_meteo_historic_template.html:7
+#: template/environment/map_info_template.html:7
+#: template/lighting/map_info_historic_template.html:7
+#: template/lighting/map_info_template.html:7
+#: template/parking/map_info_evolution_template.html:7
+#: template/parking/map_info_template.html:7
+#: template/touring/map_poi_info_template.html:7
+#: template/touring/map_visitors_info_template.html:7
+#: template/transport/bikes_info_template.html:7
+#: template/transport/map_historic_info_template.html:7
+#: template/transport/map_info_evolution_template.html:7
+#: template/transport/map_info_template.html:7
+#: template/transport/map_info_vehicles_template.html:7
+#: template/watmeter_a/map_historic_info_template.html:7
+#: template/watmeter_a/map_info_template.html:7
+msgid "Propósito"
+msgstr "Purpose"
+
+msgid "Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado"
+msgstr "Show the average value of bicycle use in a given period of time"
+
+msgid "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado."
+msgstr "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado."
+
+msgid "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa el tiempo transcurrido desde la recogida anterior, en el eje Y el nivel de llenado en el momento de la recogida."
+msgstr "Each point corresponds to a collection of a container in the selected date range. In the X axis the time elapsed from the previous collection is represented, in the Y axis the filling level at the time of collection."
+
+msgid "Si tenemos puntos verdes significa que los contenedores se recogen con mucha frecuencia sin llegar a estar llenos. Si tenemos puntos naranjas o rojos significa que los contenedores deberían recogerse con mayor frecuencia."
+msgstr "If we have green points means that the containers are collected very often without being full. If we have orange or red points it means that the containers should be collected more frequently."
+
+msgid "El objetivo del gestor debe ser buscar un equilibrio adaptado a la realidad del sistema."
+msgstr "The manager's objective must be to find a balance adapted to the reality of the system."
+
+#: template/dumps/map_info_current_template.html:8
+msgid "Detectar qué contenedores tienen en ese mismo instante un nivel de llenado elevado (mayor del 80%)"
+msgstr "Detect containers with high fill level at that moment (<80%)"
+
+#: template/dumps/map_info_dumps_template.html:3
+#: template/dumps/map_info_filling_template.html:3
+#: template/dumps/map_info_filling_torque_template.html:3
+#: template/dumps/map_info_ranking_template.html:3
+#: template/environment/map_info_historic_template.html:3
+#: template/environment/map_info_max_noise_template.html:3
+#: template/environment/map_info_meteo_historic_template.html:3
+#: template/lighting/map_info_historic_template.html:3
+#: template/parking/map_info_evolution_template.html:3
+#: template/touring/map_poi_info_template.html:3
+#: template/touring/map_visitors_info_template.html:3
+#: template/transport/map_historic_info_template.html:3
+#: template/transport/map_info_evolution_template.html:3
+#: template/watmeter_a/map_historic_info_template.html:3
+msgid "Datos históricos"
+msgstr "Historic data"
+
+#: template/dumps/map_info_dumps_template.html:8
+msgid "Detectar cuánto tarda en llenarse un contenedor y cuál era su nivel de llenado en el momento de su recogida"
+msgstr "Detect time to fill up and fill level at collection"
+
+#: template/dumps/map_info_filling_template.html:8
+msgid " Este mapa combina el nivel de llenado de los contenedores con el tiempo que llevan en dicho estado. Los valores mostrados han debido registrarse al menos una vez en el periodo de tiempo seleccionado."
+msgstr "This map combines the fill level of the container with the time they have been in that status. Shown values must have been logged once at least in the selected period."
+
+#: template/dumps/map_info_filling_torque_template.html:8
+msgid "  Este mapa animado muestra cuánto tiempo tarda en llenarse cada contenedor. La onda indica el instante en el que ese contenedor fue recogido y su color dependerá del estado en el que se encontraba en el momento de vaciado. Se muestran únicamente los siguientes tres primeros días del rango de fecha seleccionado"
+msgstr " This animated map shows how long it takes to have a container filled up. The wave shows the instant in which the container was emptied, and the color depends on the status at that momento. It only shows the next three days to the selected dates"
+
+#: template/dumps/map_info_ranking_template.html:8
+msgid "Detectar aquellos contenedores que por exceso o por defecto no son eficaces en su recogida"
+msgstr "Detect inefficient containers due to excessive or insufficient collection"
+
+#: template/dumps/map_legend_current_template.html:5
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:65
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:63
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:62
+msgid "Entre el"
+msgstr "Between"
+
+#: template/dumps/map_legend_current_template.html:5
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:51
+msgid "y el"
+msgstr "and"
+
+#: template/dumps/map_legend_current_template.html:9
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:66
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:64
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:63
+msgid "Más del"
+msgstr "Over"
+
+#: template/dumps/map_legend_current_template.html:13
+#: template/header_template.html:38
+msgid "Alertas"
+msgstr "Alarm"
+
+#: template/dumps/map_legend_current_template.html:13
+#: template/dumps/map_legend_filling_torque_template.html:17
+#: template/transport/bikes_legend_template.html:33
+msgid "ondas"
+msgstr "waves"
+
+#: template/dumps/map_legend_filling_template.html:5
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:42
+msgid "Nunca ha superado el"
+msgstr "Never exceeded"
+
+#: template/dumps/map_legend_filling_template.html:9
+#: template/dumps/map_legend_filling_template.html:13
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:43
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:44
+msgid "Ha superado el"
+msgstr "Exceeded"
+
+#: template/dumps/map_legend_filling_template.html:13
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:44
+msgid "durante más de"
+msgstr "during more than"
+
+#: template/dumps/map_legend_filling_template.html:13
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:44
+#: View/widgets/Dumps/WidgetContainerOverflow.js:45
+#: View/widgets/Dumps/WidgetContainerOverflow.js:46
+msgid "horas"
+msgstr "hours"
+
+#: template/dumps/map_legend_filling_torque_template.html:5
+msgid "Menos del 80%"
+msgstr ""
+
+#: template/dumps/map_legend_filling_torque_template.html:9
+msgid "Entre el 80% y el 90%"
+msgstr "Between 80% and 90%"
+
+#: template/dumps/map_legend_filling_torque_template.html:13
+msgid "Más del 90%"
+msgstr ""
+
+#: template/dumps/map_legend_filling_torque_template.html:17
+msgid "momento de la recogida"
+msgstr "gathering time"
+
+#: template/dumps/map_legend_ranking_template.html:2
+msgid "Nivel de ineficiencia"
+msgstr "Ineffiency level"
+
+#: template/dumps/widget_legend_totalvolumestacked_template.html:5
+msgid "Riesgo moderado"
+msgstr "Moderated risk"
+
+#: template/dumps/widget_legend_totalvolumestacked_template.html:6
+msgid "Riesgo alto"
+msgstr "High risk"
+
+#: template/dumps/widget_legend_totalvolumestacked_template.html:7
+#: template/dumps/widget_legend_totalvolumestacked_template.html:9
+msgid "Situación normal"
+msgstr "Normal situation"
+
+#: template/dumps/widget_legend_totalvolumestacked_template.html:13
+msgid "m³ de capacidad disponible"
+msgstr "m³ of available capacity"
+
+#: template/embed_template.html:5
+msgid "Publicaciones"
+msgstr "Publications"
+
+#: template/embed_template.html:5
+msgid "Nueva publicación"
+msgstr "New publication"
+
+#: template/embed_template.html:19
+msgid "Añadir nota aclaratoria (opcional)"
+msgstr "Add explanatory note (optional)"
+
+#: template/embed_template.html:23
+msgid "Generar Widget"
+msgstr "Generate widget"
+
+#: template/embed_template.html:24
+msgid "para obtener el código HTML necesario"
+msgstr "to obtain the HTML code needed"
+
+#: template/embed_template.html:60
+msgid "Copia y pega el código en tu blog o en el HTML de tu sitio web."
+msgstr "Copy & paste the source code in your blog or in the HTML source of your web site."
+
+#: template/environment/map_info_historic_template.html:8
+msgid "Detectar las peores índices de calidad del aire (ICA) en el período seleccionado"
+msgstr "Detect the worst air quality index (AQI) in the selected period"
+
+#: template/environment/map_info_historic_template.html:9
+msgid "Se representa cada estación de un color, dicho color representa el peor ICA de la estación registrado en el período seleccionado"
+msgstr "Each station is represented with a colour that represents the worst ICA registered in the station in the selected period"
+
+#: template/environment/map_info_max_noise_template.html:8
+msgid "Detectar los valores máximos de ruido registrados en un período determinado"
+msgstr "Detect the máximum noise values registered in a specific period"
+
+#: template/environment/map_info_max_noise_template.html:9
+msgid "Se aplica un color a cada estación de control de ruido, dicho color representa el ruido máximo registrado en el período seleccionado"
+msgstr "Each noise station is represented with a colour that expereses the máximum registered noise level in the selected period"
+
+#: template/environment/map_info_meteo_historic_template.html:8
+msgid "Muestra la situación meteorológica del ámbito en el período seleccionado"
+msgstr "The weather conditions in the scope in the selected period are shown"
+
+#: template/environment/map_info_meteo_historic_template.html:9
+msgid "El mapa muestra la precipitación y la temperatura recogida por las variables meteorológicas"
+msgstr "The map shows the rainfall and temperatura gathered by the weather stations"
+
+#: template/environment/map_info_meteo_historic_template.html:10
+msgid "La precipitación se representa aplicando un color sobre el área de influencia de las variables meteorológicas. El color aplicado representa la cantidad total de agua recogida por el sensor  en el período seleccionado"
+msgstr "The rainfall is shown by applying a colour over the area affected by the weather variables. The colour represents the total rainfall measured by the sensor in the selected period"
+
+#: template/environment/map_info_meteo_historic_template.html:11
+msgid "La temperatura se representa como un número sobre la zona. Este número hace referencia a la temperatura media del período"
+msgstr "The temperatura is shown with a colour in the afected area. This number makes reference to the average temperatura of the period"
+
+#: template/environment/map_info_template.html:8
+msgid "Ver la información medioambiental en tiempo real"
+msgstr "Go to real time environmental information"
+
+#: template/environment/map_info_template.html:10
+msgid "Índice de calidad de aire"
+msgstr "Air quality index"
+
+#: template/environment/map_info_template.html:11
+#: template/environment/map_legend_extra_template.html:23
+msgid "El ICA global corresponde a la situación más negativa para cada una de las celdas"
+msgstr "The global AQI corresponds to the worst situation in each cell"
+
+#: template/environment/map_info_template.html:34
+#: template/environment/map_legend_extra_template.html:46
+msgid "Muy mala"
+msgstr "Very bad"
+
+#: template/environment/map_info_template.html:45
+#: template/environment/map_legend_extra_template.html:57
+msgid "Mala"
+msgstr "Bad"
+
+#: template/environment/map_info_template.html:56
+#: template/environment/map_legend_extra_template.html:68
+#: Collection/Environment.js:44
+msgid "Deficiente"
+msgstr "Deficient"
+
+#: template/environment/map_info_template.html:67
+#: template/environment/map_legend_extra_template.html:79
+#: Collection/Environment.js:43
+msgid "Admisible"
+msgstr "Acceptable"
+
+#: template/environment/map_info_template.html:78
+#: template/environment/map_legend_extra_template.html:13
+#: template/environment/map_legend_extra_template.html:90 Environment.js:36
+msgid "Buena"
+msgstr "Good"
+
+#: template/environment/map_legend_extra_template.html:2
+#: template/environment/map_legend_template.html:2
+msgid "Sensor"
+msgstr "Sensor"
+
+#: template/environment/map_legend_extra_template.html:5
+#: template/environment/map_legend_template.html:5
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:11
+msgid "Calidad del aire"
+msgstr "Air quality"
+
+#: template/environment/map_legend_extra_template.html:7
+#: template/environment/map_legend_extra_template.html:101
+#: template/environment/map_legend_template.html:7
+msgid "Ruido"
+msgstr "Noise"
+
+#: template/environment/map_legend_extra_template.html:9
+#: template/environment/map_legend_template.html:9
+#: View/widgets/Environment/WidgetMeteoSummary.js:7
+msgid "Meteorología"
+msgstr "Meteorology"
+
+#: template/environment/map_legend_extra_template.html:11
+msgid "Índice de calidad de aire (ICA)"
+msgstr "Air Quality Index (AQI)"
+
+#: template/environment/map_legend_extra_template.html:21
+#: template/environment/map_legend_historic_template.html:12
+#: template/environment/map_legend_meteo_historic_template.html:12
+#: Collection/Environment.js:46
+msgid "Muy malo"
+msgstr "Very Bad"
+
+#: template/environment/map_legend_extra_template.html:115
+msgid "Tabla de referencia de sonido, ejemplos y ambientes"
+msgstr "Reference table of noise levels, examples and environments"
+
+#: template/environment/map_legend_extra_template.html:118
+msgid "Niveles de ruido instantaneo (dba)"
+msgstr "Instant noise levels (dBA)"
+
+#: template/environment/map_legend_extra_template.html:119
+msgid "Ejemplos"
+msgstr "Examples"
+
+#: template/environment/map_legend_extra_template.html:120
+msgid "Ambientes"
+msgstr "Environments"
+
+#: template/environment/map_legend_extra_template.html:124
+msgid "Taller mecánico (90 dBA). Rotativa de un periódico (100 dBA). Claxon de un automóvil cercano (110 dBA). Ruido de un avión volando a 50 m (120 dBA). Explosión percibida a 10 m de distancia (130 dBA)."
+msgstr "Mechanical garaje (90 dBA). Newspaper press (100 dBA). Close car horn (110 dBA). Plane flying at 50 m (120 dBA). Explosion at 10 m (130 dBA)."
+
+#: template/environment/map_legend_extra_template.html:125
+msgid "Muy ruidosos"
+msgstr "Very noisy"
+
+#: template/environment/map_legend_extra_template.html:129
+msgid "Tráfico intenso. Ruido de algunos electrodomésticos."
+msgstr "Dense traffic. Noise of some electrical appliances."
+
+#: template/environment/map_legend_extra_template.html:130
+msgid "Ruidosos"
+msgstr "Noisy"
+
+#: template/environment/map_legend_extra_template.html:134
+msgid "Zonas comerciales, proliferación de bares..."
+msgstr "Commercial áreas, bar proliferation,..."
+
+#: template/environment/map_legend_extra_template.html:138
+msgid "Actividad en una oficina. Sonido de la voz en conversación normal."
+msgstr "Office activity. Voice at regular conversation level."
+
+#: template/environment/map_legend_extra_template.html:139
+msgid "Aceptables"
+msgstr "Acceptable"
+
+#: template/environment/map_legend_extra_template.html:143
+msgid "Sala de estudio."
+msgstr "Study room."
+
+#: template/environment/map_legend_extra_template.html:147
+msgid "Habitación de dormir. Sonido ambiente en un parque. Un velero (20 dBA)."
+msgstr "Sleeping room. Ambient noise in a park. Sailboat (20 dBA)."
+
+#: template/environment/map_legend_extra_template.html:148
+msgid "Silenciosos"
+msgstr "Silent"
+
+#: template/environment/map_legend_historic_template.html:2
+msgid "Peor índice ICA del período"
+msgstr "Worst AQI of the period"
+
+#: template/environment/map_legend_historic_template.html:4
+#: template/environment/map_legend_meteo_historic_template.html:4
+#: Collection/Environment.js:42
+msgid "Bueno"
+msgstr "Good"
+
+#: template/environment/map_legend_max_noise_template.html:2
+#: template/environment/map_popup_noise_template.html:19
+msgid "Nivel máximo de ruido registrado"
+msgstr "Máximum registered noise level"
+
+#: template/environment/map_legend_meteo_historic_template.html:2
+#: View/Map/Environment/HistoricMeteoMapView.js:69
+msgid "Precipitación acumulada"
+msgstr "Amassed rainfall"
+
+#: template/environment/map_popup_iac_template.html:3
+msgid "Estación de calidad del aire"
+msgstr "Air quality station"
+
+#: template/environment/map_popup_iac_template.html:21
+msgid "Índice de calidad del aire"
+msgstr "Air quality index"
+
+#: template/environment/map_popup_iac_template.html:27
+msgid "Nivel de ozono"
+msgstr "Ozone level"
+
+#: template/environment/map_popup_iac_template.html:33
+#: template/environment/map_popup_iac_template.html:35
+#: template/environment/map_popup_iac_template.html:47
+#: template/environment/map_popup_iac_template.html:49
+#: template/environment/map_popup_iac_template.html:75
+#: template/environment/map_popup_iac_template.html:77
+msgid "sostenidos 1 hora"
+msgstr "hold 1 hour"
+
+#: template/environment/map_popup_iac_template.html:41
+msgid "Concentración de NO<sub>2</sub>"
+msgstr "NO<sub>2</sub> concentration"
+
+#: template/environment/map_popup_iac_template.html:55
+msgid "Concentración de CO"
+msgstr "CO concentration"
+
+#: template/environment/map_popup_iac_template.html:61
+#: template/environment/map_popup_iac_template.html:63
+msgid "sostenidos 8 horas"
+msgstr "hold 8 hours"
+
+#: template/environment/map_popup_iac_template.html:69
+msgid "Concentración de SO<sub>2</sub>"
+msgstr "SO<sub>2</sub> concentration"
+
+#: template/environment/map_popup_iac_template.html:83
+msgid "Concentración de PM10"
+msgstr "PM10 concentration"
+
+#: template/environment/map_popup_iac_template.html:89
+#: template/environment/map_popup_iac_template.html:91
+#: template/environment/map_popup_iac_template.html:103
+#: template/environment/map_popup_iac_template.html:105
+msgid "sostenidos 24 horas"
+msgstr "hold 24 hours"
+
+#: template/environment/map_popup_iac_template.html:97
+msgid "Concentración de PM2.5"
+msgstr "PM2.5 concentration"
+
+#: template/environment/map_popup_iac_template.html:111
+#: template/environment/map_popup_noise_template.html:34
+#: template/environment/map_popup_weather_template.html:44
+#: template/lighting/map_popup_historic_template.html:24
+#: template/lighting/map_popup_template.html:73
+#: template/transport/map_popup_template.html:39
+#: template/watmeter_a/map_popup_historic_template.html:21
+#: template/watmeter_a/map_popup_template.html:42
+msgid "Ver Ficha"
+msgstr "See card"
+
+#: template/environment/map_popup_noise_template.html:3
+msgid "Estación de control de ruido"
+msgstr "Noise control station"
+
+#: template/environment/map_popup_noise_template.html:17
+msgid "Nivel de ruido instantáneo"
+msgstr "Instant noise level"
+
+#: template/environment/map_popup_noise_template.html:27
+msgid "Presión"
+msgstr "Pressure"
+
+#: template/environment/map_popup_weather_template.html:3
+#: View/Map/Environment/HistoricMeteoMapView.js:64
+msgid "Estación meteorológica"
+msgstr "Meteorological station"
+
+#: template/environment/map_popup_weather_template.html:24
+msgid "Temperatura"
+msgstr "Temperature"
+
+#: template/environment/map_popup_weather_template.html:32
+msgid "Precipitación"
+msgstr "Rainfall"
+
+#: template/environment/map_popup_weather_template.html:38
+#: template/widgets/Environment/meteo_summary_template.html:11
+msgid "Visibilidad"
+msgstr "Visibility"
+
+#: template/error_template.html:4
+msgid "HTTP 500: Error interno del servidor. Tenemos un problema con la página que intenta abrir. No podemos mostrarla en este momento. Por favor, inténtelo más tarde."
+msgstr "HTTP 500: Internal server error. There is a problema with the page you are trying to open. We cannot show it in this momento. Please retry later."
+
+#: template/filter/dumps_filter_template.html:2
+#: template/filter/touring_visitors_filter_template.html:2
+msgid "Ajustes"
+msgstr "Settings"
+
+#: template/filter/dumps_filter_template.html:12 View/Waste/DeviceMapView.js:21
+msgid "Contenedores"
+msgstr "Behaelter"
+
+#: template/filter/dumps_filter_template.html:19
+msgid "Tipo de residuos"
+msgstr "Art des Abfalls"
+
+#: template/filter/dumps_filter_template.html:19
+#: template/map/layer_tree_categorylistfilter_template.html:2
+#: template/map/layer_tree_categorylistfilter_template.html:4
+msgid "Todos"
+msgstr "All"
+
+#: template/filter/dumps_filter_template.html:37
+msgid "Nivel de llenado %"
+msgstr "Fill level"
+
+#: template/filter/touring_visitors_filter_template.html:8
+msgid "Procedencia de los turistas"
+msgstr ""
+
+#: template/filter/touring_visitors_filter_template.html:52
+msgid "Días de la semana"
+msgstr ""
+
+#: template/filter/touring_visitors_filter_template.html:62
+msgid "Todos los días"
+msgstr ""
+
+#: template/filter/touring_visitors_filter_template.html:66
+#: Collection/Environment.js:69
+msgid "Lunes"
+msgstr "Monday"
+
+#: template/filter/touring_visitors_filter_template.html:70
+#: Collection/Environment.js:70
+msgid "Martes"
+msgstr "Tuesday"
+
+#: template/filter/touring_visitors_filter_template.html:74
+#: Collection/Environment.js:71
+msgid "Miércoles"
+msgstr "Wednesday"
+
+#: template/filter/touring_visitors_filter_template.html:78
+#: Collection/Environment.js:72
+msgid "Jueves"
+msgstr "Thursday"
+
+#: template/filter/touring_visitors_filter_template.html:82
+#: Collection/Environment.js:73
+msgid "Viernes"
+msgstr "Friday"
+
+#: template/filter/touring_visitors_filter_template.html:86
+#: Collection/Environment.js:74
+msgid "Sábado"
+msgstr "Saturday"
+
+#: template/filter/touring_visitors_filter_template.html:90
+#: Collection/Environment.js:75
+msgid "Domingo"
+msgstr "Sunday"
+
+#: template/filter/transport_vehicles_filter_template.html:8
+msgid "Flota"
+msgstr "Fleet"
+
+#: template/filter/transport_vehicles_filter_template.html:14
+#: Collection/Transport.js:68
+msgid "Transporte público"
+msgstr "Public Transport"
+
+#: template/filter/transport_vehicles_filter_template.html:18
+#: Collection/Transport.js:59
+msgid "Bus"
+msgstr "Bus"
+
+#: template/filter/transport_vehicles_filter_template.html:22
+#: template/filter/transport_vehicles_filter_template.html:46
+#: Collection/Transport.js:60
+msgid "Furgón"
+msgstr "Van"
+
+#: template/filter/transport_vehicles_filter_template.html:30
+#: Collection/Transport.js:69 Collection/Transport.js:75
+msgid "Correos"
+msgstr "Postal"
+
+#: template/filter/transport_vehicles_filter_template.html:34
+#: Collection/Transport.js:61
+msgid "Carrito"
+msgstr "Trolley"
+
+#: template/filter/transport_vehicles_filter_template.html:42
+#: Collection/Transport.js:70 Collection/Transport.js:76
+msgid "Policía"
+msgstr "Police"
+
+#: template/filter/transport_vehicles_filter_template.html:50
+#: template/filter/transport_vehicles_filter_template.html:70
+#: Collection/Transport.js:62
+msgid "Coche"
+msgstr "Car"
+
+#: template/filter/transport_vehicles_filter_template.html:54
+#: Collection/Transport.js:63
+msgid "Motocicleta"
+msgstr "Motorbike"
+
+#: template/filter/transport_vehicles_filter_template.html:62
+#: Collection/Correlations.js:17 Collection/Transport.js:71
+#: Collection/Transport.js:78
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:6
+msgid "Residuos"
+msgstr "Abfall"
+
+#: template/filter/transport_vehicles_filter_template.html:66
+#: Collection/Transport.js:64
+msgid "Camión"
+msgstr "Truck"
+
+#: template/footer_template.html:12
+msgid "Contacta"
+msgstr "Contact"
+
+#: template/footer_template.html:16
+msgid "Privacidad"
+msgstr "Privacy"
+
+#: template/footer_template.html:18
+msgid "Cookies"
+msgstr "Cookies"
+
+#: template/footer_template.html:20
+msgid "Todos los derechos reservados"
+msgstr "All rights reserved"
+
+#: template/header_template.html:16
+msgid "Administración"
+msgstr "Administration"
+
+#: template/header_template.html:19
+msgid "Gestión de usuarios"
+msgstr "Users management"
+
+#: template/header_template.html:50
+msgid "Perfil de usuario"
+msgstr "Benutzerprofil"
+
+#: template/header_template.html:51
+msgid "Cerrar sesión"
+msgstr "Sitzung schliessen"
+
+#: template/indicator_table_template.html:55
+#: template/widgets/Waste/widget_indicator_table_template.html:78
+msgid "Penalización"
+msgstr "Penalty"
+
+#: template/indicator_table_template.html:55
+#: template/widgets/Waste/widget_indicator_table_template.html:78
+msgid "p. máxima"
+msgstr "máximum p."
+
+#: template/indicator_table_template.html:55
+#: template/indicator_table_template.html:56
+#: template/indicator_table_template.html:57
+#: template/widgets/Waste/widget_indicator_table_template.html:78
+#: template/widgets/Waste/widget_indicator_table_template.html:79
+#: template/widgets/Waste/widget_indicator_table_template.html:80
+msgid "valor"
+msgstr "value"
+
+#: template/indicator_table_template.html:55
+#: template/widgets/Waste/widget_indicator_table_template.html:78
+msgid "p. progresiva"
+msgstr "progressive p."
+
+#: template/indicator_table_template.html:56
+#: template/widgets/Waste/widget_indicator_table_template.html:79
+#: View/DashboardView.deprecated.js:217
+#: View/widgets/Waste/WidgetIndicatorTable.js:41
+#: View/widgets/WidgetIndicatorGauge.js:30
+#: View/widgets/WidgetIndicatorTable.js:34
+msgid "Sin penalización"
+msgstr "Without penalty"
+
+#: template/indicator_table_template.html:57
+#: template/widgets/Waste/widget_indicator_table_template.html:80
+msgid "Bonificación"
+msgstr "Bonus"
+
+#: template/indicator_table_template.html:57
+#: template/widgets/Waste/widget_indicator_table_template.html:80
+msgid "b. progresiva"
+msgstr "Progressive b."
+
+#: template/indicator_table_template.html:57
+#: template/widgets/Waste/widget_indicator_table_template.html:80
+msgid "b. máxima"
+msgstr "Máximum b."
+
+#: template/lighting/map_info_historic_template.html:8
+msgid "Ver el consumo energético en el período seleccionado"
+msgstr "See energy consumption in the selected period"
+
+#: template/lighting/map_info_historic_template.html:9
+msgid "La energía activa se representa mediante círculos verdes. El tamaño de estos círculos crece proporcionalmente con el consumo."
+msgstr "The active energy is shown with Green circles. The size of the circles grows as the consumption is higher."
+
+#: template/lighting/map_info_historic_template.html:10
+msgid "La energía activa se representa aplicando un color al icono del cuadro"
+msgstr "The active energy is shown with the colour in the cabinet icon"
+
+#: template/lighting/map_info_template.html:8
+msgid "Muestra el estado de la iluminación en tiempo real"
+msgstr "It shows the lighting status in real time"
+
+#: template/lighting/map_info_template.html:9
+msgid "Los datos se actualizan cada 15 minutos, por tanto los datos que se muestran son agregaciones también de 15 minutos"
+msgstr "Data is updated every 15 minute, therefore the aggregation is calculated in 15 minute periods"
+
+#: template/lighting/map_legend_historic_template.html:2
+msgid "Consumo elec. por cuadro"
+msgstr "Electrical consumption by cabinet"
+
+#: template/lighting/map_legend_historic_template.html:5
+#: template/lighting/map_popup_template.html:60
+#: View/widgets/Lighting/WidgetAverageConsumptionEvolution.js:42
+#: View/widgets/Lighting/WidgetAverageConsumptionEvolution.js:53
+#: View/widgets/Lighting/WidgetConsumptionEvolution.js:46
+#: View/widgets/Lighting/WidgetConsumptionEvolution.js:63
+msgid "Energía activa"
+msgstr "Active energy"
+
+#: template/lighting/map_legend_historic_template.html:9
+#: template/lighting/map_popup_template.html:67
+#: View/widgets/Lighting/WidgetAverageConsumptionEvolution.js:43
+#: View/widgets/Lighting/WidgetAverageConsumptionEvolution.js:54
+#: View/widgets/Lighting/WidgetConsumptionEvolution.js:47
+#: View/widgets/Lighting/WidgetConsumptionEvolution.js:64
+msgid "Energía reactiva"
+msgstr "Reactive energy"
+
+#: template/lighting/map_legend_template.html:2
+#: template/lighting/map_popup_historic_template.html:3
+#: template/lighting/map_popup_template.html:3
+#: View/Map/Lighting/CurrentMapView.js:11
+#: View/Map/Lighting/HistoricMapView.js:11
+msgid "Cuadro eléctrico"
+msgstr "Electrical cabinet"
+
+#: template/lighting/map_legend_template.html:5
+#: template/lighting/map_popup_mini_template.html:4
+#: template/lighting/map_popup_template.html:22
+msgid "Apagado"
+msgstr "Off"
+
+#: template/lighting/map_legend_template.html:7
+#: template/lighting/map_popup_mini_template.html:4
+#: template/lighting/map_popup_template.html:22
+msgid "Encendido"
+msgstr "On"
+
+#: template/lighting/map_popup_historic_mini_template.html:4
+#: template/watmeter_a/map_popup_mini_historic_template.html:5
+#: template/watmeter_a/map_popup_mini_template.html:5
+msgid "Consumo"
+msgstr "Consumption"
+
+#: template/lighting/map_popup_historic_template.html:12
+msgid "Energía activa consumida"
+msgstr "Active energy consumed"
+
+#: template/lighting/map_popup_historic_template.html:18
+msgid "Energía reactiva consumida"
+msgstr "Reactive energy consumed"
+
+#: template/lighting/map_popup_template.html:15
+#: View/Map/Waste/SummaryMapView.js:298
+msgid "Estado"
+msgstr "Status"
+
+#: template/lighting/map_popup_template.html:45
+msgid "Reducido"
+msgstr "Reduced"
+
+#: template/lighting/map_popup_template.html:53
+msgid "Potencia activa"
+msgstr "Active power"
+
+#: template/login_template.html:9
+msgid "Revise los campos en rojo"
+msgstr "Check fields in red"
+
+#: template/login_template.html:12
+msgid "Correo electrónico"
+msgstr "E-mail"
+
+#: template/login_template.html:13
+msgid "Escriba un correo electrónico válido"
+msgstr "Write a valid e-mail address"
+
+#: template/login_template.html:14 template/user/new_user_template.html:64
+msgid "Contraseña"
+msgstr "Password"
+
+#: template/login_template.html:15
+msgid "Inserte contraseña"
+msgstr "Insert password"
+
+#: template/login_template.html:16
+msgid "Iniciar sesión"
+msgstr "Start session"
+
+#: template/map/filter_spatial_template.html:5
+msgid "Filtro"
+msgstr "Filter"
+
+#: template/map/filter_spatial_template.html:5
+msgid "Boundingbox"
+msgstr "Boundingbox"
+
+#: template/map/filter_spatial_template.html:6
+msgid "Esto es un filtro espacial; sólo se mostrarán los datos de los dispositivos que estás viendo en el mapa"
+msgstr "This is an spatial filter; only data of displayed devices will be shown"
+
+#: template/map/filter_spatial_template.html:7
+msgid "Entendido"
+msgstr "OK"
+
+#: template/map/layer_tree_togglefilter_template.html:7
+msgid "Datos por"
+msgstr "Data by"
+
+#: template/map/layer_tree_togglefilter_template.html:7
+#: View/Map/Dumps/CurrentMapView.js:96 View/Map/Dumps/HistoricMapView.js:152
+#: View/Map/Waste/SummaryMapView.js:200
+msgid "Contenedor"
+msgstr "Container"
+
+#: template/map/legend_base_template.html:15
+msgid "Click para ver más info"
+msgstr "Click to see more"
+
+#: template/map/popup_template.html:63
+#: template/waste/Map/issues_evolution_popup_template.html:34
+#: template/waste/Map/moba_popup_template.html:71
+msgid "Ver"
+msgstr "See"
+
+#: template/map/popup_template.html:63
+#: template/waste/Map/issues_evolution_popup_template.html:34
+#: template/waste/Map/moba_popup_template.html:71
+msgid "sensor"
+msgstr "sensor"
+
+#: template/map/search_template.html:2
+msgid "buscar sensor, emplazamiento..."
+msgstr "search sensor, place,..."
+
+#: template/menu_panel_template.html:5
+msgid "Buscar ámbito"
+msgstr "Search scope"
+
+#: template/menu_panel_template.html:30 View/Panels/BasePanelView.js:103
+#: View/Panels/BasePanelView.js:155
+msgid "Frames"
+msgstr ""
+
+#: View/Panels/BasePanelView.js:117
+msgid "Añadir Frame"
+msgstr "Add Frame"
+
+#: template/menu_panel_template.html:36
+msgid "Índice de correlaciones"
+msgstr "Correlations index"
+
+#: template/multi_scope_list_template.html:8
+#: template/scope_list_template.html:12 template/scope_list_template.html:36
+#: template/widgets/Waste/widget_info_filling_operation_template.html:8
+#: template/widgets/Waste/widget_info_filling_operation_template.html:24
+#: template/widgets/Waste/widget_info_filling_operation_template.html:35
+#: View/Admin/CategoryView.js:116 View/Admin/ScopeView.js:169
+msgid "Ámbito"
+msgstr "Scope"
+
+#: template/multi_scope_list_template.html:49
+msgid "MULTIÁMBITO"
+msgstr "MULTISCOPE"
+
+#: template/multi_scope_list_template.html:49
+msgid "ÁMBITO"
+msgstr "SCOPE"
+
+#: template/navigation_bar_template.html:35
+msgid "inicio"
+msgstr "start"
+
+#: template/navigation_bar_template.html:55
+msgid "Cargando"
+msgstr "Loading"
+
+#: template/notfound_template.html:4
+msgid "Error 404: No encontrado. El host se ha comunicado con el servidor pero no existe el fichero que ha pedido."
+msgstr "Error 404: Not found. The host has communicated with the server but the resquested file does not exist."
+
+#: template/notfound_template.html:8
+msgid "Volver"
+msgstr "Return"
+
+#: template/parking/map_info_evolution_template.html:8
+msgid "Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación en un periodo de tiempo determinado"
+msgstr "Detect the parking spaces with higher or lower occupancy in a certain period of time"
+
+#: template/parking/map_info_template.html:8
+msgid "Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación"
+msgstr "Identify the parking space with lowest and highest level of occupancy"
+
+#: template/parking/map_legend_evolution_template.html:2
+#: template/parking/map_legend_template.html:2
+#: View/Map/Parking/CurrentMapView.js:28
+msgid "Porcentaje de ocupación"
+msgstr "Occupancy percentage"
+
+#: template/parking/map_legend_template.html:10
+#: template/transport/bikes_legend_template.html:24
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:43
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:10
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:38
+msgid "Plazas libres"
+msgstr "Free spots"
+
+#: template/parking/map_popup_template.html:3
+msgid "Off-street"
+msgstr "Off-street"
+
+#: template/parking/map_popup_template.html:3
+msgid "On-street"
+msgstr "On-street"
+
+#: template/parking/map_popup_template.html:17
+#: template/parking/map_selector_agg_template.html:2
+msgid "Ocupación"
+msgstr "Occupancy"
+
+#: template/parking/map_popup_template.html:24
+msgid "Plazas"
+msgstr "Spaces"
+
+#: template/parking/map_popup_template.html:30
+#: template/transport/bikes_popup_template.html:36
+msgid "de"
+msgstr "Von"
+
+#: template/parking/map_popup_template.html:39
+msgid "Explorar parking"
+msgstr "Explore parking"
+
+#: template/parking/map_selector_agg_template.html:4
+#: template/parking/map_selector_agg_template.html:7
+#: View/widgets/Parking/WidgetOccupancyRatePerHour.js:46
+#: View/widgets/Transport/WidgetOccupancyRatePerHour.js:46
+msgid "Media"
+msgstr "Average"
+
+#: template/parking/map_selector_agg_template.html:6
+#: View/widgets/Parking/WidgetOccupancyRatePerHour.js:47
+#: View/widgets/Transport/WidgetOccupancyRatePerHour.js:47
+msgid "Máxima"
+msgstr "Maximum"
+
+#: template/parking/map_selector_agg_template.html:8
+#: View/widgets/Parking/WidgetOccupancyRatePerHour.js:45
+#: View/widgets/Transport/WidgetOccupancyRatePerHour.js:45
+msgid "Mínima"
+msgstr "Minimum"
+
+#: template/pop_up_publish_template.html:6
+msgid "Hecho"
+msgstr "Done"
+
+#: template/pop_up_template.html:6
+msgid "Cerrar"
+msgstr "Close"
+
+#: template/touring/map_poi_info_template.html:8
+msgid "Muestra el acumulado de visitas a puntos de interés. Si se activa la animación, muestra la evolución de visitas a esos puntos de interés en el tiempo seleccionado"
+msgstr ""
+
+#: template/touring/map_popup_mini_template.html:5
+msgid "turistas de"
+msgstr ""
+
+#: template/touring/map_visitors_info_template.html:8
+msgid "Muestra el origen de los visitantes por país o por zonas en caso de seleccionar un único país en el filtro"
+msgstr ""
+
+#: template/transport/bikes_info_template.html:8
+msgid "Muestra el estado de las estaciones de alquiler de bicicletas"
+msgstr "Shows the status of bicycle rental stations"
+
+#: template/transport/bikes_legend_template.html:3
+msgid "Porcentaje de bicicletas disponibles"
+msgstr "Available bicycles percentage"
+
+#: template/transport/bikes_legend_template.html:30
+#: View/widgets/WidgetVersusVariables.js:25
+msgid "Est. fuera de servicio"
+msgstr "Out of Order station"
+
+#: template/transport/bikes_legend_template.html:33
+#: View/Map/Waste/SummaryMapView.js:289
+#: View/widgets/Waste/WidgetIssueTable.js:27
+msgid "Incidencia"
+msgstr "Incidence"
+
+#: template/transport/bikes_popup_template.html:3
+msgid "Estación de bibicletas"
+msgstr "Bike station"
+
+#: template/transport/bikes_popup_template.html:14
+msgid "Disponibilidad"
+msgstr "Availability"
+
+#: template/transport/bikes_popup_template.html:21
+msgid "StreetView"
+msgstr ""
+
+#: template/transport/bikes_popup_template.html:31
+msgid "Bicicletas"
+msgstr "Bikes"
+
+#: template/transport/bikes_popup_template.html:41
+msgid "Cómo llegar"
+msgstr "Direcctions"
+
+#: template/transport/bikes_popup_template.html:51
+msgid "Población servida"
+msgstr "Population served"
+
+#: template/transport/evolution_popup_template.html:16
+#, fuzzy
+#| msgid "Porcentaje de ocupación"
+msgid "Porcentaje de uso"
+msgstr "Occupancy percentage"
+
+#: template/transport/map_historic_info_template.html:8
+msgid "Muestra la evolución de la intensidad del tráfico en el tiempo"
+msgstr "It shows the evolution of traffic intensity along time"
+
+#: template/transport/map_historic_info_template.html:9
+msgid "Las burbujas azules crecen en tamaño según aumenta la intensidad, dicha burbuja se convierte en amarilla cuando se registra el máximo diario"
+msgstr "The blue bubbles increase their size as the intensity increases, the bubble becomes yellow at the daily máximum"
+
+#: template/transport/map_historic_legend_template.html:2
+#: template/transport/map_legend_template.html:2
+#: View/Map/Transport/CurrentTransportMapView.js:11
+msgid "Vías monitorizadas"
+msgstr "Monitorized lanes"
+
+#: template/transport/map_historic_legend_template.html:5
+msgid "Intensidad del tráfico (veh/h)"
+msgstr "Traffic intensity (veh/h)"
+
+#: template/transport/map_historic_legend_template.html:8
+msgid "Hora punta diaria"
+msgstr "Daily peak hour"
+
+#: template/transport/map_info_evolution_template.html:8
+msgid "Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado."
+msgstr "Detect the maximum noise values registered in a specific period."
+
+#: template/transport/map_info_template.html:8
+msgid "Muestra el estado del tráfico en tiempo real"
+msgstr "It shows the status of traffic in real time"
+
+#: template/transport/map_info_template.html:9
+msgid "En naraja aparecen las vías con problemas, en rojo las vías congestionadas"
+msgstr "High density lanes in orange, congested lanes in red"
+
+#: template/transport/map_info_vehicles_template.html:8
+msgid "Muestra la posición de la flota de policía, transporte público, correos y residuos en tiempo real"
+msgstr "It shows the position of the police, public transport, postal service and waste managment fleets in real time"
+
+#: template/transport/map_legend_evolution_template.html:2
+#: View/Map/Transport/BikesEvolutionMapView.js:11
+#, fuzzy
+#| msgid "Porcentaje de bicicletas disponibles"
+msgid "Porcentaje de uso de bicicletas"
+msgstr "Available bicycles percentage"
+
+#: template/transport/map_legend_template.html:5
+#: template/transport/map_popup_template.html:34
+msgid "Sin problemas"
+msgstr "Without problems"
+
+#: template/transport/map_legend_template.html:8
+#: template/transport/map_popup_template.html:34
+msgid "Con problemas"
+msgstr "With problems"
+
+#: template/transport/map_legend_template.html:11
+#: template/transport/map_popup_template.html:34
+msgid "Congestionada"
+msgstr "Congested"
+
+#: template/transport/map_popup_mini_template.html:5
+msgid "Intensidad"
+msgstr "Intensity"
+
+msgid "Carga"
+msgstr "Load"
+
+msgid "Intensidad relativa"
+msgstr "Relative intensity"
+
+msgid "Carga relativa"
+msgstr "Relative load"
+
+msgid "Carga media"
+msgstr "Average load"
+
+msgid "Ocupación relativa"
+msgstr "Relative occupacity"
+
+msgid "Fluido"
+msgstr "Fluid"
+
+msgid "Lento"
+msgstr "Slow"
+
+msgid "Retenciones"
+msgstr "Withholdings"
+
+msgid "Congestión"
+msgstr "Congestion"
+
+msgid "Mucho menos que la media"
+msgstr "Much less than the average"
+
+msgid "Menos que la media"
+msgstr "Less than the average"
+
+msgid "En la media"
+msgstr "In the average"
+
+msgid "Más que la media"
+msgstr "More than the average"
+
+msgid "Mucho más que la media"
+msgstr "Much more than the average"
+
+msgid "Obra"
+msgstr "Work"
+
+msgid "Accidente"
+msgstr "Accident"
+
+msgid "Alerta"
+msgstr "Alert"
+
+msgid "Evento"
+msgstr "Event"
+
+msgid "Previsión"
+msgstr "Forecast"
+
+msgid "Estable"
+msgstr "Stable"
+
+#: template/transport/map_popup_template.html:3
+msgid "Vía monitorizada"
+msgstr "Monitorized lane"
+
+#: template/transport/map_popup_template.html:12
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:16
+#: View/widgets/Transport/WidgetCurrentTrafficView.js:7
+msgid "Intensidad del tráfico"
+msgstr "Traffic density"
+
+msgid "Carga de las vías"
+msgstr "Lanes' load"
+
+msgid "Ocupación de las vías"
+msgstr "Lanes' occupation"
+
+msgid "Valor máximo"
+msgstr "Maximum value"
+
+msgid "Valor medio"
+msgstr "Average value"
+
+msgid "Valor mínimo"
+msgstr "Minimum value"
+
+#: template/transport/map_popup_template.html:19
+msgid "Velocidad media"
+msgstr "Average speed"
+
+#: template/transport/map_popup_template.html:26
+msgid "Longitud media de vehículos"
+msgstr "Average length of vehicles"
+
+#: template/transport/map_popup_template.html:33
+msgid "Estado de la vía"
+msgstr "Lane status"
+
+#: template/user/new_user_template.html:12
+#: template/user/user_info_template.html:8
+msgid "Apellidos"
+msgstr "Family Name"
+
+#: template/user/new_user_template.html:18
+#: template/user/user_info_template.html:12
+#: template/user/user_list_template.html:16
+msgid "Email"
+msgstr "Email"
+
+#: template/user/new_user_template.html:26
+#: template/user/user_info_template.html:22
+msgid "Superadmin"
+msgstr "Superadmin"
+
+#: template/user/new_user_template.html:49
+msgid "Cambiar contraseña"
+msgstr "Change password"
+
+#: template/user/new_user_template.html:58
+msgid "Contraseña antigua"
+msgstr "Old password"
+
+#: template/user/new_user_template.html:70
+msgid "Repita contraseña"
+msgstr "Repeat password"
+
+#: template/user/new_user_template.html:83
+msgid "Borrar usuario"
+msgstr "Delete user"
+
+#: template/user/user_info_template.html:31
+msgid "Ver registro de accesos"
+msgstr "See access registry"
+
+#: template/user/user_info_template.html:34
+msgid "Editar datos"
+msgstr "Edit data"
+
+#: template/user/user_list_template.html:8
+msgid "Crear usuario"
+msgstr "Create user"
+
+#: template/user/user_list_template.html:15
+msgid "Nombre y apellidos"
+msgstr "Given and Familiy names"
+
+#: template/user/user_list_template.html:32
+msgid "superadmin"
+msgstr "superadmin"
+
+#: template/waste/Map/issues_evolution_popup_template.html:7
+msgid "Historial"
+msgstr "History"
+
+#: template/waste/Map/issues_evolution_popup_template.html:20
+msgid "Último 'Estado' del periodo"
+msgstr "Latest \"status\" in the period"
+
+#: template/waste/Map/moba_popup_template.html:52
+msgid "No sensorizado"
+msgstr "Not sensorized"
+
+#: template/watmeter_a/map_historic_info_template.html:8
+msgid "Muestra el consumo medio diario de los contadores de agua mediante burbujas proporcionales."
+msgstr "It shows the average daily consumption of wáter meters with proportional bubbles."
+
+#: template/watmeter_a/map_historic_info_template.html:9
+msgid "El radio de la burbuja crece linealmente con el consumo medio diario."
+msgstr "The bubble radius grows with the average daily consumption."
+
+#: template/watmeter_a/map_historic_legend_template.html:4
+#: template/watmeter_a/map_legend_template.html:2
+msgid "Contador"
+msgstr "Meter"
+
+#: template/watmeter_a/map_historic_legend_template.html:7
+msgid "Consumo medio diario (litros)"
+msgstr "Average daily consumption (litres)"
+
+#: template/watmeter_a/map_info_template.html:8
+msgid "Muestra el estado de los contadores de agua en tiempo real"
+msgstr "It shows the status of the wáter meters in real time"
+
+#: template/watmeter_a/map_legend_template.html:5
+msgid "Cerrado"
+msgstr "Closed"
+
+#: template/watmeter_a/map_legend_template.html:8
+msgid "Abierto"
+msgstr "Open"
+
+#: template/watmeter_a/map_legend_template.html:11
+msgid "Alertas de consumo"
+msgstr ""
+
+#: template/watmeter_a/map_legend_template.html:13
+msgid "Último periodo"
+msgstr ""
+
+#: template/watmeter_a/map_legend_template.html:16
+msgid "Últimas 24h"
+msgstr "Last 24h"
+
+#: template/watmeter_a/map_popup_historic_template.html:3
+#: template/watmeter_a/map_popup_template.html:3
+msgid "Contador de agua"
+msgstr "Water mete"
+
+#: template/watmeter_a/map_popup_historic_template.html:6
+#: template/widgets/Frame/widget_frame_edit_template.html:29
+#: Collection/Lighting.js:18 Collection/Transport.js:23
+#: View/Panels/Lighting/LightingHistoricPanelView.js:12
+#: View/Panels/Transport/TransportHistoricPanelView.js:11
+msgid "Histórico"
+msgstr "Historic"
+
+#: template/watmeter_a/map_popup_historic_template.html:13
+msgid "Consumo medio diario"
+msgstr "Average daily consumption"
+
+#: template/watmeter_a/map_popup_template.html:16
+msgid "Consumo último periodo"
+msgstr "Consumption in the latest period"
+
+#: template/watmeter_a/map_popup_template.html:29
+msgid "Consumo últimas 24 horas"
+msgstr "Consumption latest 24h"
+
+#: template/watmeter_a/map_popup_template.html:35
+msgid "Último estado"
+msgstr "Latest status"
+
+#: template/widgets/Environment/meteo_summary_template.html:6
+msgid "Máx"
+msgstr "Max"
+
+#: template/widgets/Environment/meteo_summary_template.html:8
+msgid "Mín"
+msgstr "Min"
+
+#: template/widgets/Environment/meteo_summary_template.html:15
+msgid "Estaciones instaladas"
+msgstr "Installed stations"
+
+#: template/widgets/Frame/widget_frame_content_template.html:5
+#: template/widgets/Frame/widget_frame_edit_template.html:17
+msgid "Fuente"
+msgstr "Source"
+
+#: template/widgets/Frame/widget_frame_edit_template.html:5
+msgid "URL"
+msgstr ""
+
+#: template/widgets/Frame/widget_frame_edit_template.html:9
+msgid "Título"
+msgstr ""
+
+#: template/widgets/Frame/widget_frame_edit_template.html:13
+msgid "Descripción"
+msgstr "Description"
+
+#: template/widgets/Frame/widget_frame_edit_template.html:21
+#, fuzzy
+#| msgid "Datos por"
+msgid "Datos"
+msgstr "Data by"
+
+#: template/widgets/Frame/widget_frame_edit_template.html:25
+msgid "Tiempo real (Ahora)"
+msgstr "Echtzeit"
+
+#: template/widgets/Frame/widget_frame_edit_template.html:37
+msgid "Campos obligatorios"
+msgstr ""
+
+#: template/widgets/Waste/widget_indicator_table_template.html:4
+msgid "valores para"
+msgstr "values for"
+
+#: template/widgets/Waste/widget_info_filling_operation_template.html:4
+#: template/widgets/Waste/widget_info_filling_operation_template.html:20
+#: template/widgets/Waste/widget_info_filling_operation_template.html:31
+msgid "Este widget es de tipo pieChart."
+msgstr "This widget is of type pieChart."
+
+#: template/widgets/Waste/widget_info_filling_operation_template.html:9
+#: template/widgets/Waste/widget_info_filling_operation_template.html:25
+#: template/widgets/Waste/widget_info_filling_operation_template.html:36
+msgid "Se ataca a los contenedores por niveles de llenado. Si se quiere más información no dude en consultarnos directamente."
+msgstr "Container by fill level. If you want more information do not hesitate to ask."
+
+#: template/widgets/Waste/widget_info_filling_operation_template.html:13
+msgid "Variables"
+msgstr "Variables"
+
+#: template/widgets/Waste/widget_info_filling_operation_template.html:14
+msgid "En función de la cantidad de nivel, los valores pueden no haber superado el 90%, superarlo al menos una vez en el período seleccionado o superarlo durante más de 2 horas."
+msgstr "Depending on the level, values may have not exceed 90%, exceed that level at least once in the selected period, or exceed it for more than 2 hours."
+
+#: template/widgets/Waste/widget_issue_table_template.html:4
+#: template/widgets/widget_table_paginated_template.html:4
+msgid "datos desde"
+msgstr "data from"
+
+#: template/widgets/Waste/widget_issue_table_template.html:26
+msgid "Urgente"
+msgstr "Urgent"
+
+#: template/widgets/Waste/widget_issue_table_template.html:39
+msgid "No hay datos para los filtros seleccionados"
+msgstr "There is no data for the configured filters"
+
+#: template/widgets/Waste/widget_issue_table_template.html:52
+#: template/widgets/widget_table_paginated_template.html:33
+msgid "Mostrar más"
+msgstr "Show more"
+
+#: template/widgets/Waste/widget_lvi_gauge_template.html:30
+#: template/widgets/widget_gauge_template.html:14
+msgid "min"
+msgstr "min"
+
+#: template/widgets/widget_base_template.html:16
+#: template/widgets/widget_selectableVariable_template.html:12
+msgid "Más info"
+msgstr "More information"
+
+#: template/widgets/widget_base_template.html:30
+#: template/widgets/widget_selectableVariable_template.html:27
+msgid "Descargar datos"
+msgstr "Download data"
+
+#: template/widgets/widget_base_template.html:37
+#: template/widgets/widget_selectableVariable_template.html:34
+msgid "Publicar widget"
+msgstr "Publish widget"
+
+#: template/widgets/widget_base_template.html:81
+#: template/widgets/widget_button_link_background_template.html:13
+#: template/widgets/widget_device_map_template.html:30
+#: template/widgets/widget_selectableVariable_template.html:90
+msgid "Ver más en"
+msgstr ""
+
+#: template/widgets/widget_correlation_template.html:20
+msgid "Predicción"
+msgstr "Prediction"
+
+#: template/widgets/widget_correlation_template.html:20
+msgid "recomendación"
+msgstr "recommendation"
+
+#: template/widgets/widget_correlation_template.html:27
+msgid "Seguir leyendo"
+msgstr "See more"
+
+#: template/widgets/widget_multiVariable_horizontalChart.html:12
+msgid "Orden"
+msgstr "Sort"
+
+#: template/widgets/widget_multiVariable_horizontalChart.html:12
+#: template/widgets/widget_multiVariable_horizontalChart.html:15
+msgid "Ascendente"
+msgstr "Ascending"
+
+#: template/widgets/widget_multiVariable_horizontalChart.html:12
+#: template/widgets/widget_multiVariable_horizontalChart.html:16
+msgid "Descendente"
+msgstr "Descending"
+
+#: App.js:251
+msgid "medio"
+msgstr "average"
+
+#: App.js:253 View/widgets/Parking/WidgetOccupationZones.js:22
+msgid "total"
+msgstr "Gesamt"
+
+#: App.js:255
+msgid "mínimo"
+msgstr "minimum"
+
+#: App.js:257
+msgid "máximo"
+msgstr "maximum"
+
+#: App.js:293
+msgid "1 Semana"
+msgstr "1 week"
+
+#: App.js:295
+msgid "3 Días"
+msgstr "3 tags"
+
+#: App.js:297
+msgid "2 Días"
+msgstr "2 tags"
+
+#: App.js:299
+msgid "1 Día"
+msgstr "1 tag"
+
+#: App.js:301
+msgid "12 Horas"
+msgstr "12 hours"
+
+#: App.js:303
+msgid "1 Hora"
+msgstr "1 hour"
+
+#: App.js:305
+msgid "2 Horas"
+msgstr "2 hours"
+
+#: App.js:307
+msgid "4 Horas"
+msgstr "4 hours"
+
+#: App.js:309
+msgid "30 minutos"
+msgstr "30 minute"
+
+#: App.js:314
+msgid "Multiámbito"
+msgstr "Multi-scope"
+
+#: App.js:316
+msgid "Ámbito (único)"
+msgstr "Scope (unique)"
+
+#: App.js:318
+msgid "Todos los tipos"
+msgstr "All the types"
+
+#: Collection/Correlations.js:7 Collection/Frames.js:13
+#: View/Panels/Correlations/CorrelationsAirQualityCOEmisionPanel.js:10
+#: View/Panels/Correlations/CorrelationsAirQualityPanel.js:10
+#: View/Panels/Correlations/CorrelationsDumpsOverflowPanel.js:10
+#: View/Panels/Correlations/CorrelationsMasterPanelView.js:11
+#: View/Panels/Frames/FramesDataPanelView.js:11
+#: View/Panels/Frames/FramesMasterPanelView.js:12
+msgid "Índice"
+msgstr "Index"
+
+#: Collection/Correlations.js:12
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:6
+msgid "Índice de Calidad del Aire"
+msgstr "Air quality index"
+
+#: Collection/Correlations.js:22
+msgid "Índice de Calidad del Aire y Emisiones de CO"
+msgstr "Air Quality Index and CO Emissions"
+
+#: Collection/Dumps.js:2
+msgid "Tapa abierta en soterrado"
+msgstr "Open lid in underground container"
+
+#: Collection/Dumps.js:3
+msgid "Tumbado"
+msgstr "Laid down"
+
+#: Collection/Dumps.js:4
+msgid "Desplazado"
+msgstr "Bewegt"
+
+#: Collection/Dumps.js:9 Collection/Waste.js:25
+msgid "Envases"
+msgstr "Plastik"
+
+#: Collection/Dumps.js:10 Collection/Waste.js:24
+msgid "Papel"
+msgstr "Papier"
+
+#: Collection/Dumps.js:11
+msgid "Restos"
+msgstr "Kompost"
+
+#: Collection/Dumps.js:12 Collection/Waste.js:26
+msgid "Vidrio"
+msgstr "Glas"
+
+#: Collection/Dumps.js:13
+msgid "Otros"
+msgstr "Others"
+
+#: Collection/Dumps.js:60 Collection/Environment.js:6 Collection/Lighting.js:8
+#: Collection/Parking.js:8 Collection/Touring.js:8 Collection/Transport.js:6
+#: Collection/Watmeter_a.js:6 View/Panels/Dumps/DumpsMasterPanelView.js:11
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:11
+#: View/Panels/Lighting/LightingMasterPanelView.js:11
+#: View/Panels/Parking/ParkingMasterPanelView.js:11
+#: View/Panels/Touring/TouringMasterPanelView.js:13
+#: View/Panels/Transport/TransportMasterPanelView.js:11
+msgid "Estado General"
+msgstr "allgemeiner Status"
+
+#: Collection/Dumps.js:65 Collection/Environment.js:11
+#: Collection/Lighting.js:13 Collection/Parking.js:13
+#: View/Panels/Dumps/DumpsCurrentPanelView.js:10
+#: View/Panels/Dumps/DumpsMasterPanelView.js:30
+#: View/Panels/Dumps/DumpsMasterPanelView.js:32
+#: View/Panels/Environment/EnvironmentCurrentPanelView.js:10
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:32
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:34
+#: View/Panels/Lighting/LightingCurrentPanelView.js:11
+#: View/Panels/Lighting/LightingMasterPanelView.js:32
+#: View/Panels/Lighting/LightingMasterPanelView.js:34
+#: View/Panels/Parking/ParkingCurrentPanelView.js:10
+#: View/Panels/Parking/ParkingMasterPanelView.js:31
+#: View/Panels/Parking/ParkingMasterPanelView.js:33
+#: View/Panels/Transport/TransportMasterPanelView.js:32
+#: View/Panels/Transport/TransportMasterPanelView.js:49
+#: View/Panels/Watmeter_a/Watmeter_aMasterPanelView.js:32
+msgid "Tiempo Real"
+msgstr "Echtzeit"
+
+#: Collection/Dumps.js:70 View/Panels/Dumps/DumpsFillingPanelView.js:9
+#: View/widgets/Dumps/WidgetTotalWeight.js:14
+msgid "Análisis de llenado"
+msgstr "Fill level Analysis"
+
+#: Collection/Dumps.js:75 View/Panels/Dumps/DumpsPanelView.js:9
+#: View/widgets/Dumps/WidgetContainerOverflow.js:12
+msgid "Análisis de recogida"
+msgstr "Collection analysis"
+
+#: Collection/Dumps.js:80 View/Panels/Dumps/DumpsRankingPanelView.js:9
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:14
+msgid "Ranking de contenedores"
+msgstr "Containers Ranking"
+
+#: Collection/Dumps.js:88 Collection/Parking.js:31 Collection/Touring.js:26
+#: View/Waste/IndicatorsView.js:36
+msgid "Indicadores"
+msgstr "Indicators"
+
+#: Collection/Environment.js:18
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:42
+msgid "Análisis de calidad del aire"
+msgstr "Air quality analysis"
+
+#: Collection/Environment.js:25
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:55
+#: View/Panels/Environment/EnvironmentNoiseHistoricPanelView.js:9
+msgid "Análisis de ruido"
+msgstr "Noise analysis"
+
+#: Collection/Environment.js:32
+#: View/Panels/Environment/EnvironmentMasterPanelView.js:49
+#: View/Panels/Environment/EnvironmentMeteoHistoricPanelView.js:9
+msgid "Análisis meteorológico"
+msgstr "Weather analysis"
+
+#: Collection/Environment.js:43
+msgid "Admis."
+msgstr "Accep."
+
+#: Collection/Environment.js:44
+msgid "Defic."
+msgstr "Def."
+
+#: Collection/Environment.js:45
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:12
+msgid "Malo"
+msgstr "Bad"
+
+#: Collection/Environment.js:46
+msgid "M.malo"
+msgstr "V.bad"
+
+#: Collection/Parking.js:18 View/Panels/Parking/ParkingEvolutionPanelView.js:10
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:17
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:16
+msgid "Evolución del estacionamiento"
+msgstr "Evolution of parking"
+
+#: Collection/Parking.js:23 View/Panels/Parking/ParkingMasterPanelView.js:58
+#: View/Panels/Parking/ParkingTimePanelView.js:10
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:17
+msgid "Análisis horarios"
+msgstr "Analysis by time"
+
+#: Collection/Touring.js:13 View/Map/Touring/VisitorsMapView.js:9
+#: View/Panels/Touring/TouringMasterPanelView.js:37
+#: View/Panels/Touring/TouringVisitorsPanelView.js:12
+#: View/widgets/Touring/WidgetVisitorsByCountry.js:26
+#: View/widgets/Touring/WidgetVisitorsByPOI.js:26
+#: View/widgets/Touring/WidgetVisitorsByZone.js:26
+msgid "Visitantes"
+msgstr "Visitors"
+
+#: Collection/Touring.js:18 View/Map/Touring/PointsOfInterestMapView.js:11
+#: View/Panels/Touring/TouringMasterPanelView.js:47
+#: View/Panels/Touring/TouringPOIPanelView.js:12
+msgid "Puntos de interés"
+msgstr "Points of Interest"
+
+#: Collection/Transport.js:16 Collection/Watmeter_a.js:11
+#: View/Panels/Transport/TransportCurrentPanelView.js:11
+#: View/Panels/Transport/TransportMasterPanelView.js:34
+#: View/Panels/Transport/TransportMasterPanelView.js:51
+#: View/Panels/Watmeter_a/Watmeter_aCurrentPanelView.js:11
+#: View/Panels/Watmeter_a/Watmeter_aMasterPanelView.js:34
+msgid "Tiempo real"
+msgstr "Echtzeit"
+
+#: Collection/Transport.js:31 View/Map/Transport/VehiclesView.js:13
+#: View/Panels/Transport/TransportMasterPanelView.js:75
+#: View/Panels/Transport/TransportVehiclesPanelView.js:11
+msgid "Posición de flotas"
+msgstr "Fleet Location"
+
+#: Collection/Transport.js:38
+msgid "Bicicletas: tiempo real"
+msgstr "Bikes: Real time"
+
+#: Collection/Transport.js:45
+#: View/Panels/Transport/TransportBikesAnalysisPanelView.js:11
+msgid "Bicicletas: análisis de uso"
+msgstr "Bikes: Usage analysis"
+
+#: Collection/Transport.js:77
+msgid "Transporte"
+msgstr "Transport"
+
+#: Collection/Waste.js:3
+msgid "Limpieza Viaria"
+msgstr "Street cleaning"
+
+#: Collection/Waste.js:4
+msgid "Gestión de accidentes de tráfico"
+msgstr "Traffic accidents management"
+
+#: Collection/Waste.js:5
+msgid "Recogida de residuos"
+msgstr "Waste gathering"
+
+#: Collection/Waste.js:6
+msgid "Recogida de muebles"
+msgstr "Furniture gathering"
+
+#: Collection/Waste.js:10 Collection/Waste.js:16
+msgid "Abierta"
+msgstr "Open"
+
+#: Collection/Waste.js:11 Collection/Waste.js:17
+msgid "Asignada"
+msgstr "Assigned"
+
+#: Collection/Waste.js:12 Collection/Waste.js:18
+msgid "Resuelta"
+msgstr "Solved"
+
+#: Collection/Waste.js:19
+msgid "Cerrada"
+msgstr "Closed"
+
+#: Collection/Waste.js:23
+msgid "RSU"
+msgstr "MSW"
+
+#: Collection/Waste.js:27
+msgid "Resto"
+msgstr "Rest"
+
+#: Collection/Waste.js:31
+msgid "Carrito portacubos"
+msgstr "Dustbin trolley"
+
+#: Collection/Waste.js:32
+msgid "Lavacontenedores"
+msgstr "Container Washer"
+
+#: Collection/Waste.js:33
+msgid "Limpieza viaria"
+msgstr "Street Cleaning"
+
+#: Collection/Waste.js:34
+msgid "Recolectores"
+msgstr "Gathering truck"
+
+#: Collection/Waste.js:35
+msgid "Vehículos auxiliares"
+msgstr "Auxiliar Vehicle"
+
+#: Collection/Watmeter_a.js:16
+#: View/Panels/Transport/TransportMasterPanelView.js:65
+#: View/Panels/Watmeter_a/Watmeter_aHistoricPanelView.js:11
+#: View/Panels/Watmeter_a/Watmeter_aMasterPanelView.js:46
+msgid "Análisis histórico"
+msgstr "Historic analysis"
+
+#: Environment.js:4
+msgid "bueno"
+msgstr "good"
+
+#: Environment.js:6
+msgid "admisible"
+msgstr "acceptable"
+
+#: Environment.js:8
+msgid "deficiente"
+msgstr "poor"
+
+#: Environment.js:10
+msgid "malo"
+msgstr "bad"
+
+#: Environment.js:12
+msgid "muy malo"
+msgstr "very bad"
+
+#: Environment.js:20
+msgid "Soleado"
+msgstr "Sunny"
+
+#: Environment.js:22
+msgid "Noche clara"
+msgstr "Clear night"
+
+#: Environment.js:24
+msgid "Lluvia pesada"
+msgstr "Heavy rain"
+
+#: Environment.js:26
+msgid "Lluvia ligera"
+msgstr "Light rain"
+
+#: Environment.js:34
+msgid "Pobre"
+msgstr "Poor"
+
+#: Environment.js:38
+msgid "Muy probre"
+msgstr "Very poor"
+
+#: Environment.js:40
+msgid "Moderada"
+msgstr "Moderated"
+
+#: Environment.js:48
+msgid "24 horas"
+msgstr "24 hours"
+
+#: Environment.js:50 View/widgets/Environment/WidgetNoiseWeeklyAverages.js:18
+msgid "Día"
+msgstr "Tag"
+
+#: Environment.js:52 View/widgets/Environment/WidgetNoiseWeeklyAverages.js:19
+msgid "Tarde"
+msgstr "Afternoon"
+
+#: Environment.js:54 View/widgets/Environment/WidgetNoiseWeeklyAverages.js:20
+msgid "Noche"
+msgstr "Night"
+
+#: Model/BaseChartConfigModel.js:41 View/widgets/Charts/ScatterChart.js:34
+#: View/widgets/WidgetMultiDeviceChart.js:85
+#: View/widgets/WidgetMultiVariableAnalysisVarsChart.js:76
+#: View/widgets/WidgetMultiVariableBarChart.js:185
+#: View/widgets/WidgetMultiVariableChart.js:219
+#: View/widgets/WidgetMultiVariableHorizontalChart.js:74
+msgid "No hay datos disponibles"
+msgstr "No data available"
+
+#: View/Admin/CategoryView.js:149
+msgid "Entidad"
+msgstr "Entity"
+
+#: View/Admin/CategoryView.js:176 View/Admin/VariableView.js:106
+msgid "Variable"
+msgstr "Variable"
+
+#: View/Admin/LogsView.js:21
+msgid "Página"
+msgstr "Page"
+
+#: View/Admin/LogsView.js:22
+msgid "Número de visitas"
+msgstr "Number of visits"
+
+#: View/Admin/LogsView.js:62
+msgid "Nunca se ha logeado"
+msgstr "Never logged in"
+
+#: View/Admin/ScopeListView.js:69 View/Admin/ScopeView.js:268
+msgid "¿Estás seguro de eliminar este ámbito?\n"
+"Se perderán todas las configuraciones de este ámbito."
+msgstr "Are you sure to delete this scope?\n"
+"All the settings in this scope will be lost."
+
+#: View/Admin/ScopeView.js:154
+msgid "¿Estás seguro de eliminar este vertical?\n"
+"Se perderán todas las configuraciones de este vertical."
+msgstr "Are you sure to delete this vertical?\n"
+"All the settings in this vertical will be lost."
+
+#: View/Admin/ScopeView.js:202
+msgid "Vertical"
+msgstr "Vertikal"
+
+#: View/CorrelationsView.js:52 View/CorrelationsView.js:63
+#: View/Panels/BasePanelView.js:153
+msgid "Correlaciones"
+msgstr "Correlations"
+
+# Custom entries
+# Metadata
+# Waste
+#: View/DashboardView.deprecated.js:132 View/DashboardView.deprecated.js:140
+#: View/Waste/DeviceMapView.js:95 View/Waste/IndicatorsView.js:39
+#: View/Waste/OperationView.js:48
+msgid "Seguimiento de contratas"
+msgstr "Service monitoring"
+
+#: View/DashboardView.deprecated.js:187
+msgid "Incidencias Solucionadas"
+msgstr "Solved incidences"
+
+#: View/DashboardView.deprecated.js:216
+#: View/widgets/Waste/WidgetIndicatorTable.js:40
+#: View/widgets/WidgetIndicatorGauge.js:29
+#: View/widgets/WidgetIndicatorTable.js:33
+msgid "Penalización progresiva"
+msgstr "Progressive penalty"
+
+#: View/DashboardView.deprecated.js:218
+#: View/widgets/Waste/WidgetIndicatorTable.js:42
+#: View/widgets/WidgetIndicatorGauge.js:31
+#: View/widgets/WidgetIndicatorTable.js:35
+msgid "Bonificación progresiva"
+msgstr "Progressive bonus"
+
+#: View/DashboardView.deprecated.js:219
+#: View/widgets/Waste/WidgetIndicatorTable.js:43
+#: View/widgets/WidgetIndicatorGauge.js:32
+#: View/widgets/WidgetIndicatorTable.js:36
+msgid "Bonificación máxima"
+msgstr "Máximum bonus"
+
+#: View/DashboardView.deprecated.js:236
+msgid "Servicio de recogida de Residuos y Limpieza Viaria"
+msgstr "Waste and Street Cleaning Service"
+
+#: View/DashboardView.deprecated.js:238
+msgid "PLANIFICACIÓN TAREAS"
+msgstr "TASK SCHEDULING"
+
+#: View/Device/DeviceView.js:62
+msgid "Ficha de disposivo"
+msgstr "Device card"
+
+#: View/EmbedView.js:44
+msgid "¿Estás seguro de querer despublicar este widget?"
+msgstr "Are you sure that you want to unpublish this widget?"
+
+#: View/Filter/FilterTouringVisitorsView.js:78
+msgid "Ninguno"
+msgstr "None"
+
+#: View/Map/Dumps/HistoricMapView.js:22
+msgid "Nivel de llenado de los contenedores"
+msgstr "Containers fill level"
+
+#: View/Map/Dumps/HistoricMapView.js:25
+msgid "Evolución animada del proceso de llenado de los contenedores y del estado en el momento de su recogida"
+msgstr "Animated evolution of containers fill process and status at collection time"
+
+#: View/Map/Environment/HistoricMeteoMapView.js:66
+msgid "Ver ficha"
+msgstr "View card"
+
+#: View/Map/Environment/HistoricMeteoMapView.js:73
+msgid "Temperatura media"
+msgstr "Average temperature"
+
+#: View/Map/LayerTreeView.js:8
+msgid "Filtros"
+msgstr "Filter"
+
+#: View/Map/LegendBaseMapView.js:9
+msgid "Mapa"
+msgstr "Map"
+
+#: View/Map/LegendBaseMapView.js:38
+msgid "Ver leyenda"
+msgstr "See caption"
+
+#: View/Map/LegendBaseMapView.js:42
+msgid "Ver leyenda completa"
+msgstr "See full caption"
+
+#: View/Map/LegendBaseMapView.js:80
+msgid "Leyenda"
+msgstr "Legend"
+
+#: View/Map/Lighting/CurrentMapView.js:88
+msgid "Encendiendo..."
+msgstr "Switching on..."
+
+#: View/Map/Lighting/CurrentMapView.js:93
+msgid "Apagando..."
+msgstr "Switching off"
+
+#: View/Map/Lighting/CurrentMapView.js:150
+#: View/Map/Parking/CurrentMapView.js:138
+#: View/Map/Parking/EvolutionMapView.js:103
+#: View/Map/Transport/BikesCurrentView.js:134
+#: View/Map/Transport/BikesEvolutionMapView.js:90
+#: View/Map/Transport/CurrentTransportMapView.js:94
+#: View/Map/Watmeter_a/CurrentWatmeter_aMapView.js:86
+#: View/Map/Watmeter_a/HistoricWatmeter_aMapView.js:81
+#: View/widgets/Charts/PieChart.js:131
+msgid "Total"
+msgstr "Gesamt"
+
+#: View/Map/Parking/CurrentMapView.js:13
+#: View/Map/Parking/EvolutionMapView.js:10
+msgid "Porcentaje de ocupación de los aparcamientos"
+msgstr "Parking occupancy level"
+
+#: View/Map/Parking/CurrentMapView.js:244
+msgid "Salir"
+msgstr "Exit"
+
+#: View/Map/Transport/BikesCurrentView.js:14
+msgid "Alquiler de bicicletas: tiempo real"
+msgstr "Bike Hiring: Real Time"
+
+#: View/Map/Transport/VehiclesView.js:103
+msgid "Línea de autobus"
+msgstr "Buss line"
+
+#: View/Map/Transport/VehiclesView.js:105
+msgid "Línea"
+msgstr "Line"
+
+#: View/Map/Transport/VehiclesView.js:117
+msgid "Dirección"
+msgstr "Address"
+
+#: View/Map/Transport/VehiclesView.js:121
+msgid "Estación de autobus"
+msgstr "Bus station"
+
+#: View/Map/Transport/VehiclesView.js:127
+msgid "Ciudad"
+msgstr "City"
+
+#: View/Map/Transport/VehiclesView.js:141 View/Map/Waste/SummaryMapView.js:229
+msgid "Vehículo"
+msgstr "Vehicle"
+
+#: View/Map/Waste/SummaryMapView.js:243
+msgid "Velocidad"
+msgstr "Speed"
+
+#: View/Map/Waste/SummaryMapView.js:266
+msgid "Ruta de barrido"
+msgstr "Sweeping route"
+
+#: View/Map/Waste/SummaryMapView.js:302
+msgid "urgente"
+msgstr "urgent"
+
+#: View/Map/Waste/SummaryMapView.js:306
+msgid "incidencia"
+msgstr "incidence"
+
+#: View/Map/Watmeter_a/CurrentWatmeter_aMapView.js:11
+#: View/Map/Watmeter_a/HistoricWatmeter_aMapView.js:11
+msgid "Contadores de agua"
+msgstr "Water meters"
+
+#: View/Panels/BasePanelView.js:101
+#, fuzzy
+#| msgid "Correlaciones"
+msgid "Correlations"
+msgstr "Correlations"
+
+#: View/Panels/BasePanelView.js:171
+msgid "No hay datos para este vertical"
+msgstr "There is no data for this vertical"
+
+#: View/Panels/Dumps/DumpsCurrentPanelView.js:71
+msgid "Mapa de contenedores y el nivel de llenado de los mismos"
+msgstr "Containers map and fill level"
+
+#: View/Panels/Dumps/DumpsIndicatorPanelView.js:12
+#: View/Panels/Dumps/DumpsMasterPanelView.js:50
+#: View/widgets/Waste/WidgetIndicatorTable.js:24
+msgid "Indicadores de residuos"
+msgstr "Waste Management Indicators"
+
+#: View/Panels/Dumps/DumpsRankingPanelView.js:46
+msgid "Mapa de calor del índice de eficiencia"
+msgstr "Heat Map of efficiency index"
+
+msgid "Mapa de calor"
+msgstr "Heat Map"
+
+#: View/Panels/Environment/EnvironmentHistoricPanelView.js:9
+msgid "Índice de Calidad del Aire: Histórico"
+msgstr "Air quality index: historic"
+
+#: View/Panels/Frames/FramesMasterPanelView.js:78
+msgid "Nuevo frame"
+msgstr ""
+
+#: View/Panels/Parking/ParkingIndicatorPanelView.js:13
+#: View/Panels/Parking/ParkingMasterPanelView.js:50
+msgid "Indicadores de parking"
+msgstr "Parking indicators"
+
+#: View/Panels/Touring/TouringMasterPanelView.js:33
+msgid "Top paises de origen"
+msgstr "Top origin countries"
+
+#: View/Panels/Touring/TouringMasterPanelView.js:43
+msgid "Top puntos de interés"
+msgstr "Top points of interest"
+
+#: View/Panels/Transport/TransportBikesCurrentPanelView.js:11
+msgid "Bicicletas: Tiempo real"
+msgstr "Bikes: Real Time"
+
+#: View/Panels/Transport/TransportMasterPanelView.js:67
+msgid "Intensidad media semanal"
+msgstr "Weekly average intensity"
+
+#: View/Panels/Watmeter_a/Watmeter_aMasterPanelView.js:11
+msgid "Estado General de Contadores de agua"
+msgstr "General Status of Water Meters"
+
+#: View/User/UserListView.js:44
+msgid "Editar ficha de usuario"
+msgstr "Benutzerprofil"
+
+#: View/User/UserListView.js:45
+msgid "GUARDAR CAMBIOS"
+msgstr ""
+
+#: View/User/UserListView.js:76
+msgid "Ficha de usuario"
+msgstr "Benutzerprofil"
+
+#: View/User/UserListView.js:95
+#, fuzzy
+#| msgid "Crear usuario"
+msgid "Nuevo usuario"
+msgstr "Create user"
+
+#: View/User/UserListView.js:96
+msgid "CREAR USUARIO"
+msgstr ""
+
+#: View/Waste/DeviceMapView.js:34
+msgid "Papeleras"
+msgstr "Litter Bin"
+
+#: View/Waste/DeviceMapView.js:44
+msgid "Vehículos"
+msgstr "Vehicles"
+
+#: View/Waste/DeviceMapView.js:60
+msgid "Rutas de barrido"
+msgstr "Seeping routes"
+
+#: View/Waste/DeviceMapView.js:92
+msgid "Inventariado"
+msgstr "Registered"
+
+#: View/Waste/OperationView.js:44 View/widgets/Waste/WidgetIssueTable.js:23
+msgid "Incidencias"
+msgstr "Issues"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:6
+msgid "Tráfico en tiempo real"
+msgstr "Real time traffic"
+
+# Parking
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:6
+msgid "Aparcamientos"
+msgstr "Parking"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:18
+msgid "coches/hora"
+msgstr "cars/hour"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:22
+msgid "Porcentaje de ocupación de aparcamientos"
+msgstr "Parking"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:30
+msgid "Desviar tráfico hacia el sur."
+msgstr "Divert traffic through the South."
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:33
+msgid "Abaratar parkings en El Soto."
+msgstr "Decrease parking rates in El Soto."
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:36
+msgid "Reforzar transporte público los lunes no festivos."
+msgstr "Reinforce public transport on working Mondays."
+
+#: View/widgets/Correlation/WidgetCorrelationAirQuality.js:43
+msgid "Con tráfico denso y parkings al 100% el atasco se extenderá hacia Encinar"
+msgstr "With dense traffic and parkings fully occupied, the traffic jam will spread out to Encinar"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQualityCOEmision.js:6
+msgid "Mapa 3D"
+msgstr "3D Map"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQualityCOEmision.js:6
+msgid "Calidad del Aire"
+msgstr "Air Quality"
+
+#: View/widgets/Correlation/WidgetCorrelationAirQualityCOEmision.js:6
+msgid "Emisiones de CO2"
+msgstr "CO2 Emissions"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:6
+#: View/widgets/Transport/WidgetBikesRanking.js:29
+msgid "Población"
+msgstr "Population"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:6
+msgid "Edad media"
+msgstr "Average age"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:11
+msgid "Contenedores desbordados"
+msgstr "Overflown containers"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:14
+msgid "diarios"
+msgstr "daily"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:17
+msgid "Población afectada"
+msgstr "Affected population"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:20
+msgid "Personas"
+msgstr "Persons"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:23
+msgid "Edad media población afectada"
+msgstr "Average age of affected people"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:25
+msgid "Años"
+msgstr "Age"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:31
+msgid "Adelantar la hora de recogida en El Soto."
+msgstr "Bring forward gathering time in El Soto."
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:34
+msgid "Aumentar la frecuencia de recogida en Encinar (edad media población 54 años)"
+msgstr "Increase the waste gathering frequency in Encinar (average age of population 54 y.o.)"
+
+#: View/widgets/Correlation/WidgetCorrelationDumpsOverflow.js:41
+#, javascript-format
+msgid "El Soto tendrá más del 50% de los contenedores en riesgo de desbordamiento a las 18:50."
+msgstr "El Soto will have over 50% of containers with high risk of overflow at 18:50."
+
+#: View/widgets/Dumps/WidgetContainerAlertHistogram.js:7
+msgid "Alertas detectadas"
+msgstr "Alarm entdeckt"
+
+#: View/widgets/Dumps/WidgetContainerAlertHistogram.js:44
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:57
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:38
+#: View/widgets/Dumps/WidgetContainerOverflow.js:50
+#: View/widgets/Dumps/WidgetContainersTypeHistogram.js:42
+msgid "Número de contenedores"
+msgstr "Anzahl Behaelter"
+
+#: View/widgets/Dumps/WidgetContainerAlertHistogram.js:49
+msgid "No hay alertas disponibles"
+msgstr "No alerts available"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelComparison.js:6
+msgid "Comparativa del nivel de llenado"
+msgstr "Fill level comparison"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelComparison.js:42
+#: View/widgets/Watmeter_a/WidgetAverageConsumptionComparison.js:43
+msgid "días"
+msgstr "Tags"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:7
+msgid "Frecuencia de recogida y nivel de llenado"
+msgstr "Gathering frequency and fill level"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:54
+msgid "Nivel de llenado en la recogida"
+msgstr "Fill level at collection time"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:64
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:62
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:61
+msgid "Menos del"
+msgstr "Below"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequency.js:65
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:63
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:62
+msgid "y"
+msgstr "and"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:7
+msgid "Distribución horaria de la recogida y nivel de llenado en 24 horas"
+msgstr "Collection time distribution and fill level in 24 hours"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelFrequencyDaily.js:50
+msgid "% de nivel máximo de llenado"
+msgstr "% maximum fill level"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelHistogram.js:7
+msgid "Niveles de llenado en el momento de la recogida"
+msgstr "Filling levels at time of collection"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:11
+msgid "Capacidad actual de los contenedores"
+msgstr "Containers current capacity"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:50
+msgid "a menos del"
+msgstr "below"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:50
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:51
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:52
+msgid "de su capacidad"
+msgstr "of capacity"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:51
+msgid "entre el"
+msgstr "between"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelPie.js:52
+msgid "a más del"
+msgstr "over"
+
+#: View/widgets/Dumps/WidgetContainerFillingLevelStatusHistogram.js:7
+msgid "Número de contenedores por niveles de llenado"
+msgstr "Behaelter per Fuellstand"
+
+#: View/widgets/Dumps/WidgetContainerFillingWeightEvolution.js:7
+msgid "Evolución del nivel de llenado vs. peso de la carga"
+msgstr "Evolution of fill level vs weight"
+
+#: View/widgets/Dumps/WidgetContainerFillingWeightEvolution.js:55
+#: View/widgets/Dumps/WidgetTotalWeight.js:43
+#: View/widgets/Dumps/WidgetTotalWeight.js:45
+msgid "Toneladas de basura"
+msgstr "Tonnen Abfall"
+
+#: View/widgets/Dumps/WidgetContainerOverflow.js:9
+msgid "Contenedores de recogida inmediata por desbordamiento"
+msgstr "Containers to be emptied immediately due to overload"
+
+#: View/widgets/Dumps/WidgetContainerOverflow.js:45
+msgid "más de"
+msgstr "over"
+
+#: View/widgets/Dumps/WidgetContainerOverflow.js:46
+msgid "menos de"
+msgstr "below"
+
+#: View/widgets/Dumps/WidgetContainerOverflow.js:55
+msgid "No hay contenedores"
+msgstr "No containers available"
+
+#: View/widgets/Dumps/WidgetContainersTypeHistogram.js:7
+msgid "Número de contenedores por tipo de residuos"
+msgstr "Number of containers by waste type"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:7
+msgid "Ranking de ineficiencia en el sistema de recogida de residuos"
+msgstr "Inefficiency ranking of the waste gathering system"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:23
+msgid "ID Contenedor"
+msgstr "Container ID"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:24
+msgid "# recogidas en 24h"
+msgstr "# collections in 24h"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:25
+msgid "# recogidas en 48h"
+msgstr "# collections in 48h"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:26
+msgid "# recogidas en 72h"
+msgstr "# collections in 72h"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:27
+msgid "# recogidas en > 72h"
+msgstr "# collections in < 72h"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:28
+msgid "índice de ineficiencia"
+msgstr "inefficiency index"
+
+#: View/widgets/Dumps/WidgetEfficiencyRanking.js:52
+msgid "No registrada"
+msgstr "Not registered"
+
+#: View/widgets/Dumps/WidgetTotalVolumeStacked.js:10
+msgid "Porcentaje de llenado total"
+msgstr "Percentage of complete fill level"
+
+#: View/widgets/Dumps/WidgetTotalVolumeStacked.js:76
+msgid "de volumen ocupado"
+msgstr "of occupied level"
+
+#: View/widgets/Dumps/WidgetTotalWeight.js:8
+msgid "Situación actual"
+msgstr "aktueller Zustand"
+
+#: View/widgets/Dumps/WidgetTotalWeight.js:11
+msgid "Peso de la carga total"
+msgstr "Total weight"
+
+#: View/widgets/Dumps/WidgetTotalWeight.js:38
+msgid "Todos los contenedores"
+msgstr "alle Behaelter"
+
+#: View/widgets/Environment/WidgetAirQualityHistogram.js:7
+msgid "Clasificación de sensores por niveles de calidad del aire"
+msgstr "Sensors classification by air quality index"
+
+#: View/widgets/Environment/WidgetAirQualityHistogram.js:30
+#: View/widgets/Environment/WidgetNoiseLevelHistogram.js:47
+msgid "Número de sensores"
+msgstr "Number of sensors"
+
+#: View/widgets/Environment/WidgetAirQvsRainfallTimeserie.js:27
+msgid " y Precipitación"
+msgstr " and Rainfall"
+
+#: View/widgets/Environment/WidgetAirQvsRainfallTimeserie.js:84
+#: View/widgets/Environment/WidgetClimogram.js:57
+msgid "Precipitación (l/m2)"
+msgstr "Rainfall (l/m2)"
+
+#: View/widgets/Environment/WidgetAirQvsTemperatureTimeserie.js:7
+msgid " y Temperatura"
+msgstr " and Temperature"
+
+#: View/widgets/Environment/WidgetAirQvsTemperatureTimeserie.js:95
+#: View/widgets/Environment/WidgetClimogram.js:57
+msgid "Temperatura (°C)"
+msgstr "Temperature (ºC)"
+
+#: View/widgets/Environment/WidgetClimogram.js:7
+msgid "Evolución de temperatura y precipitación"
+msgstr "Evolution of temperatura and rainfall"
+
+#: View/widgets/Environment/WidgetMaxCarbonMonoxideLevel.js:7
+msgid "CO - Concentración de Monóxido de carbono Máximo"
+msgstr "CO - Carbon monoxide concentration Maximum"
+
+#: View/widgets/Environment/WidgetMaxNitrogenDioxideLevel.js:7
+msgid "NO<sub>2</sub> - Concentración de Dióxido de nitrógeno Máximo"
+msgstr "NO<sub>2</sub> - Nitrogen dioxide concentration Maximum"
+
+#: View/widgets/Environment/WidgetMaxOzoneLevel.js:7
+msgid "O<sub>3</sub> - Nivel de Ozono Máximo"
+msgstr "O<sub>3</sub> - Ozone level Maximum"
+
+#: View/widgets/Environment/WidgetMaxPm10Level.js:7
+msgid "PM10 - Concentración de partículas de 10 micras Máximo"
+msgstr "PM10 - 10  micron particles concentration  Maximum"
+
+#: View/widgets/Environment/WidgetMaxPm25Level.js:7
+msgid "PM2.5 - Concentración de partículas de 2.5 micras Máximo"
+msgstr "PM2.5 - 2.5  micrón particles concentration  Maximum"
+
+#: View/widgets/Environment/WidgetMaxSulfurDioxideLevel.js:7
+msgid "SO<sub>2</sub> - Concentración de Dióxido de azufre Máximo"
+msgstr "SO<sub>2</sub> - Sulphur dioxide concentration Maximum"
+
+#: View/widgets/Environment/WidgetNoiseLevelHistogram.js:8
+msgid "Clasificación de sensores por niveles de ruido"
+msgstr "Sensors classification by noise levels"
+
+#: View/widgets/Environment/WidgetNoiseLevelHistogram.js:48
+msgid "Decibelios"
+msgstr "Decibels"
+
+#: View/widgets/Environment/WidgetNoisePressureEvolution.js:7
+msgid "Niveles históricos de presión sonora"
+msgstr "Historic levels of noise pressure"
+
+#: View/widgets/Environment/WidgetNoisePressureEvolution.js:50
+#: View/widgets/Environment/WidgetNoisePressureEvolution.js:51
+msgid "Presión del sonido (dBA)"
+msgstr "Noise pressure (dBA)"
+
+#: View/widgets/Environment/WidgetNoiseWeeklyAverages.js:8
+msgid "Ruido: promedios semanal en franjas horarias"
+msgstr "Noise: weekly noise average in hourly slots"
+
+#: View/widgets/Environment/WidgetNoiseWeeklyAverages.js:23
+msgid "Niveles de ruido (dBA)"
+msgstr "Noise levels (dBA)"
+
+#: View/widgets/Environment/WidgetNoiseWeeklyAverages.js:26
+msgid "Promedio"
+msgstr "Average"
+
+#: View/widgets/Frames/WidgetFrame.js:16
+#, fuzzy
+#| msgid "Editar datos"
+msgid "Editar contenido"
+msgstr "Edit data"
+
+#: View/widgets/Frames/WidgetFrame.js:20
+#, fuzzy
+#| msgid "Eliminar"
+msgid "Eliminar frame"
+msgstr "Remove"
+
+#: View/widgets/Frames/WidgetFrame.js:42
+#, fuzzy
+#| msgid "Editar datos"
+msgid "Editar frame"
+msgstr "Edit data"
+
+#: View/widgets/Frames/WidgetFrame.js:66
+#, fuzzy
+#| msgid "¿Estás seguro de querer despublicar este widget?"
+msgid "¿Estás seguro de eliminar este frame?"
+msgstr "Are you sure that you want to unpublish this widget?"
+
+#: View/widgets/Lighting/WidgetAverageConsumptionEvolution.js:7
+msgid "Consumo eléctrico en 24h"
+msgstr "Electrical consumption in 24h"
+
+#: View/widgets/Lighting/WidgetConsumptionEvolution.js:7
+msgid "Evolución del consumo eléctrico"
+msgstr "Evolution of the electrical consumption"
+
+#: View/widgets/Lighting/WidgetCurrentEnergyConsumed.js:7
+msgid "Energía activa consumida en el último cuarto horario"
+msgstr "Active energy consumed in the last quarter of an hour"
+
+#: View/widgets/Lighting/WidgetCurrentEnergyConsumed.js:38
+msgid "Energía reactiva consumida en el último cuarto horario"
+msgstr "Reactive energy consumed in the last quarter of an hour"
+
+#: View/widgets/Lighting/WidgetEnergyConsumed.js:7
+msgid "Energía activa consumida en las últimas 24 horas"
+msgstr "Active energy consumed in the last 24h"
+
+#: View/widgets/Lighting/WidgetEnergyConsumed.js:34
+msgid "Energía reactiva consumida en las últimas 24 horas"
+msgstr "Reactive energy consumed in the last 24h"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:7
+msgid "Evolución de la duración media del estacionamiento"
+msgstr "Evolution average parking time"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:45
+#: View/widgets/Parking/WidgetAverageRotationHistogram.js:16
+msgid "Duración media"
+msgstr "Average duration"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:46
+msgid "Estacionamiento superior a 4h"
+msgstr "Parking over 4h"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:47
+msgid "Estacionamiento entre 2h y 4h"
+msgstr "Parking between 2h and 4h"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:48
+msgid "Estacionamiento inferior a 2h"
+msgstr "Parking shorter than 2 hours"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:63
+msgid "Duración media (hh:mm)"
+msgstr "Average duration (hh:mm)"
+
+#: View/widgets/Parking/WidgetAverageDurationEvolution.js:63
+#: View/widgets/Parking/WidgetAverageRotationHistogram.js:55
+msgid "Número de estacionamientos"
+msgstr "Number of parking spots"
+
+#: View/widgets/Parking/WidgetAverageRotationHistogram.js:26
+msgid "Duración media del estacionamiento"
+msgstr "Average parking time"
+
+#: View/widgets/Parking/WidgetAverageRotationHistogram.js:75
+msgid "estacionamientos"
+msgstr "spots"
+
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:7
+msgid "Evolución de plazas libres y porcentaje de ocupación"
+msgstr "Evolution of free spots and percentage of occupancy"
+
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:42
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:53
+#: View/widgets/Parking/WidgetOccupancyRatePerHour.js:42
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:42
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:53
+#: View/widgets/Transport/WidgetOccupancyRatePerHour.js:42
+msgid "Ocupación (%)"
+msgstr "Occupancy (%)"
+
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:44
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:10
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:39
+msgid "Plazas ocupadas"
+msgstr "Occupied spots"
+
+#: View/widgets/Parking/WidgetFreeOccupancyRateEvolution.js:53
+msgid "Plazas de aparcamiento"
+msgstr "Parking spots"
+
+#: View/widgets/Parking/WidgetFreeOccupancyRatePie.js:14
+msgid "Plazas libres y porcentaje de ocupación"
+msgstr "Free spots and percentage of occupancy"
+
+#: View/widgets/Parking/WidgetOccupancyRatePerHour.js:8
+#: View/widgets/Transport/WidgetOccupancyRatePerHour.js:8
+msgid "Porcentaje de ocupación por horas"
+msgstr "Percentage of occupancy per hour"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:7
+msgid "Ocupación por zonas"
+msgstr "Occupancy by zones"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:19
+msgid "zonas"
+msgstr "zones"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:20
+msgid "libres"
+msgstr "free"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:21
+msgid "ocupadas"
+msgstr "occupied"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:23
+msgid "ocupación"
+msgstr "occupancy"
+
+#: View/widgets/Parking/WidgetOccupationZones.js:24
+msgid "rotación"
+msgstr "turnover"
+
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:10
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:40
+msgid "Plazas individuales"
+msgstr "Individual sensorized spots"
+
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:10
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:41
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:42
+msgid "Plazas monitorizadas en grupo"
+msgstr "Group monitorized parking spaces"
+
+#: View/widgets/Parking/WidgetSensorizedPlaces.js:14
+msgid "Plazas sensorizadas"
+msgstr "Sensorized spots"
+
+#: View/widgets/Parking/WidgetTimeOccupationZones.js:7
+msgid "Ocupación horaria por zonas"
+msgstr "Hourly occupancy by zones"
+
+#: View/widgets/Parking/WidgetTimeOccupationZones.js:37
+msgid "Ocupación media (%)"
+msgstr "Average occupancy (%)"
+
+msgid "Ocupación media"
+msgstr "Average occupancy (%)"
+
+#: View/widgets/Parking/WidgetTimeOccupationZones.js:47
+msgid "Ocupación < 60%"
+msgstr "Occupancy < 60%"
+
+#: View/widgets/Parking/WidgetTimeOccupationZones.js:48
+msgid "Ocupación < 80%"
+msgstr "Occupancy < 80%"
+
+#: View/widgets/Parking/WidgetTimeOccupationZones.js:49
+msgid "Ocupación < 100%"
+msgstr "Occupancy < 100%"
+
+#: View/widgets/Touring/WidgetVisitorsByContinent.js:9
+msgid "Número total de visitantes"
+msgstr "Total number of visitors"
+
+#: View/widgets/Touring/WidgetVisitorsByCountry.js:8
+msgid "Ranking de visitantes por país de procedencia"
+msgstr "Visitors ranking per country of origin"
+
+#: View/widgets/Touring/WidgetVisitorsByCountry.js:25
+#: View/widgets/Touring/WidgetVisitorsByPOI.js:25
+#: View/widgets/Touring/WidgetVisitorsByZone.js:25
+msgid "Pais"
+msgstr "Country"
+
+#: View/widgets/Touring/WidgetVisitorsByPOI.js:8
+msgid "Ranking de puntos de interés más visitados"
+msgstr "Most visited Points of Interest Ranking"
+
+#: View/widgets/Touring/WidgetVisitorsByZone.js:8
+msgid "Ranking de visitantes por zona"
+msgstr "Visitors ranking per area"
+
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:10
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:39
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:43
+msgid "Bicicletas disponibles"
+msgstr "Available bikes"
+
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:10
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:40
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:44
+msgid "Bicicletas alquiladas"
+msgstr "Hired bikes"
+
+#: View/widgets/Transport/WidgetAvailableBikesRatePie.js:13
+msgid "Bicicletas disponibles y alquiladas"
+msgstr "Available and hired bikes"
+
+#: View/widgets/Transport/WidgetAvgHourlyIntensity.js:7
+msgid "Ciclo diario: intensidad horaria media"
+msgstr "Daily cycle: average hourly intensity"
+
+#: View/widgets/Transport/WidgetAvgHourlyIntensity.js:42
+#: View/widgets/Transport/WidgetAvgHourlyIntensity.js:57
+msgid "Intensidad horaria"
+msgstr "Hourly intensity"
+
+#: View/widgets/Transport/WidgetBikeStations.js:6
+msgid "Alertas en estaciones"
+msgstr "Alerts in stations"
+
+#: View/widgets/Transport/WidgetBikesRanking.js:7
+msgid "Ranking de población servida por estación"
+msgstr "Served population stations ranking"
+
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:7
+#, fuzzy
+#| msgid "Bicicletas disponibles y alquiladas"
+msgid "Evolución de bicicletas disponibles y alquiladas - Porcentaje de uso"
+msgstr "Available and hired bikes"
+
+#: View/widgets/Transport/WidgetFreeOccupancyRateEvolution.js:53
+#, fuzzy
+#| msgid "Número de visitas"
+msgid "Número de bicicletas"
+msgstr "Number of visits"
+
+#: View/widgets/Transport/WidgetHourlyBikesAvailability.js:8
+msgid "Distribución horaria de la disponibilidad de bibicletas"
+msgstr "Collection time distribution and fill level in 24 hours"
+
+#: View/widgets/Transport/WidgetHourlyBikesAvailability.js:42
+#, fuzzy, javascript-format
+#| msgid "Disponibilidad"
+msgid "% de disponibilidad"
+msgstr "Availability"
+
+#: View/widgets/Transport/WidgetHourlyBikesAvailability.js:52
+#, fuzzy
+#| msgid "Porcentaje de bicicletas disponibles"
+msgid "Porcentaje de disponibilidad / estación"
+msgstr "Available bicycles percentage"
+
+#: View/widgets/Transport/WidgetHourlyIntensity.js:7
+#: View/widgets/Transport/WidgetHourlyIntensity.js:35
+msgid "Intensidad horaria punta"
+msgstr "Peak hourly intensity"
+
+#: View/widgets/Transport/WidgetHourlyIntensity.js:43
+msgid "IHP"
+msgstr "IHP"
+
+#: View/widgets/Transport/WidgetTrafficCongested.js:9
+msgid "Vías monitorizadas congestionadas."
+msgstr "Monitorized lanes with congestion."
+
+#: View/widgets/Transport/WidgetTrafficCongested.js:11
+msgid "Vías monitorizadas sin congestión."
+msgstr "Monitorized lanes without congestion."
+
+#: View/widgets/Transport/WidgetTrafficCongested.js:16
+msgid "Vías congestionadas"
+msgstr "Congested lanes"
+
+#: View/widgets/Transport/WidgetTrafficCongested.js:42
+msgid "Congestionadas"
+msgstr "Congested"
+
+#: View/widgets/Transport/WidgetTrafficCongested.js:43
+msgid "No congestionadas"
+msgstr "Non congested"
+
+#: View/widgets/Transport/WidgetTrafficCongestedRanking.js:7
+msgid "Ranking de vías por intensidad del tráfico"
+msgstr "Routes raking by traffic intensity"
+
+msgid "Ranking de vías (top 5) por intensidad de tráfico"
+msgstr "Routes raking (top 5 ) by traffic intensity"
+
+msgid "Ranking de vías (top 5) por carga"
+msgstr "Routes raking (top 5 ) by overload"
+
+msgid "Ranking de vías (top 5) por ocupación"
+msgstr "Routes raking (top 5 ) by occupation"
+
+msgid "Vías congestionadas monitorizadas"
+msgstr "Monitored overloaded routes"
+
+msgid "Nivel de servicio"
+msgstr "Service level"
+
+msgid "Variable relativa"
+msgstr "Relative variable"
+
+msgid "Modificador del color"
+msgstr "Color modifier"
+
+#: View/widgets/Transport/WidgetTrafficCongestedRanking.js:52
+msgid "Vias monitorizadas congestionadas"
+msgstr "Monitorized lanes with congestion"
+
+#: View/widgets/Transport/WidgetVehiclesServiceHistogram.js:7
+msgid "Flotas en movimiento"
+msgstr "Moving fleet"
+
+#: View/widgets/Transport/WidgetVehiclesServiceHistogram.js:39
+msgid "Número de vehículos"
+msgstr "Number of vehicles"
+
+#: View/widgets/Transport/WidgetWeeklyIntensity.js:8
+msgid "Ciclo semanal: Intensidad horaria media"
+msgstr "Weekly cycle: average hourly intensity"
+
+#: View/widgets/Transport/WidgetWeeklyIntensity.js:24
+msgid "Intensidad media"
+msgstr "Average intensity"
+
+#: View/widgets/Waste/WidgetIndicatorTable.js:31
+#: View/widgets/WidgetIndicatorGauge.js:51
+#: View/widgets/WidgetIndicatorGauge.js:60
+#: View/widgets/WidgetIndicatorTable.js:18
+msgid "Indicador"
+msgstr "Indicator"
+
+#: View/widgets/Waste/WidgetIndicatorTable.js:39
+#: View/widgets/WidgetIndicatorGauge.js:28
+#: View/widgets/WidgetIndicatorTable.js:32
+msgid "Penalización máxima"
+msgstr "Maximum penalty"
+
+#: View/widgets/Waste/WidgetIssueStacked.js:24
+msgid "Incidencias de la Ciudad"
+msgstr "City incidences"
+
+#: View/widgets/Waste/WidgetIssueStacked.js:29
+msgid "Nº de incidencias por categorías"
+msgstr "# of incidences by category"
+
+#: View/widgets/Waste/WidgetIssueTable.js:28
+msgid "Categoría"
+msgstr "Category"
+
+#: View/widgets/Waste/WidgetIssueTable.js:31
+msgid "Último \"Estado\" del periodo seleccionado"
+msgstr "Latest \"Status\" in the selected period"
+
+#: View/widgets/Waste/WidgetIssueTable.js:35
+msgid "Creado"
+msgstr "Created"
+
+#: View/widgets/Waste/WidgetIssueTable.js:36
+msgid "Solucionado"
+msgstr "Solved"
+
+#: View/widgets/Waste/WidgetIssueTable.js:37
+msgid "Pendiente"
+msgstr "Pending"
+
+#: View/widgets/Watmeter_a/WidgetAverageConsumptionComparison.js:7
+msgid "Comparativa: Consumo agregado"
+msgstr "Comparison:  average consumption"
+
+#: View/widgets/Watmeter_a/WidgetAverageConsumptionComparison.js:36
+#: View/widgets/Watmeter_a/WidgetAverageConsumptionComparison.js:51
+msgid "Consumo agregado"
+msgstr "Average consumption"
+
+#: View/widgets/Watmeter_a/WidgetLastDay.js:7
+msgid "Consumo de agua en las últimas 24 horas"
+msgstr "Water consumption in the last 24h"
+
+#: View/widgets/Watmeter_a/WidgetLastPeriod.js:7
+msgid "Consumo de agua en el último periodo"
+msgstr "Water consumption in the latest period"
+
+#: View/widgets/Watmeter_a/WidgetRanking.js:7
+msgid "Ranking de consumo en el último periodo"
+msgstr "Consumption ranking in the latest period"
+
+#: View/widgets/WidgetDeviceMapView.js:14
+msgid "Mapa de dispositivos"
+msgstr "Devices map"
+
+#: View/widgets/WidgetVersusVariables.js:30
+msgid "Con alguna incidencia"
+msgstr "With incidences"
+
+#: Watmeter_a.js:4
+msgid "abierto"
+msgstr "open"
+
+#: Watmeter_a.js:6
+msgid "cerrado"
+msgstr "closed"
+
+msgid "Peso de la carga"
+msgstr "Weight"
+
+msgid "Menos del 80 %"
+msgstr "Less than 80%"
+
+msgid "Más del 90 %"
+msgstr "More than 90%"
+
+msgid "Entre el 80% y el 90%."
+msgstr "Between 80% and 90%."
+
+msgid "Más del 90%."
+msgstr "Over 90%."
+
+msgid "a menos del 80% de su capacidad"
+msgstr "less than 80% capacity"
+
+msgid "entre el 80% y el 90% de su capacidad"
+msgstr "between 80% and 90% capacity"
+
+msgid "a más del 90% de su capacidad"
+msgstr "more than 90% capacity"
+
+msgid "> 90% con más de 2 horas"
+msgstr "> 90% with more than 2 hours"
+
+msgid "con más de"
+msgstr "more than"
+
+msgid "con menos de"
+msgstr "less than"
+
+msgid "> 90% con menos de 2 horas"
+msgstr ">90% with less than 2 hours"
+
+msgid "> 90% más de 2 horas"
+msgstr "> 90% more than 2 hours"
+
+msgid "> 90% menos de 2 horas"
+msgstr "> 90% less than 2 hours"
+
+msgid "Operación: Contenedores por niveles de llenado"
+msgstr "Operation: Containers by fill level"
+
+msgid "contenedor"
+msgstr "container"
+
+msgid "contenedores"
+msgstr "Behaelter"
+
+msgid "Última hora"
+msgstr "Last hour"
+
+# DYNAMIC CONTENT
+msgid "Iluminación"
+msgstr "Lighting"
+
+msgid "Medio Ambiente"
+msgstr "Environment"
+
+msgid "Movilidad"
+msgstr "Transport"
+
+msgid "Turismo"
+msgstr "Tourism"
+
+msgid "Muy buena"
+msgstr "Very good"
+
+msgid "Excelente"
+msgstr "Excellent"
+
+# LoginOverride.js
+msgid "Iniciar sesión con IDM"
+msgstr "Login with IDM"
+
+msgid "Tráfico"
+msgstr "Traffic"
+
+msgid "Tráfico - Mapa"
+msgstr "Traffic - Map"
+
+msgid "Bicicletas - Tiempo Real"
+msgstr "Bikes - Real Time"
+
+msgid "Waste"
+msgstr "Abfall"
+
+msgid "General status"
+msgstr "allgemeiner Status"
+
+msgid "Real time"
+msgstr "Echtzeit"
+
+msgid "from"
+msgstr "Von"
+
+msgid "to"
+msgstr "An"
+
+msgid "predefined rank"
+msgstr "vordefinierter Rank"
+
+msgid "Today"
+msgstr "Heute"
+
+msgid "Last 3 days"
+msgstr "Letzte 3 Tage"
+
+msgid "Last 7 days"
+msgstr "Letzte 7 Tage"
+
+msgid "Last month"
+msgstr "letzter Monat"
+
+msgid "Total tons of garbage"
+msgstr "Gesamt Tonnen Abfall"
+
+msgid "Tons of garbage"
+msgstr "Tonnen Abfall"
+
+msgid "All containers"
+msgstr "alle Behaelter"
+
+msgid "Current situation"
+msgstr "aktueller Zustand"
+
+msgid "Containers per type of waste"
+msgstr "Abfallbehaelter typ"
+
+msgid "Number of containers"
+msgstr "Anzahl Behaelter"
+
+msgid "Paper"
+msgstr "Papier"
+
+msgid "Unidentified"
+msgstr "undefiniert"
+
+msgid "Glass"
+msgstr "Glas"
+
+msgid "Textile"
+msgstr "Textil"
+
+msgid "Containers per fill level"
+msgstr "Behaelter per Fuellstand"
+
+msgid "Less than"
+msgstr "Weniger als"
+
+msgid "of its capacity."
+msgstr "Fassungsvermoegen"
+
+msgid "and"
+msgstr "und"
+
+msgid "Between"
+msgstr "Zwischen"
+
+msgid "More than"
+msgstr "Mehr als"
+
+msgid "Total"
+msgstr "Gesamt"
+
+msgid "Methane Concentration (CH4)"
+msgstr "Methankonzentration"
+
+msgid "Alerts detected in containers"
+msgstr "Alarm entdeckt in Behaelter"
+
+msgid "Number of containers"
+msgstr "Anzahl Behaelter"
+
+msgid "Cover open"
+msgstr "Klappe offen"
+
+msgid "Vandalized"
+msgstr "demoliert"
+
+msgid "Moved"
+msgstr "bewegt"
+
+msgid "Burning"
+msgstr "brennend"
+
+msgid "Weight of the load"
+msgstr "Gewicht des Inhalts"
+
+msgid "Filling level"
+msgstr "Fuellstand"
+
+msgid "Filling level evolution"
+msgstr "Fuellstandsentwicklung"
+
+msgid "Period"
+msgstr "Zeitraum"
+
+msgid "Day"
+msgstr "Tag"
+
+msgid "minutes"
+msgstr "Minute"
+
+msgid "hour"
+msgstr "Stunde"
+
+msgid "Realtime"
+msgstr "Echtzeit"
+
+msgid "Filters"
+msgstr "Filter"
+
+msgid "Containers"
+msgstr "Behaelter"
+
+msgid "Plastic"
+msgstr "Plastik"
+
+msgid "Paper"
+msgstr "Papier"
+
+msgid "Organic"
+msgstr "Kompost"
+
+msgid "Glass"
+msgstr "Glas"
+
+msgid "Unidentified"
+msgstr "undefiniert"
+
+msgid "Filling level"
+msgstr "Fuellstand"
+
+msgid "Directions"
+msgstr "Richtungen"
+
+msgid "From"
+msgstr "Von"
+
+msgid "To"
+msgstr "An"
+
+msgid "Type of waste"
+msgstr "Art des Abfalls"
+
+msgid "Calculate route"
+msgstr "Route berechnen"
