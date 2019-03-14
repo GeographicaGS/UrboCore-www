@@ -3663,8 +3663,8 @@ msgstr "Von"
 msgid "to"
 msgstr "An"
 
-msgid "Chargers by type of vehicle"
-msgstr "Ladesaulen nach Fahrzeugtyp"
+msgid "Chargers by type of socket"
+msgstr "Ladesaulen nach Anschlusstypen"
 
 msgid "Percentage of occupied and free chargers"
 msgstr "Prozentsatz der besetzten und freien Ladesaule"
@@ -3681,7 +3681,7 @@ msgstr "Rangordnung der besetzten Parkplätze"
 msgid "Slots"
 msgstr "Plaetze"
 
-msgid "Evolution on free places and occupation percentage"
+msgid "Evolution of free places and occupation percentage"
 msgstr "Entwicklung auf freien Plaetzen und prozentualer Belegung"
 
 msgid "Period"
