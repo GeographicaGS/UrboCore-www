@@ -262,7 +262,7 @@ msgstr "Explore map"
 #: template/dashboard_split_template.html:10 template/dashboard_template.html:5
 #: template/frames_dashboard_template.html:11
 msgid "Otros verticales"
-msgstr "Other verticals"
+msgstr "weitere Anwendungsfaelle"
 
 #: template/dashboard_split_template.html:16
 #: template/waste/operation/issue_template.html:8
@@ -3761,3 +3761,30 @@ msgstr "Anschlusstypen"
 
 msgid "Calculate route"
 msgstr "Route berechnen"
+
+msgid "E-mail"
+msgstr "Email"
+
+msgid "Write a valid e-mail address"
+msgstr "Bitte gueltige Emailadresse eintragen"
+
+msgid "Insert password"
+msgstr "Passwort"
+
+msgid "Start Session"
+msgstr "Sitzung starten"
+
+msgid "EV Charging Station"
+msgstr "EV Ladestation"
+
+msgid "Clear route"
+msgstr "Route zuruecksetzen"
+
+msgid "Allowed vehicles"
+msgstr "zulaessige Fahrzeuge"
+
+msgid "Available capacity"
+msgstr "Verfügbare Kapazität"
+
+msgid "Status evolution for charger"
+msgstr "Statusentwicklung der Ladesaule"
