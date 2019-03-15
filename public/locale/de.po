@@ -3788,3 +3788,15 @@ msgstr "Verfügbare Kapazität"
 
 msgid "Status evolution for charger"
 msgstr "Statusentwicklung der Ladesaule"
+
+msgid "Free" 
+msgstr "Frei"
+
+msgid "Vehicle Parked"    
+msgstr "Fahrzeug geparkt"
+
+msgid "Not Charging"    
+msgstr "Lädt nicht"
+
+msgid "Charging"    
+msgstr "Aufladen"
