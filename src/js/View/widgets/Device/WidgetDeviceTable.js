@@ -39,7 +39,10 @@ App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
       return {
         key: el.id,
         title: el.name,
-        unit: el.units
+        unit: el.units,
+        format: typeof el.format === 'function'
+          ? el.format
+          : false
       }
     });
     columns.unshift({
