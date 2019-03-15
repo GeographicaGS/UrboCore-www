@@ -3800,3 +3800,6 @@ msgstr "Lädt nicht"
 
 msgid "Charging"    
 msgstr "Aufladen"
+
+msgid "Allowed Vehicles"
+msgstr "zulaessige Fahrzeuge"
