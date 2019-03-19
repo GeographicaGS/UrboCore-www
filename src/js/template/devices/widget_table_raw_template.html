@@ -1,9 +1,12 @@
 <div class="table block <%=m.get('class')%>">
-	<%if(m.get('title')){%>
-		<h3><%=m.get('title')%></h3>
-		<h4>(datos desde <span><%=App.formatDate(App.ctx.getDateRange().start)%></span> hasta <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)</h4>
-	<%}%>
-	<% if(m.get('downloadButton')){ %>
+	<% if (m.get('title')) { %>
+    <h3><%=m.get('title')%></h3>
+    <% if (m.get('dateRange')) { %>
+    <h4>(datos desde <span><%=App.formatDate(App.ctx.getDateRange().start)%></span> hasta <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)</h4>
+    <% } %>
+  <% } %>
+
+	<% if (m.get('downloadButton')) { %>
 		<button class="button empty">DESCARGAR CSV</button>
 	<% } %>
    <table>

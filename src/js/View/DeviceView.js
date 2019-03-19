@@ -709,8 +709,11 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
       success:function(data){
         _this.$('ul.row .loading').remove();
         // Show widget if the condition is agree
-        if (!_this.options.hideVariableEmpty
-            || (_this.options.hideVariableEmpty && data.get('value') !== null)) {
+
+        if (_this.options
+            && (!_this.options.hideVariableEmpty
+              || (_this.options.hideVariableEmpty && data.get('value') !== null))
+        ) {
           if(el.length > 0) {
             el.replaceWith(_this._template({m:data.toJSON()}));
           } else {
