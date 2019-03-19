@@ -21,29 +21,26 @@
 'use strict';
 
 /**
- * Collection to get a CSV file from server
+ * widget view to wrap a view that extend from "App.View.Widgets.Base"
  */
-App.Collection.TableToCsv = Backbone.Collection.extend({
+App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
 
-  initialize: function (models, options) {
-    this.options = options;
-  },
+  initialize: function(options) {
+    options = _.defaults(options, {
+      title: __('Sin título')
+    });
 
-  /**
-   * To download the CSV generated
-   * 
-   * @param {Array} response 
-   */
-  parse: function (response) {
-    var blob = new Blob([response], { type: 'text/csv' });
-    var csvUrl = window.URL.createObjectURL(blob);
-    var link = document.createElement('a');
+    // Call to parent class
+    App.View.Widgets.Base.prototype.initialize.call(this, options);
 
-    link.setAttribute('href', csvUrl);
-    link.setAttribute('download', 'download.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Add subview and parent class (App.View.Widgets.Base)
+    // put it inside "widget_content"
+    if (Array.isArray(options.widgetViewToContent)) {
+      _.each(options.widgetViewToContent, function(view) {
+        this.subviews.push(view);
+      }.bind(this));
+    } else {
+      this.subviews.push(options.widgetViewToContent);
+    }
   }
-
 });

@@ -106,6 +106,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetStackedBars.js',
   srcJS + 'View/widgets/WidgetStackedSingleBar.js',
   srcJS + 'View/widgets/WidgetClock.js',
+  srcJS + 'View/widgets/WidgetWrapperBase.js',
   // srcJS + 'View/widgets/WidgetVariableView.js',
   srcJS + 'View/widgets/WidgetTableView.deprecated.js',
   srcJS + 'View/widgets/WidgetTablePaginatedView.js',
@@ -183,6 +184,7 @@ deps.JS = [
   srcJS + 'View/Map/ComparisonLegendMapView.js',
   srcJS + 'View/Map/Layer/MapboxGLLayer.js',
   srcJS + 'View/Map/Layer/MapboxGeoJSONLayer.js',
+  srcJS + 'View/Map/Layer/MapboxGeoJSONAPILayer.js',
   srcJS + 'View/Map/Layer/MapboxGLVectorLayer.js',
   srcJS + 'View/Map/Layer/MapboxSQLLayer.js',
 

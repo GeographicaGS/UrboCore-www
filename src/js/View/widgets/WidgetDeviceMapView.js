@@ -22,78 +22,123 @@
 
 App.View.WidgetDeviceMap = App.View.Widgets.Base.extend({
 
-	_template: _.template( $('#widgets-widget_device_map_template').html() ),
+  _template: _.template($('#widgets-widget_device_map_template').html()),
 
-  initialize: function(options) {
-
-    /* IMPROVE: Create a Base Model with defaults values */
-    if (!this.model.get('link'))
-      this.model.set('link','/' + this.model.get('scope') + '/' + this.model.get('section') + '/map');
-
-    if (!this.model.get('title'))
-      this.model.set('title',__('Mapa de dispositivos'));
-
-    if (!this.model.get('titleLink'))
-      this.model.set('titleLink',null);
-
-    this.deviceCollection = new App.Collection.DevicesMapRaw(null,{scope: this.model.get('scope')});
-    this.listenTo(this.deviceCollection,'reset',this._draw_markers);
-    this.deviceCollection.fetch({'reset': true,data: { 'entities': this.model.get('entities').join(',')}});
-
+  initialize: function (options) {
+    this.setDefaultValues();
+    this.getDataCollection();
     this.render();
-
   },
 
-  onClose: function(){
-    this.stopListening();
+  /**
+   * Set default values into the model
+   */
+  setDefaultValues: function() {
+    // Default values
+    var defaultValues = {
+      link: '/' + this.model.get('scope') + '/' + this.model.get('section') + '/map',
+      title: __('Mapa de dispositivos'),
+      titleLink: null
+    };
+
+    _.each(defaultValues, function(value, index) {
+      if (!this.model.get(index)) {
+        this.model.set(index, value);
+      }
+    }.bind(this));
   },
 
-  render: function(){
-  	this.setElement(this._template(this.model.toJSON()));
+  /**
+   * Get data collection from remote server
+   */
+  getDataCollection: function() {
+    this.deviceCollection = new App.Collection.DevicesMapRaw([], { scope: this.model.get('scope') });
 
-		if(this.model.get("realTimeComponent") != undefined) {
-      var model = new Backbone.Model({
-        botonLocationView:this.$(".botons"),
+    this.deviceCollection.fetch({
+      reset: true, 
+      data: { 
+        entities: this.model.get('entities').join(',')
+      }
+    });
+
+    // event triggered to draw the markers
+    this.listenTo(this.deviceCollection, 'reset', this.drawMarkers);
+  },
+
+  render: function () {
+    // Draw in the DOM the template with the differents params
+    this.setElement(this._template(this.model.toJSON()));
+
+    if (this.model.get('realTimeComponent') !== undefined) {
+      this._renderRealTimeComponent(new Backbone.Model({
+        botonLocationView: this.$el.find('.botons'),
         tooltipIcon: __('Ahora')
-      });
-      this._renderRealTimeComponent(model);
+      }));
     }
 
     return this;
   },
 
-  _draw_markers:function(){
-    var _this = this;
-    this.map = new L.Map(this.$('.map')[0], {
-      zoomControl : false,
-      doubleClickZoom:false,
-      dragging:false
+  /**
+   * Draw the markers into the map, only the position
+   * 
+   * The map will be drawed is based in the library "leafletjs.com"
+   */
+  drawMarkers: function () {
+    this.map = new L.Map(this.$el.find('.map')[0], {
+      zoomControl: false,
+      doubleClickZoom: false,
+      dragging: false
     });
 
-    // new L.Control.Zoom({ position: 'bottomright' }).addTo(this.map);
+    L.tileLayer('https://cartodb-basemaps-b.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {})
+      .addTo(this.map);
 
-    // L.tileLayer('https://1.maps.nlp.nokia.com/maptile/2.1/maptile/newest/reduced.day/{z}/{x}/{y}/256/png8?lg=es&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24', {
-    // }).addTo(this.map);
-
-L.tileLayer('https://cartodb-basemaps-b.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
-    }).addTo(this.map);
-
+    // Set different options to the map
     this.map.setView(this.model.get('location'), this.model.get('zoom'));
 
-    this.$('.leaflet-control-attribution').detach().appendTo('.leaflet-bottom.leaflet-left')
+    // Move link the 'leaflet' to the left
+    this.$el.find('.leaflet-control-attribution')
+      .detach()
+      .appendTo('.leaflet-bottom.leaflet-left');
 
+    // Draw the different circles into the map
     var circleOptions = {
-        radius: 4,
-        weight: 0,
-        fillOpacity: 1,
-        clickable:false,
-        color: this.model.get('color')
+      radius: 4,
+      weight: 0,
+      fillOpacity: 1,
+      clickable: false
     };
-    _.each(this.deviceCollection.toJSON(),function(d){
-      L.circleMarker(d.location, circleOptions).addTo(_this.map);
-    });
+    var defaultColor = '#999';
 
-    this.$('.widget_loading').remove();
-  }
+    _.each(this.deviceCollection.toJSON(), function (data) {
+      var currentColor = this.model.get('color');
+
+      // each color with a different color
+      if (typeof currentColor === 'string') {
+        circleOptions.color = currentColor;
+      } else if(typeof currentColor === 'object') {
+        var currentEntity = data.id.toLowerCase().split(':').shift();
+        circleOptions.color = currentEntity && currentColor[currentEntity] 
+          ? currentColor[currentEntity].colour
+          : defaultColor;
+      } else {
+        circleOptions.color = defaultColor;
+      }
+
+      L.circleMarker(data.location, circleOptions)
+        .addTo(this.map);
+    }.bind(this));
+
+    // Remove loading
+    this.$el.find('.widget_loading').remove();
+  },
+
+  /**
+   * Close widget (remove) and delete any event
+   */
+  onClose: function () {
+    this.stopListening();
+  },
 
 });

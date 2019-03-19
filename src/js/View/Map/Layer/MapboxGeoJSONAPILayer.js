@@ -23,7 +23,7 @@
 /**
  * Used by the layers that make use of the API
  */
-App.View.Map.Layer.MapboxGeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.extend({
+App.View.Map.Layer.MapboxGeoJSONAPILayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
   initialize: function (config) {
     this.legendConfig = config.legend;
@@ -53,15 +53,12 @@ App.View.Map.Layer.MapboxGeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.extend(
    * @param {Object} model - model with server data
    */
   _success: function (model) {
-    var response = (model.changed && model.changed.response)
-      ? model.changed.response
+    var response = (model.changed && model.changed.features)
+      ? model.changed
       : { type: 'FeatureCollection', features: [] };
 
     // Set the response into the source
     this._map.getSource(this._idSource).setData(response);
-    this._map._sources.find(function(src) {	
-      return src.id === this._idSource;	
-    }.bind(this)).data = {'type': 'geojson', 'data': response};
 
     return model;
   },
