@@ -225,17 +225,21 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         domains.push([0,1]);
     }
 
-    var minAxis1 = Math.min.apply(null, min[0]),
-        minAxis2 = Math.min.apply(null, min[1]);
-    var maxAxis1 = Math.max.apply(null, max[0]),
-        maxAxis2 = Math.max.apply(null, max[1]);
-    if(domains[0][0] > minAxis1) domains[0][0] = Math.floor(minAxis1);
-    if(domains[0][1] < maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
+    // is possible to force the domains
+    if (this.options.get('yAxisDomainForce') !== true) {
+      var minAxis1 = Math.min.apply(null, min[0]),
+          minAxis2 = Math.min.apply(null, min[1]);
+      var maxAxis1 = Math.max.apply(null, max[0]),
+          maxAxis2 = Math.max.apply(null, max[1]);
 
-    if(domains[1]) {
-      if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
-      if(domains[1][1] < maxAxis2) domains[1][1] = Math.ceil(maxAxis2);
+      if(domains[0][0] > minAxis1) domains[0][0] = Math.floor(minAxis1);
+      if(domains[0][1] < maxAxis1) domains[0][1] = Math.ceil(maxAxis1);
+      if(domains[1]) {
+        if(domains[1][0] > minAxis2) domains[1][0] = Math.floor(minAxis2);
+        if(domains[1][1] < maxAxis2) domains[1][1] = Math.ceil(maxAxis2);
+      }
     }
+
     this.yAxisDomain = domains;
   },
 
@@ -481,9 +485,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
         .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
         .attr('r', 3)
-        .attr('data-y', function(d, idx) {return d.y});
-
-
+        .attr('data-y', function(d, idx) { return d.y });
 
     this._chart.line.push(line);
   },  
@@ -506,8 +508,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .style('fill', function(d,idx){
           return _this._getColor(this.parentElement.__data__, idx);
         })
-        .attr('data-idx', function(d, idx) {return idx; })
-      ;
+        .attr('data-idx', function(d, idx) {return idx; });
+
     this._chart.bars.push(bar);
   },
 
@@ -565,8 +567,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('class', 'point')
         .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
         .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
-        .attr('r', 3)
-        .attr('data-y', function(d, idx) {return d.y});
+        // Radius circle
+        .attr('r', function(d, idx) { 
+          var radiusFunction = _this.options.get('radiusFunction');
+
+          if (typeof radiusFunction === 'function') {
+            return radiusFunction(d, idx);
+          }
+
+          return 3; // Default value
+        });
 
     this._chart.line.push(line);
   },
@@ -631,8 +641,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }
   },
 
-  _formatYAxis: function(){
-    var diff = (this.yAxisDomain[0][1] - this.yAxisDomain[0][0]) / 4;
+  _formatYAxis: function() {
+    // Force domains and different between lines (range)
+    var yAxisDomainForce = this.options.get('yAxisDomainForce');
+    var diff = yAxisDomainForce === true
+      ? this.options.get('yAxisDomainDiff') || 1
+      : (this.yAxisDomain[0][1] - this.yAxisDomain[0][0]) / 4
     var range;
     if(!this.options.has('yAxisThresholds')){
       range = d3.range(
@@ -645,6 +659,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }
 
     range.push(this.yAxisDomain[0][1]);
+
     this._chart.yAxis1 = d3.svg.axis()
       .scale(this.yScales[0])
       .orient('left')
@@ -772,7 +787,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     this.data.forEach(function(el){
       if(!that._internalData.disabledList[el.realKey]){
         data.series.push({
-          value: el.values[serie].y,
+          value: typeof that.options.get('toolTipValueFunction') === 'function'
+            ? that.options.get('toolTipValueFunction')(el.realKey, el.values[serie].y)
+            : el.values[serie].y,
           key: el.key,
           realKey: el.realKey,
           color: that._getColor(el, serie),
