@@ -114,7 +114,7 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     var svg = d3.select(this.$('.chart')[0]);
     var svgNode = svg.node();
     var clientSize = svgNode.getClientRects();
-    if (clientSize) {
+    if (clientSize.length > 0) {
       // Draw icon
       if (this.options.get('img')) {
         var logoSize = { height: 32, width: 32 };
