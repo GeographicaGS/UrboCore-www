@@ -32,6 +32,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   initialize: function(options){
     if(!options.opts.has('keysConfig')) throw new Error('keysConfig parameter is mandatory');
     if(!options.opts.has('showLineDots')) options.opts.set({showLineDots: false});
+    if(!options.opts.has('interpolate')) options.opts.set({interpolate: 'monotone'});
 
     App.View.Widgets.Charts.Base.prototype.initialize.call(this,options);
 
@@ -316,7 +317,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       .y(function(d, idx) {
         return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y);
       })
-      .interpolate('monotone')
+      .interpolate(this.options.get('interpolate'))
     ;
 
     // Draw
