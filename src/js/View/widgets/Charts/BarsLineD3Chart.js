@@ -444,8 +444,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           }
           break;
         case 'line':
+        case 'line-dash':
           if(!_this._internalData.disabledList[data.realKey]){
-            _this._drawLine(data);
+            _this._drawLine(data, { lineDash: data.type === 'line-dash' });
           }
         case 'point':
           if(!_this._internalData.disabledList[data.realKey]){
@@ -455,30 +456,44 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     });
   },
 
-  _drawLine: function(data){
-    var _this = this;
+  /**
+   * Draw a line into the chart
+   * 
+   * @param {Array} data - data to draw the line
+   * @param {Object} options - options to draw the line
+   */
+  _drawLine: function(data, options){
     this._chart.line = this._chart.line || [];
+    options = _.defaults(options, {});
+
+    var _this = this;
     var line = this._chart.svg.append('g').selectAll('.lineGroup')
       .data([data]).enter()
       .append('g')
         .attr('class', 'lineGroup')
         .attr('key', function(d){ return d.realKey; })
         .style('fill', function(d, idx) { return _this._getColor(this.__data__, idx); })
-        .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })
-      ;
+        .style('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); });
 
-      line.append('path')
-      .datum(data.values)
-      .attr('class', function(d, idx){
-        var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
-        return 'line ' + extraClass;
-      })
-      .attr('style', 'fill: none')
-      .style('stroke', function(d, idx) {
-        return _this._getColor(this.parentElement.__data__, idx);
-      })
-      .attr('d', this.lineGen);
+    // Draw the line (path)
+    line.append('path')
+    .datum(data.values)
+    .attr('class', function(d, idx){
+      var extraClass =  _this._getClasses(this.parentElement.__data__, idx);
+      return 'line ' + extraClass;
+    })
+    .attr('style', 'fill: none')
+    .style('stroke', function(d, idx) {
+      return _this._getColor(this.parentElement.__data__, idx);
+    })
+    .attr('d', this.lineGen);
 
+    // line-dash
+    if (options.lineDash) {
+      line.style('stroke-dasharray', ('3, 3'));
+    }
+
+    // Draw each point into the line (path)
     line.selectAll('.point')
       .data(data.values).enter()
       .append('circle')
