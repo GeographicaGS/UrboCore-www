@@ -27,7 +27,9 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     'click .table button.downloadButton':'_downloadCsv',
     'scroll': 'emitEvent'
   },
-  className: function(){return this.model.get('class') + ' table block'},
+  className: function(){
+    return 'table block ' + this.model.get('class');
+  },
   initialize: function(options){
     App.View.Widgets.Deprecated.Table.prototype.initialize.call(this,options);
     if(options.template){
@@ -58,7 +60,7 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     }});
   },
   render: function(){
-    
+
   	this.$el.html(this._template({'m':this.model, 'elements':this.collection.toJSON(), 'pageSize': this.collection.options.pageSize}));
     return this;
   },
