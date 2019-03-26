@@ -69,6 +69,7 @@ deps.JS = [
   srcJS + 'View/MenuPanelView.js',
   srcJS + 'View/FormView.js',
   srcJS + 'View/EmbedView.js',
+  srcJS + 'View/AutoCompleteView.js',
 
   // FILTERS
   srcJS + 'View/Filter/FilterView.js',
