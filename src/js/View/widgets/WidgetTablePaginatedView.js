@@ -24,13 +24,24 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
   _template: _.template( $('#widgets-widget_table_paginated_template').html() ),
   events: {
     'click .showMore': 'loadMore',
-    'click .table button.downloadButton':'_downloadCsv'
+    'click .table button.downloadButton':'_downloadCsv',
+    'scroll': 'emitEvent'
   },
+  className: function(){return this.model.get('class') + ' table block'},
   initialize: function(options){
     App.View.Widgets.Deprecated.Table.prototype.initialize.call(this,options);
     if(options.template){
       this._template = _.template(options.template);
     }
+  },
+  /**
+   * Just broadcasts the scroll event up the tree when this table element ($el) is being scrolled
+   * 
+   * @param {Object Event} event 
+   */
+  emitEvent: function(event){
+    this.trigger('table:'+ event.type, event);  //Broadcast the event named: table:scroll
+
   },
   loadMore: function(e){
     e.preventDefault();
@@ -47,6 +58,7 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     }});
   },
   render: function(){
+    
   	this.$el.html(this._template({'m':this.model, 'elements':this.collection.toJSON(), 'pageSize': this.collection.options.pageSize}));
     return this;
   },

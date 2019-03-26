@@ -144,5 +144,26 @@ App.View.Admin.ScopeList = Backbone.View.extend({
     App.mv().removeScope(scopeId, function() {
       _this.collection.fetch({ reset: true });
     });
+  },
+
+   /**
+   * Returns a alphabeticaly ordered list and filter
+   * the ones that are child from any other scope.
+   * 
+   * @param {Array<Object>} scopes - Scope list to filter and order
+   */
+  getOrderedScopes: function(scopes){
+
+    var orderedScopes = scopes.slice(0).filter(function (scope){
+      return !scope.parent_id || scope.parent_id === 'orphan';
+    });
+
+    orderedScopes.sort(function(a,b){
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    })
+
+    return orderedScopes;
   }
 });

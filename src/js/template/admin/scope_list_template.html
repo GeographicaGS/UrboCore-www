@@ -22,7 +22,7 @@
             <span></span>
         </div>
           <ul class="list">
-            <% _.each(scopes, function(scope){ %>
+            <% _.each(this.getOrderedScopes(scopes), function(scope){ %>
             <li class="">
               <div><%= scope.multi? '<img src="/img/SC_ic_ambito-contador.svg">':'' %></div>
               <div>
@@ -38,7 +38,7 @@
                   <span class="circular"><%= scope.users.length %></span>
                   <% _.each(scope.users, function(user,idx,list){ %>
                     <%= user.name + ' ' + user.surname %>
-                    <% idx >= (list.length - 1) ? ', ':'' %>
+                    <%= idx < (list.length - 1) ? ', ':'' %>
                   <% }) %>
                 <% } %>
               </div>

@@ -30,7 +30,7 @@ App.View.Admin.ScopeCreate = App.View.FormView.extend({
 
   template: _.template($('#admin-scope_create_template').html()),
   events: {
-    'change input[name=multi]': 'toggleMultiScope',
+    //'change input[name=multi]': 'toggleMultiScope', // Stop hidding create form inputs when multiscope
     'click .cancelButton': 'onCancelButton',
     'submit form': 'onSubmitButton',
   },
