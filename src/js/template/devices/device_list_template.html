@@ -1,7 +1,9 @@
 <div id="device_list">
-	<ul>
-		<%_.each(elements,function(e){%>
-			<li class="<%=e.id == m.id ? 'selected': ''%>"><a href="<%=m.scope%>/<%=m.entity%>/<%=e.id%>" jslink><%=e.name%></a></li>
-		<%})%>
-	</ul>
+  <ul>
+    <%_.each(elements,function(e){%>
+    <li class="<%=e.id == m.id ? 'selected': ''%>">
+      <a href="<%=m.scope%>/<%=m.entity%>/<%=e.id%>" jslink><%= e.name || e.id %></a>
+    </li>
+    <%})%>
+  </ul>
 </div>
