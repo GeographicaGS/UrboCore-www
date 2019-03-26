@@ -124,7 +124,10 @@ App.View.Widgets.Charts.FillBar = App.View.Widgets.Charts.Bar.extend({
     if(this.options.has('maxValue')){
       var tickValues = [];
       var divisor = this.options.get('formatYAxis') ? this.options.get('formatYAxis').numberOfValues ? this.options.get('formatYAxis').numberOfValues : 4 : 4;
-      var max = this.options.get('maxValue') >= this.data[0].values[0].y ? this.options.get('maxValue') : this.data[0].values[0].y;
+      var max = this.options.get('maxValue');
+      if (this.data && this.data.length > 0) {
+        max = this.options.get('maxValue') >= this.data[0].values[0].y ? this.options.get('maxValue') : this.data[0].values[0].y;
+      }
       for(var i = 0; i < max; i+=max/divisor) {
         tickValues.push(i);
       }
@@ -147,8 +150,8 @@ App.View.Widgets.Charts.FillBar = App.View.Widgets.Charts.Bar.extend({
     ;
 
     var svg = d3.select(this.$('.chart')[0]);
-    var barsWrapCTM = d3.select(this.$('.nv-barsWrap')[0]).node().getCTM();
     try {
+      var barsWrapCTM = d3.select(this.$('.nv-barsWrap')[0]).node().getCTM();
       var svgBBox = svg.node().getBBox();
   
       svg.insert('rect', '.nv-wrap')

@@ -162,7 +162,7 @@ App.Collection.DeviceTimeSerie = Backbone.Collection.extend({
 // App.Collection.DeviceTimeSerieChart = App.Collection.DeviceTimeSerie.extend({
 App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
-  initialize: function(models,options){
+  initialize: function(models, options){
     this.options = options;
   },
 
@@ -171,23 +171,32 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
   },
 
   fetch: function(options) {
-    options.type='POST';
-    options.contentType='application/json';
-    options.data=JSON.stringify({
+    options = _.defaults(options, {
+      contentType: 'application/json',
+      type: 'POST',
+    });
 
-      agg:_.map(this.options.agg, function(val){ return val }),
-      vars:this.options.vars,
+    // Change step option
+    var stepOption = options.data && options.data.time
+      ? options.data.time.step || this.options.step
+      : this.options.step;
+
+    options.data = JSON.stringify({
+      agg: _.map(this.options.agg, function (val) { return val }),
+      vars: this.options.vars,
       time: {
         start: App.ctx.getDateRange().start,
         finish: App.ctx.getDateRange().finish,
-        step: this.options.step
+        step: stepOption
       },
       findTimes : false,
       filters: {
-        condition:{id_entity__eq:this.options.id}
+        condition: { 
+          id_entity__eq: this.options.id
+        }
       }
-
     });
+
     return Backbone.Collection.prototype.fetch.call(this, options);
   },
 
