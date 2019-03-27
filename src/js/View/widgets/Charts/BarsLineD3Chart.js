@@ -363,7 +363,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           .text(_this.options.get('yAxisLabel')[0])
         ;
       }
-      
+
       if(this.yAxisDomain[1] && !this.options.get('hideYAxis2')){
         var yAxis2 = this._chart.svg.append('g')
           .attr('class', 'axis y-axis y-axis-2')
@@ -437,10 +437,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     this.data.forEach(function(data){
       switch (data.type) {
         case 'bar':
-          if(_this.options.get('stacked')){
-            _this._drawStackedBar(_this.stackedData);
-          }else{
-            _this._drawSimpleBar(data);
+          if(!_this._internalData.disabledList[data.realKey]){
+            if(_this.options.get('stacked')){
+              _this._drawStackedBar(_this.stackedData);
+            }else{
+              _this._drawSimpleBar(data);
+            }
           }
           break;
         case 'line':
@@ -489,7 +491,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('data-y', function(d, idx) { return d.y });
 
     this._chart.line.push(line);
-  },  
+  },
 
   _drawSimpleBar: function(data){
     var _this = this;
@@ -548,7 +550,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   /**
    * Draw points into the chart
-   * 
+   *
    * @param {Array} data - data to show
    */
   _drawPoint: function(data){
@@ -569,7 +571,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('cx', function(d, idx) { return _this.xScaleLine(idx); })
         .attr('cy', function(d, idx) { return _this.yScales[this.parentElement.__data__.yAxis - 1](d.y); })
         // Radius circle
-        .attr('r', function(d, idx) { 
+        .attr('r', function(d, idx) {
           var radiusFunction = _this.options.get('radiusFunction');
 
           if (typeof radiusFunction === 'function') {
