@@ -27,7 +27,7 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
   events: {
     'click .showMore': 'loadMore',
     'click .table button.downloadButton': '_downloadCsv',
-    'scroll': 'emitEvent'
+    'scroll': 'scrollHandler'
   },
 
   className: function () {
@@ -36,19 +36,25 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
 
   initialize: function (options) {
     App.View.Widgets.Deprecated.Table.prototype.initialize.call(this, options);
+    
     if (options.template) {
       this._template = _.template(options.template);
     }
   },
 
-  /**
-   * Just broadcasts the scroll event up the tree when this 
-   * table element ($el) is being scrolled
-   * 
-   * @param {Object Event} event 
-   */
-  emitEvent: function (event) {
-    this.trigger('table:' + event.type, event);  //Broadcast the event named: table:scroll
+  render: function () {
+    this.$el.html(this._template({ 
+      m: this.model, 
+      elements: this.collection.toJSON(), 
+      pageSize: this.collection.options.pageSize 
+    }));
+
+    // Set the scroll top bar
+    if (this.model.get('scrollTopBar') === true) {
+      this.setScrollTopBarDOM();
+    }
+
+    return this;
   },
 
   /**
@@ -78,13 +84,61 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     });
   },
 
-  render: function () {
-    this.$el.html(this._template({ 
-      m: this.model, 
-      elements: this.collection.toJSON(), 
-      pageSize: this.collection.options.pageSize 
-    }));
-
-    return this;
+  /**
+   * Just broadcasts the scroll event up the tree when this 
+   * table element ($el) is being scrolled
+   * 
+   * @param {Object Event} event 
+   */
+  scrollHandler: function (event) {
+    if (this.model.get('scrollTopBar') === true) {
+      this.setPositionScrollTopBar(event);
+    }
   },
+
+  /**
+   * Set the HTML into the DOM to draw the "scroll top bar"
+   */
+  setScrollTopBarDOM: function () {
+    // Insert before this table
+    this.$el.before('<div id="top-scroll-bar"><div></div></div>');
+    // scroll bar
+    var scrollTopBar = this.$el.prev();
+    // Registers table
+    var table = this.$el.find('table');
+    // Width like table content
+    if (table.length && scrollTopBar.length) {
+      // scroll bar content
+      var scrollTopBarContent = $(scrollTopBar[0]).find('> div');
+      $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
+      debugger;
+      $(scrollTopBarContent[0]).width($(table[0]).width());
+    }
+  },
+
+  /**
+   * Set position in Scroll Top Bar
+   * 
+   * @param {Object | Event} event
+   */
+  setPositionScrollTopBar: function (event) {
+    var scrollTopBar = this.$el.prev();
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    
+    // Move scrollTopBar
+    if (scrollTopBar.length) {
+      $(scrollTopBar[0]).scrollLeft(moveLeft);
+    }
+  },
+
+  /**
+   * handler scroll top bar
+   * 
+   * @param {Object | Event} event
+   */
+  handleTopScrollBar: function (event) {
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    this.$el.scrollLeft(moveLeft);
+  }
 });
+
