@@ -24,8 +24,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _sources: [],
   _currentBasemap: 'positron',
   _availableBasemaps: ['positron','dark','ortofoto'],
-  // map options
-  _mapOptions: {
+  // map default options
+  _mapDefaultOptions: {
     center: [0, 0],
     container: null,
     interactive: true,
@@ -53,6 +53,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   initialize: function(options) {
     this._options = options;
     // Merge user options with default map options
+    this._mapOptions = _.defaults({}, this._mapDefaultOptions);
     this._mapOptions = _.reduce(options, function (sumOptions, option, index) {
       if (sumOptions[index]) {
         sumOptions[index] = option;
