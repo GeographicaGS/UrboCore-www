@@ -21,33 +21,70 @@
 'use strict';
 
 App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
-  _template: _.template( $('#widgets-widget_table_paginated_template').html() ),
+  
+  _template: _.template($('#widgets-widget_table_paginated_template').html()),
+  
   events: {
     'click .showMore': 'loadMore',
-    'click .table button.downloadButton':'_downloadCsv'
+    'click .table button.downloadButton': '_downloadCsv',
+    'scroll': 'emitEvent'
   },
-  initialize: function(options){
-    App.View.Widgets.Deprecated.Table.prototype.initialize.call(this,options);
-    if(options.template){
+
+  className: function () {
+    return 'table block ' + this.model.get('class');
+  },
+
+  initialize: function (options) {
+    App.View.Widgets.Deprecated.Table.prototype.initialize.call(this, options);
+    if (options.template) {
       this._template = _.template(options.template);
     }
   },
-  loadMore: function(e){
-    e.preventDefault();
+
+  /**
+   * Just broadcasts the scroll event up the tree when this 
+   * table element ($el) is being scrolled
+   * 
+   * @param {Object Event} event 
+   */
+  emitEvent: function (event) {
+    this.trigger('table:' + event.type, event);  //Broadcast the event named: table:scroll
+  },
+
+  /**
+   * Load more registers in the table
+   * 
+   * @param {Object Event} event 
+   */
+  loadMore: function (event) {
+    event.preventDefault();
+
+    var expectedLength = this.collection.length + this.collection.options.pageSize;
+
     $('.table').addClass('loading');
     $('.button.showMore').addClass('loading');
-    var expectedLength = this.collection.length + this.collection.options.pageSize;
+
     this.collection.nextPage();
-    this.collection.fetch({remove: false, success: function(response){
-      $('.table').removeClass('loading');
-      if(response.length > expectedLength)
-        $('.button.showMore').removeClass('loading');
-      else
-        $('.button.showMore').addClass('hide').removeClass('loading');
-    }});
+    this.collection.fetch({
+      remove: false,
+      success: function (response) {
+        $('.table').removeClass('loading');
+        if (response.length > expectedLength) {
+          $('.button.showMore').removeClass('loading');
+        } else {
+          $('.button.showMore').addClass('hide').removeClass('loading');
+        }
+      }
+    });
   },
-  render: function(){
-  	this.$el.html(this._template({'m':this.model, 'elements':this.collection.toJSON(), 'pageSize': this.collection.options.pageSize}));
+
+  render: function () {
+    this.$el.html(this._template({ 
+      m: this.model, 
+      elements: this.collection.toJSON(), 
+      pageSize: this.collection.options.pageSize 
+    }));
+
     return this;
   },
 });
