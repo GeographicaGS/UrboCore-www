@@ -111,7 +111,6 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
       // scroll bar content
       var scrollTopBarContent = $(scrollTopBar[0]).find('> div');
       $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
-      debugger;
       $(scrollTopBarContent[0]).width($(table[0]).width());
     }
   },

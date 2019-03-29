@@ -100,7 +100,6 @@ App.View.AutoComplete = Backbone.View.extend({
    * @param {Object} event - triggered event
    */
   _selectTerm: function (event) {
-    debugger;
     this.$('#autocomplete').addClass('searching');
     this.$('#autocomplete-term').val($(event.currentTarget).text());
     this.$('#autocomplete-list').removeClass('active');
