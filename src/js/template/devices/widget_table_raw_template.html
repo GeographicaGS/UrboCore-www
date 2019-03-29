@@ -1,50 +1,59 @@
-<div class="table block <%=m.get('class')%>">
-	<% if (m.get('title')) { %>
-    <h3><%=m.get('title')%></h3>
-    <% if (m.get('dateRange')) { %>
-    <h4>(datos desde <span><%=App.formatDate(App.ctx.getDateRange().start)%></span> hasta <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)</h4>
-    <% } %>
+<!-- Title -->
+<% if (m.get('title')) { %>
+  <h3><%=m.get('title')%></h3>
+  <!-- Dates -->
+  <% if (m.get('dateRange')) { %>
+  <h4>
+    (datos desde 
+    <span><%=App.formatDate(App.ctx.getDateRange().start)%></span>
+    hasta 
+    <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)
+  </h4>
   <% } %>
-
-	<% if (m.get('downloadButton')) { %>
-		<button class="button empty">DESCARGAR CSV</button>
-	<% } %>
-   <table>
-      <tbody>
-         <tr>
-         	<%_.each(m.get('columns'),function(c){%>
-         		<th><%=__(c.formatTitle ? c.formatTitle(c.title):c.title)%></th>
-         	<%})%>
-         </tr>
-         <%_.each(elements,function(el){%>
-         		<tr>
-         			<%_.each(m.get('columns'),function(c){%>
-								<% if(c.title == 'Fecha'){ %>
-									<td>
-										<%= c.format ? c.format(el[c.key]) :el[c.key]%>
-									</td>
-								<% }else{ %>
-	         				<td>
-										<span class="variable"><%= c.format ? c.format(el.data[c.key]) : App.nbf(el.data[c.key]) %></span>
-										<span class="unit"> <%= c.unit ? c.unit : '' %></span>
-									</td>
-								<% } %>
-         			<%})%>
-         		</tr>
-     		 <%})%>
-      </tbody>
-   </table>
-	 <div class="center-block">
- 		<% if(elements.length >= pageSize ){ %>
- 		<a class="showMore button" href="#">
- 			<span class="loading">
- 				<svg  viewBox="-10 -10 220 220">
- 					<path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="0">
- 					</path>
- 				</svg>
- 			</span>
- 			<span class="label">Mostrar más</span>
- 		</a>
- 		<% } %>
- 	</div>
+<% } %>
+<!-- Download button -->
+<% if (m.get('downloadButton')) { %>
+<button class="button empty">
+  <%= __('Descargar CSV') %>
+</button>
+<% } %>
+<!-- Table -->
+<table>
+  <tbody>
+      <tr>
+      <% _.each(m.get('columns'), function (c) { %>
+        <th><%= __(c.formatTitle ? c.formatTitle(c.title) : c.title) %></th>
+      <%})%>
+      </tr>
+      <% _.each(elements, function (el) { %>
+        <tr>
+          <% _.each(m.get('columns'), function(c) { %>
+            <% if( c.title == 'Fecha') { %>
+              <td>
+                <%= c.format ? c.format(el[c.key]) :el[c.key]%>
+              </td>
+            <% } else { %>
+              <td>
+                <span class="variable"><%= c.format ? c.format(el.data[c.key]) : App.nbf(el.data[c.key]) %></span>
+                <span class="unit"> <%= c.unit ? c.unit : '' %></span>
+              </td>
+            <% } %>
+          <%})%>
+        </tr>
+      <%})%>
+  </tbody>
+</table>
+<!-- Loading and Some more -->
+<div class="center-block">
+  <% if (elements.length >= pageSize) { %>
+  <a class="showMore button" href="#">
+    <span class="loading">
+      <svg  viewBox="-10 -10 220 220">
+        <path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z" stroke-dashoffset="0">
+        </path>
+      </svg>
+    </span>
+    <span class="label"><%= __('Mostrar más') %></span>
+  </a>
+  <% } %>
 </div>
