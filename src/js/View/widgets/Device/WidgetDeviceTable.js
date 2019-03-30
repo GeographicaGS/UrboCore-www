@@ -68,7 +68,8 @@ App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
           title: '',
           downloadButton: false,
           class: 'device',
-          columns: columns
+          columns: columns,
+          scrollTopBar: false
         },
       )
     );
@@ -96,8 +97,8 @@ App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
 });
 
 App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRawTable.extend({
-  render: function(){
-    var columns = _.map(this._vars, function(el){
+  render: function () {
+    var columns = _.map(this._vars, function (el) {
       return {
         key: el.id,
         title: el.name,
@@ -107,26 +108,26 @@ App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRaw
     columns.unshift({
       key: 'time',
       title: 'Fecha',
-      format: function(d){return App.formatDateTime(d);}
+      format: function (d) { return App.formatDateTime(d); }
     });
     this.tableModel = new Backbone.Model({
-      'title':'',
-      'downloadButton':false,
-      'class':'device',
+      'title': '',
+      'downloadButton': false,
+      'class': 'device',
       'columns': columns
     });
     var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')));
-    var entityVariables = _.filter(metadata, function(el){
+    var entityVariables = _.filter(metadata, function (el) {
       return el.units;
     });
-    entityVariables = _.map(entityVariables, function(el){ return el.id});
+    entityVariables = _.map(entityVariables, function (el) { return el.id });
     var varAgg = [];
-    for (var i = 0; i<entityVariables.length; i++) {
-      var agg = _.findWhere(metadata, {id: entityVariables[i]}).var_agg[0] || '';
+    for (var i = 0; i < entityVariables.length; i++) {
+      var agg = _.findWhere(metadata, { id: entityVariables[i] }).var_agg[0] || '';
       varAgg.push(agg.toLowerCase());
     }
-    this.tableCollection = new App.Collection.DeviceTimeSerie(null,{
-      scope:this.model.get('scope'),
+    this.tableCollection = new App.Collection.DeviceTimeSerie(null, {
+      scope: this.model.get('scope'),
       entity: this.model.get('entity'),
       device: this.model.get('id'),
       vars: entityVariables,
@@ -135,8 +136,8 @@ App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRaw
     });
     this._tableView = new App.View.Widgets.TablePaginated({
       'template': $('#devices-widget_table_raw_template').html(),
-      'model':this.tableModel,
-      'collection':this.tableCollection
+      'model': this.tableModel,
+      'collection': this.tableCollection
     });
     this.$el.html(this._tableView.$el);
 
