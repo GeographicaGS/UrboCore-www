@@ -299,6 +299,7 @@ App.View.Panels.Base = App.View.Container.extend({
   },
 
   onClose: function() {
+    App.View.Container.prototype.onClose.call(this);
     if (this.filterSpatialView) {
       this.filterSpatialView.close()
     };
