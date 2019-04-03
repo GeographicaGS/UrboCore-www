@@ -253,9 +253,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     if (this.options.get('hideYAxis2')) {
       this._chart.margin.right = 40;
     }
-    this._chart.w = this.$el.innerWidth() - (this._chart.margin.left + this._chart.margin.right),
-    // this._chart.h = this.$el.innerHeight() - (this._chart.margin.top + this._chart.margin.bottom);
-    this._chart.h = 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
+    this._chart.w = this.$el.innerWidth() > 0
+      ? this.$el.innerWidth() - (this._chart.margin.left + this._chart.margin.right)
+      : 324 - (this._chart.margin.left + this._chart.margin.right);
+    this._chart.h = this.$el.innerHeight() > 0
+      ? this.$el.innerHeight() - (this._chart.margin.top + this._chart.margin.bottom)
+      : 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
 
     var _this = this;
 
