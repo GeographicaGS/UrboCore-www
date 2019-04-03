@@ -100,10 +100,12 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
    * Set the HTML into the DOM to draw the "scroll top bar"
    */
   setScrollTopBarDOM: function () {
-    // Insert before this table
-    this.$el.before('<div id="top-scroll-bar"><div></div></div>');
     // scroll bar
-    var scrollTopBar = this.$el.prev();
+    var scrollTopBar = this.$el.prev('#top-scroll-bar');
+    // Insert before this table
+    if (scrollTopBar.length === 0) {
+      this.$el.before('<div id="top-scroll-bar"><div></div></div>');
+    }
     // Registers table
     var table = this.$el.find('table');
     // Width like table content

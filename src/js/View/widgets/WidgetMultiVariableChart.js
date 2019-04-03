@@ -284,6 +284,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         s.value = _.find(model.get('values'), function(v){
                     return v.x.toString() == data.value.toString();
                   }).realY;
+        // Change value in tooltip
+        if (_this._multiVariableModel.has('toolTipValueFunction')) {
+          s.value = typeof _this._multiVariableModel.get('toolTipValueFunction') === 'function'
+            ? _this._multiVariableModel.get('toolTipValueFunction')(s.realKey, s.value)
+            : s.value;
+        }
       });
       var utils = {
         xAxisFunction: function(d){ return App.formatDateTime(d); }
