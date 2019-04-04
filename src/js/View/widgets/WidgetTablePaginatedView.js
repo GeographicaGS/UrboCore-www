@@ -114,7 +114,7 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     if (table.length && scrollTopBar.length) {
       $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
       // scroll bar content width
-      $(scrollTopBar[0]).children().width($(table[0]).width());
+      $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
     }
   },
 
