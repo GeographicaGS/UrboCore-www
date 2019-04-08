@@ -105,15 +105,16 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     // Insert before this table
     if (scrollTopBar.length === 0) {
       this.$el.before('<div id="top-scroll-bar"><div></div></div>');
+      scrollTopBar = this.$el.prev('#top-scroll-bar');
     }
     // Registers table
     var table = this.$el.find('table');
+
     // Width like table content
     if (table.length && scrollTopBar.length) {
-      // scroll bar content
-      var scrollTopBarContent = $(scrollTopBar[0]).find('> div');
       $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
-      $(scrollTopBarContent[0]).width($(table[0]).width());
+      // scroll bar content width
+      $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
     }
   },
 
