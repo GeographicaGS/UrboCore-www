@@ -51,19 +51,31 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   *     - noDataMessage (String, optional) Sets a custom message to show when there is no data to draw
   *     - currentStep (Model, optional) Enable steps control and sets the current Step. This model needs a 'step' attribute.
   *     - hideStepControl (Boolean, optional) Force disable steps control
+  *     - disabledList (Array with keys, optional) Hide in the beginning some keys
   */
   initialize: function (options) {
     this.options = options.opts || new App.Model.BaseChartConfigModel({});
 
     this.collection = options.data;
-    this.listenTo(this.collection,"reset",this._drawChart);
+    // When the collection changes the chart will be re-drawing
+    this.listenTo(this.collection, 'reset', this._drawChart);
 
     this._initAggs();
 
-    this._internalData = {
-      disabledList: {},
-      elementsDisabled: 0
-    };
+    // Initial disabled keys
+    if (this.options.get('disabledList')) {
+      var currentDisabledList = this.options.get('disabledList');
+      this._internalData = {
+        disabledList: {},
+        elementsDisabled: 0
+      };
+      
+      this._internalData = _.reduce(currentDisabledList, function (sumDisabledList, element) {
+        sumDisabledList.disabledList[element] = true;
+        sumDisabledList.elementsDisabled ++;
+        return sumDisabledList;
+      }, this._internalData);
+    }
 
     // Allow overwrite the different templates
     if (this.options.get('template')) {

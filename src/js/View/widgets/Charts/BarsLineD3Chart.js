@@ -732,12 +732,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }
   },
 
-  _initLegend: function(){
-    if(!this.options.get('hideLegend')){
+  _initLegend: function() {
+    if (!this.options.get('hideLegend')) {
       this.$('.var_list').html(this._list_variable_template({
         colors: this.options.get('colors'),
         classes: this.options.get('classes'),
-        data : this.data,
+        data: this.data,
         disabledList: this._internalData.disabledList,
         aggregationInfo: this._aggregationInfo
       }));
@@ -805,7 +805,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     };
 
     var that = this;
-    this.data.forEach(function(el){
+    var keysConfig = that.options.get('keysConfig');
+    this.data.forEach( function(el) {
       if(!that._internalData.disabledList[el.realKey]){
         data.series.push({
           value: typeof that.options.get('toolTipValueFunction') === 'function'
@@ -815,10 +816,14 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           realKey: el.realKey,
           color: that._getColor(el, serie),
           cssClass: that.options.has('classes') ? that.options.get('classes')(el): '',
-          yAxisFunction: that.options.get('yAxisFunction')[el.yAxis - 1]
+          yAxisFunction: that.options.get('yAxisFunction')[el.yAxis - 1],
+          type: keysConfig[el.realKey] && keysConfig[el.realKey].type
+            ? keysConfig[el.realKey].type
+            : 'line'
         });
       }
     });
+    // Draw the tooltip
     $tooltip.html(this._template_tooltip({
       data: data,
       utils: {
