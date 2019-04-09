@@ -38,17 +38,7 @@ App.Collection.Post = App.Collection.Base.extend({
     options.type = 'POST';
     options.contentType = 'application/json';
 
-    // TODO: Fix Timeserie doesn't refresh BBox
-    // var params = options.data || this.options.data;
-    // if(typeof params.filters == 'undefined'){ params.data.filters = {}; }
-    //
-    // if(App.ctx.get('bbox_status') && App.ctx.get('bbox')){
-    //   params.filters.bbox = App.ctx.get('bbox');
-    // }
-    // options.data=JSON.stringify(params);
-
     options.data = JSON.stringify(_.defaults(options.data || {}, this.options.data));
-    // options.data = JSON.stringify(options.data || this.options.data);
 
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
@@ -60,18 +50,30 @@ App.Collection.PublishedWidget = App.Collection.Base.extend({
 });
 
 App.Collection.MapsCollection = App.Collection.Post.extend({
-  url: function (options) {
+  url: function () {
     // To fix the problem with "type" param (now or historic) in the collections
     // The parameter "type" is used to do request (POST, PUT, DELETE) and here to make the URL (bad idea)
     var typeHistoric = this.options.typeHistoric
       ? this.options.typeHistoric
       : this.options.type;
 
-    return App.config.api_url + '/' + this.options.scope + '/maps/' + this.options.entity + '/' + typeHistoric;
+    return App.config.api_url
+      + '/' + this.options.scope
+      + '/maps/'
+      + this.options.entity
+      + '/' + typeHistoric;
   },
 
   fetch: function (options) {
-    options.data.filters.conditions = options.data.filters.conditions || {};
+    // Default values
+    options = _.defaults(options, {
+      data: {
+        filters: {
+          conditions: {},
+          condition: {}
+        }
+      }
+    });
     return App.Collection.Post.prototype.fetch.call(this, options);
   }
 });

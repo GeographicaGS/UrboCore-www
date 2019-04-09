@@ -117,12 +117,24 @@ App.Model.TilesModel = Backbone.Model.extend({
       this.options = options;
     },
   
-    url: function(options) {
-      return App.config.api_url + "/" + this.options.scope + "/maps/" + this.options.entity + "/" + this.options.type; 
+    url: function() {
+      return App.config.api_url
+        + '/' + this.options.scope
+        + '/maps/'
+        + this.options.entity
+        + '/' + this.options.type; 
     },
   
     fetch: function(options) {
-      options.data.filters.conditions = options.data.filters.conditions || {};
+      // Default values
+      options = _.defaults(options, {
+        data: {
+          filters: {
+            conditions: {},
+            condition: {}
+          }
+        }
+      });
       return App.Model.Post.prototype.fetch.call(this, options);
     }
   });

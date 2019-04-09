@@ -24,7 +24,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
   _template: _.template( $('#widgets-widget_base_template').html() ),
 
-  initialize: function(options){
+  initialize: function(options) {
     this.options = options;
 
     this.model = new App.Model.Widgets.Base({
@@ -85,7 +85,6 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     this.subviews = [];
     this.filterables = [];
-
   },
 
   events: {
@@ -259,17 +258,22 @@ App.View.Widgets.Base = Backbone.View.extend({
     return this;
   },
 
-  render: function(){
+  render: function() {
     this.$el.html(this._template(this.model.toJSON()));
 
     this.updateFilters();
 
-    for (var i in this.subviews)
+    for (var i in this.subviews) {
       this.$('.widget_content').append(this.subviews[i].render().$el);
+    }
     
     if (this.model.get('footerTemplate')) {
       this.$('.widget_footer').append(this.model.get('footerTemplate'))
     }
+
+    // The event render is launched
+    this.trigger('render');
+
     return this;
   },
 
