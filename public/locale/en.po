@@ -2993,7 +2993,7 @@ msgid "Toneladas de basura"
 msgstr "Waste tons"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:9
-msgid "Contenedores de recogida inmediata por desbordamiento"
+msgid "Contenedores en peligro de desbordamiento"
 msgstr "Containers to be emptied immediately due to overload"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:45
