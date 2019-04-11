@@ -227,54 +227,43 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 });
 
 App.Collection.DeviceRaw = App.Collection.Post.extend({
-  // initialize: function(models,options) {
-  //   this.options = options;
-  //   //this.options.page = this.options.page || 0;
-  // },
 
   url: function(){
-    return App.config.api_url + '/' + this.options.scope +'/devices/' + this.options.entity + '/' + this.options.device + '/raw';
+    return App.config.api_url
+      + '/' + this.options.scope
+      + '/devices'
+      + '/' + this.options.entity
+      + '/' + this.options.device
+      + '/raw';
   },
 
   fetch: function(options) {
-    if(!options || !options.data){
-      options = options || {};
-      options.data= {};
+    if (typeof options === 'undefined') {
+      var options = {}
     }
 
-    if(this.options.format)
-    options['data']['format'] = this.options.format;
+    // Default options
+    options = _.defaults(options, {
+      data: {}
+    });
 
-    options.data.time = App.ctx.getDateRange();
-    options.data.vars = this.options.variables;
+    // Options "format"
+    if (typeof options.format === 'undefined' && this.options.format) {
+      options.data.format = this.options.format;
+    }
 
-    // if(App.ctx.get('bbox'))
-    //   options.data.bbox = App.ctx.get('bbox').join();
+    // Options "time"
+    if (typeof options.data.time === 'undefined') {
+      options.data.time = App.ctx.getDateRange();
+    }
 
-    // if(!options.dataType || options.dataType !== "text"){
-    //   if(this.options.page !== undefined)
-    //     options.data.page = this.options.page;
-    //   if(this.options.pageSize)
-    //    options.data.pageSize = this.options.pageSize;
-    // }
-
-    // if(this.options.agg){
-    //   options.data.agg = _.map(this.options.agg,function(v,k){ return v.toLowerCase(); }).join();
-    //   if(this.options.variables)
-    //     options.data.vars = _.map(this.options.variables,function(v,k){ return v.id; }).join();
-    //   else
-    //     options.data.vars = _.map(this.options.variables,function(v,k){ return k; }).join();
-    // }
-
+    // Options "vars"
+    if (typeof options.data.vars === 'undefined' && this.options.variables) {
+      options.data.vars = this.options.variables;
+    }
 
     return App.Collection.Post.prototype.fetch.call(this, options);
-  },
+  }
 
-  // nextPage: function(){
-  //   this.options.page += 1;
-  // },
-  //
-  // resetPage: function(){
-  //   this.options.page = 0;
-  // }
 });
+
