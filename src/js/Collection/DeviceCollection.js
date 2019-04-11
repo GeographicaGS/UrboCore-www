@@ -228,7 +228,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
 App.Collection.DeviceRaw = App.Collection.Post.extend({
 
-  url: function(){
+  url: function() {
     return App.config.api_url
       + '/' + this.options.scope
       + '/devices'
@@ -248,7 +248,7 @@ App.Collection.DeviceRaw = App.Collection.Post.extend({
     });
 
     // Options "format"
-    if (typeof options.format === 'undefined' && this.options.format) {
+    if (typeof options.data.format === 'undefined' && this.options.format) {
       options.data.format = this.options.format;
     }
 
