@@ -24,8 +24,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _sources: [],
   _currentBasemap: 'positron',
   _availableBasemaps: ['positron','dark','ortofoto'],
-  _center: [0,0],
-  _zoom: 12,
+  // map default options
+  _mapDefaultOptions: {
+    center: [0, 0],
+    container: null,
+    interactive: true,
+    minZoom: 0,
+    maxZoom: 22,
+    style: null,
+    zoom: 12,
+  },
   _map: {},
   _layers: [],
   _is3dActive: false,
@@ -39,16 +47,23 @@ App.View.Map.MapboxView = Backbone.View.extend({
   events: {
     'click .toggle-3d': 'toggle3d',
     'click .control.in': 'zoom',
-    'click .control.out': 'zoom',    
+    'click .control.out': 'zoom',
   },
 
   initialize: function(options) {
     this._options = options;
+    // Merge user options with default map options
+    this._mapOptions = _.defaults({}, this._mapDefaultOptions);
+    this._mapOptions = _.reduce(options, function (sumOptions, option, index) {
+      if (sumOptions[index]) {
+        sumOptions[index] = option;
+      }
+      return sumOptions;
+    }, this._mapOptions);
+
     this._currentBasemap = options.defaultBasemap || 'positron';
     this._availableBasemaps = options.availableBasemaps || ['positron','dark','ortofoto'];
     this._sprites = options.sprites;
-    this._center = options.center || [0, 0];
-    this._zoom = options.zoom || 12;
     this.$el[0].id = "map";
     this.legend = new App.View.Map.MapboxLegendView([], this);
     this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this._availableBasemaps, this);
@@ -81,12 +96,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
       // TODO: move token to settings
       mapboxgl.accessToken = 'pk.eyJ1Ijoiam9zbW9yc290IiwiYSI6ImNqYXBvcW9oNjVlaDAyeHIxejdtbmdvbXIifQ.a3H7tK8uHIaXbU7K34Q1RA';
       this._preloadBasemaps().then(function() {
-        this._map = new mapboxgl.Map({
-          container: this.$el[0],
-          style: this.basemaps['positron'],
-          center: this._center,
-          zoom: this._zoom,
-        });
+        this._map = new mapboxgl.Map(
+          _.defaults(
+            {
+              container: this.$el[0],
+              style: this.basemaps['positron'],
+            },
+            this._mapOptions)
+        );
         this._map
           .on('load', this.loaded.bind(this))
           .on('moveend',this.bboxChanged.bind(this))

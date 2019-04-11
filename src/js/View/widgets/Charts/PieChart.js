@@ -114,7 +114,7 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     var svg = d3.select(this.$('.chart')[0]);
     var svgNode = svg.node();
     var clientSize = svgNode.getClientRects();
-    if (clientSize) {
+    if (clientSize.length > 0) {
       // Draw icon
       if (this.options.get('img')) {
         var logoSize = { height: 32, width: 32 };
@@ -141,7 +141,10 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
         var total = _.reduce(this.data, function (sum, elem) { return sum + elem.y; }, 0);
         var valueFunc = this.options.get('yAxisFunction') ? this.options.get('yAxisFunction') : App.nbf;
 
-        var textEl = svg.insert('foreignObject', '.nv-wrap')
+        // var labelTotal
+        var labelTotal = svg.select('p.extraContent span');
+        if (labelTotal[0][0] === null) {
+          var textEl = svg.insert('foreignObject', '.nv-wrap')
           .attr('x', clientSize[0].width / 4)
           .attr('y', clientSize[0].height / 2)
           .attr('width', clientSize[0].width / 2)
@@ -152,8 +155,12 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
           .attr('class', 'extraContent')
           .html(__('Total') + ' ');
 
-        textEl.append('xhtml:span')
-          .html(valueFunc(total));
+          textEl
+            .append('xhtml:span')
+            .html(valueFunc(total));
+        } else {
+          labelTotal.html(valueFunc(total));
+        }
       }
     }
   }

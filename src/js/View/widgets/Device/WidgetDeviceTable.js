@@ -20,69 +20,85 @@
 
 App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
 
-  initialize: function(options) {
+  initialize: function (options) {
     this._scope = options.scope;
     this._vars = options.vars;
+    // Options to draw the table
+    this._tableSetup = options.tableSetup || {};
     this.render();
   },
 
-  onClose: function(){
+  onClose: function () {
 
-    if(this._tableView)
+    if (this._tableView)
       this._tableView.close();
 
     this.stopListening();
   },
 
-  render: function(){
-    var columns = _.map(this._vars, function(el){
+  render: function () {
+    var columns = _.map(this._vars, function (el) {
       return {
         key: el.id,
         title: el.name,
-        unit: el.units
+        unit: el.units,
+        format: typeof el.format === 'function'
+          ? el.format
+          : false
       }
     });
+
     columns.unshift({
       key: 'time',
       title: 'Fecha',
-      format: function(d){return App.formatDateTime(d, 'DD/MM/YYYY HH:mm:ss');}
-    });
-    _.each(columns, function(el){
-      if(['dumps.container.datelastemptying'].indexOf(el.key) !== -1) // It is using an array to let you add more items when needed
-        el.format = function(d){return App.formatDateTime(d);}
-    });
-    this.tableModel = new Backbone.Model({
-      'title':'',
-      'downloadButton':false,
-      'class':'device',
-      'columns': columns
+      format: function (d) { return App.formatDateTime(d, 'DD/MM/YYYY HH:mm:ss'); }
     });
 
-    this.tableCollection = new App.Collection.DeviceRaw(null,{
-      scope:this.model.get('scope'),
+    _.each(columns, function (el) {
+      if (['dumps.container.datelastemptying'].indexOf(el.key) !== -1) // It is using an array to let you add more items when needed
+        el.format = function (d) { return App.formatDateTime(d); }
+    });
+
+    this.tableModel = new Backbone.Model(
+      _.defaults(
+        // user's options
+        this._tableSetup,
+        // default options
+        {
+          title: '',
+          downloadButton: false,
+          class: 'device',
+          columns: columns,
+          scrollTopBar: false
+        },
+      )
+    );
+
+    this.tableCollection = new App.Collection.DeviceRaw(null, {
+      scope: this.model.get('scope'),
       entity: this.model.get('entity'),
       device: this.model.get('id'),
-      variables: _.pluck(this._vars,'id')
+      variables: _.pluck(this._vars, 'id')
     });
 
     this._tableView = new App.View.Widgets.TablePaginated({
-      'template': $('#devices-widget_table_raw_template').html(),
-      'model':this.tableModel,
-      'collection':this.tableCollection
+      template: $('#devices-widget_table_raw_template').html(),
+      model: this.tableModel,
+      collection: this.tableCollection
     });
     this.$el.html(this._tableView.$el);
 
     return this;
   },
 
-  onContextChange: function(){
-    this.tableCollection.fetch({'reset':true, data: this.tableFilter});
+  onContextChange: function () {
+    this.tableCollection.fetch({ 'reset': true, data: this.tableFilter });
   },
 });
 
 App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRawTable.extend({
-  render: function(){
-    var columns = _.map(this._vars, function(el){
+  render: function () {
+    var columns = _.map(this._vars, function (el) {
       return {
         key: el.id,
         title: el.name,
@@ -92,26 +108,26 @@ App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRaw
     columns.unshift({
       key: 'time',
       title: 'Fecha',
-      format: function(d){return App.formatDateTime(d);}
+      format: function (d) { return App.formatDateTime(d); }
     });
     this.tableModel = new Backbone.Model({
-      'title':'',
-      'downloadButton':false,
-      'class':'device',
+      'title': '',
+      'downloadButton': false,
+      'class': 'device',
       'columns': columns
     });
     var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')));
-    var entityVariables = _.filter(metadata, function(el){
+    var entityVariables = _.filter(metadata, function (el) {
       return el.units;
     });
-    entityVariables = _.map(entityVariables, function(el){ return el.id});
+    entityVariables = _.map(entityVariables, function (el) { return el.id });
     var varAgg = [];
-    for (var i = 0; i<entityVariables.length; i++) {
-      var agg = _.findWhere(metadata, {id: entityVariables[i]}).var_agg[0] || '';
+    for (var i = 0; i < entityVariables.length; i++) {
+      var agg = _.findWhere(metadata, { id: entityVariables[i] }).var_agg[0] || '';
       varAgg.push(agg.toLowerCase());
     }
-    this.tableCollection = new App.Collection.DeviceTimeSerie(null,{
-      scope:this.model.get('scope'),
+    this.tableCollection = new App.Collection.DeviceTimeSerie(null, {
+      scope: this.model.get('scope'),
       entity: this.model.get('entity'),
       device: this.model.get('id'),
       vars: entityVariables,
@@ -120,8 +136,8 @@ App.View.Widgets.Device.DeviceTimeSerieTable = App.View.Widgets.Device.DeviceRaw
     });
     this._tableView = new App.View.Widgets.TablePaginated({
       'template': $('#devices-widget_table_raw_template').html(),
-      'model':this.tableModel,
-      'collection':this.tableCollection
+      'model': this.tableModel,
+      'collection': this.tableCollection
     });
     this.$el.html(this._tableView.$el);
 

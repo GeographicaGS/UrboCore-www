@@ -133,21 +133,16 @@ App.ini = function() {
     window.document.title = __(App.config.title || 'Urbo - Solution for Smart Cities');
     App._updateFavicon();
     $('body').attr('layout', App.config.layout);
-    // Detect browser here
-    if(!this.isSupportedBrowser()){
-      window.location.href = "/browser_error.html";
+    this._filters = {};
+    this.$main = $('main');
+    this.ctx = new App.Model.Context();
+    this.highRangeCtx = new App.Model.Context();
+    this._metadata = new App.Metadata();
+
+    if (window.location.pathname.indexOf('/embed/v1/') === -1) {
+      this._standardIni();
     } else {
-      this._filters = {};
-      this.$main = $('main');
-      this.ctx = new App.Model.Context();
-      this.highRangeCtx = new App.Model.Context();
-      this._metadata = new App.Metadata();
-  
-      if (window.location.pathname.indexOf('/embed/v1/') === -1) {
-        this._standardIni();
-      } else {
-        this._embedIni();
-      }
+      this._embedIni();
     }
   }
 };
@@ -544,51 +539,6 @@ App.reduceString = function(value) {
   }
   return value;
 }
-
-/**
- * Check if the browser used by client is supported by the APP
- * 
- * @returns {Boolean} - is browser supported?
- */
-App.isSupportedBrowser = function(){
-  var browser = App.getBrowser();
-
-  if (
-    ((browser[0]=="IE" || browser[0] =="MSIE") && !isNaN(parseFloat(browser[1])) && parseFloat(browser[1]) < 11.0)
-    || (browser[0]=="Firefox" &&  !isNaN(parseFloat(browser[1])) && parseFloat(browser[1]) < 38.0)
-    || (browser[0]=="Safari" && !isNaN(parseFloat(browser[2])) && parseFloat(browser[2]) < 9.0)
-  ) {
-    return false;
-  }
-
-  return true;
-};
-
-/**
- * Get the data about the browser used by the user
- * 
- * @returns {Array} - Browser data
- */
-App.getBrowser = function(){
-  var ua = navigator.userAgent;
-  var tem;
-  var M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*([\d\.]+)/i) || [];
-
-  if(/trident/i.test(M[1])){
-    tem = /\brv[ :]+(\d+(\.\d+)?)/g.exec(ua) || [];
-    return 'IE '+(tem[1] || '');
-  }
-
-  M = M[2]
-    ? [M[1], M[2]]
-    : [navigator.appName, navigator.appVersion, '-?'];
-
-  if ((tem= ua.match(/version\/([\.\d]+)/i))!= null) {
-    M[2]= tem[1];
-  }
-
-  return M;
-};
 
 /**
  * Differents format to lib d3 (stats)

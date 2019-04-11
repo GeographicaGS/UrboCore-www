@@ -2957,7 +2957,7 @@ msgid "Toneladas de basura"
 msgstr "Tonnellate di rifiuti"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:9
-msgid "Contenedores de recogida inmediata por desbordamiento"
+msgid "Contenedores en peligro de desbordamiento"
 msgstr "Contenitori da svuotare immediatamente per sovraccaricamento"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:45
@@ -6479,7 +6479,7 @@ msgid "Toneladas de basura"
 msgstr "Tonnellate di rifiuti"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:9
-msgid "Contenedores de recogida inmediata por desbordamiento"
+msgid "Contenedores en peligro de desbordamiento"
 msgstr "Contenitori da svuotare immediatamente per sovraccaricamento"
 
 #: View/widgets/Dumps/WidgetContainerOverflow.js:45

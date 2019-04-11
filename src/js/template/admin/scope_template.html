@@ -14,7 +14,6 @@
             <input id="name" type="text" value="<%= scope.name %>" readonly>
             <div class="edit"></div>
           </div>
-        <% if(!scope.multi){ %>
           <div class="row">
             <label for="lat"><%= __('Latitud') %></label>
             <input id="lat" type="number" value="<%= scope.location[0] %>" readonly>
@@ -35,7 +34,7 @@
             <input id="dbschema" type="text" value="<%= scope.dbschema %>" readonly/>
             <div class="edit"></div>
           </div>
-          <% }else{ %>
+          <% if(scope.multi) { %>
             <div class="row">
               <label for="scopes"></label>
               <p>

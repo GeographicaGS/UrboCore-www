@@ -1,25 +1,34 @@
 <div class="popup_stackbar popup_fixed">
-  <% if(data.value){ %>
+  <% if (data.value) { %>
     <h3><%= utils.xAxisFunction ? utils.xAxisFunction(data.value) : data.value %></h3>
   <% } %>
-	<% _.each(data.series, function(el){	%>
-		<div class="element">
-			<% if(el.color){ %><div class="icon circle color <%= el.cssClass %>" style="background-color: <%= el.color %>; border-color: <%= el.color %>"></div><% } %>
+  <% _.each(data.series, function (el) { 
+      // Styles to legend
+      var styleLegend = 'background-color:' + el.color + ';border-color: ' + el.color;
+      if (el.type === 'line-dash') {
+        styleLegend = 'background-color: transparent;border: 2px dotted ' + el.color;
+      }
+    %>
+    <div class="element">
+      <% if (el.color) { %>
+        <div class="icon circle color <%= el.cssClass %>" 
+             style="<%= styleLegend %>"></div>
+      <% } %>
       <span class="value">
-        <% if(el.yAxisFunction){ %>
+        <% if (el.yAxisFunction) { %>
           <%= el.yAxisFunction(el.value) %>
-        <% }else if (utils.yAxisFunction){ %>
+        <% } else if (utils.yAxisFunction) { %>
           <%= utils.yAxisFunction(el.value) %>
-        <% }else{ %>
+        <% } else { %>
           <%= App.nbf(el.value) %> <%= (el.realKey && App.mv().getVariable(el.realKey)) ? App.mv().getVariable(el.realKey).get('units') : '' %>
         <% } %>
       </span>
-      <% if(utils.total){ %>
+      <% if (utils.total) { %>
       <span class="value_extra">(<%= App.nbf(el.value / utils.total * 100) %>%)</span>
       <% } %>
       <span class="key">
         <%= el.key ? __(el.key) : '' %>
       </span>
-		</div>
-	<%})%>
+    </div>
+  <%})%>
 </div>

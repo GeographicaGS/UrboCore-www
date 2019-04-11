@@ -20,28 +20,37 @@
 
 'use strict';
 
+/**
+ * A view to show a devices list to choose next the device name into
+ * the device view
+ */
 App.View.DeviceList = Backbone.View.extend({
-  _template: _.template( $('#devices-device_list_template').html() ),
+  _template: _.template($('#devices-device_list_template').html()),
 
-  initialize: function(options) {
+  initialize: function (options) {
+    // model and options
+    this.model = options.model;
+    if (options.template) {
+      this._template = options.template;
+    }
 
-  this.model = options.model;
-  if (options.template) {
-    this._template = options.template;
-  }
-	this._collection = new Backbone.Collection();
-	this._collection.url = App.config.api_url + '/' + this.model.get('scope') +'/entities/' + this.model.get('entity') + '/elements';
-	this.listenTo(this._collection,'reset',this.render);
-	this._collection.fetch({'reset':true});
-
+    // Collection with the data to show
+    this._collection = new Backbone.Collection();
+    this._collection.url = App.config.api_url + '/' + this.model.get('scope') + '/entities/' + this.model.get('entity') + '/elements';
+    this.listenTo(this._collection, 'reset', this.render);
+    this._collection.fetch({ 'reset': true });
   },
 
-  onClose: function(){
+  onClose: function () {
     this.stopListening();
   },
 
-  render: function(){
-  	this.$el.html(this._template({'elements':this._collection.toJSON(), 'm':this.model.toJSON()}));
+  render: function () {
+    this.$el.html(this._template({
+      elements: this._collection.toJSON(),
+      m: this.model.toJSON() 
+    }));
+
     return this;
   }
 

@@ -40,6 +40,7 @@
 *     - noDataMessage (String, optional) Sets a custom message to show when there is no data to draw
 *     - currentStep (Model, optional) Enable steps control and sets the current Step. This model needs a 'step' attribute.
 *     - hideStepControl (Boolean, optional) Force disable steps control
+*     - disabledList (Array with keys, optional) Hide in the beginning some keys
 */
 App.Model.BaseChartConfigModel = Backbone.Model.extend({
   defaults: {
@@ -60,6 +61,7 @@ App.Model.BaseChartConfigModel = Backbone.Model.extend({
     groupSpacing: 0.1,
     // maxColors: 3,
     noDataMessage: __('No hay datos disponibles'),
-    hideStepControl: false
+    hideStepControl: false,
+    disabledList: []
   }
 });

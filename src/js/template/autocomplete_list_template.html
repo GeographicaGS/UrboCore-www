@@ -1,0 +1,9 @@
+<% _.each(elements, function(element) { %>
+  <li
+  <% _.each(element, function(value, key) { %>
+    <%= 'data-' + key + '="' + value + '"' %>
+  <% }) %>
+  >
+    <%= element.name %>
+  </li>
+<% }) %>

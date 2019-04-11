@@ -20,13 +20,12 @@
 
 'use strict';
 
-App.View.Widgets.Table =  Backbone.View.extend({
+App.View.Widgets.Table = Backbone.View.extend({
 
-  _template: _.template( $('#base_table_template').html() ),
+  _template: _.template($('#base_table_template').html()),
 
-  initialize: function(options) {
-
-    this.options = _.defaults(options,{
+  initialize: function (options) {
+    this.options = _.defaults(options, {
       listenContext: true,
       context: App.ctx
     });
@@ -36,12 +35,14 @@ App.View.Widgets.Table =  Backbone.View.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    if(this._listenContext)
+    // Re-draw table if context changes
+    if (this._listenContext) {
       this.collection.options.data = {};
+    }
 
-    this.listenTo(this.collection,"reset",this._drawTable);
+    this.listenTo(this.collection, 'reset', this._drawTable);
 
-    if(options['template']){
+    if (options['template']) {
       this._template = options['template'];
     }
 
@@ -50,37 +51,35 @@ App.View.Widgets.Table =  Backbone.View.extend({
     this._tableToCsv.fetch = this.collection.fetch;
 
     _.bindAll(this, '_showTooltip');
-
   },
 
   events: {
-    'click .table button':'_downloadCsv'
+    'click .table button': '_downloadCsv'
   },
 
-  onClose: function(){
-    this.stopListening();
-  },
-
-  render: function(){
+  render: function () {
     this.$el.append(App.widgetLoading());
-    if(this._listenContext){
-      if (this.model.get('method')=='GET')
+
+    // Re-draw table if context changes
+    if (this._listenContext) {
+      if (this.model.get('method') == 'GET') {
         _.extend(this.collection.options.data, this.ctx.getDateRange());
-      else
+      } else {
         this.collection.options.data.time = this.ctx.getDateRange();
+      }
     }
 
-    this.collection.fetch({reset: true, data: this.collection.options.data});
+    this.collection.fetch({ reset: true, data: this.collection.options.data });
 
     return this;
   },
 
-  _drawTable:function(){
-    this.$el.html(this._template({m:this.model, elements:this.collection.toJSON()}));
+  _drawTable: function () {
+    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON() }));
     this.delegateEvents(this.events);
   },
 
-  _downloadCsv:function(){
+  _downloadCsv: function () {
     this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
     this._tableToCsv.options.format = 'csv';
 
@@ -91,7 +90,7 @@ App.View.Widgets.Table =  Backbone.View.extend({
     this._tableToCsv.fetch(this._tableToCsv.options);
   },
 
-  _showTooltip: function(element) {
+  _showTooltip: function (element) {
     if (!this.$el.find('.tooltip').get().length) {
       this.$el.append("<span class='tooltip'>" + element.currentTarget.getAttribute('data-tooltip') + "</span>");
     } else {
@@ -100,13 +99,17 @@ App.View.Widgets.Table =  Backbone.View.extend({
 
     $(".tooltip").css('top', element.clientY - 400);
     $(".tooltip").css('left', element.clientX + 20 - 200);
-  }
+  },
+
+  onClose: function () {
+    this.stopListening();
+  },
 
 });
 
-App.View.Widgets.TableCustomFilters =  App.View.Widgets.Table.extend({
-  initialize: function(options) {
-    this.options = _.defaults(options,{
+App.View.Widgets.TableCustomFilters = App.View.Widgets.Table.extend({
+  initialize: function (options) {
+    this.options = _.defaults(options, {
       listenContext: true,
       context: App.ctx
     });
@@ -116,9 +119,9 @@ App.View.Widgets.TableCustomFilters =  App.View.Widgets.Table.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    this.listenTo(this.collection,"reset",this._drawTable);
+    this.listenTo(this.collection, "reset", this._drawTable);
 
-    if(options['template']){
+    if (options['template']) {
       this._template = options['template'];
     }
 
@@ -129,37 +132,37 @@ App.View.Widgets.TableCustomFilters =  App.View.Widgets.Table.extend({
     _.bindAll(this, '_showTooltip');
   }
 });
-  
 
-App.View.Widgets.TableNewCSV =  App.View.Widgets.Table.extend({
+
+App.View.Widgets.TableNewCSV = App.View.Widgets.Table.extend({
   events: {
-    'click .table button':'_downloadCsv'
+    'click .table button': '_downloadCsv'
   },
-  initialize: function(options) {
-      this.options = _.defaults(options,{
-        listenContext: true,
-        context: App.ctx
-      });
-  
-      this._listenContext = this.options.listenContext;
-      this.model = options.model;
-      this.collection = options.data;
-      this.ctx = options.context;
+  initialize: function (options) {
+    this.options = _.defaults(options, {
+      listenContext: true,
+      context: App.ctx
+    });
 
-      this.listenTo(this.collection,"reset",this._drawTable);
-      
-      if(options['template']){
-        this._template = options['template'];
-      }
-  
-      this._tableToCsv = new App.Collection.TableToCsv()
-      this._tableToCsv.url = this.collection.url;
-      this._tableToCsv.fetch = this.collection.fetch;
-  
-      _.bindAll(this, '_showTooltip');
+    this._listenContext = this.options.listenContext;
+    this.model = options.model;
+    this.collection = options.data;
+    this.ctx = options.context;
+
+    this.listenTo(this.collection, "reset", this._drawTable);
+
+    if (options['template']) {
+      this._template = options['template'];
+    }
+
+    this._tableToCsv = new App.Collection.TableToCsv()
+    this._tableToCsv.url = this.collection.url;
+    this._tableToCsv.fetch = this.collection.fetch;
+
+    _.bindAll(this, '_showTooltip');
   },
 
-  _downloadCsv:function(){
+  _downloadCsv: function () {
     this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
     this._tableToCsv.options.data.csv = true;
 
