@@ -32,13 +32,15 @@ App.Collection.Post = App.Collection.Base.extend({
       && options.type.toLowerCase() !== 'post'
       && options.type.toLowerCase() !== 'put'
       && options.type.toLowerCase() !== 'delete') {
-        options.typeHistoric = options.type;
+      options.typeHistoric = options.type;
     }
 
     options.type = 'POST';
     options.contentType = 'application/json';
 
-    options.data = JSON.stringify(_.defaults(options.data || {}, this.options.data));
+    options.data = JSON.stringify(
+      _.defaults(options.data || {}, this.options && this.options.data ? this.options.data : {})
+    );
 
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
