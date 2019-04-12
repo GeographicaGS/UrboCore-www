@@ -63,13 +63,13 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     this._initAggs();
 
     // Initial disabled keys
+    this._internalData = {
+      disabledList: {},
+      elementsDisabled: 0
+    };
     if (this.options.get('disabledList')) {
       var currentDisabledList = this.options.get('disabledList');
-      this._internalData = {
-        disabledList: {},
-        elementsDisabled: 0
-      };
-      
+
       this._internalData = _.reduce(currentDisabledList, function (sumDisabledList, element) {
         sumDisabledList.disabledList[element] = true;
         sumDisabledList.elementsDisabled ++;
