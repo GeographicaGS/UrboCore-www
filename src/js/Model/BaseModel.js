@@ -127,7 +127,7 @@ App.Model.TilesModel = Backbone.Model.extend({
   
     fetch: function(options) {
       // Default values
-      options = _.defaults(options, {
+      options = _.defaults(options || {}, {
         data: {
           filters: {
             conditions: {},
