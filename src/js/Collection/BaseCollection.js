@@ -26,6 +26,11 @@ App.Collection.Base = Backbone.Collection.extend({
 
 App.Collection.Post = App.Collection.Base.extend({
   fetch: function (options) {
+    options = _.defaults(options, {
+      type: 'POST',
+      contentType: 'application/json',
+    });
+
     // To fix the problem with "type" param (now or historic) in the collections (MapsCollections)
     if (options.type
       && options.type.toLowerCase() !== 'get'
@@ -34,9 +39,6 @@ App.Collection.Post = App.Collection.Base.extend({
       && options.type.toLowerCase() !== 'delete') {
       options.typeHistoric = options.type;
     }
-
-    options.type = 'POST';
-    options.contentType = 'application/json';
 
     options.data = JSON.stringify(
       _.defaults(options.data || {}, this.options && this.options.data ? this.options.data : {})
@@ -68,7 +70,7 @@ App.Collection.MapsCollection = App.Collection.Post.extend({
 
   fetch: function (options) {
     // Default values
-    options = _.defaults(options, {
+    options = _.extend(options, {
       data: {
         filters: {
           conditions: {},
