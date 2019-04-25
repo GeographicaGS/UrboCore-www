@@ -210,7 +210,10 @@ App.View.DeviceRaw = Backbone.View.extend({
       device: this.model.get('id'),
       variables: _.pluck(entityVariables,'id'),
       data: {
-        time: {}
+        time: {
+          start: App.ctx.getDateRange().start,
+          finish: App.ctx.getDateRange().finish
+        }
       }
     });
     multiVariableCollection.parse = App.Collection.Variables.Timeserie.prototype.parse;

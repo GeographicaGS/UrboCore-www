@@ -98,14 +98,6 @@ App.View.Device = Backbone.View.extend({
       visible: true
     });
 
-
-    // this.model.set({
-    //   'time': 'last24h',
-    //   // 'time': 'lastmonth',
-    //   // 'vars': _.pluck(allvars,'name'),
-    //   // 'agg': _.pluck(allvars,'def_agg')
-    // });
-
     var entityMetadata = App.mv().getEntity(this.model.get('entity'));
     var entityAdditionalInfo = App.mv().getAdditionalInfo(this.model.get('entity'));
     if(entityMetadata && entityAdditionalInfo){
