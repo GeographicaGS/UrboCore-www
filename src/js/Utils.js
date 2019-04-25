@@ -423,4 +423,28 @@ App.Utils.loadBlockedScripts = function(type, cb) {
     }
   }
 
-};
+}
+
+/**
+ * Set an array to a string to use
+ * in a contidion 'IN' to SQL query
+ * 
+ * @param {Array} data - string array
+ * @return {String | null} - string to use in query SQL
+ */
+App.Utils.setArrayToINSQL = function (data) {
+  var currentData = data;
+
+  if (typeof currentData === 'string') {
+    currentData = "'" + this.options.entities + "'";
+  } else if (Array.isArray(currentData) && currentData.length > 0) {
+    currentData = currentData.map(function (entity) {
+      return "'" + entity + "'";
+    }).join(',');
+  } else {
+    currentData = null;
+  }
+
+  return currentData;
+}
+

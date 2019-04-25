@@ -54,6 +54,9 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
       this.setScrollTopBarDOM();
     }
 
+    // Remove "loading" class
+    this.$el.removeClass('loading');
+
     return this;
   },
 

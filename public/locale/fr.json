@@ -1,1 +1,911 @@
-{"domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural_forms":"nplurals=2; plural=(n > 1);","lang":"fr"},"Ficha de Vertical":["Fiche de la verticale"],"Vertical sin datos":["Verticale sans données"],"Permisos de vertical":["Permissions de la verticale"],"Selecciona entidades":["Sélectionnez les entités"],"Permisos":["Permissions"],"Editar":["Éditer"],"Registro de accesos":["Registre d'accès"],"Nombre":["Nom"],"Último acceso":["Dernier accès"],"Permisos de":["Permissions pour"],"Buscar usuarios":["Rechercher un utilisateur"],"Cancelar":["Annuler"],"Aceptar":["Accepter"],"Añadir":["Ajouter"],"Añadido":["Ajoutée"],"Crear nuevo ámbito":["Créer un nouvelle zone"],"Multiambito":["Multi-zone"],"Latitud / Longitud":["Latitude / Longitude"],"Zoom":["Zoom"],"Almacén de datos":["Stockage de données"],"Crear":["Créer"],"Listado de Ámbitos":["Liste des zones"],"Nuevo ámbito":["Nouvelle zone"],"Nombre del ámbito":["Nom de la zone"],"Verticales":["Verticales"],"Usuarios":["Utilisateurs"],"Eliminar":["Supprimer"],"Datos del Ámbito":["Les données de la zone"],"Latitud":["Latitude"],"Longitud":["Longitude"],"Publicar":["Publier"],"Despublicar":["Non publié"],"Permisos del ámbito":["Permissions de la zone"],"Selecciona verticales":["Sélectionnez la verticale"],"Ámbitos":["Zones"],"Añadir nuevo ámbito":["Ajouter un nouvelle zone"],"Configurar vertical":["Configurer la verticale"],"Permisos de variable":["Permissions de la variable"],"Correcto":["Correct"],"Aviso":["Avertissement"],"Alerta":["Alerte"],"Valor":["Valeur"],"Descargar CSV":["Télécharger le CSV"],"vertical":["verticale"],"verticales":["verticales"],"Menos":["Moins"],"Más":["Plus"],"Periodo":["Période"],"Explorar mapa":["Explorez la carte"],"Otros verticales":["Autres verticales"],"Pantalla completa":["Plein écran"],"Desde":["De"],"hasta":["à"],"Rango predefinidos":["Classement prédéfini"],"Hoy":["Aujourd'hui"],"Ayer":["Hier"],"Últimos 3 días":["3 derniers jours"],"Últimos 7 días":["7 derniers jours"],"Último mes":["Dernier mois"],"Últimos 3 meses":["Dernier 3 mois"],"Último año":["Dernier année"],"Datos básicos":["Donnée initiale"],"Promedios":["Moyennes"],"Datos brutos":["Données brutes"],"Otros datos":["Autre données"],"Ahora":["Maintenant"],"Hace":["Depuis"],"Localización del dispositivo":["Emplacement du dispositif"],"Resumen":["Résumé"],"Evolución":["Évolution"],"Este widget trata de mostrarnos cómo se comporta nuestro sistema en lineas generales a determinadas horas del día.":["Ce widget montre comment le système se comporte globalement à certaines heures."],"Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa la hora de la recogida, en el eje Y el nivel de llenado en el momento de la recogida.":["Chaque point représente une collecte de conteneurs dans les dates sélectionnées. L'axe X représente l'heure de collecte, l'axe des Y représente le niveau de remplissage au moment de la collecte."],"Si tenemos muchos puntos verdes alrededor de una hora significa que los contenedores se recogen a dicha hora sin llegar a estar llenos. Si tenemos muchos puntos naranjas o rojos significa que es una hora donde se acumulan residuos en la calle puesto que los contenedores están llenos.":["S'il y a trop de points verts autour d'une heure, cela signifie que les conteneurs se rassemblent à ce moment-là sans être remplis. S'il y a trop de points rouges autour d'un intervalle de temps, cela signifie qu'il pourrait y avoir des surcharges fréquentes ce moment-là."],"El objetivo del gestor debe ser buscar un equilibrio adaptado a la realidad del sistema.":["L'objectif du gestionnaire doit être de trouver un équilibre en fonction de la situation du système."],"Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado.":["Ce widget montre si le système est bien dimensionné, c'est-à-dire pour détecter le sous ou le dépassement de taille."],"Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa el tiempo transcurrido desde la recogida anterior, en el eje Y el nivel de llenado en el momento de la recogida.":["Chaque point représente une collecte de conteneurs dans des dates sélectionnées. L'axe X représente le temps écoulé depuis la dernière collection, l'axe Y représente le niveau de remplissage au moment de la collecte."],"Si tenemos puntos verdes significa que los contenedores se recogen con mucha frecuencia sin llegar a estar llenos. Si tenemos puntos naranjas o rojos significa que los contenedores deberían recogerse con mayor frecuencia.":["S'il y a trop de points verts, cela signifie que les cointanateurs sont vidés trop souvent, sans être remplis. S'il y a trop de points orange ou rouge, cela signifie que la collecte devrait être faite plus fréquemment."],"Nivel de llenado":["Niveau de remplissage"],"Ha superado el 80% durante más de dos horas":[""],"Ha superado el 80%":["Plus de 80%"],"Nunca ha superado el 80%":["Jamais dépassé 80%"],"Tipo de residuo":["Type de déchets"],"Ver sensor":["Afficher le dispositif"],"Tipo":["Type"],"Datos en vivo":["Données en temps réel"],"Propósito":["Usage"],"Detectar qué contenedores tienen en ese mismo instante un nivel de llenado elevado (mayor del 80%)":["Détecter les conteneurs avec un niveau de remplissage élevé à ce moment-là (<80%)"],"Datos históricos":["Données historiques"],"Detectar cuánto tarda en llenarse un contenedor y cuál era su nivel de llenado en el momento de su recogida":["Détecter le temps de remplissage et le niveau de remplissage de la collecte"]," Este mapa combina el nivel de llenado de los contenedores con el tiempo que llevan en dicho estado. Los valores mostrados han debido registrarse al menos una vez en el periodo de tiempo seleccionado.":[" Cette carte combine le niveau de remplissage du conteneur avec le temps qu'ils ont été dans ce statut. Les valeurs affichées doivent avoir été enregistrées une fois au moins dans la période sélectionnée."],"  Este mapa animado muestra cuánto tiempo tarda en llenarse cada contenedor. La onda indica el instante en el que ese contenedor fue recogido y su color dependerá del estado en el que se encontraba en el momento de vaciado. Se muestran únicamente los siguientes tres primeros días del rango de fecha seleccionado":["  Cette carte animée montre combien de temps faut-il pour qu'un conteneur soit rempli. L'onde montre l'instant où le récipient a été vidé, et la couleur dépend du statut à ce moment. Seulement les trois jours suivants aux dates sélectionnées sont montrés"],"Detectar aquellos contenedores que por exceso o por defecto no son eficaces en su recogida":["Détecter des conteneurs inefficaces en raison d'une collecte excessive ou insuffisante"],"Entre el":["Entre"],"y el":["et"],"Más del":["Plus de"],"Alertas":["Alertes"],"ondas":["ondes"],"Nunca ha superado el":["Jamais dépassé"],"Ha superado el":["Dépassé"],"durante más de":["pendant plus de"],"horas":["heures"],"Menos del 80%":["Moins de 80%"],"Entre el 80% y el 90%":["Entre 80% et 90%"],"Más del 90%":["Plus de 90%"],"momento de la recogida":["temps de ramassage"],"Nivel de ineficiencia":["Niveau d'efficacité"],"Riesgo moderado":["Risque modéré"],"Riesgo alto":["Risque élevé"],"Situación normal":["Situation normale"],"m³ de capacidad disponible":["m³ de capacité disponible"],"Publicaciones":["Publications"],"Nueva publicación":["Nouvelle publication"],"Añadir nota aclaratoria (opcional)":["Ajouter une note explicative (facultatif)"],"Generar Widget":["Générer un widget"],"para obtener el código HTML necesario":["pour obtenir le code HTML nécessaire"],"Copia y pega el código en tu blog o en el HTML de tu sitio web.":["Copiez et collez le code source dans votre blog ou dans la source HTML de votre site Web."],"Detectar las peores índices de calidad del aire (ICA) en el período seleccionado":["Détecter le plus mauvais indice de qualité de l'air (IQA) dans la période sélectionnée"],"Se representa cada estación de un color, dicho color representa el peor ICA de la estación registrado en el período seleccionado":["Chaque station est représentée avec une couleur qui représente le plus mauvais IQA enregistré dans la station dans la période sélectionnée"],"Detectar los valores máximos de ruido registrados en un período determinado":["Détecter les valeurs maximales de bruit enregistrées dans une période spécifique"],"Se aplica un color a cada estación de control de ruido, dicho color representa el ruido máximo registrado en el período seleccionado":["Chaque station de bruit est représentée avec une couleur qui exprime le niveau de bruit maximal enregistré dans la période sélectionnée"],"Muestra la situación meteorológica del ámbito en el período seleccionado":["Les conditions météorologiques de la zone de la période sélectionnée sont affichées"],"El mapa muestra la precipitación y la temperatura recogida por las variables meteorológicas":["La carte montre les précipitations et la température recueillies par les stations météorologiques"],"La precipitación se representa aplicando un color sobre el área de influencia de las variables meteorológicas. El color aplicado representa la cantidad total de agua recogida por el sensor  en el período seleccionado":["Les précipitations sont affichées en appliquant une couleur sur la zone affectée par les variables météorologiques. La couleur représente la pluviométrie totale mesurée par le capteur dans la période sélectionnée"],"La temperatura se representa como un número sobre la zona. Este número hace referencia a la temperatura media del período":["La température est affichée avec une couleur dans la zone affectée. Ce numéro fait référence à la température moyenne de la période"],"Ver la información medioambiental en tiempo real":["Aller à l'information environnementale en temps réel"],"Índice de calidad de aire":["Indice de qualité de l'air"],"El ICA global corresponde a la situación más negativa para cada una de las celdas":["L'IQA global correspond à la pire situation de chaque cellule"],"Muy mala":["Très mauvais"],"Mala":["Mauvais"],"Deficiente":["Faible"],"Admisible":["Acceptable"],"Buena":["Bon"],"Sensor":["Capteur"],"Calidad del aire":["Qualité de l'air"],"Ruido":["Bruit"],"Meteorología":["Météorologie"],"Índice de calidad de aire (ICA)":["Indice de qualité de l'air (IQA)"],"Muy malo":["Très mal"],"Tabla de referencia de sonido, ejemplos y ambientes":["Tableau de référence des niveaux de bruit, des exemples et des environnements"],"Niveles de ruido instantaneo (dba)":["Niveaux de bruit instantanés (dBA)"],"Ejemplos":["Examples"],"Ambientes":["Environnements"],"Taller mecánico (90 dBA). Rotativa de un periódico (100 dBA). Claxon de un automóvil cercano (110 dBA). Ruido de un avión volando a 50 m (120 dBA). Explosión percibida a 10 m de distancia (130 dBA).":["Garaje mécanique (90 dBA). Presse à journaux (100 dBA). Fermer le cornet de voiture (110 dBA). Avion volant à 50 m (120 dBA). Explosion à 10 m (130 dBA)."],"Muy ruidosos":["Très bruyant"],"Tráfico intenso. Ruido de algunos electrodomésticos.":["Traffic dense. Bruit de certains appareils électriques."],"Ruidosos":["Bruyant"],"Zonas comerciales, proliferación de bares...":["Les espaces commerciaux, la prolifération des barres, ..."],"Actividad en una oficina. Sonido de la voz en conversación normal.":["Activité du bureau. Voix au niveau de conversation régulier."],"Aceptables":["Acceptable"],"Sala de estudio.":["Salle d'étude."],"Habitación de dormir. Sonido ambiente en un parque. Un velero (20 dBA).":["Chambre à dormir. Bruit ambiant dans un parc. Voilier (20 dBA)."],"Silenciosos":["Silencieux"],"Peor índice ICA del período":["Le pire IQA de la période"],"Bueno":["Bien"],"Nivel máximo de ruido registrado":["Niveau de bruit maximale enregistré"],"Precipitación acumulada":["Précipitations accumulées"],"Estación de calidad del aire":["Station de qualité de l'air"],"Índice de calidad del aire":["Indice de qualité de l'air"],"Nivel de ozono":["Niveau d'ozone"],"sostenidos 1 hora":["tenir 1 heure"],"Concentración de NO<sub>2</sub>":["NO <sub> 2 </ sub> concentration"],"Concentración de CO":["CO concentration"],"sostenidos 8 horas":["tenir 8 heure"],"Concentración de SO<sub>2</sub>":["SO<sub>2</sub> concentration"],"Concentración de PM10":["PM10 concentration"],"sostenidos 24 horas":["tenir 24 heure"],"Concentración de PM2.5":["PM2.5 concentration"],"Ver Ficha":["Voir la fiche"],"Estación de control de ruido":["Station de contrôle du bruit"],"Nivel de ruido instantáneo":["Niveau de bruit instantané"],"Presión":["Pression"],"Estación meteorológica":["Station météorologique"],"Temperatura":["Température"],"Precipitación":["Précipitations"],"Visibilidad":["Visibilité"],"HTTP 500: Error interno del servidor. Tenemos un problema con la página que intenta abrir. No podemos mostrarla en este momento. Por favor, inténtelo más tarde.":["HTTP 500: Erreur interne du serveur. Il y a un problème avec la page que vous essayez d'ouvrir. Nous ne pouvons pas le montrer dans ce moment. Veuillez réessayer ultérieurement."],"Ajustes":["Paramètres"],"Contenedores":["Conteneurs"],"Tipo de residuos":["Type de déchets"],"Todos":["Tous"],"Nivel de llenado %":["Niveau de remplissage%"],"Procedencia de los turistas":["Origine des touristes"],"Días de la semana":["Jours de la semaine"],"Todos los días":["Tous les jours"],"Lunes":["Lundi"],"Martes":["Mardi"],"Miércoles":["Mercredi"],"Jueves":["Jeudi"],"Viernes":["Vendredi"],"Sábado":["Samedi"],"Domingo":["Dimanche"],"Flota":["Flotte"],"Transporte público":["Transport en commun"],"Bus":["Bus"],"Furgón":["Fourgon"],"Correos":["Poste"],"Carrito":["Trolleybus"],"Policía":["Police"],"Coche":["Voiture"],"Motocicleta":["Moto"],"Residuos":["Déchets"],"Camión":["Camion"],"Contacta":["Contact"],"Privacidad":["Confidentialité"],"Cookies":["Cookies"],"Todos los derechos reservados":["Tous droits réservés"],"Administración":["Gestion"],"Gestión de usuarios":["Gestion des utilisateurs"],"Perfil de usuario":["Profil utilisateur"],"Cerrar sesión":["Fermer la session"],"Penalización":["Pénalité"],"p. máxima":["p. maximale"],"valor":["valeur"],"p. progresiva":["p. progressive"],"Sin penalización":["Sans pénalité"],"Bonificación":["Prime"],"b. progresiva":["b. progressive"],"b. máxima":["b. maximale"],"Ver el consumo energético en el período seleccionado":["Voir la consommation d'énergie dans la période sélectionnée"],"La energía activa se representa mediante círculos verdes. El tamaño de estos círculos crece proporcionalmente con el consumo.":["L'énergie active est affichée avec des cercles verts. La taille des cercles augmente à mesure que la consommation est plus élevée."],"La energía activa se representa aplicando un color al icono del cuadro":["L'énergie active est affichée avec la couleur dans l'icône du cabinet"],"Muestra el estado de la iluminación en tiempo real":["Cela montre l'état de l'éclairage en temps réel"],"Los datos se actualizan cada 15 minutos, por tanto los datos que se muestran son agregaciones también de 15 minutos":["Les données sont mises à jour toutes les 15 minutes, donc l'agrégation est calculée chaque 15 minutes"],"Consumo elec. por cuadro":["Consommation électrique par cabinet"],"Energía activa":["Énergie active"],"Energía reactiva":["Énergie réactive"],"Cuadro eléctrico":["Cabinet électrique"],"Apagado":["Éteint"],"Encendido":["Allumé"],"Consumo":["Consommation"],"Energía activa consumida":["Énergie active consommée"],"Energía reactiva consumida":["Énergie réactive consommée"],"Estado":["Statut"],"Reducido":["Réduit"],"Potencia activa":["Active power"],"Revise los campos en rojo":["Vérifiez les champs en rouge"],"Correo electrónico":["E-mail"],"Escriba un correo electrónico válido":["Ecrire une adresse e-mail valide"],"Contraseña":["Mot de passe"],"Inserte contraseña":["Insérer un mot de passe"],"Iniciar sesión":["Session de départ"],"Filtro":["Filtrer"],"Boundingbox":["Boundingbox"],"Esto es un filtro espacial; sólo se mostrarán los datos de los dispositivos que estás viendo en el mapa":["Il s'agit d'un filtre spatial; Seules les données des dispositifs affichés seront affichées"],"Entendido":["OK"],"Datos por":["Données par"],"Contenedor":["Conteneur"],"Click para ver más info":["Cliquez pour en savoir plus"],"Ver":["Voir"],"sensor":["capteur"],"buscar sensor, emplazamiento...":["chercher un capteur, lieu, ..."],"Buscar ámbito":["Cherche scope"],"Frames":["Cadres"],"Añadir Frame":["Ajouter un cadre"],"Índice de correlaciones":["Indice de corrélations"],"Ámbito":["Zone"],"MULTIÁMBITO":["MULTI-ZONE"],"ÁMBITO":["ZONE"],"inicio":["début"],"Cargando":["Chargement"],"Error 404: No encontrado. El host se ha comunicado con el servidor pero no existe el fichero que ha pedido.":["Erreur 404: Fichier non trouvé. L'hôte a communiqué avec le serveur mais le fichier demandé n'existe pas."],"Volver":["Retour"],"Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación en un periodo de tiempo determinado":["Détectez les places de stationnement avec une occupation plus ou moins élevée pendant une certaine période de temps"],"Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación":["Identifiez l'espace de stationnement avec le plus bas et le plus haut niveau d'occupation"],"Porcentaje de ocupación":["Pourcentage d'occupation"],"Plazas libres":["Places gratuits"],"Off-street":["Hors rue"],"On-street":["Dans la rue"],"Ocupación":["Occupation"],"Plazas":["Places"],"de":["de"],"Explorar parking":["Explorer le parking"],"Media":["Moyenne"],"Máxima":["Maximum"],"Mínima":["Minimum"],"Hecho":["Terminé"],"Cerrar":["Fermer"],"Muestra el acumulado de visitas a puntos de interés. Si se activa la animación, muestra la evolución de visitas a esos puntos de interés en el tiempo seleccionado":["Affiche les visites accumulées en points d'intérêt. Si l'animation est activée, elle montre l'évolution des visites aux points d'intérêt dans le temps sélectionné"],"turistas de":["les touristes de"],"Muestra el origen de los visitantes por país o por zonas en caso de seleccionar un único país en el filtro":["Affiche l'origine des visiteurs par pays ou par zones si vous sélectionnez un seul pays dans le filtre"],"Muestra el estado de las estaciones de alquiler de bicicletas":["Indique le statut des stations de location de vélos"],"Porcentaje de bicicletas disponibles":["Pourcentage des vélos disponible"],"Est. fuera de servicio":["Station hors service"],"Incidencia":["Incidence"],"Estación de bibicletas":["Station des vélos"],"Disponibilidad":["Disponibilité"],"StreetView":["Vue sur la rue"],"Bicicletas":["Vélos"],"Cómo llegar":["Directions"],"Población servida":["Population desservie"],"Porcentaje de uso":["Pourcentage d'occupation"],"Muestra la evolución de la intensidad del tráfico en el tiempo":["Il montre l'évolution de l'intensité du trafic dans le temps"],"Las burbujas azules crecen en tamaño según aumenta la intensidad, dicha burbuja se convierte en amarilla cuando se registra el máximo diario":["Les bulles augmentent leur taille à mesure que l'intensité augmente, la bulle devient jaune au maximum quotidien"],"Vías monitorizadas":["Routes surveillées"],"Intensidad del tráfico (veh/h)":["Intensité du trafic (véh/h)"],"Hora punta diaria":["Heure de pointe quotidienne"],"Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado.":["Détecte les valeurs de bruit maximales enregistrées dans une période spécifique."],"Muestra el estado del tráfico en tiempo real":["Il montre l'état du trafic en temps réel"],"En naraja aparecen las vías con problemas, en rojo las vías congestionadas":["En orange les routes avec des problèmes, en rouge les routes congestionnées"],"Muestra la posición de la flota de policía, transporte público, correos y residuos en tiempo real":["Il montre la situation des flottes de police, de transport public, de service postal et de gestion des déchets en temps réel"],"Porcentaje de uso de bicicletas":["Pourcentage de vélo disponible"],"Sin problemas":["Sans problèmes"],"Con problemas":["Avec des problèmes"],"Congestionada":["Congestionné"],"Intensidad":["Intensité"],"Vía monitorizada":["Route surveillée"],"Intensidad del tráfico":["Intensité du trafic"],"Velocidad media":["Vitesse moyenne"],"Longitud media de vehículos":["Longueur moyenne des véhicules"],"Estado de la vía":["État de la route"],"Apellidos":["Nom de famille"],"Email":["Email"],"Superadmin":["Superadmin"],"Cambiar contraseña":["Changer le mot de passe"],"Contraseña antigua":["Ancien mot de passe"],"Repita contraseña":["Répétez le mot de passe"],"Borrar usuario":["Supprimer l'utilisateur"],"Ver registro de accesos":["Voir le registre d'accès"],"Editar datos":["Modifier les données"],"Crear usuario":["Créer un utilisateur"],"Nombre y apellidos":["Prénom et nom de famille"],"superadmin":["superadmin"],"Historial":["Historique"],"Último 'Estado' del periodo":["Dernier \"statut\" dans la période"],"No sensorizado":["Non captifié"],"Muestra el consumo medio diario de los contadores de agua mediante burbujas proporcionales.":["Indique la consommation journalière moyenne des compteurs d'eau au moyen de bulles proportionnelles."],"El radio de la burbuja crece linealmente con el consumo medio diario.":["Le rayon des bulles augmente avec la consommation quotidienne moyenne."],"Contador":["Mètre"],"Consumo medio diario (litros)":["Consommation quotidienne moyenne (litres)"],"Muestra el estado de los contadores de agua en tiempo real":["Il montre l'état des compteurs d'eau en temps réel"],"Cerrado":["Fermé"],"Abierto":["Ouvert"],"Alertas de consumo":["Alertes de consommation"],"Último periodo":["Dernière période"],"Últimas 24h":["Dernière 24h"],"Contador de agua":["Compteur d'eau"],"Histórico":["Historique"],"Consumo medio diario":["Consommation quotidienne moyenne"],"Consumo último periodo":["Consommation dans la dernière période"],"Consumo últimas 24 horas":["Consommation dernières 24h"],"Último estado":["Dernier état"],"Máx":["Max"],"Mín":["Min"],"Estaciones instaladas":["Stations installées"],"Fuente":["Source"],"URL":["URL"],"Título":["Titre"],"Descripción":["Adresse"],"Datos":["Données"],"Tiempo real (Ahora)":["Temps réél"],"Campos obligatorios":["Champs obligatoires"],"valores para":["valeurs pour"],"Este widget es de tipo pieChart.":["Ce widget est de type pieChart."],"Se ataca a los contenedores por niveles de llenado. Si se quiere más información no dude en consultarnos directamente.":["Conteneur par niveau de remplissage. Si vous souhaitez plus d'informations, n'hésitez pas à demander."],"Variables":["Variables"],"En función de la cantidad de nivel, los valores pueden no haber superado el 90%, superarlo al menos una vez en el período seleccionado o superarlo durante más de 2 horas.":["En fonction du niveau, les valeurs peuvent ne pas dépasser 90%, dépasser ce niveau au moins une fois dans la période sélectionnée ou la dépasser pendant plus de 2 heures."],"datos desde":["date de"],"Urgente":["Urgent"],"No hay datos para los filtros seleccionados":["Il n'y a pas de données pour les filtres configurés"],"Mostrar más":["Afficher plus"],"min":["min"],"Más info":["Plus d'information"],"Descargar datos":["Télécharger les données"],"Publicar widget":["Publier un widget"],"Ver más en":["Voir plus dans"],"Predicción":["Prédiction"],"recomendación":["recommandation"],"Seguir leyendo":["Voir plus"],"Orden":["Trier"],"Ascendente":["Croissant"],"Descendente":["Décroissant"],"medio":["moyenne"],"total":["total"],"mínimo":["minimum"],"máximo":["maximum"],"1 Semana":["1 semaine"],"3 Días":["3 jours"],"2 Días":["2 jours"],"1 Día":["1 jour"],"12 Horas":["12 heures"],"1 Hora":["1 heure"],"2 Horas":["2 heures"],"4 Horas":["4 heures"],"30 minutos":["30 minutes"],"Multiámbito":["Multi-zone"],"Ámbito (único)":["Zone (unique)"],"Todos los tipos":["Tous les types"],"Índice":["Indice"],"Índice de Calidad del Aire":["Indice de qualité de l'air"],"Índice de Calidad del Aire y Emisiones de CO":["IQA et émissions de CO"],"Tapa abierta en soterrado":["Couvercle ouvert dans le conteneur souterrain"],"Tumbado":["Déposer"],"Desplazado":["Déplacé"],"Envases":["Plastique"],"Papel":["Papier"],"Restos":["Organique"],"Vidrio":["Verre"],"Otros":["Autres"],"Estado General":["État général"],"Tiempo Real":["Temps réel"],"Análisis de llenado":["Analyse du niveau de remplissage"],"Análisis de recogida":["Analyse de collection"],"Ranking de contenedores":["Classement des conteneurs"],"Indicadores":["Indicateurs"],"Análisis de calidad del aire":["Analyse de la qualité de l'air"],"Análisis de ruido":["Analyse du bruit"],"Análisis meteorológico":["Analyse météo"],"Admis.":["Accep."],"Defic.":["Def."],"Malo":["Mauvais"],"M.malo":["T.mauvais"],"Evolución del estacionamiento":["Évolution du stationnement"],"Análisis horarios":["Analyse par temps"],"Visitantes":["Visiteurs"],"Puntos de interés":["Points d'intérêt"],"Tiempo real":["Temps réel"],"Posición de flotas":["Emplacement de la flotte"],"Bicicletas: tiempo real":["Vélos: temps réel"],"Bicicletas: análisis de uso":["Vélos: analyse d'utilisation"],"Transporte":["Transport"],"Limpieza Viaria":["Nettoyage des rues"],"Gestión de accidentes de tráfico":["Gestion des accidents de la route"],"Recogida de residuos":["Récupération des déchets"],"Recogida de muebles":["Collecte de meubles"],"Abierta":["Ouvert"],"Asignada":["Attribué"],"Resuelta":["Résolu"],"Cerrada":["Fermé"],"RSU":["RSU"],"Resto":["Reste"],"Carrito portacubos":["Poubelle"],"Lavacontenedores":["Lave-poubelle"],"Limpieza viaria":["Nettoyage de rue"],"Recolectores":["Camion poubelle"],"Vehículos auxiliares":["Véhicules auxiliaires"],"Análisis histórico":["Analyse historique"],"bueno":["bon"],"admisible":["acceptable"],"deficiente":["faible"],"malo":["mauvais"],"muy malo":["très mauvais"],"Soleado":["Ensoleillé"],"Noche clara":["Clair nuit"],"Lluvia pesada":["Pluie forte"],"Lluvia ligera":["Pluie légère"],"Pobre":["Faible"],"Muy probre":["Trés faible"],"Moderada":["Modéré"],"24 horas":["24 heures"],"Día":["Jour"],"Tarde":["Après midi"],"Noche":["Nuit"],"No hay datos disponibles":["Les données ne sont pas disponibles"],"Entidad":["Entité"],"Variable":["Variable"],"Página":["Page"],"Número de visitas":["Nombre de visites"],"Nunca se ha logeado":["Jamais connecté"],"¿Estás seguro de eliminar este ámbito?\nSe perderán todas las configuraciones de este ámbito.":["Êtes-vous sûr de supprimer cette zone?\nTous les paramètres de cette zone seront perdus."],"¿Estás seguro de eliminar este vertical?\nSe perderán todas las configuraciones de este vertical.":["Êtes-vous sûr de supprimer cette verticale?\nTous les paramètres de cette verticale seront perdus."],"Vertical":["Verticale"],"Correlaciones":["Corrélations"],"Seguimiento de contratas":["Surveillance des services"],"Incidencias Solucionadas":["Incidents résolus"],"Penalización progresiva":["Pénalité progressive"],"Bonificación progresiva":["Bonification progressive"],"Bonificación máxima":["Bonification maximale"],"Servicio de recogida de Residuos y Limpieza Viaria":["Service de nettoyage des déchets et des rues"],"PLANIFICACIÓN TAREAS":["SCHÉMA DES TÂCHES"],"Ficha de disposivo":["La fiche du dispositif"],"¿Estás seguro de querer despublicar este widget?":["Êtes-vous sûr de vouloir publier ce widget?"],"Ninguno":["Aucun"],"Nivel de llenado de los contenedores":["Niveau de remplissage des conteneurs"],"Evolución animada del proceso de llenado de los contenedores y del estado en el momento de su recogida":["Évolution animée du processus de remplissage des conteneurs et de l'état au moment de la collecte"],"Ver ficha":["Voir la fiche"],"Temperatura media":["Température moyenne"],"Filtros":["Filtres"],"Mapa":["Carte"],"Ver leyenda":["Voir la légende"],"Ver leyenda completa":["Voir la légende complète"],"Leyenda":["Légende"],"Encendiendo...":["Allumer..."],"Apagando...":["Éteindre..."],"Total":["Total"],"Porcentaje de ocupación de los aparcamientos":["Pourcentage d'occupation de parkings"],"Salir":["Sortie"],"Alquiler de bicicletas: tiempo real":["Location de vélo: temps réel"],"Línea de autobus":["Ligne de bus"],"Línea":["Ligne"],"Dirección":["Adresse"],"Estación de autobus":["Station de bus"],"Ciudad":["Ville"],"Vehículo":["Véhicule"],"Velocidad":["Vitesse"],"Ruta de barrido":["Voie de balayage"],"urgente":["urgent"],"incidencia":["incidence"],"Contadores de agua":["Compteurs d'eau"],"Correlations":["Corrélations"],"No hay datos para este vertical":["Aucune donnée pour cette verticale"],"Mapa de contenedores y el nivel de llenado de los mismos":["Carte des conteneurs et niveau de remplissage"],"Indicadores de residuos":["Indicateurs de gestion des déchets"],"Mapa de calor del índice de eficiencia":["Carte de chaleur de l'indice d'efficacité"],"Índice de Calidad del Aire: Histórico":["Indice de qualité de l'air: historique"],"Nuevo frame":["Nouveau cadre"],"Indicadores de parking":["Indicateurs de stationnement"],"Top paises de origen":["Principaux pays d'origine"],"Top puntos de interés":["Principaux points d'intérêt"],"Bicicletas: Tiempo real":["Vélos: Temps réel"],"Intensidad media semanal":["Intensité moyenne hebdomadaire"],"Estado General de Contadores de agua":["État général des compteurs d'eau"],"Editar ficha de usuario":["Profil utilisateur"],"GUARDAR CAMBIOS":["ENREGISTRER LES MODIFICATIONS"],"Ficha de usuario":["Profil utilisateur"],"Nuevo usuario":["Nouveau utilisateur"],"CREAR USUARIO":["CREER L'UTILISATEUR"],"Papeleras":["Poubelles"],"Vehículos":["Véhicules"],"Rutas de barrido":["Itinéraires"],"Inventariado":["Inscrit"],"Incidencias":["Incidents"],"Tráfico en tiempo real":["Trafic en temps réel"],"Aparcamientos":["Parking"],"coches/hora":["voitures/heure"],"Porcentaje de ocupación de aparcamientos":["Pourcentage de l'occupation du parking"],"Desviar tráfico hacia el sur.":["Divertir le trafic dans le Sud."],"Abaratar parkings en El Soto.":["Location de voitures à  El Soto."],"Reforzar transporte público los lunes no festivos.":["Renforcer les transports en commun les lundis non-vacances."],"Con tráfico denso y parkings al 100% el atasco se extenderá hacia Encinar":["Avec un trafic dense et un parking pleinement occupé, le trafic se propage à"],"Mapa 3D":["Carte 3D"],"Calidad del Aire":["Qualité de l'air"],"Emisiones de CO2":["Emissions de CO2"],"Población":["Population"],"Edad media":["Âge moyen"],"Contenedores desbordados":["Récipients surchargés"],"diarios":["journalier"],"Población afectada":["Population affectée"],"Personas":["Personnes"],"Edad media población afectada":["Âge moyen des personnes touchées"],"Años":["Âge"],"Adelantar la hora de recogida en El Soto.":["Apportez le temps de rassemblement à El Soto."],"Aumentar la frecuencia de recogida en Encinar (edad media población 54 años)":["Augmenter la fréquence de collecte des déchets en Encinar (âge moyen de la population de 54 ans)"],"El Soto tendrá más del 50% de los contenedores en riesgo de desbordamiento a las 18:50.":["El Soto aura plus de 50% de conteneurs avec un risque élevé de débordement à 18 h 50."],"Alertas detectadas":["Alertes détectées"],"Número de contenedores":["Nombre de conteneurs"],"No hay alertas disponibles":["Aucune alerte disponible"],"Comparativa del nivel de llenado":["Comparaison de niveau de remplissage"],"días":["jours"],"Frecuencia de recogida y nivel de llenado":["Fréquence de collecte et niveau de remplissage"],"Nivel de llenado en la recogida":["Niveau de remplissage au moment de la collecte"],"Menos del":["Moins que"],"y":["et"],"Distribución horaria de la recogida y nivel de llenado en 24 horas":["Répartition du temps de collecte et niveau de remplissage en 24 heures"],"% de nivel máximo de llenado":["% Niveau de remplissage maximal"],"Niveles de llenado en el momento de la recogida":["Niveaux de remplissage au moment de la collecte"],"Capacidad actual de los contenedores":["Capacité actuelle des conteneurs"],"a menos del":["moins que"],"de su capacidad":["de capacité"],"entre el":["entre"],"a más del":["plus de"],"Número de contenedores por niveles de llenado":["Nombre de conteneurs par niveau de remplissage"],"Evolución del nivel de llenado vs. peso de la carga":["Evolution du niveau de remplissage vs poids"],"Toneladas de basura":["Tonnes de déchets"],"Contenedores de recogida inmediata por desbordamiento":["Les conteneurs doivent être vidés immédiatement en raison de la surcharge"],"más de":["plus de"],"menos de":["moins de"],"No hay contenedores":["Aucun conteneur disponible"],"Número de contenedores por tipo de residuos":["Nombre de conteneurs par type de déchets"],"Ranking de ineficiencia en el sistema de recogida de residuos":["Classement de l'inefficacité du système de collecte des déchets"],"ID Contenedor":["ID du conteneur"],"# recogidas en 24h":["# collecte en 24h"],"# recogidas en 48h":["# collecte en 48h"],"# recogidas en 72h":["# collecte en 72h"],"# recogidas en > 72h":["# collecte en < 72h"],"índice de ineficiencia":["Indice d'inefficacité"],"No registrada":["Non enregistré"],"Porcentaje de llenado total":["Pourcentage du niveau de remplissage complet"],"de volumen ocupado":["du volume occupé"],"Situación actual":["Situation actuelle"],"Peso de la carga total":["Poids de la charge totale"],"Todos los contenedores":["Tous les conteneurs"],"Clasificación de sensores por niveles de calidad del aire":["Classification des capteurs par IQA"],"Número de sensores":["Nombre de capteurs"]," y Precipitación":[" et précipitations"],"Precipitación (l/m2)":["Précipitations (l/m2)"]," y Temperatura":[" et température"],"Temperatura (°C)":["Température (ºC)"],"Evolución de temperatura y precipitación":["Évolution de la température et des précipitations"],"CO - Concentración de Monóxido de carbono Máximo":["CO - Concentration maximale de monoxyde de carbone"],"NO<sub>2</sub> - Concentración de Dióxido de nitrógeno Máximo":["NO <sous> 2 </ sub> - Concentration maximale de dioxyde d'azote"],"O<sub>3</sub> - Nivel de Ozono Máximo":["O <sous> 3 </ sub> - Niveau maximal d'ozone"],"PM10 - Concentración de partículas de 10 micras Máximo":["PM10 - Concentration de particules de 10 microns maximum"],"PM2.5 - Concentración de partículas de 2.5 micras Máximo":["PM2.5 - Concentration de particules de 2,5 microns maximum"],"SO<sub>2</sub> - Concentración de Dióxido de azufre Máximo":["SO<sub>2</sub> - Concentration maximale de dioxyde de soufre"],"Clasificación de sensores por niveles de ruido":["Classification des capteurs par niveaux de bruit"],"Decibelios":["Décibels"],"Niveles históricos de presión sonora":["Niveaux historiques de pression de bruit"],"Presión del sonido (dBA)":["Pression de bruit (dBA)"],"Ruido: promedios semanal en franjas horarias":["Bruit: moyenne hebdomadaire du bruit dans les créneaux horaire"],"Niveles de ruido (dBA)":["Niveaux de bruit (dBA)"],"Promedio":["Moyenne"],"Editar contenido":["Modifier le contenu"],"Eliminar frame":["Supprimer"],"Editar frame":["Modifier les données"],"¿Estás seguro de eliminar este frame?":["Êtes-vous sûr de vouloir supprimer ce widget?"],"Consumo eléctrico en 24h":["Consommation électrique en"],"Evolución del consumo eléctrico":["L'evolution de la consommation électrique"],"Energía activa consumida en el último cuarto horario":["L'énergie active consommée au dernier quart d'heure"],"Energía reactiva consumida en el último cuarto horario":["L'énergie réactive consommée au dernier quart d'heure"],"Energía activa consumida en las últimas 24 horas":["L'énergie active consommée au cours des dernières 24h"],"Energía reactiva consumida en las últimas 24 horas":["L'énergie réactive consommée au cours des dernières 24h"],"Evolución de la duración media del estacionamiento":["Evolution du temps de stationnement moyen"],"Duración media":["Durée moyenne"],"Estacionamiento superior a 4h":["Stationnement sur 4h"],"Estacionamiento entre 2h y 4h":["Stationnement entre 2h et 4h"],"Estacionamiento inferior a 2h":["Stationnement de moins de 2 heures"],"Duración media (hh:mm)":["Durée moyenne (hh:mm)"],"Número de estacionamientos":["Nombre de places de stationnement"],"Duración media del estacionamiento":["Temps moyen de stationnement"],"estacionamientos":["places"],"Evolución de plazas libres y porcentaje de ocupación":["Evolution des places gratuites et pourcentage d'occupation"],"Ocupación (%)":["Occupation (%)"],"Plazas ocupadas":["Places occupées"],"Plazas de aparcamiento":["Places de stationnement"],"Plazas libres y porcentaje de ocupación":["Places libres et taux d'occupation"],"Porcentaje de ocupación por horas":["Pourcentage d'occupation par heure"],"Ocupación por zonas":["Occupation par zones"],"zonas":["zones"],"libres":["libre"],"ocupadas":["occupé"],"ocupación":["occupation"],"rotación":["rotation"],"Plazas individuales":["Places individuales"],"Plazas monitorizadas en grupo":["Group des places de stationnement surveillées"],"Plazas sensorizadas":["Places avec capteur"],"Ocupación horaria por zonas":["Occupation horaire par zones"],"Ocupación media (%)":["Occupation moyenne (%)"],"Ocupación < 60%":["Occupation < 60%"],"Ocupación < 80%":["Occupation < 80%"],"Ocupación < 100%":["Occupation < 100%"],"Número total de visitantes":["Nombre total de visiteurs"],"Ranking de visitantes por país de procedencia":["Classement des visiteurs par pays d'origine"],"Pais":["Pays"],"Ranking de puntos de interés más visitados":["Classement des points d'intérêt les plus visités"],"Ranking de visitantes por zona":["Classement des visiteurs par zone"],"Bicicletas disponibles":["Vélos disponibles"],"Bicicletas alquiladas":["Vélos loués"],"Bicicletas disponibles y alquiladas":["Vélos disponibles et loués"],"Ciclo diario: intensidad horaria media":["Cycle quotidien: intensité moyenne horaire"],"Intensidad horaria":["Intensité horaire"],"Alertas en estaciones":["Alertes dans les stations"],"Ranking de población servida por estación":["Classement de la population desservie par station"],"Evolución de bicicletas disponibles y alquiladas · Porcentaje de uso":["Evolution des vélos disponibles et loués · Pourcentage d'utilisation"],"Número de bicicletas":["Nombre de visites"],"Distribución horaria de la disponibilidad de bibicletas":["Répartition horaire des vélos disponibles"],"% de disponibilidad":["% disponibilité"],"Porcentaje de disponibilidad / estación":["Pourcentage de vélo disponible / station"],"Intensidad horaria punta":["Intensité horaire maximale"],"IHP":["IHP"],"Vías monitorizadas congestionadas.":["Voies surveillées avec congestion."],"Vías monitorizadas sin congestión.":["Voies surveillées sans congestion."],"Vías congestionadas":["Voies congestionnées"],"Congestionadas":["Congestionné"],"No congestionadas":["Pas congestionné"],"Ranking de vías por intensidad del tráfico":["Voies classées par intensité de trafic"],"Vias monitorizadas congestionadas":["Voies surveillées avec congestion"],"Flotas en movimiento":["Flotte mobile"],"Número de vehículos":["Nombre de véhicules"],"Ciclo semanal: Intensidad horaria media":["Cycle hebdomadaire: intensité moyenne horaire"],"Intensidad media":["Intensité moyenne"],"Indicador":["Indicateur"],"Penalización máxima":["Pénalité maximale"],"Incidencias de la Ciudad":["Incidents de la ville"],"Nº de incidencias por categorías":["Nombre d'incidents par catégorie"],"Categoría":["Catégorie"],"Último \"Estado\" del periodo seleccionado":["Dernier \"Etat\" dans la période sélectionnée"],"Creado":["Créé"],"Solucionado":["Résolu"],"Pendiente":["En attente"],"Comparativa: Consumo agregado":["Comparaison: consommation moyenne"],"Consumo agregado":["Consommation moyenne"],"Consumo de agua en las últimas 24 horas":["Consommation d'eau au cours des dernières 24h"],"Consumo de agua en el último periodo":["Consommation d'eau au cours de la dernière période"],"Ranking de consumo en el último periodo":["Le classement de la consommation au cours de la dernière période"],"Mapa de dispositivos":["Carte des dispositifs"],"Con alguna incidencia":["Avec des incidences"],"abierto":["ouvert"],"cerrado":["fermé"],"Peso de la carga":["Poids"],"Menos del 80 %":["Moins de 80%"],"Más del 90 %":["Plus de 90%"],"Entre el 80% y el 90%.":["Entre 80% et 90%."],"Más del 90%.":["Plus de 90%."],"a menos del 80% de su capacidad":["moins de 80% de capacité"],"entre el 80% y el 90% de su capacidad":["entre 80% et 90% de capacité"],"a más del 90% de su capacidad":["Plus de 90% de capacité"],"> 90% con más de 2 horas":["> 90% plus de 2 heures"],"con más de":["plus que"],"con menos de":["moins que"],"> 90% con menos de 2 horas":["> 90% moins de 2 heures"],"> 90% más de 2 horas":["> 90% plus de 2 heures"],"> 90% menos de 2 horas":["> 90% moins de 2 heures"],"Operación: Contenedores por niveles de llenado":["Fonctionnement: Conteneurs par niveau de remplissage"],"contenedor":["conteneur"],"contenedores":["conteneurs"],"Última hora":["Dernière heure"],"Iluminación":["Éclairage"],"Medio Ambiente":["Environnement"],"Movilidad":["Transport"],"Turismo":["Tourisme"],"Muy buena":["Très bonne"],"Excelente":["Excellent"],"Iniciar sesión con IDM":["Connexion avec IDM"]}}}
+{
+  "domain": "messages",
+  "locale_data": {
+    "messages": {
+      "": { "domain": "messages", "plural_forms": "nplurals=2; plural=(n > 1);", "lang": "fr" },
+      "Ficha de Vertical": ["Fiche de la verticale"],
+      "Vertical sin datos": ["Verticale sans données"],
+      "Permisos de vertical": ["Permissions de la verticale"],
+      "Selecciona entidades": ["Sélectionnez les entités"],
+      "Permisos": ["Permissions"],
+      "Editar": ["Éditer"],
+      "Registro de accesos": ["Registre d'accès"],
+      "Nombre": ["Nom"],
+      "Último acceso": ["Dernier accès"],
+      "Permisos de": ["Permissions pour"],
+      "Buscar usuarios": ["Rechercher un utilisateur"],
+      "Cancelar": ["Annuler"],
+      "Aceptar": ["Accepter"],
+      "Añadir": ["Ajouter"],
+      "Añadido": ["Ajoutée"],
+      "Crear nuevo ámbito": ["Créer un nouvelle zone"],
+      "Multiambito": ["Multi-zone"],
+      "Latitud / Longitud": ["Latitude / Longitude"],
+      "Zoom": ["Zoom"],
+      "Almacén de datos": ["Stockage de données"],
+      "Crear": ["Créer"],
+      "Listado de Ámbitos": ["Liste des zones"],
+      "Nuevo ámbito": ["Nouvelle zone"],
+      "Nombre del ámbito": ["Nom de la zone"],
+      "Verticales": ["Verticales"],
+      "Usuarios": ["Utilisateurs"],
+      "Eliminar": ["Supprimer"],
+      "Datos del Ámbito": ["Les données de la zone"],
+      "Latitud": ["Latitude"],
+      "Longitud": ["Longitude"],
+      "Publicar": ["Publier"],
+      "Despublicar": ["Non publié"],
+      "Permisos del ámbito": ["Permissions de la zone"],
+      "Selecciona verticales": ["Sélectionnez la verticale"],
+      "Ámbitos": ["Zones"],
+      "Añadir nuevo ámbito": ["Ajouter un nouvelle zone"],
+      "Configurar vertical": ["Configurer la verticale"],
+      "Permisos de variable": ["Permissions de la variable"],
+      "Correcto": ["Correct"],
+      "Aviso": ["Avertissement"],
+      "Alerta": ["Alerte"],
+      "Valor": ["Valeur"],
+      "Descargar CSV": ["Télécharger le CSV"],
+      "vertical": ["verticale"],
+      "verticales": ["verticales"],
+      "Menos": ["Moins"],
+      "Más": ["Plus"],
+      "Periodo": ["Période"],
+      "Explorar mapa": ["Explorez la carte"],
+      "Otros verticales": ["Autres verticales"],
+      "Pantalla completa": ["Plein écran"],
+      "Desde": ["De"],
+      "hasta": ["à"],
+      "Rango predefinidos": ["Classement prédéfini"],
+      "Hoy": ["Aujourd'hui"],
+      "Ayer": ["Hier"],
+      "Últimos 3 días": ["3 derniers jours"],
+      "Últimos 7 días": ["7 derniers jours"],
+      "Último mes": ["Dernier mois"],
+      "Últimos 3 meses": ["Dernier 3 mois"],
+      "Último año": ["Dernier année"],
+      "Datos básicos": ["Donnée initiale"],
+      "Promedios": ["Moyennes"],
+      "Datos brutos": ["Données brutes"],
+      "Otros datos": ["Autre données"],
+      "Ahora": ["Maintenant"],
+      "Hace": ["Depuis"],
+      "Localización del dispositivo": ["Emplacement du dispositif"],
+      "Resumen": ["Résumé"],
+      "Evolución": ["Évolution"],
+      "Este widget trata de mostrarnos cómo se comporta nuestro sistema en lineas generales a determinadas horas del día.": [
+        "Ce widget montre comment le système se comporte globalement à certaines heures."
+      ],
+      "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa la hora de la recogida, en el eje Y el nivel de llenado en el momento de la recogida.": [
+        "Chaque point représente une collecte de conteneurs dans les dates sélectionnées. L'axe X représente l'heure de collecte, l'axe des Y représente le niveau de remplissage au moment de la collecte."
+      ],
+      "Si tenemos muchos puntos verdes alrededor de una hora significa que los contenedores se recogen a dicha hora sin llegar a estar llenos. Si tenemos muchos puntos naranjas o rojos significa que es una hora donde se acumulan residuos en la calle puesto que los contenedores están llenos.": [
+        "S'il y a trop de points verts autour d'une heure, cela signifie que les conteneurs se rassemblent à ce moment-là sans être remplis. S'il y a trop de points rouges autour d'un intervalle de temps, cela signifie qu'il pourrait y avoir des surcharges fréquentes ce moment-là."
+      ],
+      "El objetivo del gestor debe ser buscar un equilibrio adaptado a la realidad del sistema.": [
+        "L'objectif du gestionnaire doit être de trouver un équilibre en fonction de la situation du système."
+      ],
+      "Este widget trata de mostrarnos cómo de dimensionado está nuestro sistema, el objetivo es detectar si está sobredimensionado o infradimensionado.": [
+        "Ce widget montre si le système est bien dimensionné, c'est-à-dire pour détecter le sous ou le dépassement de taille."
+      ],
+      "Cada punto corresponde a una recogida de un contenedor en el rango de fecha seleccionado. En el eje X se representa el tiempo transcurrido desde la recogida anterior, en el eje Y el nivel de llenado en el momento de la recogida.": [
+        "Chaque point représente une collecte de conteneurs dans des dates sélectionnées. L'axe X représente le temps écoulé depuis la dernière collection, l'axe Y représente le niveau de remplissage au moment de la collecte."
+      ],
+      "Si tenemos puntos verdes significa que los contenedores se recogen con mucha frecuencia sin llegar a estar llenos. Si tenemos puntos naranjas o rojos significa que los contenedores deberían recogerse con mayor frecuencia.": [
+        "S'il y a trop de points verts, cela signifie que les cointanateurs sont vidés trop souvent, sans être remplis. S'il y a trop de points orange ou rouge, cela signifie que la collecte devrait être faite plus fréquemment."
+      ],
+      "Nivel de llenado": ["Niveau de remplissage"],
+      "Ha superado el 80% durante más de dos horas": [""],
+      "Ha superado el 80%": ["Plus de 80%"],
+      "Nunca ha superado el 80%": ["Jamais dépassé 80%"],
+      "Tipo de residuo": ["Type de déchets"],
+      "Ver sensor": ["Afficher le dispositif"],
+      "Tipo": ["Type"],
+      "Datos en vivo": ["Données en temps réel"],
+      "Propósito": ["Usage"],
+      "Detectar qué contenedores tienen en ese mismo instante un nivel de llenado elevado (mayor del 80%)": [
+        "Détecter les conteneurs avec un niveau de remplissage élevé à ce moment-là (<80%)"
+      ],
+      "Datos históricos": ["Données historiques"],
+      "Detectar cuánto tarda en llenarse un contenedor y cuál era su nivel de llenado en el momento de su recogida": [
+        "Détecter le temps de remplissage et le niveau de remplissage de la collecte"
+      ],
+      " Este mapa combina el nivel de llenado de los contenedores con el tiempo que llevan en dicho estado. Los valores mostrados han debido registrarse al menos una vez en el periodo de tiempo seleccionado.": [
+        " Cette carte combine le niveau de remplissage du conteneur avec le temps qu'ils ont été dans ce statut. Les valeurs affichées doivent avoir été enregistrées une fois au moins dans la période sélectionnée."
+      ],
+      "  Este mapa animado muestra cuánto tiempo tarda en llenarse cada contenedor. La onda indica el instante en el que ese contenedor fue recogido y su color dependerá del estado en el que se encontraba en el momento de vaciado. Se muestran únicamente los siguientes tres primeros días del rango de fecha seleccionado": [
+        "  Cette carte animée montre combien de temps faut-il pour qu'un conteneur soit rempli. L'onde montre l'instant où le récipient a été vidé, et la couleur dépend du statut à ce moment. Seulement les trois jours suivants aux dates sélectionnées sont montrés"
+      ],
+      "Detectar aquellos contenedores que por exceso o por defecto no son eficaces en su recogida": [
+        "Détecter des conteneurs inefficaces en raison d'une collecte excessive ou insuffisante"
+      ],
+      "Entre el": ["Entre"],
+      "y el": ["et"],
+      "Más del": ["Plus de"],
+      "Alertas": ["Alertes"],
+      "ondas": ["ondes"],
+      "Nunca ha superado el": ["Jamais dépassé"],
+      "Ha superado el": ["Dépassé"],
+      "durante más de": ["pendant plus de"],
+      "horas": ["heures"],
+      "Menos del 80%": ["Moins de 80%"],
+      "Entre el 80% y el 90%": ["Entre 80% et 90%"],
+      "Más del 90%": ["Plus de 90%"],
+      "momento de la recogida": ["temps de ramassage"],
+      "Nivel de ineficiencia": ["Niveau d'efficacité"],
+      "Riesgo moderado": ["Risque modéré"],
+      "Riesgo alto": ["Risque élevé"],
+      "Situación normal": ["Situation normale"],
+      "m³ de capacidad disponible": ["m³ de capacité disponible"],
+      "Publicaciones": ["Publications"],
+      "Nueva publicación": ["Nouvelle publication"],
+      "Añadir nota aclaratoria (opcional)": ["Ajouter une note explicative (facultatif)"],
+      "Generar Widget": ["Générer un widget"],
+      "para obtener el código HTML necesario": ["pour obtenir le code HTML nécessaire"],
+      "Copia y pega el código en tu blog o en el HTML de tu sitio web.": [
+        "Copiez et collez le code source dans votre blog ou dans la source HTML de votre site Web."
+      ],
+      "Detectar las peores índices de calidad del aire (ICA) en el período seleccionado": [
+        "Détecter le plus mauvais indice de qualité de l'air (IQA) dans la période sélectionnée"
+      ],
+      "Se representa cada estación de un color, dicho color representa el peor ICA de la estación registrado en el período seleccionado": [
+        "Chaque station est représentée avec une couleur qui représente le plus mauvais IQA enregistré dans la station dans la période sélectionnée"
+      ],
+      "Detectar los valores máximos de ruido registrados en un período determinado": [
+        "Détecter les valeurs maximales de bruit enregistrées dans une période spécifique"
+      ],
+      "Se aplica un color a cada estación de control de ruido, dicho color representa el ruido máximo registrado en el período seleccionado": [
+        "Chaque station de bruit est représentée avec une couleur qui exprime le niveau de bruit maximal enregistré dans la période sélectionnée"
+      ],
+      "Muestra la situación meteorológica del ámbito en el período seleccionado": [
+        "Les conditions météorologiques de la zone de la période sélectionnée sont affichées"
+      ],
+      "El mapa muestra la precipitación y la temperatura recogida por las variables meteorológicas": [
+        "La carte montre les précipitations et la température recueillies par les stations météorologiques"
+      ],
+      "La precipitación se representa aplicando un color sobre el área de influencia de las variables meteorológicas. El color aplicado representa la cantidad total de agua recogida por el sensor  en el período seleccionado": [
+        "Les précipitations sont affichées en appliquant une couleur sur la zone affectée par les variables météorologiques. La couleur représente la pluviométrie totale mesurée par le capteur dans la période sélectionnée"
+      ],
+      "La temperatura se representa como un número sobre la zona. Este número hace referencia a la temperatura media del período": [
+        "La température est affichée avec une couleur dans la zone affectée. Ce numéro fait référence à la température moyenne de la période"
+      ],
+      "Ver la información medioambiental en tiempo real": [
+        "Aller à l'information environnementale en temps réel"
+      ],
+      "Índice de calidad de aire": ["Indice de qualité de l'air"],
+      "El ICA global corresponde a la situación más negativa para cada una de las celdas": [
+        "L'IQA global correspond à la pire situation de chaque cellule"
+      ],
+      "Muy mala": ["Très mauvais"],
+      "Mala": ["Mauvais"],
+      "Deficiente": ["Faible"],
+      "Admisible": ["Acceptable"],
+      "Buena": ["Bon"],
+      "Sensor": ["Capteur"],
+      "Calidad del aire": ["Qualité de l'air"],
+      "Ruido": ["Bruit"],
+      "Meteorología": ["Météorologie"],
+      "Índice de calidad de aire (ICA)": ["Indice de qualité de l'air (IQA)"],
+      "Muy malo": ["Très mal"],
+      "Tabla de referencia de sonido, ejemplos y ambientes": [
+        "Tableau de référence des niveaux de bruit, des exemples et des environnements"
+      ],
+      "Niveles de ruido instantaneo (dba)": ["Niveaux de bruit instantanés (dBA)"],
+      "Ejemplos": ["Examples"],
+      "Ambientes": ["Environnements"],
+      "Taller mecánico (90 dBA). Rotativa de un periódico (100 dBA). Claxon de un automóvil cercano (110 dBA). Ruido de un avión volando a 50 m (120 dBA). Explosión percibida a 10 m de distancia (130 dBA).": [
+        "Garaje mécanique (90 dBA). Presse à journaux (100 dBA). Fermer le cornet de voiture (110 dBA). Avion volant à 50 m (120 dBA). Explosion à 10 m (130 dBA)."
+      ],
+      "Muy ruidosos": ["Très bruyant"],
+      "Tráfico intenso. Ruido de algunos electrodomésticos.": [
+        "Traffic dense. Bruit de certains appareils électriques."
+      ],
+      "Ruidosos": ["Bruyant"],
+      "Zonas comerciales, proliferación de bares...": [
+        "Les espaces commerciaux, la prolifération des barres, ..."
+      ],
+      "Actividad en una oficina. Sonido de la voz en conversación normal.": [
+        "Activité du bureau. Voix au niveau de conversation régulier."
+      ],
+      "Aceptables": ["Acceptable"],
+      "Sala de estudio.": ["Salle d'étude."],
+      "Habitación de dormir. Sonido ambiente en un parque. Un velero (20 dBA).": [
+        "Chambre à dormir. Bruit ambiant dans un parc. Voilier (20 dBA)."
+      ],
+      "Silenciosos": ["Silencieux"],
+      "Peor índice ICA del período": ["Le pire IQA de la période"],
+      "Bueno": ["Bien"],
+      "Nivel máximo de ruido registrado": ["Niveau de bruit maximale enregistré"],
+      "Precipitación acumulada": ["Précipitations accumulées"],
+      "Estación de calidad del aire": ["Station de qualité de l'air"],
+      "Índice de calidad del aire": ["Indice de qualité de l'air"],
+      "Nivel de ozono": ["Niveau d'ozone"],
+      "sostenidos 1 hora": ["tenir 1 heure"],
+      "Concentración de NO<sub>2</sub>": ["NO <sub> 2 </ sub> concentration"],
+      "Concentración de CO": ["CO concentration"],
+      "sostenidos 8 horas": ["tenir 8 heure"],
+      "Concentración de SO<sub>2</sub>": ["SO<sub>2</sub> concentration"],
+      "Concentración de PM10": ["PM10 concentration"],
+      "sostenidos 24 horas": ["tenir 24 heure"],
+      "Concentración de PM2.5": ["PM2.5 concentration"],
+      "Ver Ficha": ["Voir la fiche"],
+      "Estación de control de ruido": ["Station de contrôle du bruit"],
+      "Nivel de ruido instantáneo": ["Niveau de bruit instantané"],
+      "Presión": ["Pression"],
+      "Estación meteorológica": ["Station météorologique"],
+      "Temperatura": ["Température"],
+      "Precipitación": ["Précipitations"],
+      "Visibilidad": ["Visibilité"],
+      "HTTP 500: Error interno del servidor. Tenemos un problema con la página que intenta abrir. No podemos mostrarla en este momento. Por favor, inténtelo más tarde.": [
+        "HTTP 500: Erreur interne du serveur. Il y a un problème avec la page que vous essayez d'ouvrir. Nous ne pouvons pas le montrer dans ce moment. Veuillez réessayer ultérieurement."
+      ],
+      "Ajustes": ["Paramètres"],
+      "Contenedores": ["Conteneurs"],
+      "Tipo de residuos": ["Type de déchets"],
+      "Todos": ["Tous"],
+      "Nivel de llenado %": ["Niveau de remplissage%"],
+      "Procedencia de los turistas": ["Origine des touristes"],
+      "Días de la semana": ["Jours de la semaine"],
+      "Todos los días": ["Tous les jours"],
+      "Lunes": ["Lundi"],
+      "Martes": ["Mardi"],
+      "Miércoles": ["Mercredi"],
+      "Jueves": ["Jeudi"],
+      "Viernes": ["Vendredi"],
+      "Sábado": ["Samedi"],
+      "Domingo": ["Dimanche"],
+      "Flota": ["Flotte"],
+      "Transporte público": ["Transport en commun"],
+      "Bus": ["Bus"],
+      "Furgón": ["Fourgon"],
+      "Correos": ["Poste"],
+      "Carrito": ["Trolleybus"],
+      "Policía": ["Police"],
+      "Coche": ["Voiture"],
+      "Motocicleta": ["Moto"],
+      "Residuos": ["Déchets"],
+      "Camión": ["Camion"],
+      "Contacta": ["Contact"],
+      "Privacidad": ["Confidentialité"],
+      "Cookies": ["Cookies"],
+      "Todos los derechos reservados": ["Tous droits réservés"],
+      "Administración": ["Gestion"],
+      "Gestión de usuarios": ["Gestion des utilisateurs"],
+      "Perfil de usuario": ["Profil utilisateur"],
+      "Cerrar sesión": ["Fermer la session"],
+      "Penalización": ["Pénalité"],
+      "p. máxima": ["p. maximale"],
+      "valor": ["valeur"],
+      "p. progresiva": ["p. progressive"],
+      "Sin penalización": ["Sans pénalité"],
+      "Bonificación": ["Prime"],
+      "b. progresiva": ["b. progressive"],
+      "b. máxima": ["b. maximale"],
+      "Ver el consumo energético en el período seleccionado": [
+        "Voir la consommation d'énergie dans la période sélectionnée"
+      ],
+      "La energía activa se representa mediante círculos verdes. El tamaño de estos círculos crece proporcionalmente con el consumo.": [
+        "L'énergie active est affichée avec des cercles verts. La taille des cercles augmente à mesure que la consommation est plus élevée."
+      ],
+      "La energía activa se representa aplicando un color al icono del cuadro": [
+        "L'énergie active est affichée avec la couleur dans l'icône du cabinet"
+      ],
+      "Muestra el estado de la iluminación en tiempo real": [
+        "Cela montre l'état de l'éclairage en temps réel"
+      ],
+      "Los datos se actualizan cada 15 minutos, por tanto los datos que se muestran son agregaciones también de 15 minutos": [
+        "Les données sont mises à jour toutes les 15 minutes, donc l'agrégation est calculée chaque 15 minutes"
+      ],
+      "Consumo elec. por cuadro": ["Consommation électrique par cabinet"],
+      "Energía activa": ["Énergie active"],
+      "Energía reactiva": ["Énergie réactive"],
+      "Cuadro eléctrico": ["Cabinet électrique"],
+      "Apagado": ["Éteint"],
+      "Encendido": ["Allumé"],
+      "Consumo": ["Consommation"],
+      "Energía activa consumida": ["Énergie active consommée"],
+      "Energía reactiva consumida": ["Énergie réactive consommée"],
+      "Estado": ["Statut"],
+      "Reducido": ["Réduit"],
+      "Potencia activa": ["Active power"],
+      "Revise los campos en rojo": ["Vérifiez les champs en rouge"],
+      "Correo electrónico": ["E-mail"],
+      "Escriba un correo electrónico válido": ["Ecrire une adresse e-mail valide"],
+      "Contraseña": ["Mot de passe"],
+      "Inserte contraseña": ["Insérer un mot de passe"],
+      "Iniciar sesión": ["Session de départ"],
+      "Filtro": ["Filtrer"],
+      "Boundingbox": ["Boundingbox"],
+      "Esto es un filtro espacial; sólo se mostrarán los datos de los dispositivos que estás viendo en el mapa": [
+        "Il s'agit d'un filtre spatial; Seules les données des dispositifs affichés seront affichées"
+      ],
+      "Entendido": ["OK"],
+      "Datos por": ["Données par"],
+      "Contenedor": ["Conteneur"],
+      "Click para ver más info": ["Cliquez pour en savoir plus"],
+      "Ver": ["Voir"],
+      "sensor": ["capteur"],
+      "buscar sensor, emplazamiento...": ["chercher un capteur, lieu, ..."],
+      "Buscar ámbito": ["Cherche scope"],
+      "Frames": ["Cadres"],
+      "Añadir Frame": ["Ajouter un cadre"],
+      "Índice de correlaciones": ["Indice de corrélations"],
+      "Ámbito": ["Zone"],
+      "MULTIÁMBITO": ["MULTI-ZONE"],
+      "ÁMBITO": ["ZONE"],
+      "inicio": ["début"],
+      "Cargando": ["Chargement"],
+      "Error 404: No encontrado. El host se ha comunicado con el servidor pero no existe el fichero que ha pedido.": [
+        "Erreur 404: Fichier non trouvé. L'hôte a communiqué avec le serveur mais le fichier demandé n'existe pas."
+      ],
+      "Volver": ["Retour"],
+      "Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación en un periodo de tiempo determinado": [
+        "Détectez les places de stationnement avec une occupation plus ou moins élevée pendant une certaine période de temps"
+      ],
+      "Detectar los espacios de aparcamiento de la ciudad con mayor o menor porcentaje de ocupación": [
+        "Identifiez l'espace de stationnement avec le plus bas et le plus haut niveau d'occupation"
+      ],
+      "Porcentaje de ocupación": ["Pourcentage d'occupation"],
+      "Plazas libres": ["Places gratuits"],
+      "Off-street": ["Hors rue"],
+      "On-street": ["Dans la rue"],
+      "Ocupación": ["Occupation"],
+      "Plazas": ["Places"],
+      "de": ["de"],
+      "Explorar parking": ["Explorer le parking"],
+      "Media": ["Moyenne"],
+      "Máxima": ["Maximum"],
+      "Mínima": ["Minimum"],
+      "Hecho": ["Terminé"],
+      "Cerrar": ["Fermer"],
+      "Muestra el acumulado de visitas a puntos de interés. Si se activa la animación, muestra la evolución de visitas a esos puntos de interés en el tiempo seleccionado": [
+        "Affiche les visites accumulées en points d'intérêt. Si l'animation est activée, elle montre l'évolution des visites aux points d'intérêt dans le temps sélectionné"
+      ],
+      "turistas de": ["les touristes de"],
+      "Muestra el origen de los visitantes por país o por zonas en caso de seleccionar un único país en el filtro": [
+        "Affiche l'origine des visiteurs par pays ou par zones si vous sélectionnez un seul pays dans le filtre"
+      ],
+      "Muestra el estado de las estaciones de alquiler de bicicletas": [
+        "Indique le statut des stations de location de vélos"
+      ],
+      "Porcentaje de bicicletas disponibles": ["Pourcentage des vélos disponible"],
+      "Est. fuera de servicio": ["Station hors service"],
+      "Incidencia": ["Incidence"],
+      "Estación de bibicletas": ["Station des vélos"],
+      "Disponibilidad": ["Disponibilité"],
+      "StreetView": ["Vue sur la rue"],
+      "Bicicletas": ["Vélos"],
+      "Cómo llegar": ["Directions"],
+      "Población servida": ["Population desservie"],
+      "Porcentaje de uso": ["Pourcentage d'occupation"],
+      "Muestra la evolución de la intensidad del tráfico en el tiempo": [
+        "Il montre l'évolution de l'intensité du trafic dans le temps"
+      ],
+      "Las burbujas azules crecen en tamaño según aumenta la intensidad, dicha burbuja se convierte en amarilla cuando se registra el máximo diario": [
+        "Les bulles augmentent leur taille à mesure que l'intensité augmente, la bulle devient jaune au maximum quotidien"
+      ],
+      "Vías monitorizadas": ["Routes surveillées"],
+      "Intensidad del tráfico (veh/h)": ["Intensité du trafic (véh/h)"],
+      "Hora punta diaria": ["Heure de pointe quotidienne"],
+      "Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado.": [
+        "Détecte les valeurs de bruit maximales enregistrées dans une période spécifique."
+      ],
+      "Muestra el estado del tráfico en tiempo real": ["Il montre l'état du trafic en temps réel"],
+      "En naraja aparecen las vías con problemas, en rojo las vías congestionadas": [
+        "En orange les routes avec des problèmes, en rouge les routes congestionnées"
+      ],
+      "Muestra la posición de la flota de policía, transporte público, correos y residuos en tiempo real": [
+        "Il montre la situation des flottes de police, de transport public, de service postal et de gestion des déchets en temps réel"
+      ],
+      "Porcentaje de uso de bicicletas": ["Pourcentage de vélo disponible"],
+      "Sin problemas": ["Sans problèmes"],
+      "Con problemas": ["Avec des problèmes"],
+      "Congestionada": ["Congestionné"],
+      "Intensidad": ["Intensité"],
+      "Vía monitorizada": ["Route surveillée"],
+      "Intensidad del tráfico": ["Intensité du trafic"],
+      "Velocidad media": ["Vitesse moyenne"],
+      "Longitud media de vehículos": ["Longueur moyenne des véhicules"],
+      "Estado de la vía": ["État de la route"],
+      "Apellidos": ["Nom de famille"],
+      "Email": ["Email"],
+      "Superadmin": ["Superadmin"],
+      "Cambiar contraseña": ["Changer le mot de passe"],
+      "Contraseña antigua": ["Ancien mot de passe"],
+      "Repita contraseña": ["Répétez le mot de passe"],
+      "Borrar usuario": ["Supprimer l'utilisateur"],
+      "Ver registro de accesos": ["Voir le registre d'accès"],
+      "Editar datos": ["Modifier les données"],
+      "Crear usuario": ["Créer un utilisateur"],
+      "Nombre y apellidos": ["Prénom et nom de famille"],
+      "superadmin": ["superadmin"],
+      "Historial": ["Historique"],
+      "Último 'Estado' del periodo": ["Dernier \"statut\" dans la période"],
+      "No sensorizado": ["Non captifié"],
+      "Muestra el consumo medio diario de los contadores de agua mediante burbujas proporcionales.": [
+        "Indique la consommation journalière moyenne des compteurs d'eau au moyen de bulles proportionnelles."
+      ],
+      "El radio de la burbuja crece linealmente con el consumo medio diario.": [
+        "Le rayon des bulles augmente avec la consommation quotidienne moyenne."
+      ],
+      "Contador": ["Mètre"],
+      "Consumo medio diario (litros)": ["Consommation quotidienne moyenne (litres)"],
+      "Muestra el estado de los contadores de agua en tiempo real": [
+        "Il montre l'état des compteurs d'eau en temps réel"
+      ],
+      "Cerrado": ["Fermé"],
+      "Abierto": ["Ouvert"],
+      "Alertas de consumo": ["Alertes de consommation"],
+      "Último periodo": ["Dernière période"],
+      "Últimas 24h": ["Dernière 24h"],
+      "Contador de agua": ["Compteur d'eau"],
+      "Histórico": ["Historique"],
+      "Consumo medio diario": ["Consommation quotidienne moyenne"],
+      "Consumo último periodo": ["Consommation dans la dernière période"],
+      "Consumo últimas 24 horas": ["Consommation dernières 24h"],
+      "Último estado": ["Dernier état"],
+      "Máx": ["Max"],
+      "Mín": ["Min"],
+      "Estaciones instaladas": ["Stations installées"],
+      "Fuente": ["Source"],
+      "URL": ["URL"],
+      "Título": ["Titre"],
+      "Descripción": ["Adresse"],
+      "Datos": ["Données"],
+      "Tiempo real (Ahora)": ["Temps réél"],
+      "Campos obligatorios": ["Champs obligatoires"],
+      "valores para": ["valeurs pour"],
+      "Este widget es de tipo pieChart.": ["Ce widget est de type pieChart."],
+      "Se ataca a los contenedores por niveles de llenado. Si se quiere más información no dude en consultarnos directamente.": [
+        "Conteneur par niveau de remplissage. Si vous souhaitez plus d'informations, n'hésitez pas à demander."
+      ],
+      "Variables": ["Variables"],
+      "En función de la cantidad de nivel, los valores pueden no haber superado el 90%, superarlo al menos una vez en el período seleccionado o superarlo durante más de 2 horas.": [
+        "En fonction du niveau, les valeurs peuvent ne pas dépasser 90%, dépasser ce niveau au moins une fois dans la période sélectionnée ou la dépasser pendant plus de 2 heures."
+      ],
+      "datos desde": ["date de"],
+      "Urgente": ["Urgent"],
+      "No hay datos para los filtros seleccionados": [
+        "Il n'y a pas de données pour les filtres configurés"
+      ],
+      "Mostrar más": ["Afficher plus"],
+      "min": ["min"],
+      "Más info": ["Plus d'information"],
+      "Descargar datos": ["Télécharger les données"],
+      "Publicar widget": ["Publier un widget"],
+      "Ver más en": ["Voir plus dans"],
+      "Predicción": ["Prédiction"],
+      "recomendación": ["recommandation"],
+      "Seguir leyendo": ["Voir plus"],
+      "Orden": ["Trier"],
+      "Ascendente": ["Croissant"],
+      "Descendente": ["Décroissant"],
+      "medio": ["moyenne"],
+      "total": ["total"],
+      "mínimo": ["minimum"],
+      "máximo": ["maximum"],
+      "1 Semana": ["1 semaine"],
+      "3 Días": ["3 jours"],
+      "2 Días": ["2 jours"],
+      "1 Día": ["1 jour"],
+      "12 Horas": ["12 heures"],
+      "1 Hora": ["1 heure"],
+      "2 Horas": ["2 heures"],
+      "4 Horas": ["4 heures"],
+      "30 minutos": ["30 minutes"],
+      "Multiámbito": ["Multi-zone"],
+      "Ámbito (único)": ["Zone (unique)"],
+      "Todos los tipos": ["Tous les types"],
+      "Índice": ["Indice"],
+      "Índice de Calidad del Aire": ["Indice de qualité de l'air"],
+      "Índice de Calidad del Aire y Emisiones de CO": ["IQA et émissions de CO"],
+      "Tapa abierta en soterrado": ["Couvercle ouvert dans le conteneur souterrain"],
+      "Tumbado": ["Déposer"],
+      "Desplazado": ["Déplacé"],
+      "Envases": ["Plastique"],
+      "Papel": ["Papier"],
+      "Restos": ["Organique"],
+      "Vidrio": ["Verre"],
+      "Otros": ["Autres"],
+      "Estado General": ["État général"],
+      "Tiempo Real": ["Temps réel"],
+      "Análisis de llenado": ["Analyse du niveau de remplissage"],
+      "Análisis de recogida": ["Analyse de collection"],
+      "Ranking de contenedores": ["Classement des conteneurs"],
+      "Indicadores": ["Indicateurs"],
+      "Análisis de calidad del aire": ["Analyse de la qualité de l'air"],
+      "Análisis de ruido": ["Analyse du bruit"],
+      "Análisis meteorológico": ["Analyse météo"],
+      "Admis.": ["Accep."],
+      "Defic.": ["Def."],
+      "Malo": ["Mauvais"],
+      "M.malo": ["T.mauvais"],
+      "Evolución del estacionamiento": ["Évolution du stationnement"],
+      "Análisis horarios": ["Analyse par temps"],
+      "Visitantes": ["Visiteurs"],
+      "Puntos de interés": ["Points d'intérêt"],
+      "Tiempo real": ["Temps réel"],
+      "Posición de flotas": ["Emplacement de la flotte"],
+      "Bicicletas: tiempo real": ["Vélos: temps réel"],
+      "Bicicletas: análisis de uso": ["Vélos: analyse d'utilisation"],
+      "Transporte": ["Transport"],
+      "Limpieza Viaria": ["Nettoyage des rues"],
+      "Gestión de accidentes de tráfico": ["Gestion des accidents de la route"],
+      "Recogida de residuos": ["Récupération des déchets"],
+      "Recogida de muebles": ["Collecte de meubles"],
+      "Abierta": ["Ouvert"],
+      "Asignada": ["Attribué"],
+      "Resuelta": ["Résolu"],
+      "Cerrada": ["Fermé"],
+      "RSU": ["RSU"],
+      "Resto": ["Reste"],
+      "Carrito portacubos": ["Poubelle"],
+      "Lavacontenedores": ["Lave-poubelle"],
+      "Limpieza viaria": ["Nettoyage de rue"],
+      "Recolectores": ["Camion poubelle"],
+      "Vehículos auxiliares": ["Véhicules auxiliaires"],
+      "Análisis histórico": ["Analyse historique"],
+      "bueno": ["bon"],
+      "admisible": ["acceptable"],
+      "deficiente": ["faible"],
+      "malo": ["mauvais"],
+      "muy malo": ["très mauvais"],
+      "Soleado": ["Ensoleillé"],
+      "Noche clara": ["Clair nuit"],
+      "Lluvia pesada": ["Pluie forte"],
+      "Lluvia ligera": ["Pluie légère"],
+      "Pobre": ["Faible"],
+      "Muy probre": ["Trés faible"],
+      "Moderada": ["Modéré"],
+      "24 horas": ["24 heures"],
+      "Día": ["Jour"],
+      "Tarde": ["Après midi"],
+      "Noche": ["Nuit"],
+      "No hay datos disponibles": ["Les données ne sont pas disponibles"],
+      "Entidad": ["Entité"],
+      "Variable": ["Variable"],
+      "Página": ["Page"],
+      "Número de visitas": ["Nombre de visites"],
+      "Nunca se ha logeado": ["Jamais connecté"],
+      "¿Estás seguro de eliminar este ámbito?\nSe perderán todas las configuraciones de este ámbito.": [
+        "Êtes-vous sûr de supprimer cette zone?\nTous les paramètres de cette zone seront perdus."
+      ],
+      "¿Estás seguro de eliminar este vertical?\nSe perderán todas las configuraciones de este vertical.": [
+        "Êtes-vous sûr de supprimer cette verticale?\nTous les paramètres de cette verticale seront perdus."
+      ],
+      "Vertical": ["Verticale"],
+      "Correlaciones": ["Corrélations"],
+      "Seguimiento de contratas": ["Surveillance des services"],
+      "Incidencias Solucionadas": ["Incidents résolus"],
+      "Penalización progresiva": ["Pénalité progressive"],
+      "Bonificación progresiva": ["Bonification progressive"],
+      "Bonificación máxima": ["Bonification maximale"],
+      "Servicio de recogida de Residuos y Limpieza Viaria": [
+        "Service de nettoyage des déchets et des rues"
+      ],
+      "PLANIFICACIÓN TAREAS": ["SCHÉMA DES TÂCHES"],
+      "Ficha de disposivo": ["La fiche du dispositif"],
+      "¿Estás seguro de querer despublicar este widget?": [
+        "Êtes-vous sûr de vouloir publier ce widget?"
+      ],
+      "Ninguno": ["Aucun"],
+      "Nivel de llenado de los contenedores": ["Niveau de remplissage des conteneurs"],
+      "Evolución animada del proceso de llenado de los contenedores y del estado en el momento de su recogida": [
+        "Évolution animée du processus de remplissage des conteneurs et de l'état au moment de la collecte"
+      ],
+      "Ver ficha": ["Voir la fiche"],
+      "Temperatura media": ["Température moyenne"],
+      "Filtros": ["Filtres"],
+      "Mapa": ["Carte"],
+      "Ver leyenda": ["Voir la légende"],
+      "Ver leyenda completa": ["Voir la légende complète"],
+      "Leyenda": ["Légende"],
+      "Encendiendo...": ["Allumer..."],
+      "Apagando...": ["Éteindre..."],
+      "Total": ["Total"],
+      "Porcentaje de ocupación de los aparcamientos": ["Pourcentage d'occupation de parkings"],
+      "Salir": ["Sortie"],
+      "Alquiler de bicicletas: tiempo real": ["Location de vélo: temps réel"],
+      "Línea de autobus": ["Ligne de bus"],
+      "Línea": ["Ligne"],
+      "Dirección": ["Adresse"],
+      "Estación de autobus": ["Station de bus"],
+      "Ciudad": ["Ville"],
+      "Vehículo": ["Véhicule"],
+      "Velocidad": ["Vitesse"],
+      "Ruta de barrido": ["Voie de balayage"],
+      "urgente": ["urgent"],
+      "incidencia": ["incidence"],
+      "Contadores de agua": ["Compteurs d'eau"],
+      "Correlations": ["Corrélations"],
+      "No hay datos para este vertical": ["Aucune donnée pour cette verticale"],
+      "Mapa de contenedores y el nivel de llenado de los mismos": [
+        "Carte des conteneurs et niveau de remplissage"
+      ],
+      "Indicadores de residuos": ["Indicateurs de gestion des déchets"],
+      "Mapa de calor del índice de eficiencia": ["Carte de chaleur de l'indice d'efficacité"],
+      "Índice de Calidad del Aire: Histórico": ["Indice de qualité de l'air: historique"],
+      "Nuevo frame": ["Nouveau cadre"],
+      "Indicadores de parking": ["Indicateurs de stationnement"],
+      "Top paises de origen": ["Principaux pays d'origine"],
+      "Top puntos de interés": ["Principaux points d'intérêt"],
+      "Bicicletas: Tiempo real": ["Vélos: Temps réel"],
+      "Intensidad media semanal": ["Intensité moyenne hebdomadaire"],
+      "Estado General de Contadores de agua": ["État général des compteurs d'eau"],
+      "Editar ficha de usuario": ["Profil utilisateur"],
+      "GUARDAR CAMBIOS": ["ENREGISTRER LES MODIFICATIONS"],
+      "Ficha de usuario": ["Profil utilisateur"],
+      "Nuevo usuario": ["Nouveau utilisateur"],
+      "CREAR USUARIO": ["CREER L'UTILISATEUR"],
+      "Papeleras": ["Poubelles"],
+      "Vehículos": ["Véhicules"],
+      "Rutas de barrido": ["Itinéraires"],
+      "Inventariado": ["Inscrit"],
+      "Incidencias": ["Incidents"],
+      "Tráfico en tiempo real": ["Trafic en temps réel"],
+      "Aparcamientos": ["Parking"],
+      "coches/hora": ["voitures/heure"],
+      "Porcentaje de ocupación de aparcamientos": ["Pourcentage de l'occupation du parking"],
+      "Desviar tráfico hacia el sur.": ["Divertir le trafic dans le Sud."],
+      "Abaratar parkings en El Soto.": ["Location de voitures à  El Soto."],
+      "Reforzar transporte público los lunes no festivos.": [
+        "Renforcer les transports en commun les lundis non-vacances."
+      ],
+      "Con tráfico denso y parkings al 100% el atasco se extenderá hacia Encinar": [
+        "Avec un trafic dense et un parking pleinement occupé, le trafic se propage à"
+      ],
+      "Mapa 3D": ["Carte 3D"],
+      "Calidad del Aire": ["Qualité de l'air"],
+      "Emisiones de CO2": ["Emissions de CO2"],
+      "Población": ["Population"],
+      "Edad media": ["Âge moyen"],
+      "Contenedores desbordados": ["Récipients surchargés"],
+      "diarios": ["journalier"],
+      "Población afectada": ["Population affectée"],
+      "Personas": ["Personnes"],
+      "Edad media población afectada": ["Âge moyen des personnes touchées"],
+      "Años": ["Âge"],
+      "Adelantar la hora de recogida en El Soto.": [
+        "Apportez le temps de rassemblement à El Soto."
+      ],
+      "Aumentar la frecuencia de recogida en Encinar (edad media población 54 años)": [
+        "Augmenter la fréquence de collecte des déchets en Encinar (âge moyen de la population de 54 ans)"
+      ],
+      "El Soto tendrá más del 50% de los contenedores en riesgo de desbordamiento a las 18:50.": [
+        "El Soto aura plus de 50% de conteneurs avec un risque élevé de débordement à 18 h 50."
+      ],
+      "Alertas detectadas": ["Alertes détectées"],
+      "Número de contenedores": ["Nombre de conteneurs"],
+      "No hay alertas disponibles": ["Aucune alerte disponible"],
+      "Comparativa del nivel de llenado": ["Comparaison de niveau de remplissage"],
+      "días": ["jours"],
+      "Frecuencia de recogida y nivel de llenado": [
+        "Fréquence de collecte et niveau de remplissage"
+      ],
+      "Nivel de llenado en la recogida": ["Niveau de remplissage au moment de la collecte"],
+      "Menos del": ["Moins que"],
+      "y": ["et"],
+      "Distribución horaria de la recogida y nivel de llenado en 24 horas": [
+        "Répartition du temps de collecte et niveau de remplissage en 24 heures"
+      ],
+      "% de nivel máximo de llenado": ["% Niveau de remplissage maximal"],
+      "Niveles de llenado en el momento de la recogida": [
+        "Niveaux de remplissage au moment de la collecte"
+      ],
+      "Capacidad actual de los contenedores": ["Capacité actuelle des conteneurs"],
+      "a menos del": ["moins que"],
+      "de su capacidad": ["de capacité"],
+      "entre el": ["entre"],
+      "a más del": ["plus de"],
+      "Número de contenedores por niveles de llenado": [
+        "Nombre de conteneurs par niveau de remplissage"
+      ],
+      "Evolución del nivel de llenado vs. peso de la carga": [
+        "Evolution du niveau de remplissage vs poids"
+      ],
+      "Toneladas de basura": ["Tonnes de déchets"],
+      "Contenedores en peligro de desbordamiento": [
+        "Les conteneurs doivent être vidés immédiatement en raison de la surcharge"
+      ],
+      "más de": ["plus de"],
+      "menos de": ["moins de"],
+      "No hay contenedores": ["Aucun conteneur disponible"],
+      "Número de contenedores por tipo de residuos": ["Nombre de conteneurs par type de déchets"],
+      "Ranking de ineficiencia en el sistema de recogida de residuos": [
+        "Classement de l'inefficacité du système de collecte des déchets"
+      ],
+      "ID Contenedor": ["ID du conteneur"],
+      "# recogidas en 24h": ["# collecte en 24h"],
+      "# recogidas en 48h": ["# collecte en 48h"],
+      "# recogidas en 72h": ["# collecte en 72h"],
+      "# recogidas en > 72h": ["# collecte en < 72h"],
+      "índice de ineficiencia": ["Indice d'inefficacité"],
+      "No registrada": ["Non enregistré"],
+      "Porcentaje de llenado total": ["Pourcentage du niveau de remplissage complet"],
+      "de volumen ocupado": ["du volume occupé"],
+      "Situación actual": ["Situation actuelle"],
+      "Peso de la carga total": ["Poids de la charge totale"],
+      "Todos los contenedores": ["Tous les conteneurs"],
+      "Clasificación de sensores por niveles de calidad del aire": [
+        "Classification des capteurs par IQA"
+      ],
+      "Número de sensores": ["Nombre de capteurs"],
+      " y Precipitación": [" et précipitations"],
+      "Precipitación (l/m2)": ["Précipitations (l/m2)"],
+      " y Temperatura": [" et température"],
+      "Temperatura (°C)": ["Température (ºC)"],
+      "Evolución de temperatura y precipitación": [
+        "Évolution de la température et des précipitations"
+      ],
+      "CO - Concentración de Monóxido de carbono Máximo": [
+        "CO - Concentration maximale de monoxyde de carbone"
+      ],
+      "NO<sub>2</sub> - Concentración de Dióxido de nitrógeno Máximo": [
+        "NO <sous> 2 </ sub> - Concentration maximale de dioxyde d'azote"
+      ],
+      "O<sub>3</sub> - Nivel de Ozono Máximo": ["O <sous> 3 </ sub> - Niveau maximal d'ozone"],
+      "PM10 - Concentración de partículas de 10 micras Máximo": [
+        "PM10 - Concentration de particules de 10 microns maximum"
+      ],
+      "PM2.5 - Concentración de partículas de 2.5 micras Máximo": [
+        "PM2.5 - Concentration de particules de 2,5 microns maximum"
+      ],
+      "SO<sub>2</sub> - Concentración de Dióxido de azufre Máximo": [
+        "SO<sub>2</sub> - Concentration maximale de dioxyde de soufre"
+      ],
+      "Clasificación de sensores por niveles de ruido": [
+        "Classification des capteurs par niveaux de bruit"
+      ],
+      "Decibelios": ["Décibels"],
+      "Niveles históricos de presión sonora": ["Niveaux historiques de pression de bruit"],
+      "Presión del sonido (dBA)": ["Pression de bruit (dBA)"],
+      "Ruido: promedios semanal en franjas horarias": [
+        "Bruit: moyenne hebdomadaire du bruit dans les créneaux horaire"
+      ],
+      "Niveles de ruido (dBA)": ["Niveaux de bruit (dBA)"],
+      "Promedio": ["Moyenne"],
+      "Editar contenido": ["Modifier le contenu"],
+      "Eliminar frame": ["Supprimer"],
+      "Editar frame": ["Modifier les données"],
+      "¿Estás seguro de eliminar este frame?": ["Êtes-vous sûr de vouloir supprimer ce widget?"],
+      "Consumo eléctrico en 24h": ["Consommation électrique en"],
+      "Evolución del consumo eléctrico": ["L'evolution de la consommation électrique"],
+      "Energía activa consumida en el último cuarto horario": [
+        "L'énergie active consommée au dernier quart d'heure"
+      ],
+      "Energía reactiva consumida en el último cuarto horario": [
+        "L'énergie réactive consommée au dernier quart d'heure"
+      ],
+      "Energía activa consumida en las últimas 24 horas": [
+        "L'énergie active consommée au cours des dernières 24h"
+      ],
+      "Energía reactiva consumida en las últimas 24 horas": [
+        "L'énergie réactive consommée au cours des dernières 24h"
+      ],
+      "Evolución de la duración media del estacionamiento": [
+        "Evolution du temps de stationnement moyen"
+      ],
+      "Duración media": ["Durée moyenne"],
+      "Estacionamiento superior a 4h": ["Stationnement sur 4h"],
+      "Estacionamiento entre 2h y 4h": ["Stationnement entre 2h et 4h"],
+      "Estacionamiento inferior a 2h": ["Stationnement de moins de 2 heures"],
+      "Duración media (hh:mm)": ["Durée moyenne (hh:mm)"],
+      "Número de estacionamientos": ["Nombre de places de stationnement"],
+      "Duración media del estacionamiento": ["Temps moyen de stationnement"],
+      "estacionamientos": ["places"],
+      "Evolución de plazas libres y porcentaje de ocupación": [
+        "Evolution des places gratuites et pourcentage d'occupation"
+      ],
+      "Ocupación (%)": ["Occupation (%)"],
+      "Plazas ocupadas": ["Places occupées"],
+      "Plazas de aparcamiento": ["Places de stationnement"],
+      "Plazas libres y porcentaje de ocupación": ["Places libres et taux d'occupation"],
+      "Porcentaje de ocupación por horas": ["Pourcentage d'occupation par heure"],
+      "Ocupación por zonas": ["Occupation par zones"],
+      "zonas": ["zones"],
+      "libres": ["libre"],
+      "ocupadas": ["occupé"],
+      "ocupación": ["occupation"],
+      "rotación": ["rotation"],
+      "Plazas individuales": ["Places individuales"],
+      "Plazas monitorizadas en grupo": ["Group des places de stationnement surveillées"],
+      "Plazas sensorizadas": ["Places avec capteur"],
+      "Ocupación horaria por zonas": ["Occupation horaire par zones"],
+      "Ocupación media (%)": ["Occupation moyenne (%)"],
+      "Ocupación < 60%": ["Occupation < 60%"],
+      "Ocupación < 80%": ["Occupation < 80%"],
+      "Ocupación < 100%": ["Occupation < 100%"],
+      "Número total de visitantes": ["Nombre total de visiteurs"],
+      "Ranking de visitantes por país de procedencia": [
+        "Classement des visiteurs par pays d'origine"
+      ],
+      "Pais": ["Pays"],
+      "Ranking de puntos de interés más visitados": [
+        "Classement des points d'intérêt les plus visités"
+      ],
+      "Ranking de visitantes por zona": ["Classement des visiteurs par zone"],
+      "Bicicletas disponibles": ["Vélos disponibles"],
+      "Bicicletas alquiladas": ["Vélos loués"],
+      "Bicicletas disponibles y alquiladas": ["Vélos disponibles et loués"],
+      "Ciclo diario: intensidad horaria media": ["Cycle quotidien: intensité moyenne horaire"],
+      "Intensidad horaria": ["Intensité horaire"],
+      "Alertas en estaciones": ["Alertes dans les stations"],
+      "Ranking de población servida por estación": [
+        "Classement de la population desservie par station"
+      ],
+      "Evolución de bicicletas disponibles y alquiladas · Porcentaje de uso": [
+        "Evolution des vélos disponibles et loués · Pourcentage d'utilisation"
+      ],
+      "Número de bicicletas": ["Nombre de visites"],
+      "Distribución horaria de la disponibilidad de bibicletas": [
+        "Répartition horaire des vélos disponibles"
+      ],
+      "% de disponibilidad": ["% disponibilité"],
+      "Porcentaje de disponibilidad / estación": ["Pourcentage de vélo disponible / station"],
+      "Intensidad horaria punta": ["Intensité horaire maximale"],
+      "IHP": ["IHP"],
+      "Vías monitorizadas congestionadas.": ["Voies surveillées avec congestion."],
+      "Vías monitorizadas sin congestión.": ["Voies surveillées sans congestion."],
+      "Vías congestionadas": ["Voies congestionnées"],
+      "Congestionadas": ["Congestionné"],
+      "No congestionadas": ["Pas congestionné"],
+      "Ranking de vías por intensidad del tráfico": ["Voies classées par intensité de trafic"],
+      "Vias monitorizadas congestionadas": ["Voies surveillées avec congestion"],
+      "Flotas en movimiento": ["Flotte mobile"],
+      "Número de vehículos": ["Nombre de véhicules"],
+      "Ciclo semanal: Intensidad horaria media": ["Cycle hebdomadaire: intensité moyenne horaire"],
+      "Intensidad media": ["Intensité moyenne"],
+      "Indicador": ["Indicateur"],
+      "Penalización máxima": ["Pénalité maximale"],
+      "Incidencias de la Ciudad": ["Incidents de la ville"],
+      "Nº de incidencias por categorías": ["Nombre d'incidents par catégorie"],
+      "Categoría": ["Catégorie"],
+      "Último \"Estado\" del periodo seleccionado": [
+        "Dernier \"Etat\" dans la période sélectionnée"
+      ],
+      "Creado": ["Créé"],
+      "Solucionado": ["Résolu"],
+      "Pendiente": ["En attente"],
+      "Comparativa: Consumo agregado": ["Comparaison: consommation moyenne"],
+      "Consumo agregado": ["Consommation moyenne"],
+      "Consumo de agua en las últimas 24 horas": ["Consommation d'eau au cours des dernières 24h"],
+      "Consumo de agua en el último periodo": [
+        "Consommation d'eau au cours de la dernière période"
+      ],
+      "Ranking de consumo en el último periodo": [
+        "Le classement de la consommation au cours de la dernière période"
+      ],
+      "Mapa de dispositivos": ["Carte des dispositifs"],
+      "Con alguna incidencia": ["Avec des incidences"],
+      "abierto": ["ouvert"],
+      "cerrado": ["fermé"],
+      "Peso de la carga": ["Poids"],
+      "Menos del 80 %": ["Moins de 80%"],
+      "Más del 90 %": ["Plus de 90%"],
+      "Entre el 80% y el 90%.": ["Entre 80% et 90%."],
+      "Más del 90%.": ["Plus de 90%."],
+      "a menos del 80% de su capacidad": ["moins de 80% de capacité"],
+      "entre el 80% y el 90% de su capacidad": ["entre 80% et 90% de capacité"],
+      "a más del 90% de su capacidad": ["Plus de 90% de capacité"],
+      "> 90% con más de 2 horas": ["> 90% plus de 2 heures"],
+      "con más de": ["plus que"],
+      "con menos de": ["moins que"],
+      "> 90% con menos de 2 horas": ["> 90% moins de 2 heures"],
+      "> 90% más de 2 horas": ["> 90% plus de 2 heures"],
+      "> 90% menos de 2 horas": ["> 90% moins de 2 heures"],
+      "Operación: Contenedores por niveles de llenado": [
+        "Fonctionnement: Conteneurs par niveau de remplissage"
+      ],
+      "contenedor": ["conteneur"],
+      "contenedores": ["conteneurs"],
+      "Última hora": ["Dernière heure"],
+      "Iluminación": ["Éclairage"],
+      "Medio Ambiente": ["Environnement"],
+      "Movilidad": ["Transport"],
+      "Turismo": ["Tourisme"],
+      "Muy buena": ["Très bonne"],
+      "Excelente": ["Excellent"],
+      "Iniciar sesión con IDM": ["Connexion avec IDM"]
+    }
+  }
+}

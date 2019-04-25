@@ -633,9 +633,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .scale(this.xScaleBars)
         .orient('bottom')
         .tickFormat(function(d) {
+          var absStepDiff = Math.abs(stepDiff);
+
           if(_this.data[0].values.length > datesInterval.length + 1){
-            if((d*stepDiff) % diff === 0 && (d*stepDiff/diff) < datesInterval.length)
-              return _this.xAxisFunction(datesInterval[d*stepDiff/diff]);
+            if((d*absStepDiff) % diff === 0 && (d*absStepDiff/diff) < datesInterval.length)
+              return _this.xAxisFunction(datesInterval[d*absStepDiff/diff]);
             else
               return '';
           }else if(d < datesInterval.length){
