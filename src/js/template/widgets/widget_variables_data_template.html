@@ -1,0 +1,48 @@
+<div class="variables_data">
+  <!-- Data info top -->
+  <% if (typeof data !== 'undefined') { %>
+  <div class="variables_data-top">
+    <% _.each(data, function(currentData, index) { %>
+    <div class="variables_data-top-content <%= index === 0 ? 'variables_data-left' : 'variables_data-right' %>">
+      <!-- Variable title -->
+      <% if (typeof currentData.title !== 'undefined') { %>
+      <h5 class="title"><%= currentData.title %></h5>
+      <% } %>
+      <div class="data">
+        <!-- Variable value -->
+        <% if (typeof currentData.value !== 'undefined') { %>
+          <span class="value">
+            <span>
+              <%= Number.isNaN(currentData.value) ? App.nbf(currentData.value) : currentData.value %>
+            </span>
+          </span>
+        <% } %>
+        <!-- Variable units -->
+        <span class="units">
+          <% if (typeof currentData.badge !== 'undefined' && currentData.badge !== false) { %>
+          <!-- Variable badge -->
+          <span class="badge <%= currentData.badge && currentData.badge.value > 0 ? 'badge-good' : 'badge-bad' %>">
+            <span class="value with-arrow">
+              <%= App.nbf(Math.abs(currentData.badge.value)) %>
+            </span>
+            <span class="symbol"><%= currentData.badge.symbol || '' %></span>
+          </span>
+          <% } %>
+          <!-- Variable units (symbol) -->
+          <% if (typeof currentData.units !== 'undefined') { %>
+          <span class="symbol"><%= currentData.units %></span>
+          <% } %>
+        </span>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <!-- Data info bottom -->
+  <% if (typeof footer !== 'undefined') { %>
+  <div class="variables_data-bottom">
+    <span class="label"><%= footer %></span>
+  </div>
+  <% } %>
+</div>
