@@ -100,17 +100,45 @@ App.View.Dashboard = Backbone.View.extend({
       }));
     }
     else if (section == 'watering'){
-
       App.getNavBar().set({
-        breadcrumb : [{
-          url: scope + '/watering/dashboard',
-          title : 'Riego'
-        },
-        {
-          url: scope + '/dashboard',
-          title : this.scopeModel.get('name')
-        }]
+        section: section,
+        breadcrumb : [    
+          [
+            {
+              id:'master',
+              title: 'Estado general',
+              url:scope + '/watering/dashboard',
+              selected:true
+            },
+            {
+              id:'mapdevices',
+              title: 'Mapa de dispositivos',
+              url:scope + '/watering/map'
+            },
+            {
+              id:'operation',
+              title: 'Operación',
+              url:scope + '/watering/operation'
+            },
+            {
+              id:'consumption',
+              title: 'Consumo de agua',
+              url:scope + '/watering/consumption'
+            }
+          ],
+          {
+            url: scope + '/watering/dashboard',
+            title : 'Riego'
+          },
+          {
+            url: scope + '/dashboard',
+            title : this.scopeModel.get('name')
+          }
+        ]
       });
+
+      //
+
 
       this.$('.title_page').text('Dashboard de Riego');
       var m = new App.Model.Widgets.Base({
