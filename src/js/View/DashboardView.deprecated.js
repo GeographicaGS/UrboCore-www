@@ -137,9 +137,6 @@ App.View.Dashboard = Backbone.View.extend({
         ]
       });
 
-      //
-
-
       this.$('.title_page').text('Dashboard de Riego');
       var m = new App.Model.Widgets.Base({
         entities : ['watering.sosteco.weatherstation','watering.sosteco.solenoidvalve','watering.sosteco.sensor'],
