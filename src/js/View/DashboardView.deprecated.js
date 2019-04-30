@@ -94,11 +94,11 @@ App.View.Dashboard = Backbone.View.extend({
         ],
         {
         url: scope + '/tourism/dashboard',
-        title : 'Turismo'
+        title : __('Turismo')
       },
       {
         url: scope + '/dashboard',
-        title : this.scopeModel.get('name')
+        title : __(this.scopeModel.get('name'))
       }];
 
       // Adds multiscope level to breadcrumb
@@ -165,11 +165,11 @@ App.View.Dashboard = Backbone.View.extend({
         ],
         {
           url: scope + '/watering/dashboard',
-          title : 'Riego'
+          title : __('Riego')
         },
         {
           url: scope + '/dashboard',
-          title : this.scopeModel.get('name')
+          title : __(this.scopeModel.get('name'))
         }
       ];
 
