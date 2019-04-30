@@ -22,17 +22,28 @@ App.Model.Base = Backbone.Model.extend({
   initialize: function(options) {
     this.options = options;
   },
+
   fetch: function(options) {
-    options.contentType='application/json';
+    options = _.defaults(options, {
+      contentType: 'application/json'
+    });
+
     return Backbone.Model.prototype.fetch.call(this, options);
   }
 });
 
 App.Model.Post = App.Model.Base.extend({
-  fetch: function(options) {
-    options.type='POST';
-    if (options.data)
+  fetch: function (options) {
+    options = _.defaults(options, {
+      type: 'POST'
+    });
+
+    // Add initial model options
+    _.extend(options, this.options || {});
+
+    if (options.data) {
       options.data = JSON.stringify(options.data);
+    }
 
     return App.Model.Base.prototype.fetch.call(this, options);
   }
@@ -40,13 +51,20 @@ App.Model.Post = App.Model.Base.extend({
 
 
 App.Model.Put = App.Model.Base.extend({
-  url: function(){
+  url: function () {
     return this.options.url;
   },
   fetch: function(options) {
-    options.type='PUT';
-    if (options.data)
+    options = _.defaults(options, {
+      type: 'PUT'
+    });
+
+    // Add initial model options
+    _.extend(options, this.options || {});
+
+    if (options.data) {
       options.data = JSON.stringify(options.data);
+    }
 
     return App.Model.Base.prototype.fetch.call(this, options);
   }
