@@ -68,7 +68,31 @@ App.View.Dashboard = Backbone.View.extend({
     var section = this.model.get('section');
 
     if( section  == 'tourism'){
-      var breadcrumb = [{
+      var breadcrumb = [
+        [
+          {
+            id:'master',
+            title: __('Estado general'),
+            url:scope + '/tourism/dashboard',
+            selected:true
+          },
+          {
+            id:'offers',
+            title: __('Ranking de oferta'),
+            url:scope + '/tourism/ranking/offer'
+          },
+          {
+            id:'demands',
+            title: __('Ranking de demanda'),
+            url:scope + '/tourism/ranking/demand'
+          },
+          {
+            id:'activities',
+            title: __('Actividades turísticas'),
+            url:scope + '/tourism/activities'
+          }
+        ],
+        {
         url: scope + '/tourism/dashboard',
         title : 'Turismo'
       },
@@ -90,6 +114,7 @@ App.View.Dashboard = Backbone.View.extend({
       }
 
       App.getNavBar().set({
+        section:section,
         breadcrumb : breadcrumb
       });
       this.$('.title_page').text('Dashboard de Turismo');
@@ -118,23 +143,23 @@ App.View.Dashboard = Backbone.View.extend({
         [
           {
             id:'master',
-            title: 'Estado general',
+            title: __('Estado general'),
             url:scope + '/watering/dashboard',
             selected:true
           },
           {
             id:'mapdevices',
-            title: 'Mapa de dispositivos',
+            title: __('Mapa de dispositivos'),
             url:scope + '/watering/map'
           },
           {
             id:'operation',
-            title: 'Operación',
+            title: __('Operación'),
             url:scope + '/watering/operation'
           },
           {
             id:'consumption',
-            title: 'Consumo de agua',
+            title: __('Consumo de agua'),
             url:scope + '/watering/consumption'
           }
         ],
@@ -200,14 +225,39 @@ App.View.Dashboard = Backbone.View.extend({
 
     } else if (section == 'waste'){
 
-      var breadcrumb = [{
-        url: scope + '/waste/dashboard',
-        title : __('Seguimiento de contratas')
-      },
-      {
-        url: '/' + scope + '/dashboard',
-        title : __(this.scopeModel.get('name'))
-      }];
+      var breadcrumb = [
+        [
+          {
+            id:'master',
+            title: __('Estado general'),
+            url:scope + '/waste/dashboard',
+            selected:true
+          },
+          {
+            id:'map',
+            title: __('Inventariado'),
+            url:scope + '/waste/map'
+          },
+          {
+            id:'issues',
+            title: __('Incidencias'),
+            url:scope + '/waste/operation/issues'
+          },
+          {
+            id:'indicators',
+            title: __('Indicadores'),
+            url:scope + '/waste/indicators'
+          }
+        ],
+        {
+          url: scope + '/waste/dashboard',
+          title : __('Seguimiento de contratas')
+        },
+        {
+          url: '/' + scope + '/dashboard',
+          title : __(this.scopeModel.get('name'))
+        }
+      ];
 
       // Adds multiscope level to breadcrumb
       // If scope has parent (multiscope)
@@ -222,6 +272,7 @@ App.View.Dashboard = Backbone.View.extend({
       }
 
       App.getNavBar().set({
+        section:section,
         breadcrumb : breadcrumb
       });
 
