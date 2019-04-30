@@ -42,6 +42,7 @@ deps.JS = [
 
   // Utils
   srcJS + 'Utils.js@finish-main-block',
+  //srcJS + 'Utils.js',
 
   // Views
   srcJS + 'View/BaseView.js',

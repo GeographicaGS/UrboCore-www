@@ -147,9 +147,12 @@ App.View.Panels.Base = App.View.Container.extend({
       listCollection.get(this.id_panel).set('selected', true);
 
       var url = this.scopeModel.get('id') + '/categories/welcome';
-      if(this.scopeModel.get('categories').length === 1) {
-        url = '';
-      }
+      
+      //This lines makes backurl links to homepage from scope when it has only one vertical,
+      //preventing from goint to multiscope map on children scopes
+      // if(this.scopeModel.get('categories').length === 1) {
+      //   url = '';
+      // }
 
       var sectionTitle;
       if (this.id_category === 'correlations') {
@@ -176,14 +179,16 @@ App.View.Panels.Base = App.View.Container.extend({
         }
       ];
 
-      if (this.scopeModel.get('multi')){
-        var parentModel = App.mv().getScope(this.scopeModel.get('parent_id'));
+      //this.scopeModel.get('multi') is returning false for multiscope verticals
+      var parent = this.scopeModel.get('parent_id') 
+      if (parent && parent != 'orphan'){
+        var parentModel = App.mv().getScope(parent);
         breadcrumb.push({
-          url: 'scope/' + parentModel.get('id'),
+          url: parentModel.get('id') + '/scope',
           title: parentModel.get('name')
         });
       }
-
+      
       // var backurl = null;
       // if(this.scopeModel.get('categories').length === 1) {
       //   backurl = Backbone.history.getFragment();
@@ -192,12 +197,11 @@ App.View.Panels.Base = App.View.Container.extend({
       navBar.set({
         visible : true,
         breadcrumb : breadcrumb,
-        // backurl: backurl,
         scopeInfo: App.Utils.toDeepJSON(this.scopeModel),
         cities:[],
         section: this.id_category,
         scopeLoaded: this.scopeModel.get('id'),
-        menu: { showable : true}
+        menu: { showable : true},
       });
     }
 
