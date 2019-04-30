@@ -42,7 +42,7 @@ App.View.CategoriesList = Backbone.View.extend({
     //Set if scope is multiscope by parent property
     var parent = this.scopeModel.get('parent_id');
 
-    if (parent != 'orphan') {
+    if (parent && parent != 'orphan') {
       var parentModel = App.mv().getScope(parent);
 
       breadcrumb.push({
@@ -53,13 +53,12 @@ App.View.CategoriesList = Backbone.View.extend({
 
     App.getNavBar().set({
       visible : true,
-      backurl: parent != 'orphan' ? '/' + parent + '/scope' :  '',
+      backurl: parent && parent != 'orphan' ? '/' + parent + '/scope' :  '',
       breadcrumb: breadcrumb,
       menu: {
         showable:false
       }
     });
-    
     this.render();
   },
 

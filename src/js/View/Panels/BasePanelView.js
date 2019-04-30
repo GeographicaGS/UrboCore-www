@@ -181,7 +181,7 @@ App.View.Panels.Base = App.View.Container.extend({
 
       //this.scopeModel.get('multi') is returning false for multiscope verticals
       var parent = this.scopeModel.get('parent_id') 
-      if (parent != 'orphan'){
+      if (parent && parent != 'orphan'){
         var parentModel = App.mv().getScope(parent);
         breadcrumb.push({
           url: parentModel.get('id') + '/scope',

@@ -68,15 +68,29 @@ App.View.Dashboard = Backbone.View.extend({
     var section = this.model.get('section');
 
     if( section  == 'tourism'){
+      var breadcrumb = [{
+        url: scope + '/tourism/dashboard',
+        title : 'Turismo'
+      },
+      {
+        url: scope + '/dashboard',
+        title : this.scopeModel.get('name')
+      }];
+
+      // Adds multiscope level to breadcrumb
+      // If scope has parent (multiscope)
+      var parent = this.scopeModel.get('parent_id');
+      if (parent && parent != 'orphan') {
+        var parentModel = App.mv().getScope(parent);
+
+        breadcrumb.push({
+          url: parent + '/' + 'scope',
+          title: __(parentModel.get('name'))
+        });
+      }
+
       App.getNavBar().set({
-        breadcrumb : [{
-          url: scope + '/tourism/dashboard',
-          title : 'Turismo'
-        },
-        {
-          url: scope + '/dashboard',
-          title : this.scopeModel.get('name')
-        }]
+        breadcrumb : breadcrumb
       });
       this.$('.title_page').text('Dashboard de Turismo');
 
@@ -100,41 +114,55 @@ App.View.Dashboard = Backbone.View.extend({
       }));
     }
     else if (section == 'watering'){
-      App.getNavBar().set({
-        section: section,
-        breadcrumb : [    
-          [
-            {
-              id:'master',
-              title: 'Estado general',
-              url:scope + '/watering/dashboard',
-              selected:true
-            },
-            {
-              id:'mapdevices',
-              title: 'Mapa de dispositivos',
-              url:scope + '/watering/map'
-            },
-            {
-              id:'operation',
-              title: 'Operación',
-              url:scope + '/watering/operation'
-            },
-            {
-              id:'consumption',
-              title: 'Consumo de agua',
-              url:scope + '/watering/consumption'
-            }
-          ],
+      var breadcrumb = [    
+        [
           {
-            url: scope + '/watering/dashboard',
-            title : 'Riego'
+            id:'master',
+            title: 'Estado general',
+            url:scope + '/watering/dashboard',
+            selected:true
           },
           {
-            url: scope + '/dashboard',
-            title : this.scopeModel.get('name')
+            id:'mapdevices',
+            title: 'Mapa de dispositivos',
+            url:scope + '/watering/map'
+          },
+          {
+            id:'operation',
+            title: 'Operación',
+            url:scope + '/watering/operation'
+          },
+          {
+            id:'consumption',
+            title: 'Consumo de agua',
+            url:scope + '/watering/consumption'
           }
-        ]
+        ],
+        {
+          url: scope + '/watering/dashboard',
+          title : 'Riego'
+        },
+        {
+          url: scope + '/dashboard',
+          title : this.scopeModel.get('name')
+        }
+      ];
+
+      // Adds multiscope level to breadcrumb
+      // If scope has parent (multiscope)
+      var parent = this.scopeModel.get('parent_id');
+      if (parent && parent != 'orphan') {
+        var parentModel = App.mv().getScope(parent);
+
+        breadcrumb.push({
+          url: parent + '/' + 'scope',
+          title: __(parentModel.get('name'))
+        });
+      }
+      
+      App.getNavBar().set({
+        section: section,
+        breadcrumb : breadcrumb
       });
 
       this.$('.title_page').text('Dashboard de Riego');
@@ -171,15 +199,30 @@ App.View.Dashboard = Backbone.View.extend({
       // this._widgets.push(wasteLinkWidget);
 
     } else if (section == 'waste'){
+
+      var breadcrumb = [{
+        url: scope + '/waste/dashboard',
+        title : __('Seguimiento de contratas')
+      },
+      {
+        url: '/' + scope + '/dashboard',
+        title : __(this.scopeModel.get('name'))
+      }];
+
+      // Adds multiscope level to breadcrumb
+      // If scope has parent (multiscope)
+      var parent = this.scopeModel.get('parent_id');
+      if (parent && parent != 'orphan') {
+        var parentModel = App.mv().getScope(parent);
+
+        breadcrumb.push({
+          url: parent + '/' + 'scope',
+          title: __(parentModel.get('name'))
+        });
+      }
+
       App.getNavBar().set({
-        breadcrumb : [{
-          url: scope + '/waste/dashboard',
-          title : __('Seguimiento de contratas')
-        },
-        {
-          url: '/' + scope + '/dashboard',
-          title : __(this.scopeModel.get('name'))
-        }]
+        breadcrumb : breadcrumb
       });
 
       this.$('.title_page').text(__('Seguimiento de contratas'));

@@ -82,19 +82,33 @@ App.View.Device = Backbone.View.extend({
 
   _initBaseViews: function(){
 
+    var breadcrumb = [{
+      url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
+      title : __('Ficha de dispositivo')
+    },
+    {
+      url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
+      title: __(App.mv().getCategory(this.model.get('entity').split('.')[0]).get('name'))
+    },
+    {
+      url: this.model.get('scope') + '/dashboard',
+      title: __(this.scopeModel.get('name'))
+    }];
+
+    // Adds multiscope level to breadcrumb
+    // If scope has parent (multiscope)
+    var parent = this.scopeModel.get('parent_id');
+    if (parent && parent != 'orphan') {
+      var parentModel = App.mv().getScope(parent);
+
+      breadcrumb.push({
+        url: parent + '/' + 'scope',
+        title: __(parentModel.get('name'))
+      });
+    }
+
     App.getNavBar().set({
-      breadcrumb : [{
-        url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
-        title : __('Ficha de dispositivo')
-      },
-      {
-        url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
-        title: __(App.mv().getCategory(this.model.get('entity').split('.')[0]).get('name'))
-      },
-      {
-        url: this.model.get('scope') + '/dashboard',
-        title: __(this.scopeModel.get('name'))
-      }],
+      breadcrumb : breadcrumb,
       visible: true
     });
 
