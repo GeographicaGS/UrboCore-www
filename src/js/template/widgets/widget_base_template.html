@@ -1,26 +1,35 @@
+<!-- Link -->
 <%if(link){%>
-  <a jslink href="<%=link%>" class="noOutline">
+<a jslink href="<%=link%>" class="noOutline">
 <%}%>
+
 <div class="widget active <%=classname === 'custom' ? 'custom' : '' %> <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+  <!-- Action buttons -->
   <div class='botons'>
-    <% if (timeMode=='now') {%>
-      <span class='tooltipIcon realTime'>
+    <!-- Show the 'clock' icon or 'calendar' icon -->
+    <% if (timeMode === 'now') {%>
+    <span class='tooltipIcon realTime'>
+      <div class='text'>
+        <span><%=__('Ahora')%></span>
+      </div>
+    </span>
+    <% } else if (timeMode === 'historic') { %>
+    <%=_.template( $('#widgets-widget_date_template').html())() %>
+    <% } %>
+
+    <!-- Show more info about widget -->
+    <% if (infoTemplate) {%>
+      <span class='tooltipIcon info'>
         <div class='text'>
-          <span><%=__('Ahora')%></span>
+          <span><%=__('Más info')%></span>
         </div>
       </span>
-    <% } else if (timeMode=='historic') { %>
-      <%=_.template( $('#widgets-widget_date_template').html())() %>
-    <% } %>
-    <% if (infoTemplate) {%>
-      <span class='tooltipIcon info'><div class='text'><span><%=__('Más info')%></span></div></span>
       <span class='tooltipIcon close hide'></span>
     <% } %>
 
-    <% if((!embed && !link) || extraMenu) { %>
-
-      <% if(exportable || publishable || extraMenu) { %>
-
+    <!-- Differents options to the widget (exportable, extraMenu, publishable) -->
+    <% if ((!embed && !link) || extraMenu) { %>
+      <% if (exportable || publishable || extraMenu) { %>
         <span class='tooltipIcon'>
           <div class="popup_widget actions" href="#">
             <div class="exportsel">
@@ -48,15 +57,11 @@
             </div>
           </div>
         </span>
-
       <% } %>
-
     <% } %>
-
-
-
-
   </div>
+
+  <!-- Header -->
   <div class="widget_header main">
     <div
       class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>"
@@ -72,19 +77,25 @@
       <span><%=correlationTitle%></span>
     </div>
   </div>
+
+  <!-- Content -->
   <div class="widget_content"></div>
+  
+  <!-- Footer -->
   <div class="widget_footer"></div>
+  
+  <!-- Info Template -->
   <% if (infoTemplate) {%>
-    <div class='info_container hide'>
-      <div class='info_content'><%= infoTemplate()%></div>
-    </div>
+  <div class='info_container hide'>
+    <div class='info_content'><%= infoTemplate()%></div>
+  </div>
   <% } %>
 
-
+<!-- End Link -->
 <%if(link){%>
   <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
   </div>
-  </a>
+</a>
 <%}else{%>
-  </div>
+</div>
 <%}%>

@@ -55,6 +55,90 @@
           }
         }
       }
+      // Widget to use with 'App.View.Widgets.Base' (widget_variables_data_template.html)
+      .variables_data {
+        padding-top: 35px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .variables_data-top {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          .variables_data-top-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            .title {
+              font-size: 12px;
+              line-height: 12px;
+              text-transform: uppercase;
+              color: @grey;
+              font-weight: 400;
+              text-align: left;
+              margin: 0 0 10px;
+              padding: 0;
+            }
+            .data {
+              display: flex;
+              & > .value {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                font-size: 56px;
+                line-height: 56px;
+                color: #FFF;
+                font-weight: 200;
+                text-align: left;
+              }
+              & >.units {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                font-size: 32px;
+                font-weight: 100;
+                color: @grey4;
+                margin-left: 6px;
+              }
+            }
+            &.variables_data-left {
+              flex-basis: auto;
+              flex-grow: 2;
+              align-items: flex-start;
+              .title {
+                text-align: left;
+              }
+              .data {
+                justify-content: flex-start;
+              }
+            }
+            &.variables_data-right {
+              flex-basis: auto;
+              flex-grow: 1;
+              border-left: 1px solid rgba(255, 255, 255, 0.2);
+              align-items: flex-end;
+              .title {
+                text-align: right;
+              }
+              .data {
+                justify-content: flex-end;
+              }
+            }
+          }
+        }
+        .variables_data-bottom {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          margin-top: 10px;
+          .label {
+            font-size: 14px;
+            line-height: 14px;
+            color: @grey4;
+          }
+        }
+      }
 
     }
   }
