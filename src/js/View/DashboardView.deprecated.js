@@ -340,7 +340,7 @@ App.View.Dashboard = Backbone.View.extend({
         'className': 'lvigauge',
         'var_id': 'waste.ilv.indicator',
         // 'timeinstant':timeinstant
-        'date': scope === 'guadalajara' ? new Date(2019, 2, 1) : new Date(2016, 7, 1),
+        'date': scope === 'guadalajara' ? new Date(2019, 2, 1) : new Date(2018, 7, 1),
         'url': '/' + scope + '/waste/indicators',
         'extra_info': {
           'unit': '%',
