@@ -30,6 +30,7 @@
 */
 App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   initialize: function(options){
+
     if(!options.opts.has('keysConfig')) throw new Error('keysConfig parameter is mandatory');
     if(!options.opts.has('showLineDots')) options.opts.set({showLineDots: false});
     if(!options.opts.has('interpolate')) options.opts.set({interpolate: 'monotone'});
@@ -245,6 +246,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   },
 
   _initChartModel: function(){
+    // FIX BUG at fire_detection vertical
+    // When the graph redraws its height it's not 
+    // property setted if the legend bar is already present
+    // Somehow, the height og the inner graph
+    // is setted bigger than usual. Prefarably, the graph should update once on each request.
+    // Actually does several times at least for this vertical.
+    
+    if(this.$('.var_list .tags').length > 0){
+      this.$('.var_list .tags').remove()
+    }
 
     // Clean all
     this.$('.chart').empty();
@@ -261,14 +272,14 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       : 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
 
     var _this = this;
-
+    
     this._chart.svg = d3.select(this.$('.chart')[0])
       .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
       .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
       .attr('class', 'chart d3')
       .append('g')
-        .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')');
-
+        .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')')
+    
     if(this.options.get('stacked')){
       this.stackedRawData = {};
       _.each(this.data, function(el){
@@ -666,6 +677,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   _formatYAxis: function() {
     // Force domains and different between lines (range)
+    // Added a method to alter diff value from verticals 
+    // if you need fixed incremental steps
     var yAxisDomainForce = this.options.get('yAxisDomainForce');
     var diff = yAxisDomainForce === true
       ? this.options.get('yAxisDomainDiff') || 1
@@ -675,14 +688,13 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       range = d3.range(
         this.yAxisDomain[0][0],
         this.yAxisDomain[0][1],
-        diff
+        this.options.get('yAxisStep') || diff
       );
     }else {
       range = _.pluck(this.options.get('yAxisThresholds'),'startValue').sort(function(a,b){ return a - b; });
     }
 
     range.push(this.yAxisDomain[0][1]);
-
     this._chart.yAxis1 = d3.svg.axis()
       .scale(this.yScales[0])
       .orient('left')
@@ -702,7 +714,6 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         this.yAxisDomain[1][1],
         diff
       );
-
       range.push(this.yAxisDomain[1][1]);
       this._chart.yAxis2 = d3.svg.axis()
         .scale(this.yScales[1])
