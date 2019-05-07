@@ -20,6 +20,7 @@
 
 App.Model.Base = Backbone.Model.extend({
   initialize: function (options) {
+    options = options || {};
     // To fix the problem with "type" param (now or historic) in the models (MapsModels)
     if (options.type
       && options.type.toLowerCase() !== 'get'

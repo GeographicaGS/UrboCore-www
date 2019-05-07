@@ -20,6 +20,7 @@
 
 App.Collection.Base = Backbone.Collection.extend({
   initialize: function (models, options) {
+    options = options || {};
     // To fix the problem with "type" param (now or historic) in the collections (MapsCollections)
     if (options.type
       && options.type.toLowerCase() !== 'get'
