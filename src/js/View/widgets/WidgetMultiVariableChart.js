@@ -41,7 +41,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.collection = options.collection;
     this._multiVariableModel = options.multiVariableModel;
     this.options = {
-      noAgg: options.noAgg || false
+      noAgg: options.noAgg || false,
+      yAxisFunction: options.yAxisFunction || null
     };
     this._aggDefaultValues = this._multiVariableModel ? this._multiVariableModel.get("aggDefaultValues"):[];
 
@@ -77,7 +78,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.collection.fetch({'reset':true, data: this.collection.options.data || {} })
       this.render();
     });
-
+    
     this.render();
   },
 
@@ -314,7 +315,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     return _.map(this.collection.toJSON(), function(j){ j.key = _this.data.findWhere({'realKey':j.key}).get('key') ; return j });
   },
 
-  _updateYAxis:function(){
+  _updateYAxis:function(){    
     var col = this.data.where({'disabled': false});
     if(col.length == 1){
       var values = col[0].get('values');
@@ -327,10 +328,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }
 
       var metadata = App.Utils.toDeepJSON(App.mv().getVariable(col[0].get('realKey')));
-      this.chart.yAxis.axisLabel(metadata.name + ' (' + metadata.units + ')');
-      this.chart.yAxis.showMaxMin(false).tickFormat(format);
+      this.chart.yAxis.axisLabel(metadata.name + (metadata.units
+          ? ' (' + metadata.units + ')'
+          : ''));
+      
+      this.chart.yAxis.showMaxMin(false).tickFormat(this.options.yAxisFunction
+        ? this.options.yAxisFunction
+        : format);
       this.svgChart.selectAll('.nv-focus .nv-y').call(this.chart.yAxis);
-
     }
   },
 

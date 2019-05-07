@@ -69,14 +69,12 @@ App.View.Device = Backbone.View.extend({
     });
     var v = this._tabs[this.model.get('tab')];
     this.$('.ctrl_container').html(v.$el);
-
     this.$('.nav_ctrl ul li').removeAttr('selected');
-
     this.$('.nav_ctrl [data-el=ctrl_'+this.model.get('tab')+']').attr('selected',true);
-
+    
     v.render().delegateEvents();
-
     App.router.navigate('/' + this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/' + this.model.get('tab'));
+    this._showDateSelector();
 
   },
 
@@ -144,6 +142,14 @@ App.View.Device = Backbone.View.extend({
     this._renderTab();
   },
 
+  _showDateSelector(){  
+    if(this.model.get('tab') === 'lastdata'){   
+      $('#dateSelector').hide();
+    }else{
+      $('#dateSelector').show();
+    } 
+  },
+
   render: function(){
     this.$el.html(this._template({'entity':this.model.get('entity')}));
 
@@ -160,7 +166,9 @@ App.View.Device = Backbone.View.extend({
 
     this._dateView = new App.View.Date({'compact':false});
     this.$el.append(this._dateView.render().$el);
-
+    // dateView need time to be rendered  before to check if show or hide
+    setTimeout(this._showDateSelector.bind(this), 100);
+    
     return this;
   }
 
