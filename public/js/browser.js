@@ -72,7 +72,7 @@ function isSupportedBrowser() {
   return true;
 };
 
-if (!isSupportedBrowser()) {
+//if (!isSupportedBrowser()) {
   window.location.href = '/browser_error.html';
-}
+// }
 
