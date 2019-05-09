@@ -19,11 +19,22 @@
 // iot_support at tid dot es
 
 App.Model.Base = Backbone.Model.extend({
-  initialize: function(options) {
+  initialize: function (options) {
+    options = options || {};
+    // To fix the problem with "type" param (now or historic) in the models (MapsModels)
+    if (options.type
+      && options.type.toLowerCase() !== 'get'
+      && options.type.toLowerCase() !== 'post'
+      && options.type.toLowerCase() !== 'put'
+      && options.type.toLowerCase() !== 'delete') {
+      options.typeInUrl = options.type;
+      delete options.type;
+    }
+
     this.options = options;
   },
 
-  fetch: function(options) {
+  fetch: function (options) {
     options = _.defaults(options, {
       contentType: 'application/json'
     });
@@ -54,7 +65,7 @@ App.Model.Put = App.Model.Base.extend({
   url: function () {
     return this.options.url;
   },
-  fetch: function(options) {
+  fetch: function (options) {
     options = _.defaults(options, {
       type: 'PUT'
     });
@@ -79,7 +90,7 @@ App.Model.Widgets.Base = Backbone.Model.extend({
     category: null,
     title: null,
     // refreshTime in seconds. If timeMode='now' and refreshTime=null refreshTime will be set to 30s
-    refreshTime : 60 * 1000,
+    refreshTime: 60 * 1000,
   }
 });
 
@@ -92,67 +103,63 @@ App.Model.PublishedWidget = App.Model.Post.extend({
     scope: '',
     payload: []
   },
-  url: function(){
+  url: function () {
     return App.config.api_url + '/' + App.currentScope + '/auth/widget/';
   }
 });
 
 
 App.Model.TilesModel = Backbone.Model.extend({
-  
-    initialize: function(options) {
-      this.url = options.url;
-      this.params = options.params;
-    },
-  
-    fetch: function() {
-      var _this = this;
-      var mapConfig = encodeURIComponent(JSON.stringify(this.params));
-      $.get(this.url + '?config='+mapConfig, function(o) {
-        _this.set('response', o);
-      });
-    }
-  });
 
-  App.Model.FunctionModel = Backbone.Model.extend({
-    
-    initialize: function(options) {
-      this.function = options.function;
-      this.params = options.params;
-    },
-  
-    fetch: function(opts) {
-      if (opts.data && opts.data.params) {
-        this.params = opts.data.params
-      }
-      var result = this.function.apply(this, this.params);
-      this.set('response', result);
-    }
-  });
+  initialize: function (options) {
+    this.url = options.url;
+    this.params = options.params;
+  },
 
-  App.Model.MapsModel = App.Model.Post.extend({
-    initialize: function(options) {
-      this.options = options;
-    },
-  
-    url: function() {
-      return App.config.api_url
-        + '/' + this.options.scope
-        + '/maps/'
-        + this.options.entity
-        + '/' + this.options.type; 
-    },
-  
-    fetch: function(options) {
-      // Default values
-      options = _.defaults(options || {}, {
-        data: {
-          filters: {
-            conditions: {},
-            condition: {}
-          }
+  fetch: function () {
+    var _this = this;
+    var mapConfig = encodeURIComponent(JSON.stringify(this.params));
+    $.get(this.url + '?config=' + mapConfig, function (o) {
+      _this.set('response', o);
+    });
+  }
+});
+
+App.Model.FunctionModel = Backbone.Model.extend({
+
+  initialize: function (options) {
+    this.function = options.function;
+    this.params = options.params;
+  },
+
+  fetch: function (opts) {
+    if (opts.data && opts.data.params) {
+      this.params = opts.data.params
+    }
+    var result = this.function.apply(this, this.params);
+    this.set('response', result);
+  }
+});
+
+App.Model.MapsModel = App.Model.Post.extend({
+  url: function () {
+    return App.config.api_url
+      + '/' + this.options.scope
+      + '/maps/'
+      + this.options.entity
+      + '/' + this.options.typeInUrl;
+  },
+
+  fetch: function (options) {
+    // Default values
+    options = _.defaults(options || {}, {
+      data: {
+        filters: {
+          conditions: {},
+          condition: {}
         }
-      });
-      return App.Model.Post.prototype.fetch.call(this, options);
-    }
-  });
+      }
+    });
+    return App.Model.Post.prototype.fetch.call(this, options);
+  }
+});

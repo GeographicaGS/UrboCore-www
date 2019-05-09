@@ -615,7 +615,7 @@ $(function() {
     var href = $(this).attr('href');
 
     //Prevent update url history when clicking a link to the current page
-    if (href.slice(1)  === Backbone.history.getFragment()) { 
+    if (href && href.slice(1)  === Backbone.history.getFragment()) { 
       e.preventDefault();
       return;
     }

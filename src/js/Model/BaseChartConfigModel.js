@@ -32,6 +32,7 @@
 *     - hideTooltip (Boolean, optional) Default: false
 *     - xAxisFunction (JS Function, optional) Function to format X axis values
 *     - yAxisFunction (JS Function, optional) Function to format Y axis values
+      - yAxisStep (Number, optional) Forces the number for range on Y axis calculation, without preventing domain changes
 *     - xAxisLabel (String, optional) Label for X axis
 *     - yAxisLabel (String, optional) Label for Y axis
 *     - yAxisAdjust (Boolean, optional) Forces Y axis to adjust to domain
@@ -55,6 +56,7 @@ App.Model.BaseChartConfigModel = Backbone.Model.extend({
     xAxisFunction: false,
     yAxisFunction: false,
     xAxisLabel: false,
+    yAxisStep:null,
     yAxisLabel: false,
     yAxisAdjust: false,
     colors: d3.scale.category20().range(),
