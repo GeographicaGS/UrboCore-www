@@ -407,7 +407,7 @@
 
   .selectors{
     position: absolute;
-    top: 46px;
+    top: 38px;
     z-index: 1;
     text-transform: uppercase;
     color:#a3b3ba;
@@ -1454,12 +1454,13 @@
   }
 
   .widget_header {
-    color:@white;
-    font-size:18px;
+    color: @white;
+    font-size: 16px;
+    line-height: 16px;
     &.main {
-      width:254px;
+      width: calc(~'100% - 60px');
       position:absolute;
-      top:16px;
+      top: 16px;
     }
     .title {
       padding-left: 0;
