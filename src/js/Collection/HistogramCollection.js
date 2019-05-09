@@ -24,12 +24,12 @@ App.Collection.Histogram = App.Collection.Post.extend({
     return App.config.api_url
       + '/' + this.options.scope
       + '/variables/' + this.options.variable
-      + '/histogram/' + this.options.type
+      + '/histogram/' + this.options.typeInUrl
       + '/' + this.options.mode
   },
 
   parse: function (response) {
-    if (this.options.type === 'timeserie') {
+    if (this.options.typeInUrl === 'timeserie') {
       return response;
     } else {
       var result = [];
