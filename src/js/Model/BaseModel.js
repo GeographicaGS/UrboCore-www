@@ -70,8 +70,7 @@ App.Model.Put = App.Model.Base.extend({
       type: 'PUT'
     });
 
-    // Add initial model options
-    _.extend(options, this.options || {});
+    options = _.extend(this.options || {}, options);
 
     if (options.data) {
       options.data = JSON.stringify(options.data);
