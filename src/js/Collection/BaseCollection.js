@@ -42,9 +42,12 @@ App.Collection.Post = App.Collection.Base.extend({
       contentType: 'application/json',
     });
 
-    options.data = JSON.stringify(
-      _.defaults(options.data || {}, this.options && this.options.data ? this.options.data : {})
-    );
+    // Add initial model options
+    options = _.extend(this.options || {}, options);
+
+    if (options.data) {
+      options.data = JSON.stringify(options.data);
+    }
 
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
@@ -66,7 +69,7 @@ App.Collection.MapsCollection = App.Collection.Post.extend({
 
   fetch: function (options) {
     // Default values
-    options = _.extend(options, {
+    options = _.defaults(options || {}, {
       data: {
         filters: {
           conditions: {},
