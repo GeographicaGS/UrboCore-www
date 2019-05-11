@@ -70,6 +70,7 @@ App.Model.Put = App.Model.Base.extend({
       type: 'PUT'
     });
 
+    // Add initial model options
     options = _.extend(this.options || {}, options);
 
     if (options.data) {
