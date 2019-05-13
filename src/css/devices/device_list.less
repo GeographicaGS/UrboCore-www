@@ -24,12 +24,12 @@
 	background-color: #fff;
 	width: 360px;
 	border: 1px solid #ccccce;
-  box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.15);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-15px);
-  transition: transform .25s, opacity .25s;
+	box-shadow: 2px 0px 10px 0px rgba(0,0,0,0.15);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-15px);
+	transition: transform .25s, opacity .25s;
 	ul{
 		max-height: 314px;
 		overflow-y: auto;
@@ -72,4 +72,23 @@
 			}
 		}
 	}
+	#filter-wrapper{
+		position: relative;
+		padding:20px;
+		#filter{
+		  width:100%;
+		  padding:5px;
+		  padding-right:22px;
+		}
+		.icon{
+		  position: absolute;
+		  right: 27px;
+		  top: 50%;
+		  transform: translatey(-50%);
+		  -webkit-transform: translatey(-50%);
+		  -moz-transform: translatey(-50%);
+		  width: 15px;
+		}
+	  }
+	  //End placeholderfilter
 }
