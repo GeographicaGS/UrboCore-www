@@ -150,13 +150,18 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   addSource: function(idSource, dataSource) {
     let source = {id: idSource, data: dataSource};
-    let src =  this._sources.find(function(src) {
+    let src = this._sources.find( function (src) {
       return source.id === src.id;
     }.bind(this));
+    
     if(!src) {
       this._sources.push(source);
     }
-    this._map.addSource(idSource,dataSource);
+    
+    if (!this.getSource(idSource)) {
+      this._map.addSource(idSource, dataSource);
+    }
+
     return source;
   },
 
@@ -166,7 +171,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   addLayers: function(layers) {
     layers.forEach(layer => {
-      this._map.addLayer(layer);
+      if (!this._map.getLayer(layer.id)) {
+        this._map.addLayer(layer);
+      }
     });
   },
 

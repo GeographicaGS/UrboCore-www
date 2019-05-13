@@ -33,6 +33,9 @@ App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
     // Call to parent class
     App.View.Widgets.Base.prototype.initialize.call(this, options);
 
+    // Skip more code if widget is not allowed
+    if(!this.hasPermissions()) return;
+
     // Add subview and parent class (App.View.Widgets.Base)
     // put it inside "widget_content"
     if (Array.isArray(options.widgetViewToContent)) {

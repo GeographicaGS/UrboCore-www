@@ -44,8 +44,11 @@ App.View.Map.Layer.MapboxSQLLayer = App.View.Map.Layer.MapboxGLVectorLayer.exten
     if (response) {
       var cartoLayer = response;
       var nStyle = this._map._map.getStyle();
-      nStyle.sources[this._idSource].tiles = cartoLayer.metadata.tilejson.vector.tiles;
-      this._map._map.setStyle(nStyle);
+
+      if (nStyle.sources[this._idSource]) {
+        nStyle.sources[this._idSource].tiles = cartoLayer.metadata.tilejson.vector.tiles;
+        this._map._map.setStyle(nStyle);  
+      }
     }
   },
 
