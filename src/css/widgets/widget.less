@@ -18,7 +18,8 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
-.device_detail #lastdata .widget, .widget{
+.device_detail #lastdata .widget,
+.widget {
   background-color: @blue;
   border: 2px solid @blue;
   border-radius: 4px;
@@ -29,6 +30,10 @@
 
   width: 360px;
   height: 360px;
+
+  &.widget-height-auto {
+    height: auto;
+  }
 
   &:not(.allWidth) {
     .title {
