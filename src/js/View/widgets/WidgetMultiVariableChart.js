@@ -68,6 +68,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this._ctx = App.ctx;
     this.listenTo(this._ctx,'change:start change:finish change:bbox',function(){
+
+      if (typeof this.collection.options.data === 'string') {
+        this.collection.options.data = JSON.parse(this.collection.options.data);
+      }
+
       if (!this.collection.options.data) {
         this.collection.options.data = {time:{}}
       }
@@ -78,7 +83,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.collection.fetch({'reset':true, data: this.collection.options.data || {} })
       this.render();
     });
-    
+
     this.render();
   },
 
@@ -315,7 +320,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     return _.map(this.collection.toJSON(), function(j){ j.key = _this.data.findWhere({'realKey':j.key}).get('key') ; return j });
   },
 
-  _updateYAxis:function(){    
+  _updateYAxis:function(){
     var col = this.data.where({'disabled': false});
     if(col.length == 1){
       var values = col[0].get('values');
@@ -331,7 +336,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.chart.yAxis.axisLabel(metadata.name + (metadata.units
           ? ' (' + metadata.units + ')'
           : ''));
-      
+
       this.chart.yAxis.showMaxMin(false).tickFormat(this.options.yAxisFunction
         ? this.options.yAxisFunction
         : format);
