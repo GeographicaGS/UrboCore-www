@@ -143,13 +143,13 @@ App.View.Dashboard = Backbone.View.extend({
         [
           {
             id:'master',
-            title: __('Estado general'),
+            title: __('Estado General'),
             url:scope + '/watering/dashboard',
             selected:true
           },
           {
             id:'mapdevices',
-            title: __('Mapa de dispositivos'),
+            title: __('Tiempo Real'),
             url:scope + '/watering/map'
           },
           {
@@ -200,15 +200,17 @@ App.View.Dashboard = Backbone.View.extend({
         color: '#00d5e7',
         timeMode:'now'
       });
+      
       this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
       this._widgets.push(new App.View.Widgets.Watering.Operation({
         id_scope:this.scopeModel.get('id'),
       }));
 
-      this._widgets.push(new App.View.Widgets.Watering.Consumption({
-        id_scope: this.scopeModel.get('id')
-      }));
+      //For some reason when this widget loads all graphs get corrupted
+      // this._widgets.push(new App.View.Widgets.Watering.Consumption({
+      //   id_scope: this.scopeModel.get('id')
+      // }));
 
       // var wasteLinkModel = new Backbone.Model({
       //   'title': 'Análisis de variables',
