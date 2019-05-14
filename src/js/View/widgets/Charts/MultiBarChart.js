@@ -105,6 +105,12 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     };
     this._chart.multibar.xScale(this._xScale);
     // this._chart.xScale(this._xScale);
+
+    // Fix the changes in models and collections (BaseModel & BaseCollections)
+    if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+      this.collection.options.data = JSON.parse(this.collection.options.data);
+    }
+
     var dateOptions = this.collection.options.data.time;
     this._chart.xDomain([moment(dateOptions.start).toDate(),moment(dateOptions.finish).toDate()]);
     this._chart.xAxis

@@ -69,7 +69,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this._ctx = App.ctx;
     this.listenTo(this._ctx,'change:start change:finish change:bbox',function(){
 
-      if (typeof this.collection.options.data === 'string') {
+      // Fix the changes in models and collections (BaseModel & BaseCollections)
+      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
 

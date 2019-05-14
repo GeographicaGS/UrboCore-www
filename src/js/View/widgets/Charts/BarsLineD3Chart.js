@@ -247,12 +247,12 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   _initChartModel: function(){
     // FIX BUG at fire_detection vertical
-    // When the graph redraws its height it's not 
+    // When the graph redraws its height it's not
     // property setted if the legend bar is already present
     // Somehow, the height og the inner graph
     // is setted bigger than usual. Prefarably, the graph should update once on each request.
     // Actually does several times at least for this vertical.
-    
+
     if(this.$('.var_list .tags').length > 0){
       this.$('.var_list .tags').remove()
     }
@@ -272,14 +272,14 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       : 330 - (this._chart.margin.top + this._chart.margin.bottom); // TODO: Height is set manually until the widget layout is changed to flex  to allow better height detectin
 
     var _this = this;
-    
+
     this._chart.svg = d3.select(this.$('.chart')[0])
       .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
       .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
       .attr('class', 'chart d3')
       .append('g')
         .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')')
-    
+
     if(this.options.get('stacked')){
       this.stackedRawData = {};
       _.each(this.data, function(el){
@@ -474,7 +474,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   /**
    * Draw a line into the chart
-   * 
+   *
    * @param {Array} data - data to draw the line
    * @param {Object} options - options to draw the line
    */
@@ -619,6 +619,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
 
+      // Fix the changes in models and collections (BaseModel & BaseCollections)
+      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+        this.collection.options.data = JSON.parse(this.collection.options.data);
+      }
+
       //  Get step hours
       var stepDiff = -1;
       if(this.collection.options.data.time && this.collection.options.data.time.step){
@@ -677,7 +682,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
   _formatYAxis: function() {
     // Force domains and different between lines (range)
-    // Added a method to alter diff value from verticals 
+    // Added a method to alter diff value from verticals
     // if you need fixed incremental steps
     var yAxisDomainForce = this.options.get('yAxisDomainForce');
     var diff = yAxisDomainForce === true
