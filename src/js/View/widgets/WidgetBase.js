@@ -250,11 +250,15 @@ App.View.Widgets.Base = Backbone.View.extend({
   updateFilters: function () {
 
     for (var i in this.filterables) {
+      
       if (!this.filterables[i].options) {
         this.filterables[i].options = { data: {} };
       }
+
       if (!this.filterables[i].options.data) {
         this.filterables[i].options.data = {};
+      } else if (typeof this.filterables[i].options.data === 'string') {
+        this.filterables[i].options.data = JSON.parse(this.filterables[i].options.data);
       }
 
       var data = this.filterables[i].options.data;
