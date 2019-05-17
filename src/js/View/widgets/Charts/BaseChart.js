@@ -192,8 +192,17 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     }
 
     if (this.options.get('yAxisLabel')) {
+      var optionsYAxisLabel = this.options.get('yAxisLabel');
       if (this._chart.yAxis) {
-        this._chart.yAxis.axisLabel(this.options.get('yAxisLabel'));
+         // put the text to yAxis
+        if (typeof optionsYAxisLabel === 'string') {
+          this._chart.yAxis.axisLabel(optionsYAxisLabel);
+        // set various options
+        } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
+          _.each(Object.keys(optionsYAxisLabel), function (value) {
+            this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
+          }.bind(this));
+        }
       } else if (this.options.get('yAxisLabel').length >= 2) {
         this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
         this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
