@@ -37,7 +37,7 @@ App.View.WidgetDeviceMap = App.View.Widgets.Base.extend({
     // Default values
     var defaultValues = {
       link: '/' + this.model.get('scope') + '/' + this.model.get('section') + '/map',
-      title: __('Mapa de dispositivos'),
+      title: __('Tiempo Real'),
       titleLink: null
     };
 
