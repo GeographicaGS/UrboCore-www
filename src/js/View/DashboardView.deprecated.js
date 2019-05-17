@@ -208,9 +208,9 @@ App.View.Dashboard = Backbone.View.extend({
       }));
 
       //For some reason when this widget loads all graphs get corrupted
-      // this._widgets.push(new App.View.Widgets.Watering.Consumption({
-      //   id_scope: this.scopeModel.get('id')
-      // }));
+      this._widgets.push(new App.View.Widgets.Watering.Consumption({
+        id_scope: this.scopeModel.get('id')
+      }));
 
       // var wasteLinkModel = new Backbone.Model({
       //   'title': 'Análisis de variables',
