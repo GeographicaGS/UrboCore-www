@@ -166,11 +166,11 @@ App.View.Date = Backbone.View.extend({
   _setValuesInDatePickers: function () {
     // Check if the date is inside the "min" and "max"
     var dateStart = this.options.minDate === null 
-      || moment(this.options.minDate).isAfter(this.options.model.get('start'))
+      || moment(this.options.minDate).isBefore(this.options.model.get('start'))
         ? this.options.model.get('start').toDate()
         : this.options.minDate;
     var dateFinish = this.options.maxDate === null
-      || moment(this.options.maxDate).isBefore(this.options.model.get('finish'))
+      || moment(this.options.maxDate).isAfter(this.options.model.get('finish'))
         ? this.options.model.get('finish').toDate()
         : this.options.maxDate;
 
@@ -292,11 +292,11 @@ App.View.Date = Backbone.View.extend({
     var currentFinishDatePicker = moment(this.$('.date.finish').datepicker('getDate'));
     // Check if the date is inside the "min" and "max"
     var start = this.options.minDate === null
-      || moment(this.options.minDate).isAfter(currentStartDatePicker)
+      || moment(currentStartDatePicker).isAfter(this.options.minDate)
         ? currentStartDatePicker
         : moment(this.options.minDate);
     var finish = this.options.maxDate === null
-      || moment(this.options.maxDate).isBefore(currentFinishDatePicker)
+      || moment(currentFinishDatePicker).isBefore(this.options.maxDate)
         ? currentFinishDatePicker
         : moment(this.options.maxDate);
 
