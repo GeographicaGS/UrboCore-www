@@ -169,11 +169,13 @@ App.View.Device = Backbone.View.extend({
     this._dateView = new App.View.Date({
       compact: false,
       minDate: this.scopeModel.get('id') === 'ecija'
-        ? new Date(2018, 10, 6)
-        : null,
+        && this.model.get('entity') === 'aq_cons.sensor'
+          ? new Date(2018, 10, 6)
+          : null,
       maxDate: this.scopeModel.get('id') === 'ecija'
-        ? new Date(2018, 10, 13)
-        : null
+        && this.model.get('entity') === 'aq_cons.sensor'
+          ? new Date(2018, 10, 13)
+          : null
     });
     // END TODO
 
