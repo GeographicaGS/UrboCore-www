@@ -164,7 +164,19 @@ App.View.Device = Backbone.View.extend({
     this._deviceListView = new App.View.DeviceList({'model':deviceListModel});
     this.$('.deviceinfo').append(this._deviceListView.$el);
 
-    this._dateView = new App.View.Date({'compact':false});
+    // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
+    // REMOVE "minDate" and "maxDate" from the "App.View.Date"
+    this._dateView = new App.View.Date({
+      compact: false,
+      minDate: this.scopeModel.get('id') === 'ecija'
+        ? new Date(2018, 10, 6)
+        : null,
+      maxDate: this.scopeModel.get('id') === 'ecija'
+        ? new Date(2018, 10, 13)
+        : null
+    });
+    // END TODO
+
     this.$el.append(this._dateView.render().$el);
     // dateView need time to be rendered  before to check if show or hide
     setTimeout(this._showDateSelector.bind(this), 100);
