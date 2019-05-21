@@ -146,17 +146,32 @@ App.View.Date = Backbone.View.extend({
    * and "options.maxDate" are changed
    */
   _setMinAndMaxDatesToModel: function () {
+    // Set "minDate"
     if (this.options.minDate instanceof Date) {
-      if (moment(this.options.minDate).isAfter(this.options.model.get('start'))) {
-        this.options.model.set('start', moment(this.options.minDate));
+      if (this.options.maxDate instanceof Date) {
+        if (moment(this.options.model.get('start')).isBefore(this.options.minDate)
+          || moment(this.options.model.get('start')).isAfter(this.options.maxDate)) {
+          this.options.model.set('start', moment(this.options.minDate));
+        }
+      } else {
+        if (moment(this.options.model.get('start')).isBefore(this.options.minDate)) {
+          this.options.model.set('start', moment(this.options.minDate));
+        }
       }
     }
 
+    // Set "maxDate"
     if (this.options.maxDate instanceof Date) {
-      if (moment(this.options.maxDate).isBefore(this.options.model.get('finish'))) {
-        this.options.model.set('finish', moment(this.options.maxDate));
+      if (this.options.minDate instanceof Date) {
+        if (moment(this.options.model.get('finish')).isAfter(this.options.maxDate)
+          || moment(this.options.model.get('finish')).isBefore(this.options.minDate)) {
+          this.options.model.set('finish', moment(this.options.maxDate));
+        }
+      } else {
+        if (moment(this.options.model.get('finish')).isAfter(this.options.maxDate)) {
+          this.options.model.set('finish', moment(this.options.maxDate));
+        }
       }
-      this.options.model.set('finish', moment(this.options.maxDate));
     }
   },
 
