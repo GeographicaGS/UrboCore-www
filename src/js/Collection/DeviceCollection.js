@@ -247,6 +247,10 @@ App.Collection.DeviceRaw = App.Collection.Post.extend({
       data: {}
     });
 
+    if (typeof options.data === 'string'){
+      options.data = JSON.parse(options.data)  
+    }
+
     // Options "format"
     if (typeof options.data.format === 'undefined' && this.options.format) {
       options.data.format = this.options.format;
