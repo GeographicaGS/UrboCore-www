@@ -3,7 +3,7 @@
     <h3><%=m.get('title')%></h3>
     <h4>(<%= __('datos desde') %> <span><%=App.formatDate(App.ctx.getDateRange().start)%></span> <%= __('hasta') %> <span><%=App.formatDate(App.ctx.getDateRange().finish)%></span>)</h4>
   <%}%>
-  <button class="button empty"><%= __('Descargar CSV') %></button>
+  <button class="downloadButton button empty"><%= __('Descargar CSV') %></button>
     <table>
       <tbody>
           <tr>
