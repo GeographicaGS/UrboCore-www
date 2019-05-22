@@ -79,6 +79,16 @@ App.Collection.MapsCollection = App.Collection.Post.extend({
         }
       }
     });
+
+    // Add initial model options
+    options = _.extend(this.options || {}, options);
+
+    if (options.data) {
+      if (typeof options.data !== 'string') {
+        options.data = JSON.stringify(options.data);
+      }
+    }
+
     return App.Collection.Post.prototype.fetch.call(this, options);
   }
 });
