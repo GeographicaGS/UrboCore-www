@@ -49,14 +49,20 @@ App.View.Widgets.Table = Backbone.View.extend({
     this._tableToCsv = new App.Collection.TableToCsv()
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
+    
+    //Adjust top scrollbar when resizing
+    if(this.model.get('scrollTopBar')){
+      $(window).on('resize', this.setScrollTopBarWidth.bind(this))
+    }
 
     _.bindAll(this, '_showTooltip');
   },
 
   events: {
-    'click .table button': '_downloadCsv'
+    'click .table button': '_downloadCsv',
+    //'resize window': 'prueba'
   },
-
+  
   render: function () {
     this.$el.append(App.widgetLoading());
 
@@ -124,8 +130,15 @@ App.View.Widgets.Table = Backbone.View.extend({
       scrollable.on('scroll', _.bind(this.setPositionScrollTopBar, this));
       
       // scroll bar content width
-      $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
+      this.setScrollTopBarWidth()
     }
+  },
+
+  setScrollTopBarWidth: function(){
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var table = this.$el.find('table');
+
+    $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
   },
 
   /**
@@ -158,6 +171,10 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   onClose: function () {
     this.stopListening();
+    
+    if(this.model.get('scrollTopBar')){
+      $(window).off('resize', this.setScrollTopBarWidth)
+    }
   }
 
 });
