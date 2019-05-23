@@ -180,6 +180,7 @@ deps.JS = [
   srcJS + 'View/Map/LayerTreeView.js',
   srcJS + 'View/Map/FilterSpatialMapView.js',
   srcJS + 'View/Map/MapSearchView.js',
+  srcJS + 'View/Map/MapBoxSearchView.js',
   srcJS + 'View/Map/LayerVariableSelector.js',
   srcJS + 'View/Map/LayerTreeFilters.js',
   srcJS + 'View/Map/LegendBaseMapView.js',
