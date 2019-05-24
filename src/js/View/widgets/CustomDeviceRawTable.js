@@ -111,10 +111,10 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       columnsFormat[variable.id] = {
         title: variable.title,
         formatFN: formatFN
-      }
+      };
     });
 
-    return columnsFormat
+    return columnsFormat;
   },
   /**
    * Get entity's variables
@@ -133,7 +133,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
         return variable.config && variable.config.active;
       })
 
-    return entityVariables
+    return entityVariables;
   },
 
   numericFn: function (id) {
@@ -151,11 +151,11 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   booleanFn: function (value) {
-    return value ? __('Activa') : __('No activa')
+    return value ? __('Activa') : __('No activa');
   },
 
   boolean2Fn: function (value) {
-    return value ? __('Si') : __('No')
+    return value ? __('Si') : __('No');
   },
 
   dateFn: function (value) {
@@ -165,8 +165,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   getVariableUnits: function (id) {
     var variable = this.getEntityVariables().find(function (obj) {
       return obj.id === id;
-    })
+    });
 
-    return variable.units
+    return variable.units;
   }
 })
