@@ -99,8 +99,11 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
           case 'boolean':
             formatFN = _this.booleanFn;
             break;
+          case 'bolean2':
+            formatFN = _this.boolean2Fn;
+            break;
           case 'date':
-            formatFN = _this.dateFn
+            formatFN = _this.dateFn;
             break;
         }
       }
@@ -149,6 +152,10 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   booleanFn: function (value) {
     return value ? __('Activa') : __('No activa')
+  },
+
+  boolean2Fn: function (value) {
+    return value ? __('Si') : __('No')
   },
 
   dateFn: function (value) {
