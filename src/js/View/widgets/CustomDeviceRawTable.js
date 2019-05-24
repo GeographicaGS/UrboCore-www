@@ -33,6 +33,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       title: __('Datos brutos'),
       dimension: 'fullWidth bgWhite custom-device-raw-table',
       timeMode: 'historic',
+      csv: true,
+      scrollTopBar:true,
       variables: []
     });
 
@@ -77,8 +79,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   getTableSetup: function () {
     return new Backbone.Model({
-      csv: true,
-      scrollTopBar: true,
+      csv: this.options.csv,
+      scrollTopBar: this.options.scrollTopBar,
       columns_format: this.getColumnsFormat()
     });
   },
