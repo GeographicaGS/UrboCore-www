@@ -27,7 +27,7 @@ App.View.Widgets.Table = Backbone.View.extend({
   initialize: function (options) {
     this.options = _.defaults(options, {
       listenContext: true,
-      context: App.ctx
+      context: App.ctx,
     });
 
     this._listenContext = this.options.listenContext;
@@ -67,7 +67,7 @@ App.View.Widgets.Table = Backbone.View.extend({
       if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
-
+      
       if (this.model.get('method') == 'GET') {
         _.extend(this.collection.options.data, this.ctx.getDateRange());
       } else {
@@ -81,7 +81,12 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   _drawTable: function () {
-    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON() }));
+    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON()}));
+
+    if (this.model.get('scrollTopBar') === true) {
+      this.setScrollTopBarDOM();
+    }
+
     this.delegateEvents(this.events);
   },
 
@@ -107,9 +112,53 @@ App.View.Widgets.Table = Backbone.View.extend({
     $(".tooltip").css('left', element.clientX + 20 - 200);
   },
 
+  setScrollTopBarDOM: function () {
+    // scroll bar
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var scrollable = this.$el.find('.scrollable');
+    var table = this.$el.find('table');
+
+    // Width like table content
+    if (table.length && scrollTopBar.length) {
+      $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
+      scrollable.on('scroll', _.bind(this.setPositionScrollTopBar, this));
+      
+      // scroll bar content width
+      $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
+    }
+  },
+
+  /**
+   * Set position in Scroll Top Bar
+   * 
+   * @param {Object | Event} event
+   */
+  setPositionScrollTopBar: function (event) {
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    
+    // Move scrollTopBar
+    if (scrollTopBar.length) {
+      $(scrollTopBar[0]).scrollLeft(moveLeft);
+    }
+  },
+
+  /**
+   * handler scroll top bar
+   * 
+   * @param {Object | Event} event
+   */
+  handleTopScrollBar: function (event) {
+    
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    var scrollable = this.$el.find('.scrollable');
+    
+    scrollable.scrollLeft(moveLeft);
+  },
+
   onClose: function () {
     this.stopListening();
-  },
+  }
 
 });
 
@@ -131,7 +180,7 @@ App.View.Widgets.TableCustomFilters = App.View.Widgets.Table.extend({
       this._template = options['template'];
     }
 
-    this._tableToCsv = new App.Collection.TableToCsv()
+    this._tableToCsv = new App.Collection.TableToCsv();
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
 
