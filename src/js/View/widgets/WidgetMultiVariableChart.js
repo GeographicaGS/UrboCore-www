@@ -167,7 +167,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
       this.data = new Backbone.Collection (
         _.each(this.collection.toJSON(), function(c, index) {
-
           if(_this.data && _this.data.length){
             var data = _this.data.findWhere({'realKey':c.key});
             if(data != undefined) {
@@ -183,6 +182,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             c.realKey = c.key;
             c.key = App.mv().getVariable(c.key).get('name');
             c.aggs = App.mv().getVariable(c.realKey).get('var_agg');
+
+            // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
+            // Remove "SUM" from variables (metadata)
+            if (c.realKey.indexOf('aq_cons.sensor') > -1) {
+              c.aggs.splice(c.aggs.indexOf('SUM'), 1);
+            }
+           // END TODO
 
             //Inicializacion de la estructura interna de datos
             var internalData = _this._internalData;
