@@ -28,13 +28,13 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
     // This is a "caos" each collection receives
     // the "options" in too many different ways,
     // I put this condition to avoid this problem
-    if (!this.options.data.time) {
+    if (!this.options.data) {
       var date = App.ctx.getDateRange();
 
       if (this.options.date && this.options.date.start) {
         date = this.options.date
       }
-  
+
       this.options.data = {
         agg: this.options.agg,
         vars: this.options.vars,
@@ -46,7 +46,7 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
           step: this.options.step
         },
         filters: this.options.filters || {}
-      };  
+      };
     }
 
   },
