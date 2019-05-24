@@ -99,7 +99,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
           case 'boolean':
             formatFN = _this.booleanFn;
             break;
-          case 'bolean2':
+          case 'boolean2':
             formatFN = _this.boolean2Fn;
             break;
           case 'date':
