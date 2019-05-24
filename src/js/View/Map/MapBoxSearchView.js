@@ -28,7 +28,7 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
             this._template = _.template(options.template);
         }
         if (options.template_list) {
-            this._template_list = _.template(options.template);
+            this._template_list = _.template(options.template_list);
         }
 
         this._map = options.map;
