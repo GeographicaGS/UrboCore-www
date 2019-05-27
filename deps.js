@@ -111,6 +111,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetWrapperBase.js',
   srcJS + 'View/widgets/WidgetTableView.deprecated.js',
   srcJS + 'View/widgets/WidgetTablePaginatedView.js',
+  srcJS + 'View/widgets/CustomDeviceRawTable.js',
 
   srcJS + 'View/widgets/WidgetCorrelation.js',
 
