@@ -94,18 +94,15 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       if (typeof variable.format === 'function') {
         formatFN = variable.format;
       } else {
-        switch (variable.format) {
+        switch (variable.format.type) {
           case 'numeric':
-            formatFN = _this.numericFn(variable.id);
+            formatFN = _this.numericFn(variable.id, variable.format.options);
             break;
           case 'boolean':
-            formatFN = _this.booleanFn;
-            break;
-          case 'boolean2':
-            formatFN = _this.boolean2Fn;
+            formatFN = _this.booleanFn(variable.format.options);
             break;
           case 'date':
-            formatFN = _this.dateFn;
+            formatFN = _this.dateFn(variable.format.options);
             break;
         }
       }
@@ -138,13 +135,13 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     return entityVariables;
   },
 
-  numericFn: function (id) {
+  numericFn: function (id, options) {
     var _this = this;
     var units = _this.getVariableUnits(id)
 
     return function (value) {
       if(value != Number.parseInt(value)){
-        value = App.nbf(value)
+        value = App.nbf(value, options)
       }
       return value + ( units
         ? ' ' + units
@@ -152,16 +149,25 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     }
   },
 
-  booleanFn: function (value) {
-    return value ? __('Activa') : __('No activa');
+  booleanFn: function(format) {
+    var isTrue = __('Sí');
+    var isFalse = __('No');
+   
+    if (format && typeof format.true != 'undefined' &&  typeof format.false != 'undefined') {
+      isTrue = format.true;
+      isFalse = format.false;
+    }
+    
+    return function (value) {
+      return value ? isTrue : isFalse;
+
+    }
   },
 
-  boolean2Fn: function (value) {
-    return value ? __('Si') : __('No');
-  },
-
-  dateFn: function (value) {
-    return App.formatDateTime(value);
+  dateFn: function(format){
+    return function (value) {
+      return App.formatDateTime(value, format);
+    }
   },
 
   getVariableUnits: function (id) {
