@@ -86,8 +86,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   getColumnsFormat: function () {
-    var _this = this
-    var columnsFormat = {}
+    var _this = this;
+    var columnsFormat = {};
     _.map(this.options.variables, function (variable) {
       var formatFN = null;
 
@@ -137,11 +137,11 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   numericFn: function (id, options) {
     var _this = this;
-    var units = _this.getVariableUnits(id)
+    var units = _this.getVariableUnits(id);
 
     return function (value) {
       if(value != Number.parseInt(value)){
-        value = App.nbf(value, options)
+        value = App.nbf(value, options);
       }
       return value + ( units
         ? ' ' + units
