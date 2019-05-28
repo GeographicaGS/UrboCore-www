@@ -255,8 +255,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
                           .useInteractiveGuideline(true)
                           .margin({'right':45})
                           .height(268)
-                          .noData(__('No hay datos disponibles'))
-    ;
+                          .noData(__('No hay datos disponibles'));
+    // Without data
+    d3.select(this.$('.chart')[0]).classed('without-data', true);
 
     this.chart.legend.margin({bottom: 40});
 
