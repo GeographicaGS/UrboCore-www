@@ -1,27 +1,27 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
 'use strict';
 
 App.Model.Context = Backbone.Model.extend({
-  
+
   // Defaults data in model
   defaults: {
     start: false,
@@ -76,7 +76,7 @@ App.Model.Context = Backbone.Model.extend({
 
   /**
    * Get dates from "context"
-   * 
+   *
    * @return {Array | NULL} - bbox data from the map is showed
    */
   getBBOX: function () {
@@ -85,14 +85,14 @@ App.Model.Context = Backbone.Model.extend({
 
   /**
    * Get dates from "context"
-   * 
+   *
    * @return {Object | FALSE} - data from the date widget
    */
   getDateRange: function () {
     try {
       return {
-        start: this.get('start').format(),
-        finish: this.get('finish').format()
+        start: moment(this.get('start').utc().toDate()).format('YYYY-MM-DD HH:mm:ss'),
+        finish: moment(this.get('finish').utc().toDate()).format('YYYY-MM-DD') + ' 23:59:59'
       }
     } catch (err) {
       return false;
