@@ -87,13 +87,13 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   getColumnsFormat: function () {
     var columnsFormat = {};
-    var variableMetadata = this.getEntityVariables()
+    var variablesWithMetadata = this.getEntityVariables()
     var formatFN = null;
 
     _.map(this.options.variables, function (variable) {
       //Set Title
       if(typeof variable.title === 'undefined'){
-        var targetVariable = _.find( variableMetadata, function( varWithMeta ){
+        var targetVariable = _.find( variablesWithMetadata, function( varWithMeta ){
           return varWithMeta.id === variable.id
         });
         variable['title'] = targetVariable
