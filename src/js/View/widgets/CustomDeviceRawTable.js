@@ -95,10 +95,10 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       if(typeof variable.title === 'undefined'){
         var targetVariable = _.find( variableMetadata, function( varWithMeta ){
           return varWithMeta.id === variable.id
-        }) 
+        });
         variable['title'] = targetVariable
           ? targetVariable.name
-          : ''
+          : '';
       }
       //Set Format
       if (typeof variable.format === 'function') {
