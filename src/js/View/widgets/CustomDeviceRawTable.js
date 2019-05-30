@@ -34,7 +34,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       dimension: 'fullWidth bgWhite custom-device-raw-table',
       timeMode: 'historic',
       csv: true,
-      scrollTopBar:true,
+      scrollTopBar: true,
       variables: []
     });
 
@@ -86,7 +86,6 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   getColumnsFormat: function () {
-    var _this = this;
     var columnsFormat = {};
     _.map(this.options.variables, function (variable) {
       var formatFN = null;
@@ -96,13 +95,13 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       } else {
         switch (variable.format.type) {
           case 'numeric':
-            formatFN = _this.numericFn(variable.id, variable.format.options);
+            formatFN = this.numericFn(variable.id, variable.format.options);
             break;
           case 'boolean':
-            formatFN = _this.booleanFn(variable.format.options);
+            formatFN = this.booleanFn(variable.format.options);
             break;
           case 'date':
-            formatFN = _this.dateFn(variable.format.options);
+            formatFN = this.dateFn(variable.format.options);
             break;
         }
       }
@@ -111,7 +110,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
         title: variable.title,
         formatFN: formatFN
       };
-    });
+    }.bind(this));
 
     return columnsFormat;
   },
@@ -121,50 +120,42 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
    * @return {Array} - variables
    */
   getEntityVariables: function () {
-    // All entity variables filtered by
-    // "config.active" (activated) and order
-    var entityVariables = App.Utils.toDeepJSON(
+    return App.Utils.toDeepJSON(
       App.mv()
         .getEntity(this.options.entity)
         .get('variables')
-    )
-      .filter(function (variable) {
-        return variable.config && variable.config.active;
-      })
-
-    return entityVariables;
+    );
   },
 
   numericFn: function (id, options) {
-    var _this = this;
-    var units = _this.getVariableUnits(id);
+    var units = this.getVariableUnits(id);
 
     return function (value) {
-      if(value != Number.parseInt(value)){
+      if (value != Number.parseInt(value)) {
         value = App.nbf(value, options);
       }
-      return value + ( units
+      return value + (units
         ? ' ' + units
-        : '' );
-    }
+        : '');
+    }.bind(this)
   },
 
-  booleanFn: function(format) {
+  booleanFn: function (format) {
     var isTrue = __('Sí');
     var isFalse = __('No');
-   
-    if (format && typeof format.true != 'undefined' &&  typeof format.false != 'undefined') {
+
+    if (format && typeof format.true != 'undefined' && typeof format.false != 'undefined') {
       isTrue = format.true;
       isFalse = format.false;
     }
-    
+
     return function (value) {
       return value ? isTrue : isFalse;
 
     }
   },
 
-  dateFn: function(format){
+  dateFn: function (format) {
     return function (value) {
       return App.formatDateTime(value, format);
     }
@@ -175,6 +166,10 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       return obj.id === id;
     });
 
-    return variable.units;
+    if (variable) {
+      return variable.units;
+    }
+
+    return;
   }
 })

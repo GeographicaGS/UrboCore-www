@@ -22,48 +22,53 @@
 
 App.View.MapBoxSearch = App.View.MapSearch.extend({
 
-    initialize: function (options) {
+  initialize: function (options) {
 
-        if (options.template) {
-            this._template = _.template(options.template);
-        }
-        if (options.template_list) {
-            this._template_list = _.template(options.template_list);
-        }
+    this.options = _.defaults(options || {}, {
+      placeholderInput: __('buscar sensor, emplazamiento...')
+    });
 
-        this._map = options.map;
-        this._collection = options.collection;
-
-        this._marker = new mapboxgl.Marker({color:'#003146'})
-
-        this.listenTo(this._collection,"reset",this._collectionReset);
-
-    },
-
-    _selectTerm: function (e) {
-        this.$('#search_map').addClass('searching');
-        this.$('input[type=text]').val($(e.currentTarget).text());
-        this.$('ul').removeClass('active');
-        var elem = this._collection.findWhere({ 'element_id': $(e.currentTarget).attr('element_id') });
-        var bbox = elem.get('bbox');
-        var maxZoom = 18;
-        if (elem.get('type') == 'device') {
-            maxZoom = 19;
-        }
-        
-        this._marker.setLngLat([bbox[0], bbox[1]])
-          .addTo(this._map);
-
-        this._map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { maxZoom: maxZoom });
-    },
-
-    _clearSearch: function () {
-        this.$('ul').removeClass('active');
-        this.$('.loading').remove();
-        this.$('input[type=text]').val('');
-        this.$('#search_map').removeClass('searching');
-
-        this._marker.remove()
+    if (this.options.template) {
+      this._template = _.template(this.options.template);
     }
+
+    if (this.options.template_list) {
+      this._template_list = _.template(this.options.template_list);
+    }
+
+    this._map = this.options.map;
+    this._collection = this.options.collection;
+
+    this._marker = new mapboxgl.Marker({ color: '#003146' })
+
+    this.listenTo(this._collection, "reset", this._collectionReset);
+
+  },
+
+  _selectTerm: function (e) {
+    this.$('#search_map').addClass('searching');
+    this.$('input[type=text]').val($(e.currentTarget).text());
+    this.$('ul').removeClass('active');
+    var elem = this._collection.findWhere({ 'element_id': $(e.currentTarget).attr('element_id') });
+    var bbox = elem.get('bbox');
+    var maxZoom = 18;
+    if (elem.get('type') == 'device') {
+      maxZoom = 19;
+    }
+
+    this._marker.setLngLat([bbox[0], bbox[1]])
+      .addTo(this._map);
+
+    this._map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { maxZoom: maxZoom });
+  },
+
+  _clearSearch: function () {
+    this.$('ul').removeClass('active');
+    this.$('.loading').remove();
+    this.$('input[type=text]').val('');
+    this.$('#search_map').removeClass('searching');
+
+    this._marker.remove()
+  }
 
 });
