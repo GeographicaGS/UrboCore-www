@@ -455,7 +455,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         );
       this.svgChart.selectAll('.nv-focus .nv-y').call(this.chart.yAxis);
     }
-    debugger;
     // this._chart.forceY(this.options.get('yAxisDomain'));
   },
 
