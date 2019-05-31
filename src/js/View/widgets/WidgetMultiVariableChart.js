@@ -72,16 +72,16 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
       if (this.collection
-          && this.collection.options
-          && typeof this.collection.options.data === 'string') {
+        && this.collection.options
+        && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
 
       if (!this.collection.options.data) {
         this.collection.options.data = { time: {} }
       }
-      this.collection.options.data.time.start = this._ctx.get('start').format();
-      this.collection.options.data.time.finish = this._ctx.get('finish').format();
+      this.collection.options.data.time.start = this._ctx.get('start');
+      this.collection.options.data.time.finish = this._ctx.get('finish');
 
       App.Utils.checkBeforeFetching(this);
 
@@ -115,8 +115,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var $ulCurrentElement = $(e.currentTarget).closest('ul');
     var realKey = $ulCurrentElement.attr('data-id');
     var currentAggs = this._internalData.currentAggs;
-
     var agg = $(e.currentTarget).attr('data-agg');
+
     this.collection.options.agg[realKey] = agg;
 
     currentAggs[realKey] = agg;
@@ -213,7 +213,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     App.Utils.initStepData(this);
     this.$('.loading.widgetL').addClass('hiden');
 
-    var _this = this;
     var oneVarInMultiVar = false;
 
     //Por si el servidor devuelve series con valores a nulos
@@ -222,21 +221,21 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         return c.get('values').length == 0;
       }),
       function (m) {
-      _this.collection.remove(m);
-      }
+        this.collection.remove(m);
+      }.bind(this)
     );
 
     this.data = new Backbone.Collection(
       _.each(this.collection.toJSON(), function (c, index) {
-        if (_this.data && _this.data.length) {
-          var data = _this.data.findWhere({ 'realKey': c.key });
+        if (this.data && this.data.length) {
+          var data = this.data.findWhere({ 'realKey': c.key });
           if (data != undefined) {
             c.realKey = data.get('realKey');
             c.key = data.get('key');
             c.aggs = data.get('aggs');
             c.currentAgg = data.get('currentAgg');
-            c.disabled = _this._internalData.disabledList[c.realKey];
-            _this.collection.findWhere({ 'key': c.realKey }).set('disabled', c.disabled);
+            c.disabled = this._internalData.disabledList[c.realKey];
+            this.collection.findWhere({ 'key': c.realKey }).set('disabled', c.disabled);
           }
         } else {
           c.realKey = c.key;
@@ -251,7 +250,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           // END TODO
 
           //Inicializacion de la estructura interna de datos
-          var internalData = _this._internalData;
+          var internalData = this._internalData;
           var meta = App.mv().getVariable(c.realKey);
 
           if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
@@ -260,19 +259,19 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             internalData.disabledList[c.realKey] = false;
           }
 
-          if (!_this.options.noAgg) {
-            var currentDefaultAgg = !_.isEmpty(_this._aggDefaultValues)
-              ? _this._aggDefaultValues[c.realKey]
+          if (!this.options.noAgg) {
+            var currentDefaultAgg = !_.isEmpty(this._aggDefaultValues)
+              ? this._aggDefaultValues[c.realKey]
               : null;
             if ((c.aggs != undefined && c.aggs[0] != 'NOAGG')
-              && (_.isEmpty(_this._aggDefaultValues) || (currentDefaultAgg != 'NONE'))) {
+              && (_.isEmpty(this._aggDefaultValues) || (currentDefaultAgg != 'NONE'))) {
               if (currentDefaultAgg == undefined || !_.contains(c.aggs, currentDefaultAgg.toUpperCase())) {
                 c.currentAgg = c.aggs ? c.aggs[0] : null;
-                _this.collection.options.agg[c.realKey] = c.currentAgg;
+                this.collection.options.agg[c.realKey] = c.currentAgg;
                 internalData.currentAggs[c.realKey] = c.currentAgg;
               } else {
                 c.currentAgg = currentDefaultAgg;
-                _this.collection.options.agg[c.realKey] = currentDefaultAgg;
+                this.collection.options.agg[c.realKey] = currentDefaultAgg;
                 internalData.currentAggs[c.realKey] = currentDefaultAgg;
               }
             }
@@ -281,9 +280,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Normalization using domain if available
         var min, max;
-        if (_this._multiVariableModel.has('yAxisDomain') && _this._multiVariableModel.get('yAxisDomain')[c.realKey] !== undefined) {
-          min = _this._multiVariableModel.get('yAxisDomain')[c.realKey][0];
-          max = _this._multiVariableModel.get('yAxisDomain')[c.realKey][1];
+        if (this._multiVariableModel.has('yAxisDomain') && this._multiVariableModel.get('yAxisDomain')[c.realKey] !== undefined) {
+          min = this._multiVariableModel.get('yAxisDomain')[c.realKey][0];
+          max = this._multiVariableModel.get('yAxisDomain')[c.realKey][1];
         } else {
           min = _.min(c.values, function (v) { return v.y; }).y;
           max = _.max(c.values, function (v) { return v.y; }).y;
@@ -297,18 +296,18 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             y: (max - min) > 0
               ? (v.y - min) / (max - min)
               : 0, 'realY': v.y
-            }
+          }
         });
-      })
+      }.bind(this))
     );
 
     // Set the keys (values) to 'disabled' to hide in the chart
     _.each(this._internalData.disabledList, function (value, key) {
       if (value) {
-        _this.data.find({ 'realKey': key }).set('disabled', true);
-        _this.collection.find({ 'key': key }).set('disabled', true);
+        this.data.find({ 'realKey': key }).set('disabled', true);
+        this.collection.find({ 'key': key }).set('disabled', true);
       }
-    });
+    }.bind(this));
 
     // Set 'normalized' CSS class
     if (this.data.where({ 'disabled': false }).length > 1) {
@@ -352,11 +351,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       .showMaxMin(true)
       .tickFormat(function (d) {
         var localdate = moment.utc(d).local().toDate();
-        if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
+
+        // Same day
+        if (moment(App.ctx.get('finish')).isSame(moment(App.ctx.get('start')), 'day')) {
+          return d3.time.format('%H:%M')(localdate);
+        } else if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
           return d3.time.format('%d/%m/%Y %H:%M')(localdate);
         }
+        // Only date
         return d3.time.format('%d/%m/%Y')(localdate);
-      });
+
+      }.bind(this));
 
     this._updateYAxis();
 
@@ -367,7 +372,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       .contentGenerator(function (data) {
         // Each value to tooltip
         _.each(data.series, function (s) {
-          var model = _this.data.findWhere({ 'key': s.key });
+          var model = this.data.findWhere({ 'key': s.key });
 
           s['realKey'] = model.get('realKey');
           s.value = _.find(model.get('values'), function (v) {
@@ -375,14 +380,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           }).realY;
 
           // Change value in tooltip
-          if (_this._multiVariableModel.has('toolTipValueFunction')) {
-            s.value = typeof _this._multiVariableModel.get('toolTipValueFunction') === 'function'
-              ? _this._multiVariableModel.get('toolTipValueFunction')(s.realKey, s.value)
+          if (this._multiVariableModel.has('toolTipValueFunction')) {
+            s.value = typeof this._multiVariableModel.get('toolTipValueFunction') === 'function'
+              ? this._multiVariableModel.get('toolTipValueFunction')(s.realKey, s.value)
               : s.value;
           }
-        });
+        }.bind(this));
 
-        return _this._popup_template({
+        return this._popup_template({
           data: data,
           utils: {
             xAxisFunction: function (d) {
@@ -390,7 +395,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             }
           }
         });
-      });
+      }.bind(this));
 
     // Update chart (redraw)
     this.chart.update();
@@ -416,11 +421,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    * Assure that the data (keys) are not replicated
    */
   _getUniqueDataEnableToDraw: function () {
-    var _this = this;
     return _.map(this.collection.toJSON(), function (j) {
-      j.key = _this.data.findWhere({ 'realKey': j.key }).get('key');
+      j.key = this.data.findWhere({ 'realKey': j.key }).get('key');
       return j;
-    });
+    }.bind(this));
   },
 
   /**
@@ -435,7 +439,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var metadata = App.Utils.toDeepJSON(
         App.mv().getVariable(col[0].get('realKey'))
       );
-      var format = _.some(values, function (currentValue){
+      var format = _.some(values, function (currentValue) {
         return currentValue.realY < 1;
       }) ? App.d3Format.numberFormat(',.3r') : App.nbf;
 
