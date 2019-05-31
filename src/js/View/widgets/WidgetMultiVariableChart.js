@@ -344,38 +344,23 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .call(this.chart);
     }
 
-    // // Force the values for X axis
-    // // And whitch of them draw
-    // var data = this.data.toJSON();
-    // if (data.length > 0 && data[0].values) {
-    //   var itemsXAxis = _.map(data[0].values, function (item) {
-    //     return item.x;
-    //   });
-    //   // reduce the number of elements in X axis
-    //   if (itemsXAxis.length > 8) {
-    //     itemsXAxis = _.filter(itemsXAxis, function (item, index) {
-    //       return 
-    //     });
-    //   }
-    //   this.chart.xAxis.tickValues(itemsXAxis);
-    // }
-
     // Draw the X axis with values (date) with 'hours'
     // If the difference between dates is minus to two days
     this.chart
       .xAxis
       .showMaxMin(true)
       .tickFormat(function (d) {
-        // var data = this.data.toJSON();
-        // var dataValues = data[0].values;
         var localdate = moment.utc(d).local().toDate();
 
-        // debugger;
-
-        if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
+        // Same day
+        if (moment(App.ctx.get('finish')).isSame(moment(App.ctx.get('start')), 'day')) {
+          return d3.time.format('%H:%M')(localdate);
+        } else if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
           return d3.time.format('%d/%m/%Y %H:%M')(localdate);
         }
+        // Only date
         return d3.time.format('%d/%m/%Y')(localdate);
+
       }.bind(this));
 
     this._updateYAxis();
