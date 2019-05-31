@@ -72,16 +72,16 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
       if (this.collection
-          && this.collection.options
-          && typeof this.collection.options.data === 'string') {
+        && this.collection.options
+        && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
 
       if (!this.collection.options.data) {
         this.collection.options.data = { time: {} }
       }
-      this.collection.options.data.time.start = this._ctx.get('start').format();
-      this.collection.options.data.time.finish = this._ctx.get('finish').format();
+      this.collection.options.data.time.start = this._ctx.get('start');
+      this.collection.options.data.time.finish = this._ctx.get('finish');
 
       App.Utils.checkBeforeFetching(this);
 
@@ -116,7 +116,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var realKey = $ulCurrentElement.attr('data-id');
     var currentAggs = this._internalData.currentAggs;
     var agg = $(e.currentTarget).attr('data-agg');
-    
+
     this.collection.options.agg[realKey] = agg;
 
     currentAggs[realKey] = agg;
@@ -296,7 +296,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             y: (max - min) > 0
               ? (v.y - min) / (max - min)
               : 0, 'realY': v.y
-            }
+          }
         });
       }.bind(this))
     );
@@ -344,18 +344,39 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .call(this.chart);
     }
 
+    // // Force the values for X axis
+    // // And whitch of them draw
+    // var data = this.data.toJSON();
+    // if (data.length > 0 && data[0].values) {
+    //   var itemsXAxis = _.map(data[0].values, function (item) {
+    //     return item.x;
+    //   });
+    //   // reduce the number of elements in X axis
+    //   if (itemsXAxis.length > 8) {
+    //     itemsXAxis = _.filter(itemsXAxis, function (item, index) {
+    //       return 
+    //     });
+    //   }
+    //   this.chart.xAxis.tickValues(itemsXAxis);
+    // }
+
     // Draw the X axis with values (date) with 'hours'
     // If the difference between dates is minus to two days
     this.chart
       .xAxis
       .showMaxMin(true)
       .tickFormat(function (d) {
+        // var data = this.data.toJSON();
+        // var dataValues = data[0].values;
         var localdate = moment.utc(d).local().toDate();
+
+        // debugger;
+
         if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
           return d3.time.format('%d/%m/%Y %H:%M')(localdate);
         }
         return d3.time.format('%d/%m/%Y')(localdate);
-      });
+      }.bind(this));
 
     this._updateYAxis();
 
@@ -433,7 +454,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var metadata = App.Utils.toDeepJSON(
         App.mv().getVariable(col[0].get('realKey'))
       );
-      var format = _.some(values, function (currentValue){
+      var format = _.some(values, function (currentValue) {
         return currentValue.realY < 1;
       }) ? App.d3Format.numberFormat(',.3r') : App.nbf;
 
