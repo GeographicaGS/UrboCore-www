@@ -87,9 +87,20 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   getColumnsFormat: function () {
     var columnsFormat = {};
-    _.map(this.options.variables, function (variable) {
-      var formatFN = null;
+    var variablesWithMetadata = this.getEntityVariables()
+    var formatFN = null;
 
+    _.map(this.options.variables, function (variable) {
+      //Set Title
+      if(typeof variable.title === 'undefined'){
+        var targetVariable = _.find( variablesWithMetadata, function( varWithMeta ){
+          return varWithMeta.id === variable.id
+        });
+        variable['title'] = targetVariable
+          ? targetVariable.name
+          : '';
+      }
+      //Set Format
       if (typeof variable.format === 'function') {
         formatFN = variable.format;
       } else {
@@ -107,7 +118,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       }
 
       columnsFormat[variable.id] = {
-        title: variable.title,
+        title: __(variable.title),
         formatFN: formatFN
       };
     }.bind(this));
