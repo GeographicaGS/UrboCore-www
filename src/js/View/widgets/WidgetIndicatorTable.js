@@ -39,6 +39,13 @@ App.View.Widgets.IndicadorTable =  App.View.Widgets.Base.extend({
           'css_class':'counter greyDark',
           'formatFN':function(d){
 
+            // Fix the changes in models and collections (BaseModel & BaseCollections)
+            if (_this.dataCollection &&
+              _this.dataCollection.options &&
+              typeof _this.dataCollection.options.data === 'string') {
+                _this.dataCollection.options.data = JSON.parse(_this.dataCollection.options.data);
+            }
+
             var elem = _this.dataCollection.findWhere({'name':d})
             var i = _this.dataCollection.indexOf(elem);
 
