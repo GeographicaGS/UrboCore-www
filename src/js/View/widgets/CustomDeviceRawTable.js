@@ -106,7 +106,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
             formatFN = this.booleanFn(variable.format.options);
             break;
           case 'date':
-            formatFN = this.dateFn(variable.format.options);
+            formatFN = this.dateFn;
             break;
         }
       }
@@ -160,10 +160,13 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     }
   },
 
-  dateFn: function (format) {
-    return function (value) {
-      return App.formatDateTime(value, format);
-    }
+  dateFn: function (value) {
+    var dateTime = value.split('T') 
+    var date = dateTime[0].split('-')
+    
+    return date.reverse().join('-')
+      + ' '
+      + dateTime[1].slice(0, 5);
   },
 
   getVariableUnits: function (id) {
