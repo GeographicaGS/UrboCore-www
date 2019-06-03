@@ -317,6 +317,50 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       d3.select(this.$('.chart')[0]).classed('normalized', false);
     }
 
+    // Calculate range X axis
+    var chartData = this.data.toJSON();
+
+    // Get values to use in X axis
+    var xTicks = function () {
+      if (chartData.length && chartData[0].values.length) {
+        var chart = d3.select(this.$('.chart')[0]);
+        var chartWidth = $(chart[0]).width();
+        var labelWidth = 98; //pixels
+        var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
+        var diff = chartData[0].values.length / maxXTick;
+        return diff < 1
+          ? _.map(chartData[0].values, function (item) {
+            return item.x;
+          })
+          : _.reduce(chartData[0].values, function (sumItems, item, index, originItems) {
+            var currentIndex = Number.parseInt(index * diff, 10);
+            if (sumItems.length <= maxXTick) {
+              if (index === 0 || (index + 1) === originItems.length) {
+                // Initial and finish range
+                sumItems.push(originItems[index].x);
+              } else if (originItems[currentIndex]) {
+                // If the difference the days is same the "diff"
+                // between the values (this a solution when there
+                // are range times without data)
+                if (moment(originItems[currentIndex].x).diff(sumItems[sumItems.length-1], 'days') >= diff) {
+                  sumItems.push(originItems[currentIndex].x);
+                }
+              }
+            }
+            return sumItems;
+          }, []);
+      } else {
+        return [];
+      }
+    }.bind(this);
+
+    // Recalculate the items in X axis
+    nv.utils.windowResize(function () {
+      this.chart
+        .xAxis
+        .tickValues(xTicks());
+    }.bind(this));
+
     // Draw the chart with NVD3
     this.chart = nv.models.lineChart()
       .useInteractiveGuideline(true)
@@ -330,13 +374,15 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     }
 
     // Set margin legend
-    this.chart.legend.margin({ bottom: 40 });
+    this.chart
+      .legend
+      .margin({ bottom: 40 });
 
     // 'oneVarInMultiVar' = true, en el caso especial de que
     // estemos pintando varias variable pero solo hay activa una
     if (!oneVarInMultiVar) {
       this.svgChart = d3.select(this.$('.chart')[0])
-        .datum(this.data.toJSON())
+        .datum(chartData)
         .call(this.chart);
     } else {
       this.svgChart = d3.select(this.$('.chart')[0])
@@ -348,7 +394,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // If the difference between dates is minus to two days
     this.chart
       .xAxis
-      .showMaxMin(true)
+      .showMaxMin(false)
       .tickFormat(function (d) {
         var localdate = moment.utc(d).local().toDate();
 
@@ -361,7 +407,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         // Only date
         return d3.time.format('%d/%m/%Y')(localdate);
 
-      }.bind(this));
+      }.bind(this))
+      .tickValues(xTicks());
 
     this._updateYAxis();
 
@@ -406,7 +453,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.$('.var_list').html(
       this._list_variable_template({
         colors: App.getSensorVariableColorList(),
-        data: this.data.toJSON(),
+        data: chartData,
         currentAggs: this._internalData.currentAggs,
         disabledList: this._internalData.disabledList
       })

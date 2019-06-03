@@ -279,16 +279,12 @@ App.View.Date = Backbone.View.extend({
     this.$el.removeClass('range_open');
 
     var finish = moment().endOf('day');
-    var start;
-    var $e = $(e.currentTarget),
-      unit = $e.attr('data-unit'),
-      value = parseInt($e.attr('data-value'));
-
-    if (unit !== 'origin') {
-      start = moment().subtract(value, unit).startOf('day')
-    } else {
-      start = moment(0).startOf('day');
-    }
+    var $e = $(e.currentTarget);
+    var unit = $e.attr('data-unit');
+    var value = parseInt($e.attr('data-value'));
+    var start = unit !== 'origin'
+      ? moment().subtract(value, unit).startOf('day')
+      : moment(0).startOf('day');
 
     this.options.model.set({
       start: start.utc(),
