@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -27,7 +27,7 @@ App.View.Widgets.Table = Backbone.View.extend({
   initialize: function (options) {
     this.options = _.defaults(options, {
       listenContext: true,
-      context: App.ctx
+      context: App.ctx,
     });
 
     this._listenContext = this.options.listenContext;
@@ -49,19 +49,31 @@ App.View.Widgets.Table = Backbone.View.extend({
     this._tableToCsv = new App.Collection.TableToCsv()
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
+    
+    //Adjust top scrollbar when resizing
+    if(this.model.get('scrollTopBar')){
+      $(window).on('resize', this.setScrollTopBarWidth.bind(this))
+    }
 
     _.bindAll(this, '_showTooltip');
   },
 
   events: {
-    'click .table button': '_downloadCsv'
+    'click .table button': '_downloadCsv',
+    //'resize window': 'prueba'
   },
-
+  
   render: function () {
     this.$el.append(App.widgetLoading());
 
     // Re-draw table if context changes
     if (this._listenContext) {
+
+      // Fix the changes in models and collections (BaseModel & BaseCollections)
+      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+        this.collection.options.data = JSON.parse(this.collection.options.data);
+      }
+      
       if (this.model.get('method') == 'GET') {
         _.extend(this.collection.options.data, this.ctx.getDateRange());
       } else {
@@ -75,7 +87,12 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   _drawTable: function () {
-    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON() }));
+    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON()}));
+
+    if (this.model.get('scrollTopBar') === true) {
+      this.setScrollTopBarDOM();
+    }
+
     this.delegateEvents(this.events);
   },
 
@@ -101,9 +118,64 @@ App.View.Widgets.Table = Backbone.View.extend({
     $(".tooltip").css('left', element.clientX + 20 - 200);
   },
 
+  setScrollTopBarDOM: function () {
+    // scroll bar
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var scrollable = this.$el.find('.scrollable');
+    var table = this.$el.find('table');
+
+    // Width like table content
+    if (table.length && scrollTopBar.length) {
+      $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
+      scrollable.on('scroll', _.bind(this.setPositionScrollTopBar, this));
+      
+      // scroll bar content width
+      this.setScrollTopBarWidth()
+    }
+  },
+
+  setScrollTopBarWidth: function(){
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var table = this.$el.find('table');
+
+    $(scrollTopBar[0]).children().width($(table[0]).width() + Number.parseInt(this.$el.css('padding-left'), 10));
+  },
+
+  /**
+   * Set position in Scroll Top Bar
+   * 
+   * @param {Object | Event} event
+   */
+  setPositionScrollTopBar: function (event) {
+    var scrollTopBar = this.$el.find('#top-scroll-bar');
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    
+    // Move scrollTopBar
+    if (scrollTopBar.length) {
+      $(scrollTopBar[0]).scrollLeft(moveLeft);
+    }
+  },
+
+  /**
+   * handler scroll top bar
+   * 
+   * @param {Object | Event} event
+   */
+  handleTopScrollBar: function (event) {
+    
+    var moveLeft = $(event.currentTarget).scrollLeft();
+    var scrollable = this.$el.find('.scrollable');
+    
+    scrollable.scrollLeft(moveLeft);
+  },
+
   onClose: function () {
     this.stopListening();
-  },
+    
+    if(this.model.get('scrollTopBar')){
+      $(window).off('resize', this.setScrollTopBarWidth)
+    }
+  }
 
 });
 
@@ -125,7 +197,7 @@ App.View.Widgets.TableCustomFilters = App.View.Widgets.Table.extend({
       this._template = options['template'];
     }
 
-    this._tableToCsv = new App.Collection.TableToCsv()
+    this._tableToCsv = new App.Collection.TableToCsv();
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
 

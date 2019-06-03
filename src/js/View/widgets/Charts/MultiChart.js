@@ -223,31 +223,10 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
       .width(500)
     ;
 
-    // var numElems = this.data[0] && this.data[0].values ? this.data[0].values.length : 0;
-    // this._xScale = d3.time.scale();
-    // this._container = d3.select(this.$('.chart')[0]);
-    // this._availableWidth = (this._chart.width() || parseInt(this._container.style('width')) || 960) - this._chart.margin().left - this._chart.margin().right;
-    //
-    // this._xScale.rangeBands = this._xScale.range;
-    // var _this = this;
-    // var groupSpacing = this._chart.bars1.groupSpacing() || this._chart.bars2.groupSpacing() || .5;
-    // this._xScale.rangeBand = function(){
-    //   return Math.max((1 - groupSpacing) * _this._availableWidth / numElems, 2);
-    // };
-    //
-    // // Test copy
-    // this._xScaleLines = this._xScale.copy();
-    // this._xScaleLines.rangeBand = function(){
-    //   return this._xScale.rangeBand() / 2 + this._xScale.rangeBand();
-    // };
-    //
-    // this._chart.xAxis.scale(this._xScale);
-    // this._chart.bars1.xScale(this._xScale)
-    // this._chart.bars2.xScale(this._xScale)
-    // this._chart.stack1.xScale(this._xScale)
-    // this._chart.stack2.xScale(this._xScale)
-    // this._chart.lines1.xScale(this._xScaleLines)
-    // this._chart.lines2.xScale(this._xScaleLines)
+    // Fix the changes in models and collections (BaseModel & BaseCollections)
+    if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+      this.collection.options.data = JSON.parse(this.collection.options.data);
+    }
 
     if(this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor == Date){
       if(this.options.get('xAxisAdjustToContent')){

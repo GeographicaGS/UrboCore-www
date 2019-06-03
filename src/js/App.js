@@ -614,6 +614,12 @@ $(function() {
     var attr = $(this).attr('jslink');
     var href = $(this).attr('href');
 
+    //Prevent update url history when clicking a link to the current page
+    if (href && href.slice(1)  === Backbone.history.getFragment()) { 
+      e.preventDefault();
+      return;
+    }
+
     if (attr !== undefined && attr !== 'undefined'){
       e.preventDefault();
 

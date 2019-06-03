@@ -26,7 +26,7 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
   
   events: {
     'click .showMore': 'loadMore',
-    'click .table button.downloadButton': '_downloadCsv',
+    'click button.downloadButton': '_downloadCsv',
     'scroll': 'scrollHandler'
   },
 
@@ -35,11 +35,12 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
   },
 
   initialize: function (options) {
-    App.View.Widgets.Deprecated.Table.prototype.initialize.call(this, options);
-    
     if (options.template) {
       this._template = _.template(options.template);
     }
+    
+    App.View.Widgets.Deprecated.Table.prototype.initialize.call(this, options);
+  
   },
 
   render: function () {
@@ -53,6 +54,9 @@ App.View.Widgets.TablePaginated = App.View.Widgets.Deprecated.Table.extend({
     if (this.model.get('scrollTopBar') === true) {
       this.setScrollTopBarDOM();
     }
+
+    // Remove "loading" class
+    this.$el.removeClass('loading');
 
     return this;
   },

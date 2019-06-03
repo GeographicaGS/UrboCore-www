@@ -210,7 +210,10 @@ App.View.DeviceRaw = Backbone.View.extend({
       device: this.model.get('id'),
       variables: _.pluck(entityVariables,'id'),
       data: {
-        time: {}
+        time: {
+          start: App.ctx.getDateRange().start,
+          finish: App.ctx.getDateRange().finish
+        }
       }
     });
     multiVariableCollection.parse = App.Collection.Variables.Timeserie.prototype.parse;
@@ -662,6 +665,16 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     this.collection = new Backbone.Collection();
     for(var i = 0; i<this.entityVariables.length; i++){
       var meta = _.findWhere(this.metadata, {id: this.entityVariables[i]});
+      
+      // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
+      if (this.model.get('entity') === 'aq_cons.sensor'
+        && this.model.get('scope') === 'ecija') {
+          meta.var_agg = meta.var_agg.filter( function (agg) {
+            return agg !== 'SUM';
+          });
+      }
+      // END TODO
+
       var model = new App.Model.Post({
         id: this.entityVariables[i],
         aggs: meta.var_agg,

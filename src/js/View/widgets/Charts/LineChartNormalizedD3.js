@@ -354,21 +354,21 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
 
   /**
    * Draw line into the chart
-   * 
+   *
    * @param {Array} data - data to draw into the chart
    * @param {Boolean} isUnique - There is unique line in chart
    */
   _drawLine: function (data, isUnique) {
     /**
      * Function to get the correct domain (min and max point from chart)
-     * 
+     *
      * @param {Array} chartValues
      * @param {Array} customDomain - array with min and max current point from chart
      * @param {Boolean} isUnique - There is unique line in chart (we normalize every chart)
      * @return {Array} - min and max point from chart
      */
     var getCurrentDomain = function(chartValues, customDomain, isUnique) {
-      // Values in Y Axis from 
+      // Values in Y Axis from
       var yAxisValues = chartValues
         .map(function (value) {
           return value.y;
@@ -407,7 +407,7 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
           var scale = d3.scale.linear()
             .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain, isUnique))
             .range([_this._chart.h, 0]);
-      
+
           return scale(d.y);
         })
         .interpolate('monotone')
@@ -424,12 +424,12 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
           .linear()
           .domain(getCurrentDomain(this.parentElement.__data__.values, _this.yAxisDomain, isUnique))
           .range([_this._chart.h, 0]);
-    
+
         return scale(d.y);
       })
       .attr('r', 3)
       .attr('data-y', function (d, idx) { return d.y });
-    
+
     // Put line into the chart
     this._chart.line = this._chart.line || [];
     this._chart.line.push(line);
@@ -440,6 +440,11 @@ App.View.Widgets.Charts.D3.LineNormalized = App.View.Widgets.Charts.Base.extend(
       var start = moment(this.data[0].values[0].x).startOf('hour');
       var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
+
+      // Fix the changes in models and collections (BaseModel & BaseCollections)
+      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+        this.collection.options.data = JSON.parse(this.collection.options.data);
+      }
 
       //  Get step hours
       var stepDiff = -1;

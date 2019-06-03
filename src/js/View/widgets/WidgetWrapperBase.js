@@ -27,11 +27,19 @@ App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
     options = _.defaults(options, {
-      title: __('Sin título')
+      title: __('Sin título'),
+      stopEventsBbox: false,
     });
 
     // Call to parent class
     App.View.Widgets.Base.prototype.initialize.call(this, options);
+
+    if(options.stopEventsBbox){
+      this.stopListening(App.ctx, 'change:bbox')
+    }
+
+    // Skip more code if widget is not allowed
+    if(!this.hasPermissions()) return;
 
     // Add subview and parent class (App.View.Widgets.Base)
     // put it inside "widget_content"

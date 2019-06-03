@@ -20,27 +20,36 @@
 
 App.Collection.Base = Backbone.Collection.extend({
   initialize: function (models, options) {
-    this.options = options;
-  }
-});
-
-App.Collection.Post = App.Collection.Base.extend({
-  fetch: function (options) {
+    options = options || {};
     // To fix the problem with "type" param (now or historic) in the collections (MapsCollections)
     if (options.type
       && options.type.toLowerCase() !== 'get'
       && options.type.toLowerCase() !== 'post'
       && options.type.toLowerCase() !== 'put'
       && options.type.toLowerCase() !== 'delete') {
-      options.typeHistoric = options.type;
+      options.typeInUrl = options.type;
+      delete options.type;
     }
 
-    options.type = 'POST';
-    options.contentType = 'application/json';
+    this.options = options;
+  }
+});
 
-    options.data = JSON.stringify(
-      _.defaults(options.data || {}, this.options && this.options.data ? this.options.data : {})
-    );
+App.Collection.Post = App.Collection.Base.extend({
+  fetch: function (options) {
+    options = _.defaults(options, {
+      type: 'POST',
+      contentType: 'application/json',
+    });
+
+    // Add initial model options
+    options = _.extend(this.options || {}, options);
+
+    if (options.data) {
+      if (typeof options.data !== 'string') {
+        options.data = JSON.stringify(options.data);
+      }
+    }
 
     return Backbone.Collection.prototype.fetch.call(this, options);
   }
@@ -53,22 +62,16 @@ App.Collection.PublishedWidget = App.Collection.Base.extend({
 
 App.Collection.MapsCollection = App.Collection.Post.extend({
   url: function () {
-    // To fix the problem with "type" param (now or historic) in the collections
-    // The parameter "type" is used to do request (POST, PUT, DELETE) and here to make the URL (bad idea)
-    var typeHistoric = this.options.typeHistoric
-      ? this.options.typeHistoric
-      : this.options.type;
-
     return App.config.api_url
       + '/' + this.options.scope
       + '/maps/'
       + this.options.entity
-      + '/' + typeHistoric;
+      + '/' + this.options.typeInUrl;
   },
 
   fetch: function (options) {
     // Default values
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       data: {
         filters: {
           conditions: {},
@@ -76,6 +79,16 @@ App.Collection.MapsCollection = App.Collection.Post.extend({
         }
       }
     });
+
+    // Add initial model options
+    options = _.extend(this.options || {}, options);
+
+    if (options.data) {
+      if (typeof options.data !== 'string') {
+        options.data = JSON.stringify(options.data);
+      }
+    }
+
     return App.Collection.Post.prototype.fetch.call(this, options);
   }
 });

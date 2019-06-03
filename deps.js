@@ -42,6 +42,7 @@ deps.JS = [
 
   // Utils
   srcJS + 'Utils.js@finish-main-block',
+  //srcJS + 'Utils.js',
 
   // Views
   srcJS + 'View/BaseView.js',
@@ -108,9 +109,9 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetStackedSingleBar.js',
   srcJS + 'View/widgets/WidgetClock.js',
   srcJS + 'View/widgets/WidgetWrapperBase.js',
-  // srcJS + 'View/widgets/WidgetVariableView.js',
   srcJS + 'View/widgets/WidgetTableView.deprecated.js',
   srcJS + 'View/widgets/WidgetTablePaginatedView.js',
+  srcJS + 'View/widgets/CustomDeviceRawTable.js',
 
   srcJS + 'View/widgets/WidgetCorrelation.js',
 
@@ -152,6 +153,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetIndicatorGauge.js',
   srcJS + 'View/widgets/WidgetIndicatorTable.js',
   srcJS + 'View/widgets/WidgetVariable.js',
+  srcJS + 'View/widgets/WidgetVariablesData.js',
   srcJS + 'View/widgets/WidgetVersusVariables.js',
   srcJS + 'View/widgets/WidgetVersusVariablesGeneric.js',
   srcJS + 'View/widgets/WidgetEmbed.js',
@@ -179,6 +181,7 @@ deps.JS = [
   srcJS + 'View/Map/LayerTreeView.js',
   srcJS + 'View/Map/FilterSpatialMapView.js',
   srcJS + 'View/Map/MapSearchView.js',
+  srcJS + 'View/Map/MapBoxSearchView.js',
   srcJS + 'View/Map/LayerVariableSelector.js',
   srcJS + 'View/Map/LayerTreeFilters.js',
   srcJS + 'View/Map/LegendBaseMapView.js',

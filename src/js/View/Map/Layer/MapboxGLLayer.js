@@ -112,7 +112,14 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
    *  - classes: String of classes for parent.
    */
   setPopup: function(classes, label, templates = []) {
-    this.on('click',this.layers.map(l => l.id), function(e) {
+    // If it exists the attribute "hasPopup", we only apply
+    // the "Popup" a these layers otherwise all layers
+    // will have "Popup"
+    var layersWithPopups = this.layers.filter(l => l.hasPopup).length > 0
+      ? this.layers.filter(l => l.hasPopup)
+      : this.layers;
+
+    this.on('click', layersWithPopups.map(l => l.id), function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
 

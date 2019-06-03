@@ -66,7 +66,7 @@ App.View.Widgets.Device.DeviceRawTable = Backbone.View.extend({
         // default options
         {
           title: '',
-          downloadButton: false,
+          downloadButton: true,
           class: 'device',
           columns: columns,
           scrollTopBar: false

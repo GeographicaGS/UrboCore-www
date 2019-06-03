@@ -69,42 +69,46 @@ App.View.Device = Backbone.View.extend({
     });
     var v = this._tabs[this.model.get('tab')];
     this.$('.ctrl_container').html(v.$el);
-
     this.$('.nav_ctrl ul li').removeAttr('selected');
-
     this.$('.nav_ctrl [data-el=ctrl_'+this.model.get('tab')+']').attr('selected',true);
-
+    
     v.render().delegateEvents();
-
     App.router.navigate('/' + this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/' + this.model.get('tab'));
+    this._showDateSelector();
 
   },
 
   _initBaseViews: function(){
 
+    var breadcrumb = [{
+      url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
+      title : __('Ficha de dispositivo')
+    },
+    {
+      url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
+      title: __(App.mv().getCategory(this.model.get('entity').split('.')[0]).get('name'))
+    },
+    {
+      url: this.model.get('scope') + '/dashboard',
+      title: __(this.scopeModel.get('name'))
+    }];
+
+    // Adds multiscope level to breadcrumb
+    // If scope has parent (multiscope)
+    var parent = this.scopeModel.get('parent_id');
+    if (parent && parent != 'orphan') {
+      var parentModel = App.mv().getScope(parent);
+
+      breadcrumb.push({
+        url: parent + '/' + 'scope',
+        title: __(parentModel.get('name'))
+      });
+    }
+
     App.getNavBar().set({
-      breadcrumb : [{
-        url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
-        title : __('Ficha de dispositivo')
-      },
-      {
-        url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
-        title: __(App.mv().getCategory(this.model.get('entity').split('.')[0]).get('name'))
-      },
-      {
-        url: this.model.get('scope') + '/dashboard',
-        title: __(this.scopeModel.get('name'))
-      }],
+      breadcrumb : breadcrumb,
       visible: true
     });
-
-
-    // this.model.set({
-    //   'time': 'last24h',
-    //   // 'time': 'lastmonth',
-    //   // 'vars': _.pluck(allvars,'name'),
-    //   // 'agg': _.pluck(allvars,'def_agg')
-    // });
 
     var entityMetadata = App.mv().getEntity(this.model.get('entity'));
     var entityAdditionalInfo = App.mv().getAdditionalInfo(this.model.get('entity'));
@@ -138,6 +142,14 @@ App.View.Device = Backbone.View.extend({
     this._renderTab();
   },
 
+  _showDateSelector(){  
+    if(this.model.get('tab') === 'lastdata'){   
+      $('#dateSelector').hide();
+    }else{
+      $('#dateSelector').show();
+    } 
+  },
+
   render: function(){
     this.$el.html(this._template({'entity':this.model.get('entity')}));
 
@@ -152,9 +164,25 @@ App.View.Device = Backbone.View.extend({
     this._deviceListView = new App.View.DeviceList({'model':deviceListModel});
     this.$('.deviceinfo').append(this._deviceListView.$el);
 
-    this._dateView = new App.View.Date({'compact':false});
-    this.$el.append(this._dateView.render().$el);
+    // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
+    // REMOVE "minDate" and "maxDate" from the "App.View.Date"
+    this._dateView = new App.View.Date({
+      compact: false,
+      minDate: this.scopeModel.get('id') === 'ecija'
+        && this.model.get('entity') === 'aq_cons.sensor'
+          ? new Date(2018, 10, 6)
+          : null,
+      maxDate: this.scopeModel.get('id') === 'ecija'
+        && this.model.get('entity') === 'aq_cons.sensor'
+          ? new Date(2018, 10, 13)
+          : null
+    });
+    // END TODO
 
+    this.$el.append(this._dateView.render().$el);
+    // dateView need time to be rendered  before to check if show or hide
+    setTimeout(this._showDateSelector.bind(this), 100);
+    
     return this;
   }
 

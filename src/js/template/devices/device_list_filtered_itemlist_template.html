@@ -1,0 +1,13 @@
+<ul id="filtered-list">
+  <%_.each(elements,function(e){%>
+          <li class="<%=e.id == m.id ? 'selected': ''%>">
+            <% if (m.category) { %>
+              <a href="/<%=m.scope%>/custom/<%= m.category %>/<%=m.entity%>/<%=e.id%>" jslink>
+            <% } else { %>
+              <a href="<%=m.scope%>/<%=m.entity%>/<%=e.id%>" jslink>
+            <% } %>
+              <%= e.id || e.name %>
+            </a>
+          </li>
+  <%})%>
+  </ul>
