@@ -162,9 +162,11 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   dateFn: function (value) {
     var dateTime = value.split('T') 
-    return dateTime[0] 
-    + ' '
-    + dateTime[1].slice(0, 5);
+    var date = dateTime[0].split('-')
+    
+    return date.reverse().join('-')
+      + ' '
+      + dateTime[1].slice(0, 5);
   },
 
   getVariableUnits: function (id) {
