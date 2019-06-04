@@ -531,7 +531,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // chart widgh DOM
       var chartWidth = $(chart[0]).width();
       // size in pixel to label to put into the X axis
-      var labelWidth = 70;
+      var labelWidth = 80;
       // max tick to draw in X Axis
       var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
       // Difference between the data to draw
