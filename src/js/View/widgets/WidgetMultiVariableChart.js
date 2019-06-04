@@ -541,18 +541,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // la gráfica no dibuja puntos y la diferencia (diff) antes
       // obtenida no nos es válida para saber cuantos elementos caben
       // en el eje de las X
-      var rangeWithoutData = 0;
+      if (diff > 1) {
+        var rangeWithoutData = 0;
 
-      if (data[0].values.length > 1) {
-        _.each(data[0].values, function (date, index) {
-          if (index > 0 &&
-            moment(data[0].values[index].x)
-              .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) >= diff) {
-            rangeWithoutData++;
-          }
-        }.bind(this));
+        if (data[0].values.length > 1) {
+          _.each(data[0].values, function (date, index) {
+            if (index > 0 &&
+              moment(data[0].values[index].x)
+                .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) >= diff) {
+              rangeWithoutData++;
+            }
+          }.bind(this));
+        }
+        diff += rangeWithoutData;
       }
-      diff += rangeWithoutData;
 
       return diff < 1
         ? _.map(data[0].values, function (item) {
