@@ -52,7 +52,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
       this.listenTo(this._stepModel, 'change:step', function () {
-        this._multiVariableModel.sizeDiff = new RegExp('\dd').test(this._stepModel.get('step'))
+        var regex = /\dd/;
+        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
           ? 'days'
           : 'hours';
         this.collection.fetch({ 'reset': true });
