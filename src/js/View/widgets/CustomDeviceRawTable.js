@@ -1,28 +1,22 @@
 // Copyright 2017 Telefónica Digital España S.L.
-//
-// PROJECT: urbo-telefonica
-//
-// This software and / or computer program has been developed by
-// Telefónica Digital España S.L. (hereinafter Telefónica Digital) and is protected as
-// copyright by the applicable legislation on intellectual property.
-//
-// It belongs to Telefónica Digital, and / or its licensors, the exclusive rights of
-// reproduction, distribution, public communication and transformation, and any economic
-// right on it, all without prejudice of the moral rights of the authors mentioned above.
-// It is expressly forbidden to decompile, disassemble, reverse engineer, sublicense or
-// otherwise transmit by any means, translate or create derivative works of the software and
-// / or computer programs, and perform with respect to all or part of such programs, any
-// type of exploitation.
-//
-// Any use of all or part of the software and / or computer program will require the
-// express written consent of Telefónica Digital. In all cases, it will be necessary to make
-// an express reference to Telefónica Digital ownership in the software and / or computer
-// program.
-//
-// Non-fulfillment of the provisions set forth herein and, in general, any violation of
-// the peaceful possession and ownership of these rights will be prosecuted by the means
-// provided in both Spanish and international law. Telefónica Digital reserves any civil or
-// criminal actions it may exercise to protect its rights.
+// 
+// This file is part of UrboCore WWW.
+// 
+// UrboCore WWW is free software: you can redistribute it and/or
+// modify it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// UrboCore WWW is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
+// General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
+// 
+// For those usages not covered by this license please contact with
+// iot_support at tid dot es
 
 'use strict';
 
@@ -112,7 +106,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
             formatFN = this.booleanFn(variable.format.options);
             break;
           case 'date':
-            formatFN = this.dateFn(variable.format.options);
+            formatFN = this.dateFn;
             break;
         }
       }
@@ -166,10 +160,13 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     }
   },
 
-  dateFn: function (format) {
-    return function (value) {
-      return App.formatDateTime(value, format);
-    }
+  dateFn: function (value) {
+    var dateTime = value.split('T') 
+    var date = dateTime[0].split('-')
+    
+    return date.reverse().join('-')
+      + ' '
+      + dateTime[1].slice(0, 5);
   },
 
   getVariableUnits: function (id) {
