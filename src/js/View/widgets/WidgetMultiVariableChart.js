@@ -532,7 +532,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // chart widgh DOM
       var chartWidth = $(chart[0]).width();
       // size in pixel to label to put into the X axis
-      var labelWidth = 80;
+      var labelWidth = 85;
       // max tick to draw in X Axis
       var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
       // Difference between the data to draw
@@ -542,20 +542,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // la gráfica no dibuja puntos y la diferencia (diff) antes
       // obtenida no nos es válida para saber cuantos elementos caben
       // en el eje de las X
-      if (diff > 1) {
-        var rangeWithoutData = 0;
-
-        if (data[0].values.length > 1) {
-          _.each(data[0].values, function (date, index) {
-            if (index > 0 &&
-              moment(data[0].values[index].x)
-                .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) >= diff) {
-              rangeWithoutData++;
-            }
-          }.bind(this));
-        }
-        diff += rangeWithoutData;
+      var rangeWithoutData = 0;
+      if (data[0].values.length > 1) {
+        _.each(data[0].values, function (date, index) {
+          if (index > 0 &&
+            moment(data[0].values[index].x)
+              .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) > Math.ceil(diff)) {
+                var diffBetween = moment(data[0].values[index].x)
+                  .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff);
+            rangeWithoutData += Math.ceil(diffBetween);
+          }
+        }.bind(this));
       }
+      // Difference between the data to draw
+      diff = (data[0].values.length + rangeWithoutData) / maxXTick;
 
       return diff < 1
         ? _.map(data[0].values, function (item) {
