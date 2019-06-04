@@ -21,9 +21,13 @@
 'use strict';
 
 App.View.Widgets.MultiVariableChart = Backbone.View.extend({
+  // Templates
   _template: _.template($('#widgets-widget_multiVariable_chart').html()),
   _popup_template: _.template($('#chart-base_charttooltip').html()),
   _list_variable_template: _.template($('#widgets-widget_multiVariable_list_variables').html()),
+
+  // Size label in X axis
+  _sizeXLabel: 70,
 
   /*
     TODO: Create documentation
@@ -368,7 +372,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Normalization using domain if available
         var min, max;
-        if (this._multiVariableModel.yAxisDomain && 
+        if (this._multiVariableModel.yAxisDomain &&
           this._multiVariableModel.yAxisDomain[c.realKey] !== undefined) {
           min = this._multiVariableModel.yAxisDomain[c.realKey][0];
           max = this._multiVariableModel.yAxisDomain[c.realKey][1];
@@ -410,7 +414,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (this.chart && this.data.length) {
       var dataChart = this.data.toJSON();
       var startDate = dataChart[0].values[0].x;
-      var finishDate = dataChart[0].values[dataChart[0].values.length -1].x;
+      var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
@@ -429,14 +433,19 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return d3.time.format('%d/%m/%Y')(localdate);
 
         }.bind(this))
-        .tickValues(this.getXTickValues(dataChart));
-    
+        .tickValues(this.getXTickValues(dataChart))
+
       // Recalculate the items in X axis
       nv.utils.windowResize(function () {
         this.chart
           .xAxis
           .tickValues(this.getXTickValues(dataChart));
       }.bind(this));
+
+      // remove labels in X Axis
+      setTimeout(function () {
+        this._removeLabelInXAxis();
+      }.bind(this), 350);
     }
   },
 
@@ -475,8 +484,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     }
 
     // Force y axis domain
-    if (this._multiVariableModel.yAxisDomain && 
-    this._multiVariableModel.yAxisDomain[realKey]) {
+    if (this._multiVariableModel.yAxisDomain &&
+      this._multiVariableModel.yAxisDomain[realKey]) {
       this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
     }
   },
@@ -487,35 +496,35 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   _drawToolTip: function () {
     if (this.chart) {
       this.chart
-      .interactiveLayer
-      .tooltip
-      .contentGenerator(function (data) {
-        // Each value to tooltip
-        _.each(data.series, function (s) {
-          var model = this.data.findWhere({ 'key': s.key });
-  
-          s['realKey'] = model.get('realKey');
-          s.value = _.find(model.get('values'), function (v) {
-            return v.x.toString() == data.value.toString();
-          }).realY;
-  
-          // Change value in tooltip
-          if (this._multiVariableModel.toolTipValueFunction) {
-            s.value = typeof this._multiVariableModel.toolTipValueFunction === 'function'
-              ? this._multiVariableModel.toolTipValueFunction(s.realKey, s.value)
-              : s.value;
-          }
-        }.bind(this));
-  
-        return this._popup_template({
-          data: data,
-          utils: {
-            xAxisFunction: function (d) {
-              return App.formatDateTime(d);
+        .interactiveLayer
+        .tooltip
+        .contentGenerator(function (data) {
+          // Each value to tooltip
+          _.each(data.series, function (s) {
+            var model = this.data.findWhere({ 'key': s.key });
+
+            s['realKey'] = model.get('realKey');
+            s.value = _.find(model.get('values'), function (v) {
+              return v.x.toString() == data.value.toString();
+            }).realY;
+
+            // Change value in tooltip
+            if (this._multiVariableModel.toolTipValueFunction) {
+              s.value = typeof this._multiVariableModel.toolTipValueFunction === 'function'
+                ? this._multiVariableModel.toolTipValueFunction(s.realKey, s.value)
+                : s.value;
             }
-          }
-        });
-      }.bind(this));  
+          }.bind(this));
+
+          return this._popup_template({
+            data: data,
+            utils: {
+              xAxisFunction: function (d) {
+                return App.formatDateTime(d);
+              }
+            }
+          });
+        }.bind(this));
     }
   },
 
@@ -529,33 +538,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (data.length && data[0].values.length) {
       // chart DOM
       var chart = d3.select(this.$('.chart')[0]);
-      // chart widgh DOM
+      // chart width DOM
       var chartWidth = $(chart[0]).width();
-      // size in pixel to label to put into the X axis
-      var labelWidth = 80;
+      // size label pixels put into the X axis
+      var labelWidth = this._sizeXLabel;
       // max tick to draw in X Axis
       var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
       // Difference between the data to draw
       var diff = data[0].values.length / maxXTick;
-      // Puede darse el caso de que haya periodos de tiempo 
-      // entre fechas contiguas donde no existan datos, por lo que
-      // la gráfica no dibuja puntos y la diferencia (diff) antes
-      // obtenida no nos es válida para saber cuantos elementos caben
-      // en el eje de las X
-      if (diff > 1) {
-        var rangeWithoutData = 0;
-
-        if (data[0].values.length > 1) {
-          _.each(data[0].values, function (date, index) {
-            if (index > 0 &&
-              moment(data[0].values[index].x)
-                .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) >= diff) {
-              rangeWithoutData++;
-            }
-          }.bind(this));
-        }
-        diff += rangeWithoutData;
-      }
 
       return diff < 1
         ? _.map(data[0].values, function (item) {
@@ -568,13 +558,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               // Initial and finish range
               sumItems.push(originItems[index].x);
             } else if (originItems[currentIndex]) {
-              // If the difference the days is same the "diff"
-              // between the values (this a solution when there
-              // are range times without data)
-              if (moment(originItems[currentIndex].x)
-                .diff(sumItems[sumItems.length-1], this._multiVariableModel.sizeDiff) >= diff) {
-                sumItems.push(originItems[currentIndex].x);
-              }
+              sumItems.push(originItems[currentIndex].x);
             }
           }
           return sumItems;
@@ -582,6 +566,47 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     } else {
       return [];
     }
+  },
+
+  // Remove label in X Axis
+  _removeLabelInXAxis: function () {
+    // Get all X axis points and remove (hide) any label
+    // that is over other label
+    var labels = this.$('.chart .nv-lineChart .nv-focus .nv-x .nv-axis > g:first-child g.tick')
+      .sort(function (a, b) {
+        // Order by transform valur
+        var aTransform = $(a).attr('transform');
+        var bTransform = $(b).attr('transform');
+
+        aTransform = aTransform.replace('translate(', '');
+        aTransform = aTransform.replace(',0)', '');
+        aTransform = Number.parseFloat(aTransform);
+
+        bTransform = bTransform.replace('translate(', '');
+        bTransform = bTransform.replace(',0)', '');
+        bTransform = Number.parseFloat(bTransform);
+  
+        if (aTransform < bTransform) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+
+    var offsetXLabel = null;
+    _.each(labels, function (label) {
+      var currentOffsetXLabel = $(label).attr('transform');
+      currentOffsetXLabel = currentOffsetXLabel.replace('translate(', '');
+      currentOffsetXLabel = currentOffsetXLabel.replace(',0)', '');
+      currentOffsetXLabel = Number.parseFloat(currentOffsetXLabel);
+      if (offsetXLabel === null) { // begin loop
+        offsetXLabel = currentOffsetXLabel;
+      } else if (offsetXLabel + this._sizeXLabel > currentOffsetXLabel) { // hide label
+        $(label).hide();
+      } else { // show label
+        offsetXLabel = currentOffsetXLabel;
+      }
+    }.bind(this));
   },
 
   /**
