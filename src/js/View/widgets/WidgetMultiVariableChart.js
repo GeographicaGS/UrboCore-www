@@ -421,7 +421,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           // Same day
           if (moment(finishDate).isSame(moment(startDate), 'day')) {
             return d3.time.format('%H:%M')(localdate);
-          } else if (moment(finishDate).diff(moment(startDate), 'days') < 2) {
+          } else if (this._multiVariableModel.sizeDiff === 'hours') {
             return d3.time.format('%d/%m - %H:%M')(localdate);
           }
           // Only date
