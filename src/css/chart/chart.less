@@ -320,6 +320,16 @@
 }
 
 .chart {
+  // Without data
+  &.without-data {
+    & > text {
+      fill: @greyBluish;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 24px;
+      font-style: italic;
+    }
+  }
   &.pie {
     .extraContent {
       color: @white;

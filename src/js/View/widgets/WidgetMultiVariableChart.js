@@ -31,24 +31,31 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       el: DOM element (Optional)
       collection: Backbone Collection (Mandatory) Collection containing the chart data
       stepModel: Backbone Model (Optional) Model containing the current step
-      multiVariableModel: Backbone Model (Optional) Model containing a set of config parameters such as 'category' (string), 'title' (string) or 'aggDefaultValues' (JS Object)
+      multiVariableModel: Backbone Model (Optional) Model containing a set of config 
+        parameters such as 'category' (string), 'title' (string) or 'aggDefaultValues' (JS Object)
       noAgg: true|false (Optional, default: false) Disables aggregation controls
   */
   initialize: function (options) {
     this._stepModel = options.stepModel;
     this.collection = options.collection;
-    this._multiVariableModel = options.multiVariableModel;
+    this._multiVariableModel = _.defaults(options.multiVariableModel.toJSON() || {}, {
+      sizeDiff: 'days',
+      aggDefaultValues: []
+    });
     this.options = {
-      noAgg: options.noAgg || false,
-      yAxisFunction: options.yAxisFunction || null
+      noAgg: options.noAgg || false
     };
     this._aggDefaultValues = this._multiVariableModel
-      ? this._multiVariableModel.get('aggDefaultValues')
+      ? this._multiVariableModel.aggDefaultValues
       : [];
 
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
       this.listenTo(this._stepModel, 'change:step', function () {
+        var regex = /\dd/;
+        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
+          ? 'days'
+          : 'hours';
         this.collection.fetch({ 'reset': true });
         this.render();
       });
@@ -181,7 +188,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         var json = this._getUniqueDataEnableToDraw();
         this.svgChart.datum(json).call(this.chart);
         this.svgChart.classed('normalized', false);
-        this._updateYAxis();
+        this._drawYAxis();
       } else {
         this.svgChart.datum(this.data.toJSON()).call(this.chart)
         this.svgChart.classed('normalized', true)
@@ -194,9 +201,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       s: this._stepModel
         ? this._stepModel.toJSON()
         : null,
-      m: this._multiVariableModel
-        ? this._multiVariableModel.toJSON()
-        : null,
+      m: this._multiVariableModel || null,
       stepsAvailable: this._stepsAvailable
     }));
 
@@ -210,11 +215,94 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    * Draw the chart when the collection is reseted
    */
   _drawChart: function () {
-    App.Utils.initStepData(this);
-    this.$('.loading.widgetL').addClass('hiden');
-
     var oneVarInMultiVar = false;
+    // get initial step
+    App.Utils.initStepData(this);
+    // Hide the loading
+    this.$('.loading.widgetL').addClass('hiden');
+    // Prepare data to chart
+    this.data = this._prepareDataToChart();
 
+    // Set the keys (values) to 'disabled' to hide in the chart
+    _.each(this._internalData.disabledList, function (value, key) {
+      if (value) {
+        this.data.find({ 'realKey': key }).set('disabled', true);
+        this.collection.find({ 'key': key }).set('disabled', true);
+      }
+    }.bind(this));
+
+    // Set 'normalized' CSS class
+    if (this.data.where({ 'disabled': false }).length > 1) {
+      d3.select(this.$('.chart')[0]).classed('normalized', true);
+    } else {
+      oneVarInMultiVar = true;
+      d3.select(this.$('.chart')[0]).classed('normalized', false);
+    }
+
+    // Draw the chart with NVD3
+    this.chart = nv.models.lineChart()
+      .useInteractiveGuideline(true)
+      .margin({ 'right': 45 })
+      .height(268)
+      .noData(__('No hay datos disponibles'));
+
+    // Without data (CSS)
+    if (this.data.length === 0) {
+      d3.select(this.$('.chart')[0]).classed('without-data', true);
+    }
+
+    // Set margin legend
+    this.chart
+      .legend
+      .margin({ bottom: 40 });
+
+    // 'oneVarInMultiVar' = true, en el caso especial de que
+    // estemos pintando varias variable pero solo hay activa una
+    if (!oneVarInMultiVar) {
+      this.svgChart = d3.select(this.$('.chart')[0])
+        .datum(this.data.toJSON())
+        .call(this.chart);
+    } else {
+      this.svgChart = d3.select(this.$('.chart')[0])
+        .datum(this._getUniqueDataEnableToDraw())
+        .call(this.chart);
+    }
+
+    // draw X Axis
+    this._drawXAxis();
+
+    // draw Y Axis
+    this._drawYAxis();
+
+    // draw the tooltip when we are on chart
+    this._drawToolTip();
+
+    // Update chart (redraw)
+    this.chart.update();
+    // Update chart (redraw) when the window size changes
+    nv.utils.windowResize(this.chart.update);
+
+    // Draw the keys list behind the chart
+    this.$('.var_list').html(
+      this._list_variable_template({
+        colors: App.getSensorVariableColorList(),
+        data: this.data.toJSON(),
+        currentAggs: this._internalData.currentAggs,
+        disabledList: this._internalData.disabledList
+      })
+    );
+
+    $('.nv-legendWrap.nvd3-svg').hide();
+
+    return this;
+  },
+
+  /**
+   * Prepare the attribute "data" to the chart
+   * 
+   * @return {Array} - parse data
+   */
+  _prepareDataToChart: function () {
     //Por si el servidor devuelve series con valores a nulos
     _.each(this.collection.where(
       function (c) {
@@ -225,10 +313,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }.bind(this)
     );
 
-    this.data = new Backbone.Collection(
+    var parseData = new Backbone.Collection(
       _.each(this.collection.toJSON(), function (c, index) {
-        if (this.data && this.data.length) {
-          var data = this.data.findWhere({ 'realKey': c.key });
+        if (parseData && parseData.length) {
+          var data = parseData.findWhere({ 'realKey': c.key });
           if (data != undefined) {
             c.realKey = data.get('realKey');
             c.key = data.get('key');
@@ -280,9 +368,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Normalization using domain if available
         var min, max;
-        if (this._multiVariableModel.has('yAxisDomain') && this._multiVariableModel.get('yAxisDomain')[c.realKey] !== undefined) {
-          min = this._multiVariableModel.get('yAxisDomain')[c.realKey][0];
-          max = this._multiVariableModel.get('yAxisDomain')[c.realKey][1];
+        if (this._multiVariableModel.yAxisDomain && 
+          this._multiVariableModel.yAxisDomain[c.realKey] !== undefined) {
+          min = this._multiVariableModel.yAxisDomain[c.realKey][0];
+          max = this._multiVariableModel.yAxisDomain[c.realKey][1];
         } else {
           min = _.min(c.values, function (v) { return v.y; }).y;
           max = _.max(c.values, function (v) { return v.y; }).y;
@@ -301,120 +390,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }.bind(this))
     );
 
-    // Set the keys (values) to 'disabled' to hide in the chart
-    _.each(this._internalData.disabledList, function (value, key) {
-      if (value) {
-        this.data.find({ 'realKey': key }).set('disabled', true);
-        this.collection.find({ 'key': key }).set('disabled', true);
-      }
-    }.bind(this));
-
-    // Set 'normalized' CSS class
-    if (this.data.where({ 'disabled': false }).length > 1) {
-      d3.select(this.$('.chart')[0]).classed('normalized', true);
-    } else {
-      oneVarInMultiVar = true;
-      d3.select(this.$('.chart')[0]).classed('normalized', false);
-    }
-
-    // Draw the chart with NVD3
-    this.chart = nv.models.lineChart()
-      .useInteractiveGuideline(true)
-      .margin({ 'right': 45 })
-      .height(268)
-      .noData(__('No hay datos disponibles'));
-
-    // Without data (CSS)
-    if (this.data.length === 0) {
-      d3.select(this.$('.chart')[0]).classed('without-data', true);
-    }
-
-    // Set margin legend
-    this.chart.legend.margin({ bottom: 40 });
-
-    // 'oneVarInMultiVar' = true, en el caso especial de que
-    // estemos pintando varias variable pero solo hay activa una
-    if (!oneVarInMultiVar) {
-      this.svgChart = d3.select(this.$('.chart')[0])
-        .datum(this.data.toJSON())
-        .call(this.chart);
-    } else {
-      this.svgChart = d3.select(this.$('.chart')[0])
-        .datum(this._getUniqueDataEnableToDraw())
-        .call(this.chart);
-    }
-
-    // Draw the X axis with values (date) with 'hours'
-    // If the difference between dates is minus to two days
-    this.chart
-      .xAxis
-      .showMaxMin(true)
-      .tickFormat(function (d) {
-        var localdate = moment.utc(d).local().toDate();
-
-        // Same day
-        if (moment(App.ctx.get('finish')).isSame(moment(App.ctx.get('start')), 'day')) {
-          return d3.time.format('%H:%M')(localdate);
-        } else if (moment(App.ctx.get('finish')).diff(moment(App.ctx.get('start')), 'days') < 2) {
-          return d3.time.format('%d/%m/%Y %H:%M')(localdate);
-        }
-        // Only date
-        return d3.time.format('%d/%m/%Y')(localdate);
-
-      }.bind(this));
-
-    this._updateYAxis();
-
-    // Set tooltip when we hover the chart (points)
-    this.chart
-      .interactiveLayer
-      .tooltip
-      .contentGenerator(function (data) {
-        // Each value to tooltip
-        _.each(data.series, function (s) {
-          var model = this.data.findWhere({ 'key': s.key });
-
-          s['realKey'] = model.get('realKey');
-          s.value = _.find(model.get('values'), function (v) {
-            return v.x.toString() == data.value.toString();
-          }).realY;
-
-          // Change value in tooltip
-          if (this._multiVariableModel.has('toolTipValueFunction')) {
-            s.value = typeof this._multiVariableModel.get('toolTipValueFunction') === 'function'
-              ? this._multiVariableModel.get('toolTipValueFunction')(s.realKey, s.value)
-              : s.value;
-          }
-        }.bind(this));
-
-        return this._popup_template({
-          data: data,
-          utils: {
-            xAxisFunction: function (d) {
-              return App.formatDateTime(d);
-            }
-          }
-        });
-      }.bind(this));
-
-    // Update chart (redraw)
-    this.chart.update();
-    // Update chart (redraw) when the window size changes
-    nv.utils.windowResize(this.chart.update);
-
-    // Draw the keys list behind the chart
-    this.$('.var_list').html(
-      this._list_variable_template({
-        colors: App.getSensorVariableColorList(),
-        data: this.data.toJSON(),
-        currentAggs: this._internalData.currentAggs,
-        disabledList: this._internalData.disabledList
-      })
-    );
-
-    $('.nv-legendWrap.nvd3-svg').hide();
-
-    return this;
+    return parseData;
   },
 
   /**
@@ -428,16 +404,54 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   },
 
   /**
-   * Update the Y values in the chart
+   * Draw the X values in the chart
    */
-  _updateYAxis: function () {
+  _drawXAxis: function () {
+    if (this.chart && this.data.length) {
+      var dataChart = this.data.toJSON();
+      var startDate = dataChart[0].values[0].x;
+      var finishDate = dataChart[0].values[dataChart[0].values.length -1].x;
+
+      // Draw the X axis with values (date) with 'hours'
+      // If the difference between dates is minus to two days
+      this.chart
+        .xAxis
+        .tickFormat(function (d) {
+          var localdate = moment.utc(d).local().toDate();
+
+          // Same day
+          if (moment(finishDate).isSame(moment(startDate), 'day')) {
+            return d3.time.format('%H:%M')(localdate);
+          } else if (this._multiVariableModel.sizeDiff === 'hours') {
+            return d3.time.format('%d/%m - %H:%M')(localdate);
+          }
+          // Only date
+          return d3.time.format('%d/%m/%Y')(localdate);
+
+        }.bind(this))
+        .tickValues(this.getXTickValues(dataChart));
+    
+      // Recalculate the items in X axis
+      nv.utils.windowResize(function () {
+        this.chart
+          .xAxis
+          .tickValues(this.getXTickValues(dataChart));
+      }.bind(this));
+    }
+  },
+
+  /**
+   * Draw the Y values in the chart
+   */
+  _drawYAxis: function () {
     var col = this.data.where({ 'disabled': false });
 
     // When there is a only key in the chart
     if (col.length === 1) {
+      var realKey = col[0].get('realKey');
       var values = col[0].get('values');
       var metadata = App.Utils.toDeepJSON(
-        App.mv().getVariable(col[0].get('realKey'))
+        App.mv().getVariable(realKey)
       );
       var format = _.some(values, function (currentValue) {
         return currentValue.realY < 1;
@@ -453,13 +467,121 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.chart
         .yAxis
         .showMaxMin(false)
-        .tickFormat(this.options.yAxisFunction
-          ? this.options.yAxisFunction
+        .tickFormat(this._multiVariableModel.yAxisFunction
+          ? this._multiVariableModel.yAxisFunction
           : format
         );
       this.svgChart.selectAll('.nv-focus .nv-y').call(this.chart.yAxis);
     }
-    // this._chart.forceY(this.options.get('yAxisDomain'));
+
+    // Force y axis domain
+    if (this._multiVariableModel.yAxisDomain && 
+    this._multiVariableModel.yAxisDomain[realKey]) {
+      this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
+    }
+  },
+
+  /**
+   * Set tooltip when we hover the chart (points)
+   */
+  _drawToolTip: function () {
+    if (this.chart) {
+      this.chart
+      .interactiveLayer
+      .tooltip
+      .contentGenerator(function (data) {
+        // Each value to tooltip
+        _.each(data.series, function (s) {
+          var model = this.data.findWhere({ 'key': s.key });
+  
+          s['realKey'] = model.get('realKey');
+          s.value = _.find(model.get('values'), function (v) {
+            return v.x.toString() == data.value.toString();
+          }).realY;
+  
+          // Change value in tooltip
+          if (this._multiVariableModel.toolTipValueFunction) {
+            s.value = typeof this._multiVariableModel.toolTipValueFunction === 'function'
+              ? this._multiVariableModel.toolTipValueFunction(s.realKey, s.value)
+              : s.value;
+          }
+        }.bind(this));
+  
+        return this._popup_template({
+          data: data,
+          utils: {
+            xAxisFunction: function (d) {
+              return App.formatDateTime(d);
+            }
+          }
+        });
+      }.bind(this));  
+    }
+  },
+
+  /**
+   * Get the values to use in X Axis (only work with times in X axis)
+   * 
+   * @param {Array} data - data to draw in chart
+   * @return {Array} data to draw in chart
+   */
+  getXTickValues: function (data) {
+    if (data.length && data[0].values.length) {
+      // chart DOM
+      var chart = d3.select(this.$('.chart')[0]);
+      // chart widgh DOM
+      var chartWidth = $(chart[0]).width();
+      // size in pixel to label to put into the X axis
+      var labelWidth = 80;
+      // max tick to draw in X Axis
+      var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
+      // Difference between the data to draw
+      var diff = data[0].values.length / maxXTick;
+      // Puede darse el caso de que haya periodos de tiempo 
+      // entre fechas contiguas donde no existan datos, por lo que
+      // la gráfica no dibuja puntos y la diferencia (diff) antes
+      // obtenida no nos es válida para saber cuantos elementos caben
+      // en el eje de las X
+      if (diff > 1) {
+        var rangeWithoutData = 0;
+
+        if (data[0].values.length > 1) {
+          _.each(data[0].values, function (date, index) {
+            if (index > 0 &&
+              moment(data[0].values[index].x)
+                .diff(data[0].values[index-1].x, this._multiVariableModel.sizeDiff) >= diff) {
+              rangeWithoutData++;
+            }
+          }.bind(this));
+        }
+        diff += rangeWithoutData;
+      }
+
+      return diff < 1
+        ? _.map(data[0].values, function (item) {
+          return item.x;
+        })
+        : _.reduce(data[0].values, function (sumItems, item, index, originItems) {
+          var currentIndex = Number.parseInt(index * diff, 10);
+          if (sumItems.length <= maxXTick) {
+            if (index === 0 || (index + 1) === originItems.length) {
+              // Initial and finish range
+              sumItems.push(originItems[index].x);
+            } else if (originItems[currentIndex]) {
+              // If the difference the days is same the "diff"
+              // between the values (this a solution when there
+              // are range times without data)
+              if (moment(originItems[currentIndex].x)
+                .diff(sumItems[sumItems.length-1], this._multiVariableModel.sizeDiff) >= diff) {
+                sumItems.push(originItems[currentIndex].x);
+              }
+            }
+          }
+          return sumItems;
+        }.bind(this), []);
+    } else {
+      return [];
+    }
   },
 
   /**

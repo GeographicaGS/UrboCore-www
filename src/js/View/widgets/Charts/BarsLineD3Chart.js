@@ -437,12 +437,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
       this._drawElements();
     } else {
-      this._chart.svg.append('text')
-        .attr('transform', 'translate(80,' + this._chart.h/2 + ')')
-        .attr('text-anchor', 'middle')
-        .attr('fill','#fff')
-        .attr('font-size','35px')
-        .text(__('No hay datos'));
+      // Remove every "g" element
+      d3.select(this.$('.chart')[0]).selectAll('g').remove();
+      // Without data (CSS)
+      d3.select(this.$('.chart')[0])
+        .classed('without-data', true)
+        .append('text')
+        .attr('x', '50%')
+        .attr('y', '50%')
+        .style('text-anchor', 'middle')
+        .text(__('No hay datos disponibles'));
     }
   },
 
