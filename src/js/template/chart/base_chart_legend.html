@@ -34,8 +34,11 @@
         var aggInfo = false;
         if(aggregationInfo && aggregationInfo.length) {
           aggInfo = aggregationInfo[index][mKey];
-        }else if(aggregationInfo && aggregationInfo[mKey]) {
+        } else if(aggregationInfo && aggregationInfo[mKey]) {
           aggInfo = aggregationInfo[mKey];
+        } else if(aggregationInfo && aggregationInfo[dato.realKey]) {
+          aggInfo = aggregationInfo[dato.realKey];
+          mKey = dato.realKey;
         }
 
         if(aggInfo){ %>

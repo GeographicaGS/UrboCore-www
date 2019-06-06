@@ -91,8 +91,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       if (!this.collection.options.data) {
         this.collection.options.data = { time: {} }
       }
-      this.collection.options.data.time.start = this._ctx.get('start');
-      this.collection.options.data.time.finish = this._ctx.get('finish');
+      this.collection.options.data.time.start = this._ctx.getDateRange().start;
+      this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
 
       App.Utils.checkBeforeFetching(this);
 
