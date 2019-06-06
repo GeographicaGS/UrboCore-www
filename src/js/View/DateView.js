@@ -219,8 +219,6 @@ App.View.Date = Backbone.View.extend({
           ? lastDateMinusRange
           : moment(this.options.minDate);
 
-      // var lastDate = moment(this.$('.date.finish').datepicker('getDate')).startOf('day');
-      // var firstDate = lastDate.clone().subtract(this.options.maxRange);
       inst.settings.minDate = firstDate.toDate();
       inst.settings.maxDate = lastDate.toDate();
     } else if (input.classList.contains('finish')) {
@@ -234,8 +232,6 @@ App.View.Date = Backbone.View.extend({
           ? firstDateAddRange
           : moment(this.options.maxDate);
 
-      // var firstDate = moment(this.$('.date.start').datepicker('getDate')).startOf('day');
-      // var lastDate = firstDate.clone().add(this.options.maxRange);
       inst.settings.minDate = firstDate.toDate();
       inst.settings.maxDate = lastDate.toDate();
     } else {
@@ -292,6 +288,7 @@ App.View.Date = Backbone.View.extend({
     });
 
     this._addCompact();
+    this._setValuesInDatePickers();
   },
 
   /**
