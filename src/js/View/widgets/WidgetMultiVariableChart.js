@@ -27,7 +27,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   _list_variable_template: _.template($('#widgets-widget_multiVariable_list_variables').html()),
 
   // Size label in X axis
-  _sizeXLabel: 70,
+  _sizeXLabel: 68,
 
   /*
     TODO: Create documentation
@@ -415,6 +415,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var dataChart = this.data.toJSON();
       var startDate = dataChart[0].values[0].x;
       var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
+      var fnRemoveXAxis = _.debounce(this._removeLabelInXAxis.bind(this), 350);
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
@@ -435,17 +436,18 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         }.bind(this))
         .tickValues(this.getXTickValues(dataChart))
 
-      // Recalculate the items in X axis
+      // When the windows is resized
       nv.utils.windowResize(function () {
+        // Recalculate the items in X axis
         this.chart
           .xAxis
           .tickValues(this.getXTickValues(dataChart));
+          // remove labels in X Axis
+          fnRemoveXAxis();
       }.bind(this));
 
       // remove labels in X Axis
-      setTimeout(function () {
-        this._removeLabelInXAxis();
-      }.bind(this), 350);
+      fnRemoveXAxis();
     }
   },
 
@@ -552,7 +554,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return item.x;
         })
         : _.reduce(data[0].values, function (sumItems, item, index, originItems) {
-          var currentIndex = Number.parseInt(index * diff, 10);
+          var currentIndex = Math.round(index * diff);
           if (sumItems.length <= maxXTick) {
             if (index === 0 || (index + 1) === originItems.length) {
               // Initial and finish range
