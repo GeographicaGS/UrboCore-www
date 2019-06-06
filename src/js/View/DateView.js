@@ -288,7 +288,6 @@ App.View.Date = Backbone.View.extend({
     });
 
     this._addCompact();
-    this._setValuesInDatePickers();
   },
 
   /**
