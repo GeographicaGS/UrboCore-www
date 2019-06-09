@@ -163,6 +163,11 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
       if(_this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.key))
         elem.key = __(_this.options.get('legendNameFunc')(elem.key));
 
+      // Fix the changes in models and collections (BaseModel & BaseCollections)
+      if (collection && collection.options && typeof collection.options.data === 'string') {
+        collection.options.data = JSON.parse(collection.options.data);
+      }
+
       // Add date to key
       elem.key += ' ' + App.formatDate(collection.options.data.time.start) + ' - ' + App.formatDate(collection.options.data.time.finish);
 
