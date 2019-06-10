@@ -25,7 +25,7 @@ App.View.Map.LayerTree.View = Backbone.View.extend({
 
   initialize: function(options) {
     this.options= _.defaults(options,{
-      title: __('Filtros'),
+      title: __('Ajustes'),
       compact: false
     });
     if(this.options.collection.first().get('legendData')){
