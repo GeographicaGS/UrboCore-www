@@ -208,11 +208,6 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
     _.each(response, function (r) {
       _.each(Object.keys(r.data), function (k) {
-        // Prepare the date ("time" parameter)
-        var currentTime = r.time.split('T');
-        var currentTimeDay = currentTime[0];
-        var currentTimeHour = currentTime[1].replace('.000Z', '');
-
         if (!aux[k]) {
           aux[k] = [];
         }
@@ -220,7 +215,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
           r.data[k] = 0;
         }
         aux[k].push({
-          x: moment(currentTimeDay + ' ' + currentTimeHour).toDate(), 
+          x: moment(App.Utils.removeUTCFromDate(r.time)).toDate(),
           y: k === 'seconds' 
             ? r.data[k] / 60 
             : r.data[k]
