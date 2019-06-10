@@ -336,7 +336,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
           // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
           // Remove 'SUM' from variables (metadata)
-          if (c.realKey.indexOf('aq_cons.sensor') > -1) {
+          if (c.realKey.indexOf('aq_cons.sensor') > -1 && c.aggs.indexOf('SUM') > -1) {
             c.aggs.splice(c.aggs.indexOf('SUM'), 1);
           }
           // END TODO
