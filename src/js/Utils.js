@@ -448,3 +448,25 @@ App.Utils.setArrayToINSQL = function (data) {
   return currentData;
 }
 
+/**
+ * Transform a date like that --> "2019-05-08T23:00:07.000Z"
+ * in some like that --> "2019-05-08 23:00:07"
+ * 
+ * @param {String} date - string date
+ * @return {String} - string parse date
+ */
+App.Utils.removeUTCFromDate = function (date) {
+  
+  var splitDate = date.split('T');
+
+  if (Array.isArray(splitDate) && splitDate[1]) {
+    var day = splitDate[0];
+    var time = splitDate[1];
+    var splitTime = time.split('.');
+
+    return day + ' ' + splitTime[0] || time;
+  }
+
+  return date;
+}
+

@@ -124,7 +124,7 @@ App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
             aux[d.agg] = [];
           }
           aux[d.agg].push({
-            x: new Date(r.time),
+            x: moment(App.Utils.removeUTCFromDate(r.time)).toDate(),
             y: d.value
           });
         });

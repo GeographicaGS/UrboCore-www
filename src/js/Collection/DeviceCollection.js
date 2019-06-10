@@ -159,7 +159,6 @@ App.Collection.DeviceTimeSerie = Backbone.Collection.extend({
   }
 });
 
-// App.Collection.DeviceTimeSerieChart = App.Collection.DeviceTimeSerie.extend({
 App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
   initialize: function (models, options) {
@@ -180,9 +179,12 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
     var stepOption = options.data && options.data.time
       ? options.data.time.step || this.options.step
       : this.options.step;
+    var currentAggOptions = options.data && Array.isArray(options.data.agg)
+      ? options.data.agg
+      : this.options.agg;
 
     options.data = JSON.stringify({
-      agg: _.map(this.options.agg, function (val) { return val }),
+      agg: _.map(currentAggOptions, function (val) { return val }),
       vars: this.options.vars,
       time: {
         start: App.ctx.getDateRange().start,
@@ -206,11 +208,6 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
     _.each(response, function (r) {
       _.each(Object.keys(r.data), function (k) {
-        // Prepare the date ("time" parameter)
-        var currentTime = r.time.split('T');
-        var currentTimeDay = currentTime[0];
-        var currentTimeHour = currentTime[1].replace('.000Z', '');
-
         if (!aux[k]) {
           aux[k] = [];
         }
@@ -218,7 +215,7 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
           r.data[k] = 0;
         }
         aux[k].push({
-          x: moment(currentTimeDay + ' ' + currentTimeHour).toDate(), 
+          x: moment(App.Utils.removeUTCFromDate(r.time)).toDate(),
           y: k === 'seconds' 
             ? r.data[k] / 60 
             : r.data[k]
@@ -250,22 +247,13 @@ App.Collection.DeviceRaw = App.Collection.Post.extend({
   },
 
   fetch: function (options) {
-    if (typeof options === 'undefined') {
-      var options = {}
-    }
-
     // Default options
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       data: {}
     });
 
     if (typeof options.data === 'string') {
       options.data = JSON.parse(options.data)
-    }
-
-    // Options "format"
-    if (typeof options.data.format === 'undefined' && this.options.format) {
-      options.data.format = this.options.format;
     }
 
     // Options "time"

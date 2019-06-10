@@ -32,6 +32,16 @@ App.Collection.Base = Backbone.Collection.extend({
     }
 
     this.options = options;
+
+    // To change the attribute "data" (string), 
+    // inside the payload, to JSON object
+    this.on('sync', _.bind(function (response) {
+      if (response.options && 
+        response.options.data && 
+        typeof response.options.data === 'string') {
+          this.options.data = JSON.parse(response.options.data);
+      }
+    }, this));
   }
 });
 
