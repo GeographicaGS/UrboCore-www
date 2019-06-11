@@ -60,7 +60,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     if (!this.model.get('embed')) {
       if (this.model.get('timeMode') == 'historic') {
-        this.listenTo(this.ctx, 'change:start change:finish', this.refresh);
+        _.debounce(this.listenTo(this.ctx, 'change:start change:finish', this.refresh), 2000);
       }
       this.listenTo(this.ctx, 'change:bbox', this.refresh);
     }
