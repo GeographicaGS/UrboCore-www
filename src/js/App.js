@@ -616,7 +616,7 @@ $(function() {
     var blank = $(this).attr('target') === '_blank';
 
     if (blank) {
-      $(this).attr('href', `/${App.lang}${href}`);
+      $(this).attr('href', '/' + App.lang + href);
       return;
     }
 
