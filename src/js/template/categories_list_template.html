@@ -15,7 +15,7 @@
       <div class="col-md-12 content">
         <%_.each(categories, function(s){%>
           <% var link = '/' + scope + '/' + s.id + '/dashboard';  %>
-          <a jslink href="<%=link%>">
+          <a jslink href="<%=link%>" target="<%=s.config && s.config.blank ? '_blank' : '_self'%>">
             <div class="box fullicon <%=s.id%>">
               <div class="header">
                 <span><%= __(s.name) %></span>

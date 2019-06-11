@@ -613,6 +613,12 @@ $(function() {
   $('body').on('click', 'a', function (e){
     var attr = $(this).attr('jslink');
     var href = $(this).attr('href');
+    var blank = $(this).attr('target') === '_blank';
+
+    if (blank) {
+      $(this).attr('href', `/${App.lang}${href}`);
+      return;
+    }
 
     //Prevent update url history when clicking a link to the current page
     if (href && href.slice(1)  === Backbone.history.getFragment()) { 
