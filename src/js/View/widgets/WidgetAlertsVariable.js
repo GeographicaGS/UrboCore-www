@@ -42,7 +42,7 @@ App.View.Widgets.AlertsVariable = Backbone.View.extend({
 
   buttonclick: function(e) {
     if(this.options.buttonlink) {
-      window.location.href = this.options.buttonlink;
+      window.open(this.options.buttonlink, '_blank');
     }
   },
 
