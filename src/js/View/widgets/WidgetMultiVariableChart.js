@@ -424,7 +424,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           // Same day
           if (moment(finishDate).isSame(moment(startDate), 'day')) {
             return d3.time.format('%H:%M')(localdate);
-          } else if (this._multiVariableModel.sizeDiff === 'hours') {
+          } else if (this._multiVariableModel.sizeDiff === 'hours' 
+            && moment(finishDate).diff(startDate, 'days') > 1) {
             return d3.time.format('%d/%m - %H:%M')(localdate);
           }
           // Only date
@@ -589,7 +590,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // size label pixels put into the X axis
       var labelWidth = StepRange === 'days'
         ? 70 //dates (59.34)
-        : labelWidth = StepRange === 'hours' && moment(dateFinish).diff(dateStart, 'days') > 1
+        : labelWidth = (StepRange === 'hours' || StepRange === 'minutes')
+          && moment(dateFinish).diff(dateStart, 'days') > 1
           ? 78 // dates + hours (67.17)
           : 40 // hours (29.77)
       // max tick to draw in X Axis
@@ -653,7 +655,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   getMultipleNumbers: function (number) {
     var multiples = [];
-    for( var i = 1; i < number; i++) {
+    for( var i = 1; i <= number; i++) {
       if (number%i === 0) {
         multiples.push(i);
       }
