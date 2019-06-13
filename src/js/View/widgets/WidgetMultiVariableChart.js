@@ -594,6 +594,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           : 40 // hours (29.77)
       // max tick to draw in X Axis
       var maxXTick = (chartRectWidth-labelWidth)  / labelWidth;
+      // get multiples total dateXAxis
+      var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
+
+      // If there are more the 2 values
+      // then we can search for the current multiple
+      if (multiplesTotalXAxis.length > 2) {
+        var newMaxTick = maxXTick;
+        for (var i = 0; i < multiplesTotalXAxis.length; i++) {
+          if (multiplesTotalXAxis[i] <= maxXTick) {
+            newMaxTick = multiplesTotalXAxis[i];
+          }
+        }
+        maxXTick = newMaxTick;
+      }
 
       // Difference between the data to draw
       var diff = datesXAxis.length / maxXTick;
@@ -630,6 +644,22 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       $(axisChart[0][0]).show();
       $(axisChart[0][1]).show();
     }
+  },
+
+  /**
+   * Get the multiples number to a number
+   * @param {Number} number
+   * @return {Array} multiples numbers
+   */
+  getMultipleNumbers: function (number) {
+    var multiples = [];
+    for( var i = 1; i < number; i++) {
+      if (number%i === 0) {
+        multiples.push(i);
+      }
+    }
+
+    return multiples;
   },
 
   /**
