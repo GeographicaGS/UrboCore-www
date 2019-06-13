@@ -26,9 +26,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   _popup_template: _.template($('#chart-base_charttooltip').html()),
   _list_variable_template: _.template($('#widgets-widget_multiVariable_list_variables').html()),
 
-  // Size label in X axis
-  _sizeXLabel: 68,
-
   /*
     TODO: Create documentation
     Params:
@@ -415,7 +412,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var dataChart = this.data.toJSON();
       var startDate = dataChart[0].values[0].x;
       var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
-      var fnRemoveXAxis = _.debounce(this._removeLabelInXAxis.bind(this), 350);
+      var fnhideMaxMinXAxis = _.debounce(_.bind(this.hideMaxMinXAxis, this), 350);
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
@@ -442,12 +439,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         this.chart
           .xAxis
           .tickValues(this.getXTickValues(dataChart));
-          // remove labels in X Axis
-          fnRemoveXAxis();
+        // Remove max and min
+        fnhideMaxMinXAxis();
       }.bind(this));
-
-      // remove labels in X Axis
-      fnRemoveXAxis();
+      // Remove max and min
+      fnhideMaxMinXAxis();
     }
   },
 
@@ -538,29 +534,93 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   getXTickValues: function (data) {
     if (data.length && data[0].values.length) {
+      // date start
+      var dateStart = data[0].values[0].x;
+      // date finish
+      var dateFinish = data[0].values[data[0].values.length-1].x;
+      // date current (is used to the loop)
+      var dateCurrent = moment(dateStart);
+      // dates for X axis
+      var datesXAxis = [dateStart];
+      // current step
+      var currentStep = this.collection.options && this.collection.options.step
+        ? this.collection.options.step
+        : '1d';
+      // Defaults values to the step
+      var Stepvalue = 1;
+      var StepRange = 'days';
+
+      // Which is the difference to add to dateCurrent?
+      switch(currentStep) {
+        case '1d':
+          Stepvalue = 1;
+          StepRange = 'days'
+          break;
+        case '4h':
+          Stepvalue = 4;
+          StepRange = 'hours'
+          break;
+        case '2h':
+          Stepvalue = 2;
+          StepRange = 'hours'
+          break;
+        case '1h':
+          Stepvalue = 1;
+          StepRange = 'hours'
+          break;
+        case '15m':
+          Stepvalue = 15;
+          StepRange = 'minutes'
+          break;
+      }
+
+      // We fill (with dates) the period
+      while(dateCurrent.isBefore(dateFinish)) {
+        dateCurrent = dateCurrent.add(Stepvalue, StepRange);
+        datesXAxis.push(dateCurrent.toDate());
+      }
+
       // chart DOM
-      var chart = d3.select(this.$('.chart')[0]);
+      var chartRect = d3
+        .select(this.$('.chart .nvd3 .nv-focus .nv-background rect')[0]);
       // chart width DOM
-      var chartWidth = $(chart[0]).width();
+      var chartRectWidth = Number
+        .parseInt(chartRect[0][0].getAttribute('width'), 10);
       // size label pixels put into the X axis
-      var labelWidth = this._sizeXLabel;
+      var labelWidth = StepRange === 'days'
+        ? 70 //dates (59.34)
+        : labelWidth = StepRange === 'hours' && moment(dateFinish).diff(dateStart, 'days') > 1
+          ? 78 // dates + hours (67.17)
+          : 40 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Number.parseInt(chartWidth / labelWidth, 10);
+      var maxXTick = (chartRectWidth-labelWidth)  / labelWidth;
+      // get multiples total dateXAxis
+      var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
+
+      // If there are more the 2 values
+      // then we can search for the current multiple
+      if (multiplesTotalXAxis.length > 2) {
+        var newMaxTick = maxXTick;
+        for (var i = 0; i < multiplesTotalXAxis.length; i++) {
+          if (multiplesTotalXAxis[i] <= maxXTick) {
+            newMaxTick = multiplesTotalXAxis[i];
+          }
+        }
+        maxXTick = newMaxTick;
+      }
+
       // Difference between the data to draw
-      var diff = data[0].values.length / maxXTick;
+      var diff = datesXAxis.length / maxXTick;
 
       return diff < 1
-        ? _.map(data[0].values, function (item) {
-          return item.x;
+        ? _.map(datesXAxis, function (item) {
+          return item;
         })
-        : _.reduce(data[0].values, function (sumItems, item, index, originItems) {
+        : _.reduce(datesXAxis, function (sumItems, item, index, originItems) {
           var currentIndex = Math.round(index * diff);
-          if (sumItems.length <= maxXTick) {
-            if (index === 0 || (index + 1) === originItems.length) {
-              // Initial and finish range
-              sumItems.push(originItems[index].x);
-            } else if (originItems[currentIndex]) {
-              sumItems.push(originItems[currentIndex].x);
+          if (sumItems.length < maxXTick) {
+            if (originItems[currentIndex]) {
+              sumItems.push(originItems[currentIndex]);
             }
           }
           return sumItems;
@@ -570,45 +630,36 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     }
   },
 
-  // Remove label in X Axis
-  _removeLabelInXAxis: function () {
-    // Get all X axis points and remove (hide) any label
-    // that is over other label
-    var labels = this.$('.chart .nv-lineChart .nv-focus .nv-x .nv-axis > g:first-child g.tick')
-      .sort(function (a, b) {
-        // Order by transform valur
-        var aTransform = $(a).attr('transform');
-        var bTransform = $(b).attr('transform');
+  /**
+   * Remove max and min value in X axis
+   */
+  hideMaxMinXAxis: function () {
+    var dataChart = this.data.toJSON();
+    var axisChart =  d3.selectAll(this.$('.chart .nvd3 .nv-focus .nv-axisMaxMin-x'));
 
-        aTransform = aTransform.replace('translate(', '');
-        aTransform = aTransform.replace(',0)', '');
-        aTransform = Number.parseFloat(aTransform);
+    if (dataChart.length && dataChart[0].values.length === 1) {
+      $(axisChart[0][0]).hide();
+      $(axisChart[0][1]).hide();
+    } else {
+      $(axisChart[0][0]).show();
+      $(axisChart[0][1]).show();
+    }
+  },
 
-        bTransform = bTransform.replace('translate(', '');
-        bTransform = bTransform.replace(',0)', '');
-        bTransform = Number.parseFloat(bTransform);
-  
-        if (aTransform < bTransform) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
-
-    var offsetXLabel = null;
-    _.each(labels, function (label) {
-      var currentOffsetXLabel = $(label).attr('transform');
-      currentOffsetXLabel = currentOffsetXLabel.replace('translate(', '');
-      currentOffsetXLabel = currentOffsetXLabel.replace(',0)', '');
-      currentOffsetXLabel = Number.parseFloat(currentOffsetXLabel);
-      if (offsetXLabel === null) { // begin loop
-        offsetXLabel = currentOffsetXLabel;
-      } else if (offsetXLabel + this._sizeXLabel > currentOffsetXLabel) { // hide label
-        $(label).hide();
-      } else { // show label
-        offsetXLabel = currentOffsetXLabel;
+  /**
+   * Get the multiples number to a number
+   * @param {Number} number
+   * @return {Array} multiples numbers
+   */
+  getMultipleNumbers: function (number) {
+    var multiples = [];
+    for( var i = 1; i < number; i++) {
+      if (number%i === 0) {
+        multiples.push(i);
       }
-    }.bind(this));
+    }
+
+    return multiples;
   },
 
   /**
