@@ -653,7 +653,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   getMultipleNumbers: function (number) {
     var multiples = [];
-    for( var i = 1; i < number; i++) {
+    for( var i = 1; i <= number; i++) {
       if (number%i === 0) {
         multiples.push(i);
       }
