@@ -547,37 +547,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var currentStep = this.collection.options && this.collection.options.step
         ? this.collection.options.step
         : '1d';
+      // Values to step
+      var matchStep = /(\d+)(\w+)/g.exec(currentStep);
       // Defaults values to the step
-      var Stepvalue = 1;
-      var StepRange = 'days';
-
-      // Which is the difference to add to dateCurrent?
-      switch(currentStep) {
-        case '1d':
-          Stepvalue = 1;
-          StepRange = 'days'
-          break;
-        case '4h':
-          Stepvalue = 4;
-          StepRange = 'hours'
-          break;
-        case '2h':
-          Stepvalue = 2;
-          StepRange = 'hours'
-          break;
-        case '1h':
-          Stepvalue = 1;
-          StepRange = 'hours'
-          break;
-        case '15m':
-          Stepvalue = 15;
-          StepRange = 'minutes'
-          break;
-      }
+      var stepValue = matchStep[1] || 1;
+      var stepRange = matchStep[2] || 'd';
+      var ranges = {
+        d: 'days',
+        h: 'hours',
+        m: 'minutes'
+      };
 
       // We fill (with dates) the period
       while(dateCurrent.isBefore(dateFinish)) {
-        dateCurrent = dateCurrent.add(Stepvalue, StepRange);
+        dateCurrent = dateCurrent.add(stepValue, ranges[stepRange]);
         datesXAxis.push(dateCurrent.toDate());
       }
 
@@ -588,9 +571,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var chartRectWidth = Number
         .parseInt(chartRect[0][0].getAttribute('width'), 10);
       // size label pixels put into the X axis
-      var labelWidth = StepRange === 'days'
+      var labelWidth = ranges[stepRange] === 'days'
         ? 70 //dates (59.34)
-        : labelWidth = (StepRange === 'hours' || StepRange === 'minutes')
+        : labelWidth = (ranges[stepRange] === 'hours' || ranges[stepRange] === 'minutes')
           && moment(dateFinish).diff(dateStart, 'days') >= 1
           ? 78 // dates + hours (67.17)
           : 40 // hours (29.77)
