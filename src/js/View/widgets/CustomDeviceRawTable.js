@@ -54,6 +54,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       scope: this.options.scope,
       entity: this.options.entity,
       device: this.options.device,
+      format:'csv',
       variables: _.pluck(this.getEntityVariables(), 'id')
     });
 
