@@ -146,6 +146,11 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.stopListening();
     this.basemapSelector.close(),
     this.legend.close();
+
+    // Reset BBOX
+    App.ctx.set('bbox', null);
+    App.ctx.set('bbox_info', false);
+    App.ctx.set('bbox_status', false);
   },
 
   addSource: function(idSource, dataSource) {
