@@ -73,6 +73,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.$el.append(this.zoomControl);
     this.filterModel = options.filterModel;
     
+    // Reset BBOX
+    this._resetBBox();
+
     this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);
     this.listenTo(App.ctx, 'change:start change:finish', function() {
       if (options.filterModel) {
@@ -133,6 +136,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
     // Override for bbox changes actions.
   },
 
+  /**
+   * Reset BBox
+   */
+  _resetBBox: function () {
+    // Reset BBOX
+    App.ctx.set('bbox', null);
+    App.ctx.set('bbox_info', false);
+    App.ctx.set('bbox_status', false);
+  },
+
   _onMapLoaded: function() {
     // This event is called after map loaded.
     // Place your layers here.
@@ -148,9 +161,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.legend.close();
 
     // Reset BBOX
-    App.ctx.set('bbox', null);
-    App.ctx.set('bbox_info', false);
-    App.ctx.set('bbox_status', false);
+    this._resetBBox();
   },
 
   addSource: function(idSource, dataSource) {
