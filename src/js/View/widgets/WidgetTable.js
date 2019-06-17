@@ -98,11 +98,17 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   _downloadCsv: function () {
     this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
-    this._tableToCsv.options.format = 'csv';
+    //Just avoiding any breaking change
+    if (this._tableToCsv.options.format === 'csv'){
+      //Make sure format is added inside data object for new table widgets
+      this._tableToCsv.options.data.format = 'csv';
+    } else {
+      //Old table widgets
+      this._tableToCsv.options.format = 'csv';
+    }
 
     this._tableToCsv.options.reset = false;
     this._tableToCsv.options.dataType = 'text'
-
     // this._tableToCsv.fetch({'reset':false,'dataType':'text'})
     this._tableToCsv.fetch(this._tableToCsv.options);
   },
