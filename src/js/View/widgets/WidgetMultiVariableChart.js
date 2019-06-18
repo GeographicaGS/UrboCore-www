@@ -577,10 +577,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? 70 //dates (59.34)
         : labelWidth = (ranges[stepRange] === 'hours' || ranges[stepRange] === 'minutes')
           && moment(dateFinish).diff(dateStart, 'days') >= 1
-          ? 78 // dates + hours (67.17)
-          : 45 // hours (29.77)
+          ? 77 // dates + hours (67.17)
+          : 40 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Math.round((chartRectWidth - labelWidth) / labelWidth);
+      var maxXTick = Math.round((chartRectWidth - (labelWidth/2)) / labelWidth);
       // get multiples total dateXAxis
       var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
 
@@ -603,16 +603,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Difference between the data to draw
       var diff = Math.round(datesXAxis.length / maxXTick);
 
-      return diff < 1
+      // If the difference is so slow, we split the number a position
+      // to show by the half and add the difference of width label
+      if (diff >= 1 && diff < 2) {
+        diff = 2;
+      }
+
+      return diff <= 1
         ? _.map(datesXAxis, function (item) {
           return item;
         })
         : _.reduce(datesXAxis, function (sumItems, item, index, originItems) {
           var currentIndex = Math.round(index * diff);
-          if (sumItems.length < maxXTick) {
-            if (originItems[currentIndex]) {
-              sumItems.push(originItems[currentIndex]);
-            }
+          if (originItems[currentIndex]) {
+            sumItems.push(originItems[currentIndex]);
           }
           return sumItems;
         }.bind(this), []);
