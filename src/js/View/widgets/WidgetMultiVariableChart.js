@@ -578,9 +578,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         : labelWidth = (ranges[stepRange] === 'hours' || ranges[stepRange] === 'minutes')
           && moment(dateFinish).diff(dateStart, 'days') >= 1
           ? 78 // dates + hours (67.17)
-          : 40 // hours (29.77)
+          : 45 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Number.parseInt((chartRectWidth - labelWidth) / labelWidth, 10);
+      var maxXTick = Math.round((chartRectWidth - labelWidth) / labelWidth);
       // get multiples total dateXAxis
       var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
 
