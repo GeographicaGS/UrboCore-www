@@ -580,7 +580,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           ? 78 // dates + hours (67.17)
           : 40 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = (chartRectWidth - labelWidth) / labelWidth;
+      var maxXTick = Number.parseInt((chartRectWidth - labelWidth) / labelWidth, 10);
       // get multiples total dateXAxis
       var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
 
@@ -601,7 +601,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }
 
       // Difference between the data to draw
-      var diff = Number.parseInt(datesXAxis.length / maxXTick, 10);
+      var diff = Math.round(datesXAxis.length / maxXTick);
 
       return diff < 1
         ? _.map(datesXAxis, function (item) {
