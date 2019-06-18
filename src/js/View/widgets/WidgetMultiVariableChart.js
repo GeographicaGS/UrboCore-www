@@ -32,7 +32,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       el: DOM element (Optional)
       collection: Backbone Collection (Mandatory) Collection containing the chart data
       stepModel: Backbone Model (Optional) Model containing the current step
-      multiVariableModel: Backbone Model (Optional) Model containing a set of config 
+      multiVariableModel: Backbone Model (Optional) Model containing a set of config
         parameters such as 'category' (string), 'title' (string) or 'aggDefaultValues' (JS Object)
       noAgg: true|false (Optional, default: false) Disables aggregation controls
   */
@@ -300,7 +300,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
   /**
    * Prepare the attribute "data" to the chart
-   * 
+   *
    * @return {Array} - parse data
    */
   _prepareDataToChart: function () {
@@ -412,19 +412,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var dataChart = this.data.toJSON();
       var startDate = dataChart[0].values[0].x;
       var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
-      var fnhideMaxMinXAxis = _.debounce(_.bind(this.hideMaxMinXAxis, this), 350);
+      var fnHideMaxMinXAxis = _.debounce(_.bind(this.hideMaxMinXAxis, this), 350);
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
       this.chart
         .xAxis
+        .showMaxMin(false)
         .tickFormat(function (d) {
           var localdate = moment.utc(d).local().toDate();
 
           // Same day
           if (moment(finishDate).isSame(moment(startDate), 'day')) {
             return d3.time.format('%H:%M')(localdate);
-          } else if (this._multiVariableModel.sizeDiff === 'hours' 
+          } else if (this._multiVariableModel.sizeDiff === 'hours'
             && moment(finishDate).diff(startDate, 'days') >= 1) {
             return d3.time.format('%d/%m - %H:%M')(localdate);
           }
@@ -439,12 +440,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         // Recalculate the items in X axis
         this.chart
           .xAxis
+          .showMaxMin(false)
           .tickValues(this.getXTickValues(dataChart));
         // Remove max and min
-        fnhideMaxMinXAxis();
+        fnHideMaxMinXAxis();
       }.bind(this));
       // Remove max and min
-      fnhideMaxMinXAxis();
+      fnHideMaxMinXAxis();
     }
   },
 
@@ -529,7 +531,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
   /**
    * Get the values to use in X Axis (only work with times in X axis)
-   * 
+   *
    * @param {Array} data - data to draw in chart
    * @return {Array} data to draw in chart
    */
@@ -538,7 +540,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // date start
       var dateStart = data[0].values[0].x;
       // date finish
-      var dateFinish = data[0].values[data[0].values.length-1].x;
+      var dateFinish = data[0].values[data[0].values.length - 1].x;
       // date current (is used to the loop)
       var dateCurrent = moment(dateStart);
       // dates for X axis
@@ -559,7 +561,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       };
 
       // We fill (with dates) the period
-      while(dateCurrent.isBefore(dateFinish)) {
+      while (dateCurrent.isBefore(dateFinish)) {
         dateCurrent = dateCurrent.add(stepValue, ranges[stepRange]);
         datesXAxis.push(dateCurrent.toDate());
       }
@@ -578,7 +580,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           ? 78 // dates + hours (67.17)
           : 40 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = (chartRectWidth-labelWidth)  / labelWidth;
+      var maxXTick = (chartRectWidth - labelWidth) / labelWidth;
       // get multiples total dateXAxis
       var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
 
@@ -591,11 +593,15 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             newMaxTick = multiplesTotalXAxis[i];
           }
         }
-        maxXTick = newMaxTick;
+        // Only change the maXTick value is newMaxTick
+        // is almost the half maXTick
+        if (newMaxTick >= maxXTick / 2) {
+          maxXTick = newMaxTick;
+        }
       }
 
       // Difference between the data to draw
-      var diff = datesXAxis.length / maxXTick;
+      var diff = Number.parseInt(datesXAxis.length / maxXTick, 10);
 
       return diff < 1
         ? _.map(datesXAxis, function (item) {
@@ -619,16 +625,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    * Remove max and min value in X axis
    */
   hideMaxMinXAxis: function () {
-    var dataChart = this.data.toJSON();
-    var axisChart =  d3.selectAll(this.$('.chart .nvd3 .nv-focus .nv-axisMaxMin-x'));
+    var axisChart =
+      d3.selectAll(this.$('.chart .nvd3 .nv-focus .nv-axisMaxMin-x'));
 
-    if (dataChart.length && dataChart[0].values.length === 1) {
-      $(axisChart[0][0]).hide();
-      $(axisChart[0][1]).hide();
-    } else {
-      $(axisChart[0][0]).show();
-      $(axisChart[0][1]).show();
-    }
+    $(axisChart[0][0]).hide();
+    $(axisChart[0][1]).hide();
   },
 
   /**
@@ -638,8 +639,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   getMultipleNumbers: function (number) {
     var multiples = [];
-    for( var i = 1; i <= number; i++) {
-      if (number%i === 0) {
+    for (var i = 1; i <= number; i++) {
+      if (number % i === 0) {
         multiples.push(i);
       }
     }
