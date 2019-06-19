@@ -244,8 +244,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // Set the keys (values) to 'disabled' to hide in the chart
     _.each(this._internalData.disabledList, function (value, key) {
       if (value) {
-        this.data.find({ 'realKey': key }).set('disabled', true);
-        this.collection.find({ 'key': key }).set('disabled', true);
+        this.data.find({ 'realKey': key })
+          .set('disabled', true);
+        this.collection.find({ 'key': key })
+          .set('disabled', true);
       }
     }.bind(this));
 
@@ -359,10 +361,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           var internalData = this._internalData;
           var meta = App.mv().getVariable(c.realKey);
 
-          if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
-            internalData.disabledList[c.realKey] = !meta.get('config').default
-          } else {
-            internalData.disabledList[c.realKey] = false;
+          // To save the current status in the chart
+          if (typeof internalData.disabledList[c.realKey] === 'undefined') {
+            if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
+              internalData.disabledList[c.realKey] = !meta.get('config').default
+            } else {
+              internalData.disabledList[c.realKey] = false;
+            }
           }
 
           if (!this.options.noAgg) {
