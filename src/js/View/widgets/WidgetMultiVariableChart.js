@@ -603,13 +603,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Difference between the data to draw
       var diff = Math.round(datesXAxis.length / maxXTick);
 
-      // If the difference is so slow, we split the number a position
-      // to show by the half and add the difference of width label
+      // If the difference is between 1 and 2,
+      // we split the number (diff) to half
       if (diff >= 1 && diff < 2) {
         diff = 2;
       }
 
-      return diff <= 1
+      return diff < 1
         ? _.map(datesXAxis, function (item) {
           return item;
         })
