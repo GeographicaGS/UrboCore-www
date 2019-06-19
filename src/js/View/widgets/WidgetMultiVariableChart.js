@@ -173,16 +173,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var tags = this.$('.btnLegend').size();
     var realKey = $(event.target).closest('div').attr('id');
     var disabledList = this._internalData.disabledList;
+    var variable = $(event.target).data('key');
 
-    if (((disabledList[realKey] == undefined || disabledList[realKey] === false) &&
-      this._internalData.elementsDisabled != tags - 1) || disabledList[realKey] === true) {
+    if (((typeof disabledList[realKey] === 'undefined' || disabledList[realKey] === false) &&
+      this._internalData.elementsDisabled !== tags - 1) || disabledList[realKey] === true) {
       $($($('.chart .nv-series')).get($(event.target).parent().attr('tag'))).click();
       $(event.target).parent().toggleClass('inactive');
 
       disabledList[realKey] = !disabledList[realKey];
       var $aggMenu = $(event.target).closest('div').find('a');
 
-      if ($aggMenu.css('visibility') == 'hidden') {
+      if ($aggMenu.css('visibility') === 'hidden') {
         $aggMenu.css('visibility', 'visible');
       } else {
         $aggMenu.css('visibility', 'hidden');
@@ -192,24 +193,33 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? this._internalData.elementsDisabled + 1
         : this._internalData.elementsDisabled - 1;
 
-      var variable = $(event.target).text();
+      // Change attribute "disabled"
+      var dataVariable = this.data.findWhere({ key: variable });
+      var collectionVariable = this.collection.findWhere({ key: realKey });
 
-      var model = this.data.findWhere({ key: variable });
-      if (model != undefined) {
-        model.set('disabled', !model.get('disabled'));
+      if (typeof dataVariable !== 'undefined') {
+        dataVariable.set('disabled', !dataVariable.get('disabled'));
       }
-      var model = this.collection.findWhere({ key: realKey });
-      if (model != undefined) {
-        model.set('disabled', !model.get('disabled'));
+
+      if (typeof collectionVariable !== 'undefined') {
+        collectionVariable.set('disabled', !collectionVariable.get('disabled'));
       }
-      if (this.data.where({ 'disabled': false }).length == 1) {
-        var json = this._getUniqueDataEnableToDraw();
-        this.svgChart.datum(json).call(this.chart);
-        this.svgChart.classed('normalized', false);
+
+      // Only draw the YAxis when there are only
+      // one variable in the chart
+      if (this.data.where({ 'disabled': false }).length === 1) {
+        this.svgChart
+          .datum(_.bind(this._getUniqueDataEnableToDraw, this))
+          .call(this.chart);
+        this.svgChart
+          .classed('normalized', false);
         this._drawYAxis();
       } else {
-        this.svgChart.datum(this.data.toJSON()).call(this.chart)
-        this.svgChart.classed('normalized', true)
+        this.svgChart
+          .datum(this.data.toJSON())
+          .call(this.chart)
+        this.svgChart
+          .classed('normalized', true)
       }
     }
   },
