@@ -20,12 +20,14 @@
         <!-- Variable units -->
         <span class="units">
           <% if (typeof currentData.badge !== 'undefined' && currentData.badge !== false) { %>
-          <!-- Variable badge -->
-          <span class="badge <%= currentData.badge && currentData.badge.value > 0 ? 'badge-good' : 'badge-bad' %>">
-            <span class="value with-arrow">
-              <%= App.nbf(Math.abs(currentData.badge.value)) %>
+          <span>
+            <!-- Variable badge -->
+            <span class="badge <%= currentData.badge && currentData.badge.value > 0 ? 'badge-good' : 'badge-bad' %>">
+              <span class="value with-arrow">
+                <%= App.nbf(Math.abs(currentData.badge.value)) %>
+              </span>
+              <span class="symbol"><%= currentData.badge.symbol || '' %></span>
             </span>
-            <span class="symbol"><%= currentData.badge.symbol || '' %></span>
           </span>
           <% } %>
           <!-- Variable units (symbol) -->
