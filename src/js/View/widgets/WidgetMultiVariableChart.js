@@ -50,16 +50,22 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this._multiVariableModel.aggDefaultValues
       : [];
 
+    // Use to block all requests until the last request
+    // will be result
+    this._lockRequest = false;
+
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
-      this.listenTo(this._stepModel, 'change:step', function () {
-        var regex = /\dd/;
-        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
-          ? 'days'
-          : 'hours';
-        this.collection.fetch({ 'reset': true });
-        this.render();
-      });
+      this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
+        if(!this._lockRequest) {
+          var regex = /\dd/;
+          this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
+            ? 'days'
+            : 'hours';
+          this.collection.fetch({ 'reset': true });
+          this.render();
+        }
+      }.bind(this), 250, true));
     }
 
     this.collection.options.agg = this._aggDefaultValues
@@ -76,28 +82,39 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
 
     this._ctx = App.ctx;
-    this.listenTo(this._ctx, 'change:start change:finish change:bbox', function () {
+    this.listenTo(this._ctx, 'change:start change:finish change:bbox',
+      _.debounce(function () {
 
-      // Fix the changes in models and collections (BaseModel & BaseCollections)
-      if (this.collection
-        && this.collection.options
-        && typeof this.collection.options.data === 'string') {
-        this.collection.options.data = JSON.parse(this.collection.options.data);
-      }
+        // Block the rest of requests
+        this._lockRequest = true;
 
-      if (!this.collection.options.data) {
-        this.collection.options.data = { time: {} }
-      }
-      this.collection.options.data.time.start = this._ctx.getDateRange().start;
-      this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
+        // Fix the changes in models and collections (BaseModel & BaseCollections)
+        if (this.collection
+          && this.collection.options
+          && typeof this.collection.options.data === 'string') {
+          this.collection.options.data = JSON.parse(this.collection.options.data);
+        }
 
-      App.Utils.checkBeforeFetching(this);
+        if (!this.collection.options.data) {
+          this.collection.options.data = { time: {} }
+        }
+        this.collection.options.data.time.start = this._ctx.getDateRange().start;
+        this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
 
-      // Launch request
-      this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
-      // Render
-      this.render();
-    });
+        App.Utils.checkBeforeFetching(this);
+
+        // Launch request
+        this.collection.fetch({
+          reset: true,
+          data: this.collection.options.data || {},
+          success: function () {
+            this._lockRequest = false; // UnBlock the rest of requests
+          }.bind(this)
+        })
+        // Render
+        this.render();
+
+      }, 250, true));
 
     this.render();
   },
@@ -577,10 +594,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? 70 //dates (59.34)
         : labelWidth = (ranges[stepRange] === 'hours' || ranges[stepRange] === 'minutes')
           && moment(dateFinish).diff(dateStart, 'days') >= 1
-          ? 78 // dates + hours (67.17)
+          ? 77 // dates + hours (67.17)
           : 40 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Number.parseInt((chartRectWidth - labelWidth) / labelWidth, 10);
+      var maxXTick = Math.round((chartRectWidth - (labelWidth/2)) / labelWidth);
       // get multiples total dateXAxis
       var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
 
@@ -603,16 +620,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Difference between the data to draw
       var diff = Math.round(datesXAxis.length / maxXTick);
 
+      // If the difference is between 1 and 2,
+      // we split the number (diff) to half
+      if (diff >= 1 && diff < 2) {
+        diff = 2;
+      }
+
       return diff < 1
         ? _.map(datesXAxis, function (item) {
           return item;
         })
         : _.reduce(datesXAxis, function (sumItems, item, index, originItems) {
           var currentIndex = Math.round(index * diff);
-          if (sumItems.length < maxXTick) {
-            if (originItems[currentIndex]) {
-              sumItems.push(originItems[currentIndex]);
-            }
+          if (originItems[currentIndex]) {
+            sumItems.push(originItems[currentIndex]);
           }
           return sumItems;
         }.bind(this), []);
