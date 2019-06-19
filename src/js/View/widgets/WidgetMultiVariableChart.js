@@ -50,16 +50,22 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this._multiVariableModel.aggDefaultValues
       : [];
 
+    // Use to block all requests until the last request
+    // will be result
+    this._lockRequest = false;
+
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
       this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
-        var regex = /\dd/;
-        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
-          ? 'days'
-          : 'hours';
-        this.collection.fetch({ 'reset': true });
-        this.render();
-      }, 250, true));
+        if(!this._lockRequest) {
+          var regex = /\dd/;
+          this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
+            ? 'days'
+            : 'hours';
+          this.collection.fetch({ 'reset': true });
+          this.render();
+        }
+      }.bind(this), 250, true));
     }
 
     this.collection.options.agg = this._aggDefaultValues
@@ -79,6 +85,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.listenTo(this._ctx, 'change:start change:finish change:bbox',
       _.debounce(function () {
 
+        // Block the rest of requests
+        this._lockRequest = true;
+
         // Fix the changes in models and collections (BaseModel & BaseCollections)
         if (this.collection
           && this.collection.options
@@ -95,7 +104,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         App.Utils.checkBeforeFetching(this);
 
         // Launch request
-        this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
+        this.collection.fetch({
+          reset: true,
+          data: this.collection.options.data || {},
+          success: function () {
+            this._lockRequest = false; // UnBlock the rest of requests
+          }.bind(this)
+        })
         // Render
         this.render();
 
