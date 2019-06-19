@@ -52,14 +52,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
-      this.listenTo(this._stepModel, 'change:step', function () {
+      this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
         var regex = /\dd/;
         this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
           ? 'days'
           : 'hours';
         this.collection.fetch({ 'reset': true });
         this.render();
-      });
+      }, 250, true));
     }
 
     this.collection.options.agg = this._aggDefaultValues
@@ -76,28 +76,30 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
 
     this._ctx = App.ctx;
-    this.listenTo(this._ctx, 'change:start change:finish change:bbox', function () {
+    this.listenTo(this._ctx, 'change:start change:finish change:bbox',
+      _.debounce(function () {
 
-      // Fix the changes in models and collections (BaseModel & BaseCollections)
-      if (this.collection
-        && this.collection.options
-        && typeof this.collection.options.data === 'string') {
-        this.collection.options.data = JSON.parse(this.collection.options.data);
-      }
+        // Fix the changes in models and collections (BaseModel & BaseCollections)
+        if (this.collection
+          && this.collection.options
+          && typeof this.collection.options.data === 'string') {
+          this.collection.options.data = JSON.parse(this.collection.options.data);
+        }
 
-      if (!this.collection.options.data) {
-        this.collection.options.data = { time: {} }
-      }
-      this.collection.options.data.time.start = this._ctx.getDateRange().start;
-      this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
+        if (!this.collection.options.data) {
+          this.collection.options.data = { time: {} }
+        }
+        this.collection.options.data.time.start = this._ctx.getDateRange().start;
+        this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
 
-      App.Utils.checkBeforeFetching(this);
+        App.Utils.checkBeforeFetching(this);
 
-      // Launch request
-      this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
-      // Render
-      this.render();
-    });
+        // Launch request
+        this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
+        // Render
+        this.render();
+
+      }, 250, true));
 
     this.render();
   },
