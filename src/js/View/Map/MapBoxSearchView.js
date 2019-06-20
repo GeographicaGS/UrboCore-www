@@ -47,7 +47,7 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
 
   _selectTerm: function (e) {
     this.$('#search_map').addClass('searching');
-    this.$('input[type=text]').val($(e.currentTarget).text());
+    this.$('input[type=text]').val('');
     this.$('ul').removeClass('active');
     var elem = this._collection.findWhere({ 'element_id': $(e.currentTarget).attr('element_id') });
     var bbox = elem.get('bbox');
