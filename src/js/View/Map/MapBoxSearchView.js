@@ -62,6 +62,26 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
     this._map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { maxZoom: maxZoom });
   },
 
+  _updateTerm: _.debounce(function (e) {
+    this._collection.options.term = $(e.currentTarget).val();
+    this._collection.fetch({ 
+      'reset': true,
+      data: this.getCurrentFilterParams($(e.currentTarget).val()) || {}});
+    if (this._collection.options.term.length > 0) {
+      this.$('#search_map').addClass('searching');
+      this.$('.loading').remove();
+      this.$('#search_map').append(App.circleLoading());
+    } else {
+      this.$('img').trigger('click');
+    }
+  }, 500),
+
+  // This function is meant to be overrided on each vertical since
+  // filtering requires special data treatment
+  getCurrentFilterParams(){
+    return null
+  },
+
   _clearSearch: function () {
     this.$('ul').removeClass('active');
     this.$('.loading').remove();
@@ -69,6 +89,6 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
     this.$('#search_map').removeClass('searching');
 
     this._marker.remove()
-  }
+  },
 
 });
