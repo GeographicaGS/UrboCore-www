@@ -54,7 +54,6 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       scope: this.options.scope,
       entity: this.options.entity,
       device: this.options.device,
-      format:'csv',
       variables: _.pluck(this.getEntityVariables(), 'id')
     });
 
@@ -87,8 +86,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
     _.map(this.options.variables, function (variable) {
       //Set Title
-      if(typeof variable.title === 'undefined'){
-        var targetVariable = _.find( variablesWithMetadata, function( varWithMeta ){
+      if (typeof variable.title === 'undefined') {
+        var targetVariable = _.find(variablesWithMetadata, function (varWithMeta) {
           return varWithMeta.id === variable.id
         });
         variable['title'] = targetVariable
