@@ -379,6 +379,24 @@ App.Utils.toCamelCase = function(string) {
     });
 }
 
+  /**
+   * Get the multiples number to a number
+   * @param {Number} number
+   * @return {Array} multiples numbers
+   */
+  App.Utils.getMultipleNumbers = function (number) {
+    if (typeof number === 'undefined' || Number.isNaN(number)) return [];
+
+    var multiples = [];
+    for (var i = 1; i <= number; i++) {
+      if (number % i === 0) {
+        multiples.push(i);
+      }
+    }
+
+    return multiples;
+  },
+
 /**
  * Generate the "script" tag from different files to load them dynamically
  *

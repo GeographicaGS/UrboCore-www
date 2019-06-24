@@ -41,6 +41,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.collection = options.collection;
     this._multiVariableModel = _.defaults(options.multiVariableModel.toJSON() || {}, {
       sizeDiff: 'days',
+      normalized: true,
       aggDefaultValues: []
     });
     this.options = {
@@ -423,13 +424,19 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           v.y = parseFloat(v.y);
         })
         c.values = _.map(c.values, function (v) {
+          // Normalization the charts
+          var valueY = this._multiVariableModel.normalized
+            ? (max - min) > 0
+              ? (v.y - min) / (max - min)
+              : 0
+            : v.y;
+
           return {
             x: v.x,
-            y: (max - min) > 0
-              ? (v.y - min) / (max - min)
-              : 0, 'realY': v.y
+            y: valueY, 
+            realY: v.y
           }
-        });
+        }.bind(this));
       }.bind(this))
     );
 
@@ -624,7 +631,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // max tick to draw in X Axis
       var maxXTick = Math.round((chartRectWidth - (labelWidth/2)) / labelWidth);
       // get multiples total dateXAxis
-      var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
+      var multiplesTotalXAxis = App.Utils.getMultipleNumbers(datesXAxis.length);
 
       // If there are more the 2 values
       // then we can search for the current multiple
@@ -676,22 +683,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     $(axisChart[0][0]).hide();
     $(axisChart[0][1]).hide();
-  },
-
-  /**
-   * Get the multiples number to a number
-   * @param {Number} number
-   * @return {Array} multiples numbers
-   */
-  getMultipleNumbers: function (number) {
-    var multiples = [];
-    for (var i = 1; i <= number; i++) {
-      if (number % i === 0) {
-        multiples.push(i);
-      }
-    }
-
-    return multiples;
   },
 
   /**
