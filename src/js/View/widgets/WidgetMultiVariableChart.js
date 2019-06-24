@@ -62,7 +62,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
             ? 'days'
             : 'hours';
-          this.collection.fetch({ 'reset': true });
+          this.collection.fetch({
+            reset: true,
+            success: function () {
+              this._lockRequest = false; // UnBlock the rest of requests
+            }.bind(this)
+          });
           this.render();
         }
       }.bind(this), 250, true));
@@ -101,7 +106,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         this.collection.options.data.time.start = this._ctx.getDateRange().start;
         this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
 
+        // Set update step
         App.Utils.checkBeforeFetching(this);
+        var regex = /\dd/;
+        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
+          ? 'days'
+          : 'hours';
 
         // Launch request
         this.collection.fetch({
