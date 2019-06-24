@@ -97,8 +97,7 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   _downloadCsv: function () {
-    this._tableToCsv.options = 
-      _.extend(this.collection.options, this._tableToCsv.options);
+    this._tableToCsv.options = _.extend({}, this.collection.options, this._tableToCsv.options);
 
     if (!this._tableToCsv.options.data) {
       this._tableToCsv.options.data = {};
@@ -107,8 +106,10 @@ App.View.Widgets.Table = Backbone.View.extend({
     }
     
     // Put into the "data" the neccesary attributes
-    this._tableToCsv.options.data.format = this._tableToCsv.options.format;
-    this._tableToCsv.options.data.data_tz = this._tableToCsv.options.data_tz;
+    this._tableToCsv.options.data = _.extend({}, this._tableToCsv.options.data, {
+      format: this._tableToCsv.options.format,
+      data_tz: this._tableToCsv.options.data_tz
+    })
 
     this._tableToCsv.fetch(this._tableToCsv.options);
   },
