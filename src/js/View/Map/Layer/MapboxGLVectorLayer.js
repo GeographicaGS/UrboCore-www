@@ -29,7 +29,7 @@ App.View.Map.Layer.MapboxGLVectorLayer = App.View.Map.Layer.MapboxGLLayer.extend
   dataSource: null,
   layers: [],
 
-  initialize: function(model, body, legend, map) {
+  initialize: function (model, body, legend, map) {
     this._map = map;
     this._model = model;
     this.legendConfig = legend;
@@ -46,52 +46,67 @@ App.View.Map.Layer.MapboxGLVectorLayer = App.View.Map.Layer.MapboxGLLayer.extend
     this.addToLegend();
   },
 
-  addToLegend: function() {
+  addToLegend: function () {
     if (this.legendConfig) {
       this._map.addToLegend(this.legendConfig);
     }
   },
 
-  on: function(event, ids, callback) {
-    if(this._mapEvents[event] === undefined) {
+  on: function (event, ids, callback) {
+    if (this._mapEvents[event] === undefined) {
       this._mapEvents[event] = {};
     }
-    if(ids.constructor === Array) {
+    if (ids.constructor === Array) {
       ids.forEach(id => {
-        this._map._map.on(event,id,callback);
+        this._map._map.on(event, id, callback);
         this._mapEvents[event][id] = callback;
       });
-    }else {
-      this._map._map.on(event,ids,callback);
-      this._mapEvents[event][ids] = callback;      
+    } else {
+      this._map._map.on(event, ids, callback);
+      this._mapEvents[event][ids] = callback;
     }
     return this;
   },
 
-  offAll: function() {
-    _.each(this._mapEvents, function(childs,event) {
-      _.each(childs, function(callback, name) {
-        this._map._map.off(event,name,callback);
+  offAll: function () {
+    _.each(this._mapEvents, function (childs, event) {
+      _.each(childs, function (callback, name) {
+        this._map._map.off(event, name, callback);
       }.bind(this))
     }.bind(this))
   },
 
-  onClose: function() {
+  onClose: function () {
     this.offAll();
   },
 
-  _success: function(change) {
-    this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
-    this._map.getSource(this._idSource).setData(this.dataSource);
-    this._map._sources.find(function(src) {
-      return src.id === this._idSource;
-    }.bind(this)).data = {'type': 'geojson', 'data': this.dataSource};
+  _success: function (change) {
+    this.dataSource = (change.changed.type) 
+      ? change.changed 
+      : { 
+          type: 'FeatureCollection', 
+          features: [] 
+        },
+
+    // Change the data in layer
+    this._map.getSource(this._idSource)
+      .setData(this.dataSource);
+    this._map._sources
+      .find(function (src) {
+        return src.id === this._idSource;
+      }.bind(this))
+      .data = { 
+        type: 'geojson',
+        data: this.dataSource 
+      };
+
+    // The event is launched
+    this.trigger('update', { id: this._idSource } );
+
     return change;
   },
 
-  _error: function() {
+  _error: function () {
     console.error("Error");
   }
-
-  
 });
