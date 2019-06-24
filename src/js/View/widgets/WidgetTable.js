@@ -46,7 +46,7 @@ App.View.Widgets.Table = Backbone.View.extend({
       this._template = options['template'];
     }
 
-    this._tableToCsv = new App.Collection.TableToCsv()
+    this._tableToCsv = new App.Collection.TableToCsv();
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
     
@@ -97,19 +97,19 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   _downloadCsv: function () {
-    this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
-    //Just avoiding any breaking change
-    if (this._tableToCsv.options.format === 'csv'){
-      //Make sure format is added inside data object for new table widgets
-      this._tableToCsv.options.data.format = 'csv';
-    } else {
-      //Old table widgets
-      this._tableToCsv.options.format = 'csv';
-    }
+    this._tableToCsv.options = 
+      _.extend(this.collection.options, this._tableToCsv.options);
 
-    this._tableToCsv.options.reset = false;
-    this._tableToCsv.options.dataType = 'text'
-    // this._tableToCsv.fetch({'reset':false,'dataType':'text'})
+    if (!this._tableToCsv.options.data) {
+      this._tableToCsv.options.data = {};
+    } else if (typeof this._tableToCsv.options.data === 'string') {
+      this._tableToCsv.options.data = JSON.parse(this._tableToCsv.options.data);
+    }
+    
+    // Put into the "data" the neccesary attributes
+    this._tableToCsv.options.data.format = this._tableToCsv.options.format;
+    this._tableToCsv.options.data.data_tz = this._tableToCsv.options.data_tz;
+
     this._tableToCsv.fetch(this._tableToCsv.options);
   },
 
