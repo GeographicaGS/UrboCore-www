@@ -40,3 +40,11 @@ App.Collection.SearchMap = Backbone.Collection.extend({
   }
 
 });
+
+App.Collection.SearchMapExtended = App.Collection.Post.extend({
+  url: function () {
+    return App.config.api_url
+      + '/' + this.options.scope
+      +'/entities/search/extended';
+  }
+})
