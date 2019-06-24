@@ -43,6 +43,13 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
 
     this.listenTo(this._collection, "reset", this._collectionReset);
 
+    this.listenTo(this.options.filterModel, 'change:currentStatus', function(){
+      this._marker.remove()
+      if (this.$('input').val().length > 0){
+        this._updateTerm()
+      }
+    })
+
   },
 
   _selectTerm: function (e) {
@@ -63,10 +70,13 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
   },
 
   _updateTerm: _.debounce(function (e) {
-    this._collection.options.term = $(e.currentTarget).val();
+    var term = e 
+    ? $(e.currentTarget).val()
+    : this.$('input').val();
+    this._collection.options.term = term
     this._collection.fetch({ 
       'reset': true,
-      data: this.getCurrentFilterParams($(e.currentTarget).val()) || {}});
+      data: this.getCurrentFilterParams(term) || {}});
     if (this._collection.options.term.length > 0) {
       this.$('#search_map').addClass('searching');
       this.$('.loading').remove();
