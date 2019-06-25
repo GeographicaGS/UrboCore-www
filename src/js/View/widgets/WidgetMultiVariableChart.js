@@ -110,8 +110,15 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Set update step
         App.Utils.checkBeforeFetching(this);
+        var currentStep = this._stepModel && this._stepModel.has('step')
+          ? this._stepModel.get('step')
+          : this.collection.options && 
+            this.collection.options.data && 
+            this.collection.options.data.step
+            ? this.collection.options.data.step
+            : this.collection.options.step || '1d';
         var regex = /\dd/;
-        this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
+        this._multiVariableModel.sizeDiff = regex.test(currentStep)
           ? 'days'
           : 'hours';
 
@@ -535,11 +542,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         );
     } else {
       // Show the default Y axis label
-      if (this._multiVariableModel.yAxisLabelDefault) {
-        this.chart
-          .yAxis
-          .axisLabel(this._multiVariableModel.yAxisLabelDefault);
-      }
+      this.chart
+        .yAxis
+        .axisLabel(this._multiVariableModel.yAxisLabelDefault || '');
+      
+      // Clean the point (values) in Y Axis
+      this.chart
+        .yAxis
+        .showMaxMin(false)
+        .tickFormat(function () {
+          return ''
+        });
     }
 
     // The changes will be applied to the Y Axis
