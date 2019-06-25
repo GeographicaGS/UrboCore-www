@@ -1,43 +1,49 @@
 <div class="widget chartContent widget_multiVariable_chart">
 
-	<div class="date_tooltip">
-		<button></button>
-		<div class="date">
-			<span><%=App.formatDate(App.ctx.get('start'))%></span>
-			<span><%=App.formatDate(App.ctx.get('finish'))%></span>
-		</div>
-	</div>
+  <div class="date_tooltip">
+    <button></button>
+    <div class="date">
+      <span><%=App.formatDate(App.ctx.get('start'))%></span>
+      <span><%=App.formatDate(App.ctx.get('finish'))%></span>
+    </div>
+  </div>
 
-	<%if(m){%>
-		<div class="widget_header">
-			<h3><%=m.category ? m.category:''%></h3>
-			<span><%=m.title ? m.title:''%></span>
-		</div>
-	<%}%>
-	<div class="selectors">
-		<%if(s && s.step){%>
-			<%= __('Periodo') %><a class="popup_widget step" href="#"><%=App.stepToStr(s.step)%>
-				<div class="varsel">
-						<ul>
-							<li data-step="15m" class="<%='15' == s.step ? 'selected':''%>
-									<%=!_.contains(stepsAvailable, '15m') ? 'disabled' : ''%>"><%=App.stepToStr('15m')%></li>
-							<li data-step="1h" class="<%='1h' == s.step ? 'selected':''%>
-								<%=!_.contains(stepsAvailable, '1h') ? 'disabled' : ''%>">
-								<%=App.stepToStr('1h')%></li>
-							<li data-step="2h" class="<%='2h' == s.step ? 'selected':''%>
-								<%=!_.contains(stepsAvailable, '2h') ? 'disabled' : ''%>">
-								<%=App.stepToStr('2h')%></li>
-							<li data-step="4h" class="<%='4h' == s.step ? 'selected':''%>
-								<%=!_.contains(stepsAvailable, '4h') ? 'disabled' : ''%>">
-								<%=App.stepToStr('4h')%></li>
-							<li data-step="1d" class="<%='1d' == s.step ? 'selected':''%>">
-								<%=App.stepToStr('1d')%></li>
-						</ul>
-				</div>
-			</a>
-		<%}%>
-	</div>
+  <%if(m){%>
+    <div class="widget_header">
+      <h3><%=m.category ? m.category:''%></h3>
+      <span><%=m.title ? m.title:''%></span>
+    </div>
+  <%}%>
+  <div class="selectors">
+    <%if(s && s.step){%>
+      <%= __('Periodo') %><a class="popup_widget step" href="#"><%=App.stepToStr(s.step)%>
+        <div class="varsel">
+            <ul>
+              <li data-step="15m" class="<%='15' == s.step ? 'selected':''%>
+                <%=!_.contains(stepsAvailable, '15m') ? 'disabled' : ''%>">
+                <%=App.stepToStr('15m')%>
+              </li>
+              <li data-step="1h" class="<%='1h' == s.step ? 'selected':''%>
+                <%=!_.contains(stepsAvailable, '1h') ? 'disabled' : ''%>">
+                <%=App.stepToStr('1h')%>
+              </li>
+              <li data-step="2h" class="<%='2h' == s.step ? 'selected':''%>
+                <%=!_.contains(stepsAvailable, '2h') ? 'disabled' : ''%>">
+                <%=App.stepToStr('2h')%>
+              </li>
+              <li data-step="4h" class="<%='4h' == s.step ? 'selected':''%>
+                <%=!_.contains(stepsAvailable, '4h') ? 'disabled' : ''%>">
+                <%=App.stepToStr('4h')%>
+              </li>
+              <li data-step="1d" class="<%='1d' == s.step ? 'selected':''%>">
+                <%=App.stepToStr('1d')%>
+              </li>
+            </ul>
+        </div>
+      </a>
+    <%}%>
+  </div>
 
-	<svg class="chart with-transitions"></svg>
-	<div class="var_list"></div>
+  <svg class="chart with-transitions"></svg>
+  <div class="var_list"></div>
 </div>
