@@ -40,8 +40,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this._stepModel = options.stepModel;
     this.collection = options.collection;
     this._multiVariableModel = _.defaults(options.multiVariableModel.toJSON() || {}, {
+      aggDefaultValues: [],
+      normalized: true,
       sizeDiff: 'days',
-      aggDefaultValues: []
+      yAxisLabelDefault: null
     });
     this.options = {
       noAgg: options.noAgg || false
@@ -57,7 +59,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
       this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
-        if(!this._lockRequest) {
+        if (!this._lockRequest) {
           var regex = /\dd/;
           this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
             ? 'days'
@@ -215,22 +217,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         collectionVariable.set('disabled', !collectionVariable.get('disabled'));
       }
 
-      // Only draw the YAxis when there are only
-      // one variable in the chart
-      if (this.data.where({ 'disabled': false }).length === 1) {
-        this.svgChart
-          .datum(_.bind(this._getUniqueDataEnableToDraw, this))
-          .call(this.chart);
-        this.svgChart
-          .classed('normalized', false);
-        this._drawYAxis();
-      } else {
-        this.svgChart
-          .datum(this.data.toJSON())
-          .call(this.chart)
-        this.svgChart
-          .classed('normalized', true)
-      }
+      var chartData = this.data.where({ 'disabled': false }).length === 1
+        ? _.bind(this._getUniqueDataEnableToDraw, this)
+        : this.data.toJSON();
+
+      // Put the new data in chart
+      this.svgChart
+        .datum(chartData)
+        .call(this.chart)
+
+      // Change Y Axis
+      this._drawYAxis();
     }
   },
 
@@ -254,6 +251,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   _drawChart: function () {
     var oneVarInMultiVar = false;
+
     // get initial step
     App.Utils.initStepData(this);
     // Hide the loading
@@ -273,10 +271,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     // Set 'normalized' CSS class
     if (this.data.where({ 'disabled': false }).length > 1) {
-      d3.select(this.$('.chart')[0]).classed('normalized', true);
+      d3.select(this.$('.chart')[0])
+        .classed('normalized', true);
     } else {
       oneVarInMultiVar = true;
-      d3.select(this.$('.chart')[0]).classed('normalized', false);
+      d3.select(this.$('.chart')[0])
+        .classed('normalized', false);
     }
 
     // Draw the chart with NVD3
@@ -288,7 +288,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     // Without data (CSS)
     if (this.data.length === 0) {
-      d3.select(this.$('.chart')[0]).classed('without-data', true);
+      d3.select(this.$('.chart')[0])
+        .classed('without-data', true);
     }
 
     // Set margin legend
@@ -423,13 +424,19 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           v.y = parseFloat(v.y);
         })
         c.values = _.map(c.values, function (v) {
+          // Normalization the charts
+          var valueY = this._multiVariableModel.normalized
+            ? (max - min) > 0
+              ? (v.y - min) / (max - min)
+              : 0
+            : v.y;
+
           return {
             x: v.x,
-            y: (max - min) > 0
-              ? (v.y - min) / (max - min)
-              : 0, 'realY': v.y
+            y: valueY,
+            realY: v.y
           }
-        });
+        }.bind(this));
       }.bind(this))
     );
 
@@ -509,6 +516,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         return currentValue.realY < 1;
       }) ? App.d3Format.numberFormat(',.3r') : App.nbf;
 
+      // Put the label in Y Axis
       this.chart
         .yAxis
         .axisLabel(
@@ -516,15 +524,28 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           (metadata.units ? ' (' + metadata.units + ')' : '')
         );
 
+      // Put the values in Y Axis
       this.chart
         .yAxis
         .showMaxMin(false)
-        .tickFormat(this._multiVariableModel.yAxisFunction
-          ? this._multiVariableModel.yAxisFunction
-          : format
+        .tickFormat(
+          this._multiVariableModel.yAxisFunction
+            ? this._multiVariableModel.yAxisFunction
+            : format
         );
-      this.svgChart.selectAll('.nv-focus .nv-y').call(this.chart.yAxis);
+    } else {
+      // Show the default Y axis label
+      if (this._multiVariableModel.yAxisLabelDefault) {
+        this.chart
+          .yAxis
+          .axisLabel(this._multiVariableModel.yAxisLabelDefault);
+      }
     }
+
+    // The changes will be applied to the Y Axis
+    this.svgChart
+      .selectAll('.nv-focus .nv-y')
+      .call(this.chart.yAxis);
 
     // Force y axis domain
     if (this._multiVariableModel.yAxisDomain &&
@@ -616,22 +637,22 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .parseInt(chartRect[0][0].getAttribute('width'), 10);
       // size label pixels put into the X axis
       var labelWidth = ranges[stepRange] === 'days'
-        ? 70 //dates (59.34)
+        ? 62 //dates (59.34)
         : labelWidth = (ranges[stepRange] === 'hours' || ranges[stepRange] === 'minutes')
           && moment(dateFinish).diff(dateStart, 'days') >= 1
-          ? 77 // dates + hours (67.17)
-          : 40 // hours (29.77)
+          ? 70 // dates + hours (67.17)
+          : 32 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Math.round((chartRectWidth - (labelWidth/2)) / labelWidth);
+      var maxXTick = Number.parseInt((chartRectWidth - (labelWidth/2)) / labelWidth, 10);
       // get multiples total dateXAxis
-      var multiplesTotalXAxis = this.getMultipleNumbers(datesXAxis.length);
+      var multiplesTotalXAxis = App.Utils.getMultipleNumbers(datesXAxis.length);
 
       // If there are more the 2 values
       // then we can search for the current multiple
       if (multiplesTotalXAxis.length > 2) {
         var newMaxTick = maxXTick;
         for (var i = 0; i < multiplesTotalXAxis.length; i++) {
-          if (multiplesTotalXAxis[i] <= maxXTick) {
+          if (multiplesTotalXAxis[i] < maxXTick) {
             newMaxTick = multiplesTotalXAxis[i];
           }
         }
@@ -645,10 +666,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Difference between the data to draw
       var diff = Math.round(datesXAxis.length / maxXTick);
 
-      // If the difference is between 1 and 2,
-      // we split the number (diff) to half
-      if (diff >= 1 && diff < 2) {
-        diff = 2;
+      // Fix some (particulary) errors
+      if (datesXAxis.length > maxXTick && diff >= 1 && diff < 2) {
+        diff += 1;
+        maxXTick = Math.round(datesXAxis.length / diff);
+      } else if (maxXTick > 14) {
+        diff += 1;
+        maxXTick = Math.round(datesXAxis.length / diff);
       }
 
       return diff < 1
@@ -657,7 +681,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         })
         : _.reduce(datesXAxis, function (sumItems, item, index, originItems) {
           var currentIndex = Math.round(index * diff);
-          if (originItems[currentIndex]) {
+          if (sumItems.length < maxXTick && originItems[currentIndex]) {
             sumItems.push(originItems[currentIndex]);
           }
           return sumItems;
@@ -676,22 +700,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     $(axisChart[0][0]).hide();
     $(axisChart[0][1]).hide();
-  },
-
-  /**
-   * Get the multiples number to a number
-   * @param {Number} number
-   * @return {Array} multiples numbers
-   */
-  getMultipleNumbers: function (number) {
-    var multiples = [];
-    for (var i = 1; i <= number; i++) {
-      if (number % i === 0) {
-        multiples.push(i);
-      }
-    }
-
-    return multiples;
   },
 
   /**
