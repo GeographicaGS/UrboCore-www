@@ -567,9 +567,15 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       .call(this.chart.yAxis);
 
     // Force y axis domain
+    if (this._multiVariableModel.normalized) {
     if (this._multiVariableModel.yAxisDomain &&
       this._multiVariableModel.yAxisDomain[realKey]) {
       this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
+    }
+    } else {
+      if (this._multiVariableModel.yAxisDomain) {
+        this.chart.forceY(this._multiVariableModel.yAxisDomain);
+      }
     }
   },
 
