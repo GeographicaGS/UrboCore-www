@@ -1,12 +1,19 @@
 <div class="tags">
   <%_.each(data, function(dato, index) { %>
+    <% 
+      __color = colors[index];
+      if (typeof colors === 'function') { 
+        __color = colors(dato.realKey);
+      }
+    %>
+      
   <div class="btnLegend <%= disabledList[dato.realKey] ? 'inactive' : ''%>"
        id="<%=dato.realKey%>"
        tag="<%=index%>"
-       style="color:<%=colors[index]%>;border:1px solid <%=colors[index]%>">
+       style="color:<%=__color%>;border:1px solid <%=__color%>">
     <span
       class="icon circle"
-      style="background-color:<%=colors[index]%>;border:1px solid <%=colors[index]%>">
+      style="background-color:<%=__color%>;border:1px solid <%=__color%>">
     </span>
     <span class="text first"
           data-key="<%=__(dato.key)%>">

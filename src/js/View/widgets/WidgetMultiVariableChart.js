@@ -338,7 +338,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // Draw the keys list behind the chart
     this.$('.var_list').html(
       this._list_variable_template({
-        colors: App.getSensorVariableColorList(),
+        colors: this._multiVariableModel.colorsFn || App.getSensorVariableColorList(),
         data: this.data.toJSON(),
         currentAggs: this._internalData.currentAggs,
         disabledList: this._internalData.disabledList
@@ -604,12 +604,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       _this._multiVariableModel.yAxisThresholds.forEach(threshold => {
         var thresholdGroup = g.append('g').attr({class: 'thresholdGroup'});
         var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
-        var width =  _this.chart.xScale()(lastDate);
+        var width =  parseInt(d3.select(_this.$('.chart .nvd3 .nv-focus .nv-background rect')[0])[0][0].getAttribute('width'), 10);
+
+        debugger;
 
         thresholdGroup.append('line').attr('class', 'thresholds')
         .attr({
           x1: 0,
-          x2: _this.chart.xScale()(lastDate),
+          x2: width,
           y1: _this.chart.yScale()(threshold.startValue),
           y2: _this.chart.yScale()(threshold.startValue),
           'stroke-dasharray': 4,
@@ -621,7 +623,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .attr({
           x: 0,
           y: _this.chart.yScale()(threshold.endValue),
-          width: _this.chart.xScale()(lastDate),
+          width: width,
           height: height,
           fill: threshold.color,
           'fill-opacity': 0.1
