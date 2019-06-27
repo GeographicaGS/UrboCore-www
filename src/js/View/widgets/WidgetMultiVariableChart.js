@@ -325,6 +325,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // draw the tooltip when we are on chart
     this._drawToolTip();
 
+    // draw thresholds
+    if (this._multiVariableModel.yAxisThresholds) {
+      this._drawThresholds();
+    }
+
     // Update chart (redraw)
     this.chart.update();
     // Update chart (redraw) when the window size changes
@@ -566,6 +571,53 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this._multiVariableModel.yAxisDomain[realKey]) {
       this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
     }
+  },
+
+  _drawThresholds: function() {
+    var _this = this;
+    this.chart.dispatch.on('renderEnd', function() {
+      var chartRect = d3
+        .selectAll(_this.$('.chart > .nvd3 .nv-focus'));
+      var g = chartRect.append('g');
+      const lastDate = _this.data.models[0].get('values')[_this.data.models[0].get('values').length - 1].x
+      _this._multiVariableModel.yAxisThresholds.forEach(threshold => {
+        var thresholdGroup = g.append('g').attr({class: 'thresholdGroup'});
+        var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
+        var width =  _this.chart.xScale()(lastDate);
+
+        thresholdGroup.append('line').attr('class', 'thresholds')
+        .attr({
+          x1: 0,
+          x2: _this.chart.xScale()(lastDate),
+          y1: _this.chart.yScale()(threshold.startValue),
+          y2: _this.chart.yScale()(threshold.startValue),
+          'stroke-dasharray': 4,
+          stroke: threshold.color
+        });
+
+        thresholdGroup.append('rect')
+        .attr('class', 'thresholds')
+        .attr({
+          x: 0,
+          y: _this.chart.yScale()(threshold.endValue),
+          width: _this.chart.xScale()(lastDate),
+          height: height,
+          fill: threshold.color,
+          'fill-opacity': 0.1
+        });
+
+        thresholdGroup.append('text')
+            .text(__(threshold.realName))
+            .attr('class', 'axis-label')
+            .attr('x', 10)
+            .attr('y', _this.chart.yScale()(threshold.endValue) + height / 2)
+            .attr('dy', '.32em')
+            .attr('width', width)
+            .attr('height', height / 2)
+            .attr('class', 'thresholdLabel')
+            ;
+      });
+    })
   },
 
   /**
