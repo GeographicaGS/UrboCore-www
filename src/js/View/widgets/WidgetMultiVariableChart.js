@@ -228,6 +228,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? _.bind(this._getUniqueDataEnableToDraw, this)
         : this.data.toJSON();
 
+        debugger;
+
       // Put the new data in chart
       this.svgChart
         .datum(chartData)
@@ -376,6 +378,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             c.aggs = data.get('aggs');
             c.currentAgg = data.get('currentAgg');
             c.disabled = this._internalData.disabledList[c.realKey];
+            if (this._multiVariableModel.colorsFn) {
+              c.color = this._multiVariableModel.colorsFn(c.realKey)
+            }
             this.collection.findWhere({ 'key': c.realKey }).set('disabled', c.disabled);
           }
         } else {
@@ -463,7 +468,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   _getUniqueDataEnableToDraw: function () {
     return _.map(this.collection.toJSON(), function (j) {
+      j.realKey = j.key;
       j.key = this.data.findWhere({ 'realKey': j.key }).get('key');
+      if (this._multiVariableModel.colorsFn) {
+        j.color = this._multiVariableModel.colorsFn(j.realKey)
+      }
       return j;
     }.bind(this));
   },
