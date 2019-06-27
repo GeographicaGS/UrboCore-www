@@ -382,6 +382,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           c.realKey = c.key;
           c.key = App.mv().getVariable(c.key).get('name');
           c.aggs = App.mv().getVariable(c.realKey).get('var_agg');
+          if (this._multiVariableModel.colorsFn) {
+            c.color = this._multiVariableModel.colorsFn(c.realKey)
+          }
 
           // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
           // Remove 'SUM' from variables (metadata)
