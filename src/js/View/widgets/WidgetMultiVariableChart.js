@@ -325,6 +325,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // draw the tooltip when we are on chart
     this._drawToolTip();
 
+    // draw thresholds
+    if (this._multiVariableModel.yAxisThresholds) {
+      this._drawThresholds();
+    }
+
     // Update chart (redraw)
     this.chart.update();
     // Update chart (redraw) when the window size changes
@@ -377,6 +382,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           c.realKey = c.key;
           c.key = App.mv().getVariable(c.key).get('name');
           c.aggs = App.mv().getVariable(c.realKey).get('var_agg');
+          if (this._multiVariableModel.colorsFn) {
+            c.color = this._multiVariableModel.colorsFn(c.realKey)
+          }
 
           // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
           // Remove 'SUM' from variables (metadata)
@@ -546,14 +554,16 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.chart
         .yAxis
         .axisLabel(this._multiVariableModel.yAxisLabelDefault || '');
-      
-      // Clean the point (values) in Y Axis
-      this.chart
-        .yAxis
-        .showMaxMin(false)
-        .tickFormat(function () {
-          return ''
-        });
+
+      if (this._multiVariableModel.normalized) {
+        // Clean the point (values) in Y Axis
+        this.chart
+          .yAxis
+          .showMaxMin(false)
+          .tickFormat(function () {
+            return ''
+          });
+      }
     }
 
     // The changes will be applied to the Y Axis
@@ -561,11 +571,84 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       .selectAll('.nv-focus .nv-y')
       .call(this.chart.yAxis);
 
+    if (this._multiVariableModel.yAxisThresholds) {
+      d3.selectAll(this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({class: 'invisible'}).style({opacity: 0});
+    }
+    
+
     // Force y axis domain
+    if (this._multiVariableModel.normalized) {
     if (this._multiVariableModel.yAxisDomain &&
       this._multiVariableModel.yAxisDomain[realKey]) {
       this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
     }
+    } else {
+      if (this._multiVariableModel.yAxisDomain) {
+        this.chart.forceY(this._multiVariableModel.yAxisDomain);
+      }
+    }
+  },
+
+  _drawThresholds: function() {
+    var _this = this;
+    this.chart.dispatch.on('renderEnd', function() {
+      d3.selectAll(_this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({class: 'invisible'}).style({opacity: 0});
+
+      if (!d3.selectAll(_this.$('.chart > .nvd3 .nv-focus .th-groups')).empty()) {
+        return;
+      }
+      var chartRect = d3
+        .selectAll(_this.$('.chart > .nvd3 .nv-focus'));
+      var g = chartRect.append('g').attr({class: 'th-groups'});
+      const lastDate = _this.data.models[0].get('values')[_this.data.models[0].get('values').length - 1].x
+      _this._multiVariableModel.yAxisThresholds.forEach(threshold => {
+        var thresholdGroup = g.append('g').attr({class: 'thresholdGroup'});
+        var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
+        var width =  _this.chart.xScale()(lastDate);
+
+        thresholdGroup.append('line').attr('class', 'thresholds')
+        .attr({
+          x1: 0,
+          x2: _this.chart.xScale()(lastDate),
+          y1: _this.chart.yScale()(threshold.startValue),
+          y2: _this.chart.yScale()(threshold.startValue),
+          'stroke-dasharray': 4,
+          stroke: threshold.color
+        });
+
+        thresholdGroup.append('rect')
+        .attr('class', 'thresholds')
+        .attr({
+          x: 0,
+          y: _this.chart.yScale()(threshold.endValue),
+          width: _this.chart.xScale()(lastDate),
+          height: height,
+          fill: threshold.color,
+          'fill-opacity': 0.1
+        });
+
+        thresholdGroup.append('text')
+            .text(__(threshold.realName))
+            .attr('class', 'axis-label')
+            .attr('x', 10)
+            .attr('y', _this.chart.yScale()(threshold.endValue) + height / 2)
+            .attr('dy', '.32em')
+            .attr('width', width)
+            .attr('height', height / 2)
+            .attr('class', 'thresholdLabel')
+            ;
+        
+        thresholdGroup.append('text')
+            .text(__(threshold.endValue))
+            .attr('class', 'axis-label')
+            .attr('x', -15)
+            .attr('y', _this.chart.yScale()(threshold.endValue))
+            .attr('dy', '.32em')
+            .attr('width', width)
+            .attr('class', 'thresholdValue')
+            ;
+      });
+    })
   },
 
   /**
