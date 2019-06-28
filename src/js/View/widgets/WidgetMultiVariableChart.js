@@ -228,8 +228,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? _.bind(this._getUniqueDataEnableToDraw, this)
         : this.data.toJSON();
 
-        debugger;
-
       // Put the new data in chart
       this.svgChart
         .datum(chartData)
@@ -614,8 +612,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         var thresholdGroup = g.append('g').attr({class: 'thresholdGroup'});
         var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
         var width =  parseInt(d3.select(_this.$('.chart .nvd3 .nv-focus .nv-background rect')[0])[0][0].getAttribute('width'), 10);
-
-        debugger;
 
         thresholdGroup.append('line').attr('class', 'thresholds')
         .attr({
