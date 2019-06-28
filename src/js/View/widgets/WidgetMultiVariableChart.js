@@ -52,14 +52,15 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this._multiVariableModel.aggDefaultValues
       : [];
 
-    // Use to block all requests until the last request
-    // will be result
-    this._lockRequest = false;
+    // Use to block the rest request when any
+    // date request in working
+    this._lockDateRequest = false;
 
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
       this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
-        if (!this._lockRequest) {
+
+        if (!this._lockDateRequest) {
           var regex = /\dd/;
           this._multiVariableModel.sizeDiff = regex.test(this._stepModel.get('step'))
             ? 'days'
@@ -67,11 +68,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           this.collection.fetch({
             reset: true,
             success: function () {
-              this._lockRequest = false; // UnBlock the rest of requests
             }.bind(this)
           });
           this.render();
         }
+
       }.bind(this), 250, true));
     }
 
@@ -92,46 +93,50 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.listenTo(this._ctx, 'change:start change:finish change:bbox',
       _.debounce(function () {
 
-        // Block the rest of requests
-        this._lockRequest = true;
+        if (!this._lockDateRequest) {
+          // Block the rest of requests
+          this._lockDateRequest = true;
 
-        // Fix the changes in models and collections (BaseModel & BaseCollections)
-        if (this.collection
-          && this.collection.options
-          && typeof this.collection.options.data === 'string') {
-          this.collection.options.data = JSON.parse(this.collection.options.data);
+          // Fix the changes in models and collections (BaseModel & BaseCollections)
+          if (this.collection
+            && this.collection.options
+            && typeof this.collection.options.data === 'string') {
+            this.collection.options.data = JSON.parse(this.collection.options.data);
+          }
+
+          if (!this.collection.options.data) {
+            this.collection.options.data = { time: {} }
+          }
+          this.collection.options.data.time.start = this._ctx.getDateRange().start;
+          this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
+
+          // Set update step
+          App.Utils.checkBeforeFetching(this);
+          var currentStep = this._stepModel && this._stepModel.has('step')
+            ? this._stepModel.get('step')
+            : this.collection.options && 
+              this.collection.options.data && 
+              this.collection.options.data.step
+              ? this.collection.options.data.step
+              : this.collection.options.step || '1d';
+          var regex = /\dd/;
+          this._multiVariableModel.sizeDiff = regex.test(currentStep)
+            ? 'days'
+            : 'hours';
+
+          // Launch request
+          this.collection.fetch({
+            reset: true,
+            data: this.collection.options.data || {},
+            success: function () {
+              this._lockDateRequest = false; // UnBlock the rest of requests
+            }.bind(this)
+          })
+          // Render
+          this.render();
+
         }
 
-        if (!this.collection.options.data) {
-          this.collection.options.data = { time: {} }
-        }
-        this.collection.options.data.time.start = this._ctx.getDateRange().start;
-        this.collection.options.data.time.finish = this._ctx.getDateRange().finish;
-
-        // Set update step
-        App.Utils.checkBeforeFetching(this);
-        var currentStep = this._stepModel && this._stepModel.has('step')
-          ? this._stepModel.get('step')
-          : this.collection.options && 
-            this.collection.options.data && 
-            this.collection.options.data.step
-            ? this.collection.options.data.step
-            : this.collection.options.step || '1d';
-        var regex = /\dd/;
-        this._multiVariableModel.sizeDiff = regex.test(currentStep)
-          ? 'days'
-          : 'hours';
-
-        // Launch request
-        this.collection.fetch({
-          reset: true,
-          data: this.collection.options.data || {},
-          success: function () {
-            this._lockRequest = false; // UnBlock the rest of requests
-          }.bind(this)
-        })
-        // Render
-        this.render();
 
       }, 250, true));
 
@@ -339,9 +344,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.$('.var_list').html(
       this._list_variable_template({
         colors: this._multiVariableModel.colorsFn || App.getSensorVariableColorList(),
-        data: this.data.toJSON(),
         currentAggs: this._internalData.currentAggs,
-        disabledList: this._internalData.disabledList
+        data: this.data.toJSON(),
+        disabledList: this._internalData.disabledList,
+        noAgg: this.options.noAgg
       })
     );
 
