@@ -302,7 +302,7 @@ App.nl2br = function nl2br(str, is_xhtml) {
  */
 App.formatDateTime = function(date, format){
   if (typeof format === 'undefined') {
-    format = 'DD/MM/YYYY HH:mm';
+    format = 'DD/MM/YYYY - HH:mm';
   }
   return moment.utc(date).local().format(format);
 }
