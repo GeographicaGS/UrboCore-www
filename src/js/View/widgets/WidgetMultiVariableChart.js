@@ -178,7 +178,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var step = $(e.currentTarget).attr('data-step');
     this.collection.options.step = step;
     this._stepModel.set('step', step);
-    this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
+    var data = typeof this.collection.options.data === 'string' ? JSON.parse(this.collection.options.data) : this.collection.options.data;
+    if (data.time) {
+      data.time.step = step;
+    }
+    this.collection.fetch({ 'reset': true, data: data || {} })
     this.render();
   },
 
@@ -227,8 +231,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var chartData = this.data.where({ 'disabled': false }).length === 1
         ? _.bind(this._getUniqueDataEnableToDraw, this)
         : this.data.toJSON();
-
-        debugger;
 
       // Put the new data in chart
       this.svgChart
