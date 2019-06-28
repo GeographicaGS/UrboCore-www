@@ -72,9 +72,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.$el.append(this.button3d);
     this.$el.append(this.zoomControl);
     this.filterModel = options.filterModel;
-    
-    // Reset BBOX
-    this._resetBBox();
 
     this.listenTo(App.ctx,'change:bbox_status',this._changeBBOXStatus);
     this.listenTo(App.ctx, 'change:start change:finish', function() {

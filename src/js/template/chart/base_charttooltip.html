@@ -1,6 +1,6 @@
 <div class="popup_stackbar popup_fixed">
   <% if (data.value) { %>
-    <h3><%= utils.xAxisFunction ? utils.xAxisFunction(data.value) : data.value %></h3>
+    <h3><%= utils.xAxisFunction ? utils.xAxisFunction(data.value, true) : data.value %></h3>
   <% } %>
   <% _.each(data.series, function (el) { 
       // Styles to legend

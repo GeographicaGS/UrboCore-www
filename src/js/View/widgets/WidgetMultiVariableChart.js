@@ -617,8 +617,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
         var width =  parseInt(d3.select(_this.$('.chart .nvd3 .nv-focus .nv-background rect')[0])[0][0].getAttribute('width'), 10);
 
-        debugger;
-
         thresholdGroup.append('line').attr('class', 'thresholds')
         .attr({
           x1: 0,
