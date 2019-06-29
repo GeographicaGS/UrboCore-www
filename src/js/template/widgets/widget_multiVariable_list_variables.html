@@ -20,7 +20,7 @@
       <%=__(dato.key)%>
     </span>
     <!-- Aggregations (Max, Min, Avg) -->
-    <% if (currentAggs && currentAggs[dato.realKey]) { %>
+    <% if (noAgg === false && currentAggs && currentAggs[dato.realKey]) { %>
     <a style="<%= disabledList[dato.realKey] ? 'visibility:hidden' : ''%>"
        class="popup_widget agg multivarChart"
        href="#">
