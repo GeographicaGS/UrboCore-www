@@ -114,11 +114,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           App.Utils.checkBeforeFetching(this);
           var currentStep = this._stepModel && this._stepModel.has('step')
             ? this._stepModel.get('step')
-            : this.collection.options && 
-              this.collection.options.data && 
+            : this.collection.options &&
+              this.collection.options.data &&
               this.collection.options.data.step
-                ? this.collection.options.data.step
-                : this.collection.options.step || '1d';
+              ? this.collection.options.data.step
+              : this.collection.options.step || '1d';
           var regex = /\dd/;
           this._multiVariableModel.sizeDiff = regex.test(currentStep)
             ? 'days'
@@ -168,9 +168,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var currentAggs = this._internalData.currentAggs;
     var agg = $(e.currentTarget).attr('data-agg');
 
-    this.collection.options.agg[realKey] = agg;
-
     currentAggs[realKey] = agg;
+    // It works with the collection "DeviceTimeSerieChart"
+    this.collection.options.agg[realKey] = agg;
+    // It works with the collection "TimeSeries"
+    this.collection.options.data.agg = _.map(currentAggs, function (value) {
+      return value;
+    });
+
     this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
     this.render();
   },
@@ -226,7 +231,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Change attribute "disabled"
       var dataVariable = this.data.findWhere({ key: variable });
       var collectionVariable = this.collection.findWhere({ key: realKey });
-
+      º
       if (typeof dataVariable !== 'undefined') {
         dataVariable.set('disabled', !dataVariable.get('disabled'));
       }
@@ -591,16 +596,16 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       .call(this.chart.yAxis);
 
     if (this._multiVariableModel.yAxisThresholds) {
-      d3.selectAll(this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({class: 'invisible'}).style({opacity: 0});
+      d3.selectAll(this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({ class: 'invisible' }).style({ opacity: 0 });
     }
-    
+
 
     // Force y axis domain
     if (this._multiVariableModel.normalized) {
-    if (this._multiVariableModel.yAxisDomain &&
-      this._multiVariableModel.yAxisDomain[realKey]) {
-      this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
-    }
+      if (this._multiVariableModel.yAxisDomain &&
+        this._multiVariableModel.yAxisDomain[realKey]) {
+        this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
+      }
     } else {
       if (this._multiVariableModel.yAxisDomain) {
         this.chart.forceY(this._multiVariableModel.yAxisDomain);
@@ -608,64 +613,64 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     }
   },
 
-  _drawThresholds: function() {
+  _drawThresholds: function () {
     var _this = this;
-    this.chart.dispatch.on('renderEnd', function() {
-      d3.selectAll(_this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({class: 'invisible'}).style({opacity: 0});
+    this.chart.dispatch.on('renderEnd', function () {
+      d3.selectAll(_this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({ class: 'invisible' }).style({ opacity: 0 });
 
       if (!d3.selectAll(_this.$('.chart > .nvd3 .nv-focus .th-groups')).empty()) {
         return;
       }
       var chartRect = d3
         .selectAll(_this.$('.chart > .nvd3 .nv-focus'));
-      var g = chartRect.append('g').attr({class: 'th-groups'});
+      var g = chartRect.append('g').attr({ class: 'th-groups' });
       const lastDate = _this.data.models[0].get('values')[_this.data.models[0].get('values').length - 1].x
       _this._multiVariableModel.yAxisThresholds.forEach(threshold => {
-        var thresholdGroup = g.append('g').attr({class: 'thresholdGroup'});
-        var height =  _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
-        var width =  parseInt(d3.select(_this.$('.chart .nvd3 .nv-focus .nv-background rect')[0])[0][0].getAttribute('width'), 10);
+        var thresholdGroup = g.append('g').attr({ class: 'thresholdGroup' });
+        var height = _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
+        var width = parseInt(d3.select(_this.$('.chart .nvd3 .nv-focus .nv-background rect')[0])[0][0].getAttribute('width'), 10);
 
         thresholdGroup.append('line').attr('class', 'thresholds')
-        .attr({
-          x1: 0,
-          x2: width,
-          y1: _this.chart.yScale()(threshold.startValue),
-          y2: _this.chart.yScale()(threshold.startValue),
-          'stroke-dasharray': 4,
-          stroke: threshold.color
-        });
+          .attr({
+            x1: 0,
+            x2: width,
+            y1: _this.chart.yScale()(threshold.startValue),
+            y2: _this.chart.yScale()(threshold.startValue),
+            'stroke-dasharray': 4,
+            stroke: threshold.color
+          });
 
         thresholdGroup.append('rect')
-        .attr('class', 'thresholds')
-        .attr({
-          x: 0,
-          y: _this.chart.yScale()(threshold.endValue),
-          width: width,
-          height: height,
-          fill: threshold.color,
-          'fill-opacity': 0.1
-        });
+          .attr('class', 'thresholds')
+          .attr({
+            x: 0,
+            y: _this.chart.yScale()(threshold.endValue),
+            width: width,
+            height: height,
+            fill: threshold.color,
+            'fill-opacity': 0.1
+          });
 
         thresholdGroup.append('text')
-            .text(__(threshold.realName))
-            .attr('class', 'axis-label')
-            .attr('x', 10)
-            .attr('y', _this.chart.yScale()(threshold.endValue) + height / 2)
-            .attr('dy', '.32em')
-            .attr('width', width)
-            .attr('height', height / 2)
-            .attr('class', 'thresholdLabel')
-            ;
-        
+          .text(__(threshold.realName))
+          .attr('class', 'axis-label')
+          .attr('x', 10)
+          .attr('y', _this.chart.yScale()(threshold.endValue) + height / 2)
+          .attr('dy', '.32em')
+          .attr('width', width)
+          .attr('height', height / 2)
+          .attr('class', 'thresholdLabel')
+          ;
+
         thresholdGroup.append('text')
-            .text(__(threshold.endValue))
-            .attr('class', 'axis-label')
-            .attr('x', -15)
-            .attr('y', _this.chart.yScale()(threshold.endValue))
-            .attr('dy', '.32em')
-            .attr('width', width)
-            .attr('class', 'thresholdValue')
-            ;
+          .text(__(threshold.endValue))
+          .attr('class', 'axis-label')
+          .attr('x', -15)
+          .attr('y', _this.chart.yScale()(threshold.endValue))
+          .attr('dy', '.32em')
+          .attr('width', width)
+          .attr('class', 'thresholdValue')
+          ;
       });
     })
   },
@@ -759,7 +764,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           ? 70 // dates + hours (67.17)
           : 32 // hours (29.77)
       // max tick to draw in X Axis
-      var maxXTick = Number.parseInt((chartRectWidth - (labelWidth/2)) / labelWidth, 10);
+      var maxXTick = Number.parseInt((chartRectWidth - (labelWidth / 2)) / labelWidth, 10);
       // get multiples total dateXAxis
       var multiplesTotalXAxis = App.Utils.getMultipleNumbers(datesXAxis.length);
 
