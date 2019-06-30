@@ -172,9 +172,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // It works with the collection "DeviceTimeSerieChart"
     this.collection.options.agg[realKey] = agg;
     // It works with the collection "TimeSeries"
-    this.collection.options.data.agg = _.map(currentAggs, function (value) {
-      return value;
-    });
+    this.collection.options.data.agg = [];
+    _.each(this.collection.options.vars, function (value) {
+      this.collection.options.data.agg.push(currentAggs[value]);
+    }.bind(this));
 
     this.collection.fetch({ 'reset': true, data: this.collection.options.data || {} })
     this.render();
@@ -387,6 +388,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       _.each(this.collection.toJSON(), function (c, index) {
         if (parseData && parseData.length) {
           var data = parseData.findWhere({ 'realKey': c.key });
+
           if (data != undefined) {
             c.realKey = data.get('realKey');
             c.key = data.get('key');
@@ -398,10 +400,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             }
             this.collection.findWhere({ 'key': c.realKey }).set('disabled', c.disabled);
           }
+
         } else {
+
           c.realKey = c.key;
           c.key = App.mv().getVariable(c.key).get('name');
-          c.aggs = App.mv().getVariable(c.realKey).get('var_agg');
+          c.aggs = this._getAggregationsVariable(c.realKey);
+
           if (this._multiVariableModel.colorsFn) {
             c.color = this._multiVariableModel.colorsFn(c.realKey)
           }
@@ -430,9 +435,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             var currentDefaultAgg = !_.isEmpty(this._aggDefaultValues)
               ? this._aggDefaultValues[c.realKey]
               : null;
-            if ((c.aggs != undefined && c.aggs[0] != 'NOAGG')
-              && (_.isEmpty(this._aggDefaultValues) || (currentDefaultAgg != 'NONE'))) {
-              if (currentDefaultAgg == undefined || !_.contains(c.aggs, currentDefaultAgg.toUpperCase())) {
+            if ((typeof c.aggs !== undefined && Array.isArray(c.aggs) && !c.aggs.includes('NOAGG'))
+              && (_.isEmpty(this._aggDefaultValues) || (currentDefaultAgg !== 'NONE'))) {
+              if (typeof currentDefaultAgg === undefined || !_.contains(c.aggs, currentDefaultAgg.toUpperCase())) {
                 c.currentAgg = c.aggs ? c.aggs[0] : null;
                 this.collection.options.agg[c.realKey] = c.currentAgg;
                 internalData.currentAggs[c.realKey] = c.currentAgg;
@@ -490,6 +495,25 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }
       return j;
     }.bind(this));
+  },
+
+  /**
+   * Get the aggregations variable
+   * 
+   * @return {Array} aggregation
+   */
+  _getAggregationsVariable: function (variable) {
+    var orderAggregations = ['SUM', 'MAX', 'AVG', 'MIN'];
+    var currentAggregations = App.mv().getVariable(variable).get('var_agg');
+
+    return _.filter(orderAggregations, function (orderAgg) {
+      if (_.find(currentAggregations, function (currentAgg) {
+        return orderAgg === currentAgg;
+      })) {
+        return true;
+      }
+      return false;
+    });
   },
 
   /**

@@ -29,7 +29,7 @@
              src="<%=App.getPictureAgg(currentAggs[dato.realKey])%>" />
       </span><div class="varsel">
         <ul data-id="<%=dato.realKey%>">
-          <%_.each(dato.aggs,function(v){%>
+          <%_.each(dato.aggs, function (v) { %>
           <li data-agg="<%=v%>" class="<%=v == currentAggs[dato.realKey].toUpperCase() ? 'selected':''%>">
             <span class="icon">
               <img class="iconPopup"
