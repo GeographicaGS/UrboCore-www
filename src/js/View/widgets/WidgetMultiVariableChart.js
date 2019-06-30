@@ -231,7 +231,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Change attribute "disabled"
       var dataVariable = this.data.findWhere({ key: variable });
       var collectionVariable = this.collection.findWhere({ key: realKey });
-      º
+
       if (typeof dataVariable !== 'undefined') {
         dataVariable.set('disabled', !dataVariable.get('disabled'));
       }
