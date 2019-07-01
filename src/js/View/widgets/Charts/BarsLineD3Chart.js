@@ -601,12 +601,21 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           var absStepDiff = Math.abs(stepDiff);
 
           if (_this.data[0].values.length > datesInterval.length + 1) {
-            if ((d * absStepDiff) % diff === 0 && (d * absStepDiff / diff) < datesInterval.length)
-              return _this.xAxisFunction(datesInterval[d * absStepDiff / diff]);
-            else
+            if ((d * absStepDiff) % diff === 0 && (d * absStepDiff / diff) < datesInterval.length) {
+              return typeof _this.xAxisFunction === 'function'
+                ? _this.xAxisFunction(datesInterval[d * absStepDiff / diff])
+                : datesInterval[d * absStepDiff / diff] instanceof Date
+                  ? App.formatDate(datesInterval[d * absStepDiff / diff])
+                  : datesInterval[d * absStepDiff / diff];
+            } else {
               return '';
+            }
           } else if (d < datesInterval.length) {
-            return _this.xAxisFunction(datesInterval[d]);
+            return typeof _this.xAxisFunction === 'function'
+              ? _this.xAxisFunction(datesInterval[d])
+              : datesInterval[d * absStepDiff / diff] instanceof Date
+                ? App.formatDate(datesInterval[d])
+                : datesInterval[d];
           } else {
             return '';
           }
@@ -746,27 +755,57 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   _setTooltipEvents: function (elem, _this) {
     elem
       .on('mouseover', function (d, serie, index) {
-        _this._drawTooltip(d, serie, index, this);
+        _this._drawTooltip(d, serie, index, this, _this);
       })
       .on('mousemove', function (d, serie, index) {
-        _this._drawTooltip(d, serie, index, this);
+        _this._drawTooltip(d, serie, index, this, _this);
       })
       .on('mouseout', function (d, serie, index) {
-        _this._hideTooltip(d, serie, index, this);
+        _this._hideTooltip(d, serie, index, this, _this);
       })
       ;
   },
 
-  _drawTooltip: function (d, serie, index, _this) {
-    var $tooltip = this.$('#chart_tooltip');
-    if (!$tooltip.length) {
-      $tooltip = $('<div id="chart_tooltip" class="hidden"></div>');
-      this.$el.append($tooltip);
-    }
+  _drawTooltip: function (d, serie, index, _this, view) {
+    // Set default data
     var data = {
       value: d.x,
       series: []
     };
+
+    // The value in "dta.value" depends from "step"
+    if (typeof view.xAxisFunction !== 'function') {
+      // Request data (default)
+      var requestData = {
+        time: {
+          step: '1d'
+        }
+      };
+
+      if (view.collection && view.collection.options && view.collection.options.data) {
+        requestData = typeof view.collection.options.data === 'string'
+          ? JSON.parse(view.collection.options.data)
+          : view.collection.options.data;
+      }
+
+      // current Step
+      var currentStep = requestData.time && requestData.time.step
+        ? requestData.time.step
+        : '1d';
+      var matchStep = /(\d+)(\w+)/g.exec(currentStep);
+      var stepRange = matchStep[2] || 'd';
+
+      data.value = (stepRange === 'd')
+        ? App.formatDate(d.x)
+        : App.formatDateTime(d.x);
+    }
+
+    var $tooltip = this.$('#chart_tooltip');
+
+    if (!$tooltip.length) {
+      $tooltip = $('<div id="chart_tooltip" class="hidden"></div>');
+      this.$el.append($tooltip);
+    }
 
     var that = this;
     var keysConfig = that.options.get('keysConfig');
