@@ -331,7 +331,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           yAxis2.append('text')
             .attr('class', 'axis-label')
             .attr('x', this._chart.h / 2)
-            .attr('transform', 'rotate(90) translate(0,-68)')
+            .attr('transform', 'rotate(90) translate(0, -40)')
             .style('text-anchor', 'middle')
             .text(this.options.get('yAxisLabel')[1])
             ;
