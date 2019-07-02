@@ -563,9 +563,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   },
 
   _formatXAxis: function () {
-    if (this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor == Date) {
+    if (this.data.length &&
+      this.data[0].values &&
+      this.data[0].values.length &&
+      this.data[0].values[0].x &&
+      this.data[0].values[0].x.constructor === Date) {
+      var _this = this;
       var start = moment(this.data[0].values[0].x).startOf('hour');
-      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
+      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x)
+        .endOf('hour')
+        .add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
@@ -593,19 +600,22 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         nextDate = d3.time.hour.offset(nextDate, diff);
       } while (finish.isAfter(nextDate) && diff > 0);
 
-      var _this = this;
+
       this._chart.xAxis = d3.svg.axis()
         .scale(this.xScaleBars)
         .orient('bottom')
         .tickFormat(function (d) {
           var absStepDiff = Math.abs(stepDiff);
+          var formatDate = _this._getStepRange() === 'd'
+            ? App.formatDate
+            : App.formatDateTime;
 
           if (_this.data[0].values.length > datesInterval.length + 1) {
             if ((d * absStepDiff) % diff === 0 && (d * absStepDiff / diff) < datesInterval.length) {
               return typeof _this.xAxisFunction === 'function'
                 ? _this.xAxisFunction(datesInterval[d * absStepDiff / diff])
                 : datesInterval[d * absStepDiff / diff] instanceof Date
-                  ? App.formatDate(datesInterval[d * absStepDiff / diff])
+                  ? formatDate(datesInterval[d * absStepDiff / diff])
                   : datesInterval[d * absStepDiff / diff];
             } else {
               return '';
@@ -613,8 +623,8 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           } else if (d < datesInterval.length) {
             return typeof _this.xAxisFunction === 'function'
               ? _this.xAxisFunction(datesInterval[d])
-              : datesInterval[d * absStepDiff / diff] instanceof Date
-                ? App.formatDate(datesInterval[d])
+              : datesInterval[d] instanceof Date
+                ? formatDate(datesInterval[d])
                 : datesInterval[d];
           } else {
             return '';
@@ -775,27 +785,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
     // The value in "dta.value" depends from "step"
     if (typeof view.xAxisFunction !== 'function') {
-      // Request data (default)
-      var requestData = {
-        time: {
-          step: '1d'
-        }
-      };
-
-      if (view.collection && view.collection.options && view.collection.options.data) {
-        requestData = typeof view.collection.options.data === 'string'
-          ? JSON.parse(view.collection.options.data)
-          : view.collection.options.data;
-      }
-
-      // current Step
-      var currentStep = requestData.time && requestData.time.step
-        ? requestData.time.step
-        : '1d';
-      var matchStep = /(\d+)(\w+)/g.exec(currentStep);
-      var stepRange = matchStep[2] || 'd';
-
-      data.value = (stepRange === 'd')
+      data.value = view._getStepRange() === 'd'
         ? App.formatDate(d.x)
         : App.formatDateTime(d.x);
     }
@@ -850,6 +840,34 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }
 
     $tooltip.removeClass('hidden');
+  },
+
+  /**
+   * Get the step range choosen by the user
+   * 
+   * @param {String} - One option "d" (day), "h" (hour), "m" (minute)
+   */
+  _getStepRange: function () {
+    // Request data (default)
+    var requestData = {
+      time: {
+        step: '1d'
+      }
+    };
+
+    if (this.collection && this.collection.options && this.collection.options.data) {
+      requestData = typeof this.collection.options.data === 'string'
+        ? JSON.parse(this.collection.options.data)
+        : this.collection.options.data;
+    }
+
+    // current Step
+    var currentStep = requestData.time && requestData.time.step
+      ? requestData.time.step
+      : '1d';
+    var matchStep = /(\d+)(\w+)/g.exec(currentStep);
+    
+    return matchStep[2] || 'd';
   },
 
   _hideTooltip: function () {
