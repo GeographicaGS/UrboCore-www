@@ -25,7 +25,10 @@
         <% } else if (utils.yAxisFunction) { %>
           <%= utils.yAxisFunction(el.value) %>
         <% } else { %>
-          <%= App.nbf(el.value) %> <%= (el.realKey && App.mv().getVariable(el.realKey)) ? App.mv().getVariable(el.realKey).get('units') : '' %>
+          <%= App.nbf(el.value) %>
+          <%= (el.realKey && App.mv().getVariable(el.realKey)) 
+            ? App.mv().getVariable(el.realKey).get('units') 
+            : '' %>
         <% } %>
       </span>
       <% if (utils.total) { %>
