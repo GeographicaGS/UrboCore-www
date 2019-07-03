@@ -108,6 +108,11 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   },
 
   render: function () {
+    // Force the currentStep indicated in the begin
+    var forceInitialStep = this.options.has('forceInitialStep')
+      ? this.options.get('forceInitialStep')
+      : false;
+
     if (this.options.has('currentStep')) {
       var dates = null;
       
@@ -117,7 +122,8 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
       
       this.options.set({ stepsAvailable: App.Utils.getStepsAvailable(dates) });
       
-      if (!_.contains(this.options.get('stepsAvailable'), this.options.get('currentStep'))) {
+      if (!_.contains(this.options.get('stepsAvailable'), this.options.get('currentStep'))
+        && !forceInitialStep) {
         this.options.set({ currentStep: this.options.get('stepsAvailable')[this.options.get('stepsAvailable').length - 1] });
       }
     }
