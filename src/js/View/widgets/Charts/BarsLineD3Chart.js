@@ -809,7 +809,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           realKey: el.realKey,
           color: that._getColor(el, serie),
           cssClass: that.options.has('classes') ? that.options.get('classes')(el) : '',
-          yAxisFunction: that.options.get('yAxisFunction')[el.yAxis - 1],
+          yAxisFunction: that.options.has('yAxisFunctionTooltipValue')
+            ? that.options.get('yAxisFunctionTooltipValue')
+            : that.options.get('yAxisFunction')[el.yAxis - 1],
           type: keysConfig[el.realKey] && keysConfig[el.realKey].type
             ? keysConfig[el.realKey].type
             : 'line'
