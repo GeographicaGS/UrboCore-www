@@ -312,14 +312,31 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       var yAxis1 = this._chart.svg.append('g')
         .attr('class', 'axis y-axis y-axis-1')
         .call(this._chart.yAxis1);
-      if (this.options.get('yAxisLabel')) {
+      var currentyAxisLabel1 = Array.isArray(this.options.get('yAxisLabel'))
+        ? this.options.get('yAxisLabel')[0]
+        : '';
+
+      // If only it exists a line (variable) to draw in the chart
+      // we put in the yAxis1 (left) the information
+      // about of this variable
+      if(this.options.get('showMetaVariableYAxis') && 
+        Array.isArray(this.data) &&
+        this.data.length -1 === this._internalData.elementsDisabled) {
+        var variable = _.find(this.data, function (currentVariable) {
+          return !this._internalData.disabledList[currentVariable.realKey];
+        }.bind(this));
+        var variableMetadata = App.mv().getVariable(variable.realKey).toJSON();
+
+        currentyAxisLabel1 = variableMetadata.name + ' (' + variableMetadata.units + ')';
+      }
+
+      if (this.options.get('yAxisLabel') || this.options.get('showMetaVariableYAxis')) {
         yAxis1.append('text')
           .attr('class', 'axis-label')
           .attr('x', -1 * this._chart.h / 2)
           .attr('transform', 'rotate(270) translate(0,' + (12 - _this._chart.margin.left) + ')')
           .style('text-anchor', 'middle')
-          .text(_this.options.get('yAxisLabel')[0])
-          ;
+          .text(currentyAxisLabel1);
       }
 
       if (this.yAxisDomain[1] && !this.options.get('hideYAxis2')) {
@@ -390,7 +407,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('x', '50%')
         .attr('y', '50%')
         .style('text-anchor', 'middle')
-        .text(__('No hay datos disponibles'));
+        .text(
+          this.options.has('customNoDataMessage')
+            ? this.options.get('customNoDataMessage')
+            : __('No hay datos disponibles')
+        );
     }
   },
 
@@ -736,7 +757,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var realKey = $(element.target).closest('div').attr('id');
     var disabledList = this._internalData.disabledList;
 
-    if (((disabledList[realKey] == undefined || disabledList[realKey] === false) &&
+    if (((disabledList[realKey] === undefined || disabledList[realKey] === false) &&
       this._internalData.elementsDisabled != tags - 1) || disabledList[realKey] === true) {
       disabledList[realKey] = !disabledList[realKey];
       this._internalData.elementsDisabled = disabledList[realKey]

@@ -346,21 +346,23 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
   _clickLegend: function (element) {
     var tags = $(".btnLegend").size();
-    var realKey = $(element.target).closest("div").attr("id");
-    var varMetadata = App.mv().getVariable(realKey);
     var orderKey = $(element.target).closest("div").attr("tag"); // Prevent dups
-    realKey = realKey + '_' + orderKey;
-
+    var realKey = $(element.target).closest("div").attr("id") + '_' + orderKey;
     var disabledList = this._internalData.disabledList;
-
-    var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false) && this._internalData.elementsDisabled != tags - 1);
+    var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false)
+      && this._internalData.elementsDisabled != tags - 1);
     var enabled = (disabledList[realKey] === true);
 
     if (disabled || enabled) {
+      ($(this.$(".chart .nv-series")
+        .get($(element.target)
+        .parent()
+        .attr("tag")))
+      ).d3Click();
 
-
-      ($(this.$(".chart .nv-series").get($(element.target).parent().attr("tag")))).d3Click();
-      $(element.target).parent().toggleClass("inactive");
+      $(element.target)
+        .parent()
+        .toggleClass("inactive");
 
       if (this.options.get('showAggSelector')) {
         var ch = $(this.$('.agg')[orderKey]);
@@ -368,7 +370,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
       }
 
       disabledList[realKey] = !disabledList[realKey];
-      this._internalData.elementsDisabled = disabledList[realKey] ? this._internalData.elementsDisabled + 1 : this._internalData.elementsDisabled - 1;
+      this._internalData.elementsDisabled = disabledList[realKey]
+        ? this._internalData.elementsDisabled + 1
+        : this._internalData.elementsDisabled - 1;
     }
   },
 
