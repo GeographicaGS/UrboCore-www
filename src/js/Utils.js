@@ -379,6 +379,24 @@ App.Utils.toCamelCase = function(string) {
     });
 }
 
+  /**
+   * Get the multiples number to a number
+   * @param {Number} number
+   * @return {Array} multiples numbers
+   */
+  App.Utils.getMultipleNumbers = function (number) {
+    if (typeof number === 'undefined' || Number.isNaN(number)) return [];
+
+    var multiples = [];
+    for (var i = 1; i <= number; i++) {
+      if (number % i === 0) {
+        multiples.push(i);
+      }
+    }
+
+    return multiples;
+  },
+
 /**
  * Generate the "script" tag from different files to load them dynamically
  *
@@ -428,7 +446,7 @@ App.Utils.loadBlockedScripts = function(type, cb) {
 /**
  * Set an array to a string to use
  * in a contidion 'IN' to SQL query
- * 
+ *
  * @param {Array} data - string array
  * @return {String | null} - string to use in query SQL
  */

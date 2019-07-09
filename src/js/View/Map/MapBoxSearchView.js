@@ -43,14 +43,21 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
 
     this.listenTo(this._collection, "reset", this._collectionReset);
 
+    this.listenTo(this.options.filterModel, 'change:currentStatus', function(){
+      this._marker.remove()
+      if (this.$('input').val().length > 0){
+        this._updateTerm()
+      }
+    })
+
   },
 
   _selectTerm: function (e) {
     this.$('#search_map').addClass('searching');
-    this.$('input[type=text]').val($(e.currentTarget).text());
+    this.$('input[type=text]').val('');
     this.$('ul').removeClass('active');
-    var elem = this._collection.findWhere({ 'element_id': $(e.currentTarget).attr('element_id') });
-    var bbox = elem.get('bbox');
+    var elem = this._collection.findWhere({ 'id_entity': $(e.currentTarget).attr('element_id') });
+    var bbox = elem.get('geometry');
     var maxZoom = 18;
     if (elem.get('type') == 'device') {
       maxZoom = 19;
@@ -59,7 +66,30 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
     this._marker.setLngLat([bbox[0], bbox[1]])
       .addTo(this._map);
 
-    this._map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { maxZoom: maxZoom });
+    this._map.fitBounds([[bbox[0], bbox[1]], [bbox[0], bbox[1]]], { maxZoom: maxZoom });
+  },
+
+  _updateTerm: _.debounce(function (e) {
+    var term = e 
+    ? $(e.currentTarget).val()
+    : this.$('input').val();
+    this._collection.options.term = term
+    this._collection.fetch({ 
+      'reset': true,
+      data: this.getCurrentFilterParams(term) || {}});
+    if (this._collection.options.term.length > 0) {
+      this.$('#search_map').addClass('searching');
+      this.$('.loading').remove();
+      this.$('#search_map').append(App.circleLoading());
+    } else {
+      this.$('img').trigger('click');
+    }
+  }, 500),
+
+  // This function is meant to be overrided on each vertical since
+  // filtering requires special data treatment
+  getCurrentFilterParams(){
+    return null
   },
 
   _clearSearch: function () {
@@ -69,6 +99,6 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
     this.$('#search_map').removeClass('searching');
 
     this._marker.remove()
-  }
+  },
 
 });

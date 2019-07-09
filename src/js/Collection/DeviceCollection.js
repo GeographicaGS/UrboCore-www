@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -159,7 +159,6 @@ App.Collection.DeviceTimeSerie = Backbone.Collection.extend({
   }
 });
 
-// App.Collection.DeviceTimeSerieChart = App.Collection.DeviceTimeSerie.extend({
 App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
   initialize: function (models, options) {
@@ -180,9 +179,17 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
     var stepOption = options.data && options.data.time
       ? options.data.time.step || this.options.step
       : this.options.step;
+    // Change step aggregation
+    var currentAggOptions = options.data && Array.isArray(options.data.agg)
+      ? options.data.agg
+      : this.options.agg;
+    // Change noData option
+    var noData = options.data && options.data.noData
+      ? options.data.noData
+      : this.options.data.noData || false
 
     options.data = JSON.stringify({
-      agg: _.map(this.options.agg, function (val) { return val }),
+      agg: _.map(currentAggOptions, function (val) { return val }),
       vars: this.options.vars,
       time: {
         start: App.ctx.getDateRange().start,
@@ -194,7 +201,8 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
         condition: {
           id_entity__eq: this.options.id
         }
-      }
+      },
+      noData: noData
     });
 
     return Backbone.Collection.prototype.fetch.call(this, options);
@@ -206,11 +214,6 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
 
     _.each(response, function (r) {
       _.each(Object.keys(r.data), function (k) {
-        // Prepare the date ("time" parameter)
-        var currentTime = r.time.split('T');
-        var currentTimeDay = currentTime[0];
-        var currentTimeHour = currentTime[1].replace('.000Z', '');
-
         if (!aux[k]) {
           aux[k] = [];
         }
@@ -218,9 +221,9 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
           r.data[k] = 0;
         }
         aux[k].push({
-          x: moment(currentTimeDay + ' ' + currentTimeHour).toDate(), 
-          y: k === 'seconds' 
-            ? r.data[k] / 60 
+          x: moment.utc(r.time).toDate(),
+          y: k === 'seconds'
+            ? r.data[k] / 60
             : r.data[k]
         });
       });
@@ -250,22 +253,13 @@ App.Collection.DeviceRaw = App.Collection.Post.extend({
   },
 
   fetch: function (options) {
-    if (typeof options === 'undefined') {
-      var options = {}
-    }
-
     // Default options
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       data: {}
     });
 
     if (typeof options.data === 'string') {
       options.data = JSON.parse(options.data)
-    }
-
-    // Options "format"
-    if (typeof options.data.format === 'undefined' && this.options.format) {
-      options.data.format = this.options.format;
     }
 
     // Options "time"

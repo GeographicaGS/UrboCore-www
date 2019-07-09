@@ -1,6 +1,11 @@
 <div class="popup_stackbar popup_fixed">
   <% if (data.value) { %>
-    <h3><%= utils.xAxisFunction ? utils.xAxisFunction(data.value) : data.value %></h3>
+    <h3>
+      <%= utils.xAxisFunction
+        ? utils.xAxisFunction(data.value, true)
+        : data.value 
+      %>
+    </h3>
   <% } %>
   <% _.each(data.series, function (el) { 
       // Styles to legend
@@ -20,7 +25,10 @@
         <% } else if (utils.yAxisFunction) { %>
           <%= utils.yAxisFunction(el.value) %>
         <% } else { %>
-          <%= App.nbf(el.value) %> <%= (el.realKey && App.mv().getVariable(el.realKey)) ? App.mv().getVariable(el.realKey).get('units') : '' %>
+          <%= App.nbf(el.value) %>
+          <%= (el.realKey && App.mv().getVariable(el.realKey)) 
+            ? App.mv().getVariable(el.realKey).get('units') 
+            : '' %>
         <% } %>
       </span>
       <% if (utils.total) { %>

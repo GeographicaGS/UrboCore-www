@@ -23,7 +23,7 @@
 App.View.Map.Layer.MapboxSQLLayer = App.View.Map.Layer.MapboxGLVectorLayer.extend({
 
 
-  initialize: function(config) {
+  initialize: function (config) {
     this.legendConfig = config.legend;
     this.layers = config.layers;
     this._ignoreOnLegend = config.ignoreOnLegend;
@@ -32,39 +32,45 @@ App.View.Map.Layer.MapboxSQLLayer = App.View.Map.Layer.MapboxGLVectorLayer.exten
 
     App.View.Map.Layer.MapboxGLVectorLayer.prototype
       .initialize.call(this, config.source.model,
-      config.source.payload,config.legend, config.map);
+        config.source.payload, config.legend, config.map);
   },
 
-  _layersConfig: function() {
+  _layersConfig: function () {
     return this.layers;
   },
 
-  _success: function(model) {
-    var response = (model.changed)? model.changed.response : undefined;
+  _success: function (model) {
+    var response = (model.changed) 
+      ? model.changed.response 
+      : undefined;
+    
     if (response) {
       var cartoLayer = response;
       var nStyle = this._map._map.getStyle();
 
+      // Change the data in layer
       if (nStyle && nStyle.sources && nStyle.sources[this._idSource]) {
         nStyle.sources[this._idSource].tiles = cartoLayer.metadata.tilejson.vector.tiles;
-        this._map._map.setStyle(nStyle);  
+        this._map._map.setStyle(nStyle);
+
+        // The event is launched
+        this.trigger('update', { id: this._idSource } );
       }
     }
   },
 
-  _updateSQLData: function(sql, sourceLayer) {
+  _updateSQLData: function (sql, sourceLayer) {
     sourceLayer = sourceLayer || 'cartoLayer'
     this._model.clear();
     this._model.params = {
-      layers:[ {
+      layers: [{
         id: sourceLayer,
-        options:{
+        options: {
           sql: sql
         }
       }]
     };
-    
-    this._model.fetch({
-    });
+
+    this._model.fetch({});
   },
 });

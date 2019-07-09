@@ -23,6 +23,8 @@
 App.View.Widgets.Base = Backbone.View.extend({
 
   _template: _.template($('#widgets-widget_base_template').html()),
+  _template_timemode_historic: _.template($('#widgets-widget_date_template').html()),
+  _template_timemode_now: _.template($('#widgets-widget_time_template').html()),
 
   initialize: function (options) {
     this.options = options;
@@ -60,7 +62,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     if (!this.model.get('embed')) {
       if (this.model.get('timeMode') == 'historic') {
-        this.listenTo(this.ctx, 'change:start change:finish', this.refresh);
+        this.listenTo(this.ctx, 'change:start change:finish', _.debounce(this.refresh, 600));
       }
       this.listenTo(this.ctx, 'change:bbox', this.refresh);
     }
@@ -294,6 +296,9 @@ App.View.Widgets.Base = Backbone.View.extend({
   render: function () {
     this.$el.html(this._template(this.model.toJSON()));
 
+    // Put the time icon into the widget
+    this.drawTimeIcon();
+
     this.updateFilters();
 
     for (var i in this.subviews) {
@@ -308,6 +313,25 @@ App.View.Widgets.Base = Backbone.View.extend({
     this.trigger('render');
 
     return this;
+  },
+
+  /**
+   * Draw the time icon in the widget
+   */
+  drawTimeIcon: function () {
+    var wrapper = this.$el.find('.botons');
+    var timeMode = this.model.get('timeMode');
+
+    if (wrapper.length && (timeMode === 'historic' || timeMode === 'now')) {
+      var templateTimeIcon = timeMode === 'historic'
+        ? this._template_timemode_historic
+        : this._template_timemode_now;
+        
+      // Remove element DOM
+      this.$el.find('#timeIcon').remove();
+      // Add template time Icon
+      $(wrapper[0]).prepend(templateTimeIcon);
+    }
   },
 
   onClose: function () {

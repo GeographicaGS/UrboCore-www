@@ -91,8 +91,9 @@ App.Model.Context = Backbone.Model.extend({
   getDateRange: function () {
     try {
       return {
-        start: moment(this.get('start').utc().toDate()).format('YYYY-MM-DD HH:mm:ss'),
-        finish: moment(this.get('finish').utc().toDate()).format('YYYY-MM-DD') + ' 23:59:59'
+        start: moment(this.get('start')).toISOString(),
+        finish: moment(moment.utc(this.get('finish')).toDate())
+          .endOf('day').toISOString()
       }
     } catch (err) {
       return false;

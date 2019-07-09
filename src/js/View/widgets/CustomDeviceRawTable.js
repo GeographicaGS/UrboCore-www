@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -86,8 +86,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
     _.map(this.options.variables, function (variable) {
       //Set Title
-      if(typeof variable.title === 'undefined'){
-        var targetVariable = _.find( variablesWithMetadata, function( varWithMeta ){
+      if (typeof variable.title === 'undefined') {
+        var targetVariable = _.find(variablesWithMetadata, function (varWithMeta) {
           return varWithMeta.id === variable.id
         });
         variable['title'] = targetVariable
@@ -161,12 +161,7 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   dateFn: function (value) {
-    var dateTime = value.split('T') 
-    var date = dateTime[0].split('-')
-    
-    return date.reverse().join('-')
-      + ' '
-      + dateTime[1].slice(0, 5);
+    return App.formatDateTime(value);
   },
 
   getVariableUnits: function (id) {

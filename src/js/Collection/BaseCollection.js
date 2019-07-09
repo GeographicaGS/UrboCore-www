@@ -32,23 +32,36 @@ App.Collection.Base = Backbone.Collection.extend({
     }
 
     this.options = options;
+
+    // To change the attribute "data" (string), 
+    // inside the payload, to JSON object
+    this.on('sync', _.bind(function (response) {
+      if (response.options && 
+        response.options.data && 
+        typeof response.options.data === 'string') {
+          this.options.data = JSON.parse(response.options.data);
+      }
+    }, this));
   }
 });
 
 App.Collection.Post = App.Collection.Base.extend({
   fetch: function (options) {
-    options = _.defaults(options, {
+    // We transforms the options to JSON to merge with other options
+    if (typeof options !== 'undefined' && typeof options.data === 'string') {
+      options.data = JSON.parse(options.data);
+    }
+    // Default values 
+    options = _.defaults(options || {}, {
       type: 'POST',
       contentType: 'application/json',
     });
-
     // Add initial model options
-    options = _.extend(this.options || {}, options);
+    options = _.extend({}, this.options || {}, options);
 
-    if (options.data) {
-      if (typeof options.data !== 'string') {
-        options.data = JSON.stringify(options.data);
-      }
+    // We transform to STRING to send in the requests
+    if (typeof options.data !== 'string') {
+      options.data = JSON.stringify(options.data);
     }
 
     return Backbone.Collection.prototype.fetch.call(this, options);

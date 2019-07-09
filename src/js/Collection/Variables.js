@@ -37,15 +37,16 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
 
       this.options.data = {
         agg: this.options.agg,
-        vars: this.options.vars,
         csv: this.options.csv || false,
+        filters: this.options.filters || {},
         findTimes: this.options.findTimes || false,
+        noData: this.options.noData || false,
         time: {
           start: date.start,
           finish: date.finish,
           step: this.options.step
         },
-        filters: this.options.filters || {}
+        vars: this.options.vars,
       };
     }
 
@@ -124,7 +125,7 @@ App.Collection.Variables.TimeserieGrouped = App.Collection.Post.extend({
             aux[d.agg] = [];
           }
           aux[d.agg].push({
-            x: new Date(r.time),
+            x: moment.utc(r.time).toDate(),
             y: d.value
           });
         });

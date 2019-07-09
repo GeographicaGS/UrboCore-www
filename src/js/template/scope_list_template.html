@@ -34,7 +34,7 @@
               </div>
               <div class="content_bottom">
                 <div class="verticals">
-                  <h3><%=s.categories.length%> <%= s.categories.length === 0 ? __('vertical') : __('verticales') %></h3>
+                  <h3><%=s.categories.length%> <%= s.categories.length === 1 ? __('vertical') : __('verticales') %></h3>
                   <div class="categories_section">
                     <% _.each(s.categories, function(category) { %>
                       <span class="rectangleIcon <%=category.id%>"></span>

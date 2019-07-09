@@ -26,7 +26,11 @@
 App.Collection.TableToCsv = Backbone.Collection.extend({
 
   initialize: function (models, options) {
-    this.options = options;
+    this.options = _.defaults(options || {}, {
+      data_tz: 'Europe/Madrid', //to get the correct date attribute
+      dataType: 'text',
+      format: 'csv',
+    });
   },
 
   /**

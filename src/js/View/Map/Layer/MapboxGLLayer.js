@@ -29,9 +29,9 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   dataSource: null,
   layers: [],
   popupTemplate: new App.View.Map.MapboxGLPopup('#map-mapbox_base_popup_template'),
-  
 
-  initialize: function(model, body, legend, map) {
+
+  initialize: function (model, body, legend, map) {
     this._map = map;
     this._model = model;
     this.legendConfig = legend;
@@ -50,58 +50,58 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     this.addToLegend();
   },
 
-  addToLegend: function() {
+  addToLegend: function () {
     if (this.legendConfig) {
       this._map.addToLegend(this.legendConfig);
     }
   },
 
-  updateData: function(body) {
+  updateData: function (body) {
     this._model.clear();
-    this._model.fetch({data: body});
+    this._model.fetch({ data: body });
   },
 
-  on: function(event, ids, callback) {
-    if(this._mapEvents[event] === undefined) {
+  on: function (event, ids, callback) {
+    if (this._mapEvents[event] === undefined) {
       this._mapEvents[event] = {};
     }
-    if(ids.constructor === Array) {
+    if (ids.constructor === Array) {
       ids.forEach(id => {
-        this._map._map.on(event,id,callback);
+        this._map._map.on(event, id, callback);
         this._mapEvents[event][id] = callback;
       });
-    }else {
-      this._map._map.on(event,ids,callback);
-      this._mapEvents[event][ids] = callback;      
+    } else {
+      this._map._map.on(event, ids, callback);
+      this._mapEvents[event][ids] = callback;
     }
     return this;
   },
 
-  offAll: function() {
-    _.each(this._mapEvents, function(childs,event) {
-      _.each(childs, function(callback, name) {
-        this._map._map.off(event,name,callback);
+  offAll: function () {
+    _.each(this._mapEvents, function (childs, event) {
+      _.each(childs, function (callback, name) {
+        this._map._map.off(event, name, callback);
       }.bind(this))
     }.bind(this))
   },
 
-  onClose: function() {
+  onClose: function () {
     this.offAll();
   },
 
   /**
    * @deprecated
    */
-  setInteractivity: function(label, properties = [], deviceViewLink = false) {
+  setInteractivity: function (label, properties = [], deviceViewLink = false) {
     console.warn('setInteractivity is DEPRECATED. Please use setPopup instead.')
-    this.on('click',this.layers.map(l => l.id), function(e) {
+    this.on('click', this.layers.map(l => l.id), function (e) {
       let mpopup = new mapboxgl.Popup()
-      .setLngLat(e.lngLat);
-      if(deviceViewLink) {
-        deviceViewLink = deviceViewLink.replace('{{device}}',e.features[0].properties.id_entity);
+        .setLngLat(e.lngLat);
+      if (deviceViewLink) {
+        deviceViewLink = deviceViewLink.replace('{{device}}', e.features[0].properties.id_entity);
       }
       mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label,properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
+        .drawTemplate(label, properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
@@ -111,7 +111,7 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
    *  - output: HTML Output
    *  - classes: String of classes for parent.
    */
-  setPopup: function(classes, label, templates = []) {
+  setPopup: function (classes, label, templates = []) {
     // If it exists the attribute "hasPopup", we only apply
     // the "Popup" a these layers otherwise all layers
     // will have "Popup"
@@ -119,44 +119,61 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       ? this.layers.filter(l => l.hasPopup)
       : this.layers;
 
-    this.on('click', layersWithPopups.map(l => l.id), function(e) {
+    this.on('click', layersWithPopups.map(l => l.id), function (e) {
       let mpopup = new mapboxgl.Popup()
-      .setLngLat(e.lngLat);
+        .setLngLat(e.lngLat);
 
       var fullyProcessedTemplate = this.popupTemplate
-        .drawTemplatesRow(classes,label,templates, e, mpopup)
+        .drawTemplatesRow(classes, label, templates, e, mpopup)
 
       mpopup.setHTML(fullyProcessedTemplate).addTo(this._map._map);
-      
+
     }.bind(this));
     return this;
   },
 
-  setHoverable: function(isHoverable) {
+  setHoverable: function (isHoverable) {
     if (isHoverable) {
-      this.on('mouseenter',_.map(this.layers,function(l) {return l.id}), function() {
+      this.on('mouseenter', _.map(this.layers, function (l) { return l.id }), function () {
         this._map._map.getCanvas().style.cursor = 'pointer';
       }.bind(this));
 
-      this.on('mouseleave',_.map(this.layers,function(l) {return l.id}), function() {
+      this.on('mouseleave', _.map(this.layers, function (l) { return l.id }), function () {
         this._map._map.getCanvas().style.cursor = '';
       }.bind(this));
     }
     return this;
   },
 
-  _success: function(change) {
-    this.dataSource = (change.changed.type)? change.changed : {type: "FeatureCollection", features: []},
-    this._map.getSource(this._idSource).setData(this.dataSource);
-    this._map._sources.find(function(src) {
-      return src.id === this._idSource;
-    }.bind(this)).data = {'type': 'geojson', 'data': this.dataSource};
+  _success: function (change) {
+    this.dataSource = (change.changed.type)
+      ? change.changed
+      : { 
+          type: 'FeatureCollection', 
+          features: change.changed.features || [] 
+        },
+
+    // Change the data in layer
+    this._map.getSource(this._idSource)
+      .setData(this.dataSource);
+    this._map._sources
+      .find(function (src) {
+        return src.id === this._idSource;
+      }.bind(this))
+      .data = { 
+        type: 'geojson',
+        data: this.dataSource 
+      };
+
+    // The event is launched
+    this.trigger('update', { id: this._idSource } );
+
     return change;
   },
 
-  _error: function() {
+  _error: function () {
     console.error("Error");
   }
 
-  
+
 });

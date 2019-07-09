@@ -302,7 +302,7 @@ App.nl2br = function nl2br(str, is_xhtml) {
  */
 App.formatDateTime = function(date, format){
   if (typeof format === 'undefined') {
-    format = 'DD/MM/YYYY HH:mm';
+    format = 'DD/MM/YYYY - HH:mm';
   }
   return moment.utc(date).local().format(format);
 }
@@ -613,6 +613,13 @@ $(function() {
   $('body').on('click', 'a', function (e){
     var attr = $(this).attr('jslink');
     var href = $(this).attr('href');
+    var blank = $(this).attr('target') === '_blank';
+
+    if (blank) {
+      if (!href.includes('/' + App.lang + '/'))
+        $(this).attr('href', '/' + App.lang + href);
+      return;
+    }
 
     //Prevent update url history when clicking a link to the current page
     if (href && href.slice(1)  === Backbone.history.getFragment()) { 
