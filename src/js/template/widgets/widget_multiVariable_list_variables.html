@@ -1,12 +1,12 @@
 <div class="tags">
   <%_.each(data, function(dato, index) { %>
-    <% 
+    <%
       __color = colors[index];
-      if (typeof colors === 'function') { 
+      if (typeof colors === 'function') {
         __color = colors(dato.realKey);
       }
     %>
-      
+
   <div class="btnLegend <%= disabledList[dato.realKey] ? 'inactive' : ''%>"
        id="<%=dato.realKey%>"
        tag="<%=index%>"
@@ -27,21 +27,24 @@
       <span class="icon">
         <img class="iconSelected"
              src="<%=App.getPictureAgg(currentAggs[dato.realKey])%>" />
-      </span><div class="varsel">
-        <ul data-id="<%=dato.realKey%>">
-          <%_.each(dato.aggs, function (v) { %>
-          <li data-agg="<%=v%>" class="<%=v == currentAggs[dato.realKey].toUpperCase() ? 'selected':''%>">
-            <span class="icon">
-              <img class="iconPopup"
-                  src="<%=App.getPictureAgg(v)%>" />
-            </span>
-            <span class="text last">
-              <%=App.getAggStr(v)%>
-            </span>
-          </li>
+      </span>
+        <% if (dato.aggs.length) { %>
+        <div class="varsel">
+          <ul data-id="<%=dato.realKey%>">
+            <%_.each(dato.aggs, function (v) { %>
+            <li data-agg="<%=v%>" class="<%=v == currentAggs[dato.realKey].toUpperCase() ? 'selected':''%>">
+              <span class="icon">
+                <img class="iconPopup"
+                    src="<%=App.getPictureAgg(v)%>" />
+              </span>
+              <span class="text last">
+                <%=App.getAggStr(v)%>
+              </span>
+            </li>
           <%})%>
         </ul>
       </div>
+      <% } %>
     </a>
     <% } %>
   </div>
