@@ -438,7 +438,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             if ((typeof c.aggs !== undefined && Array.isArray(c.aggs) && !c.aggs.includes('NOAGG'))
               && (_.isEmpty(this._aggDefaultValues) || (currentDefaultAgg !== 'NONE'))) {
               if (typeof currentDefaultAgg === undefined || !_.contains(c.aggs, currentDefaultAgg.toUpperCase())) {
-                c.currentAgg = c.aggs ? c.aggs[0] : null;
+                c.currentAgg = c.aggs && c.aggs.length > 0
+                  ? c.aggs[0]
+                  : this._aggDefaultValues[c.realKey] || null;
                 this.collection.options.agg[c.realKey] = c.currentAgg;
                 internalData.currentAggs[c.realKey] = c.currentAgg;
               } else {
@@ -499,7 +501,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
   /**
    * Get the aggregations variable
-   * 
+   *
    * @return {Array} aggregation
    */
   _getAggregationsVariable: function (variable) {
