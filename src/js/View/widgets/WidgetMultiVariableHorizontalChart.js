@@ -106,7 +106,8 @@ App.View.Widgets.MultiVariableHorizontalChart = Backbone.View.extend({
 
     this.chart.tooltip.classes('default')
 
-  	d3.select(this.$('.chart')[0])
+    d3.select(this.$('.chart')[0])
+      .classed('without-data', true)
 		 	.datum(this.collection.toJSON())
     	.call(this.chart)
     ;
