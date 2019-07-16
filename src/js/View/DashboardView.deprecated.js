@@ -190,7 +190,7 @@ App.View.Dashboard = Backbone.View.extend({
         breadcrumb : breadcrumb
       });
 
-      this.$('.title_page').text('Dashboard de Riego');
+      this.$('.title_page').text('Estado General');
       var m = new App.Model.Widgets.Base({
         entities : ['watering.sosteco.weatherstation','watering.sosteco.solenoidvalve','watering.sosteco.sensor'],
         location : this.scopeModel.get('location'),
@@ -342,7 +342,7 @@ App.View.Dashboard = Backbone.View.extend({
         'className': 'lvigauge',
         'var_id': 'waste.ilv.indicator',
         // 'timeinstant':timeinstant
-        'date': scope === 'guadalajara' ? new Date(2019, 4, 1) : new Date(2018, 7, 1),
+        'date': scope === 'guadalajara' ? new Date(2019, 5, 1) : new Date(2018, 7, 1),
         'url': '/' + scope + '/waste/indicators',
         'extra_info': {
           'unit': '%',
