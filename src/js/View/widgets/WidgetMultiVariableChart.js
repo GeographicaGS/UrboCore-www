@@ -411,13 +411,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             c.color = this._multiVariableModel.colorsFn(c.realKey)
           }
 
-          // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
-          // Remove 'SUM' from variables (metadata)
-          if (c.realKey.indexOf('aq_cons.sensor') > -1 && c.aggs.indexOf('SUM') > -1) {
-            c.aggs.splice(c.aggs.indexOf('SUM'), 1);
-          }
-          // END TODO
-
           //Inicializacion de la estructura interna de datos
           var internalData = this._internalData;
           var meta = App.mv().getVariable(c.realKey);
@@ -438,7 +431,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             if ((typeof c.aggs !== undefined && Array.isArray(c.aggs) && !c.aggs.includes('NOAGG'))
               && (_.isEmpty(this._aggDefaultValues) || (currentDefaultAgg !== 'NONE'))) {
               if (typeof currentDefaultAgg === undefined || !_.contains(c.aggs, currentDefaultAgg.toUpperCase())) {
-                c.currentAgg = c.aggs ? c.aggs[0] : null;
+                c.currentAgg = c.aggs && c.aggs.length > 0
+                  ? c.aggs[0]
+                  : this._aggDefaultValues[c.realKey] || null;
                 this.collection.options.agg[c.realKey] = c.currentAgg;
                 internalData.currentAggs[c.realKey] = c.currentAgg;
               } else {
@@ -499,7 +494,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
   /**
    * Get the aggregations variable
-   * 
+   *
    * @return {Array} aggregation
    */
   _getAggregationsVariable: function (variable) {
@@ -648,7 +643,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var chartRect = d3
         .selectAll(_this.$('.chart > .nvd3 .nv-focus'));
       var g = chartRect.append('g').attr({ class: 'th-groups' });
-      const lastDate = _this.data.models[0].get('values')[_this.data.models[0].get('values').length - 1].x
+
       _this._multiVariableModel.yAxisThresholds.forEach(threshold => {
         var thresholdGroup = g.append('g').attr({ class: 'thresholdGroup' });
         var height = _this.chart.yScale()(threshold.startValue) - _this.chart.yScale()(threshold.endValue);
