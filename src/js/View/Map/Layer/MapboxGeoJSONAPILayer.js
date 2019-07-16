@@ -53,8 +53,8 @@ App.View.Map.Layer.MapboxGeoJSONAPILayer = App.View.Map.Layer.MapboxGLLayer.exte
    * @param {Object} model - model with server data
    */
   _success: function (model) {
-    var response = (model.changed && model.changed.features)
-      ? model.changed
+    var response = (model.changed && model.changed.response && model.changed.response.features)
+      ? model.changed.response
       : { type: 'FeatureCollection', features: [] };
 
     // Set the response into the source
