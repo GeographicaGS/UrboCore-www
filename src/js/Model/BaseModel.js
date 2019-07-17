@@ -214,11 +214,11 @@ App.Model.CartoSqlApiV2Model = Backbone.Model.extend({
   /**
    * Customizable "fetch" function to model
    */
-  fetch: function () {
+  fetch: function (options) {
     var params = _.extend({}, {
       format: this.options.format,
       q: this.options.q
-    });
+    }, options || {});
     var currentUrl = this.url() || false;
 
     if (params.q && currentUrl) {

@@ -30,21 +30,30 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   layers: [],
   popupTemplate: new App.View.Map.MapboxGLPopup('#map-mapbox_base_popup_template'),
 
-
   initialize: function (model, body, legend, map) {
     this._map = map;
     this._model = model;
     this.legendConfig = legend;
     this._mapEvents = {};
-    this._map.addSource(this._idSource, {
-      'type': 'geojson',
-      'data': {
-        "type": "FeatureCollection",
-        "features": []
-      },
-    });
+
+    // Add the source data in the beginning
+    if (!this._map.getSource(this._idSource)) {
+      this._map.addSource(this._idSource,
+        _.extend(
+          {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: []
+            }
+          }, this._sourceOptions || {})
+      );
+    }
+
+    // Add the differents layers to map
     this._map._layers = this._map._layers.concat(this._layersConfig());
     this._map.addLayers(this._layersConfig());
+
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
     this.addToLegend();
@@ -120,13 +129,16 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
       : this.layers;
 
     this.on('click', layersWithPopups.map(l => l.id), function (e) {
-      let mpopup = new mapboxgl.Popup()
-        .setLngLat(e.lngLat);
+      // To avoid open the tooltip when we click on "cluster"
+      if (e.features && 
+        typeof e.features[0].properties.cluster === 'undefined') {
+        var mpopup = new mapboxgl.Popup()
+          .setLngLat(e.lngLat);
+        var fullyProcessedTemplate = this.popupTemplate
+          .drawTemplatesRow(classes, label, templates, e, mpopup)
 
-      var fullyProcessedTemplate = this.popupTemplate
-        .drawTemplatesRow(classes, label, templates, e, mpopup)
-
-      mpopup.setHTML(fullyProcessedTemplate).addTo(this._map._map);
+        mpopup.setHTML(fullyProcessedTemplate).addTo(this._map._map);
+      }
 
     }.bind(this));
     return this;
