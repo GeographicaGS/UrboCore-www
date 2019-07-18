@@ -135,7 +135,8 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
 
   insertLinebreaks: function (t, d, width) {
     var txt = this.xAxisFunction ? this.xAxisFunction(d) : d;
-    if(width<3 && txt.length> 4){
+    
+    if(width<10 && txt.length> 4){
       width = 30;
     }
     var el = d3.select(t);
