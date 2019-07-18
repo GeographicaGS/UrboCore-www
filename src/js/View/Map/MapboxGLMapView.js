@@ -136,6 +136,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   loaded: function () {
     this.mapChanges.set({ 'loaded': true });
     this._onMapLoaded();
+    // Add cluster sources to map
+    this.addClusterSourcesToMap();
   },
 
   /**
@@ -211,9 +213,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     return this._map.getSource(idSource);
   },
 
-  updateData: function (layer) {
-    //this._map.getSource(layer._idSource).setData(data);
-  },
+  updateData: function (layer) {},
 
   /**
    * Add layers to the map
@@ -222,7 +222,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
    */
   addLayers: function (layers) {
     _.each(layers, function (layer) {
-      if (!this._map.getLayer(layer.id)) {
+      if (typeof this._map.getLayer(layer.id) === 'undefined') {
         // Add layers to map
         this._map.addLayer(layer);
       }
@@ -230,9 +230,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   /**
-   * Add a new cluster source in map
+   * Add "_clusterSources" to the map
    */
-  addClusterSource: function () {
+  addClusterSourcesToMap: function () {
     _.each(this._clusterSources.toJSON(), function (element) {
       if (typeof this._map.getSource(element.id) === 'undefined') {
         var options = {
@@ -269,14 +269,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
     _.each(this._clusterSources.models, function (cluster) {
       // Get all points from source relationated
       var features = [];
-      var clusterOptions = cluster.get('options');
+      var clusterChildren = cluster.get('children');
 
       _.each(this._map.getStyle().sources, function (source, sourceId) {
         if (source.cluster &&
           source.type === 'geojson' &&
           source.data.features &&
           source.data.features.length > 0 &&
-          sourceId === clusterOptions.sourceId) {
+          clusterChildren.includes(sourceId)) {
           // We fill the "features" variable
           _.each(source.data.features, function (item) {
             features.push(item);
@@ -285,10 +285,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
       }.bind(this));
 
       // We fill the data
-      if (features.length > 0) {
+      if (features.length > 0 && 
+        typeof this._map.getSource(cluster.get('id')) !== 'undefined') {
         // Set the response into the source
-        this._map
-          .getSource(cluster.get('id'))
+        this._map.getSource(cluster.get('id'))
           .setData({
             type: 'FeatureCollection',
             features: features

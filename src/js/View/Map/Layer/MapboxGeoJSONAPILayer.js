@@ -69,17 +69,34 @@ App.View.Map.Layer.MapboxGeoJSONAPILayer = App.View.Map.Layer.MapboxGLLayer.exte
    * @param {Object} sourceOptions - model with server data
    */
   _addClusterSources: function (mapView, sourceId, sourceOptions) {
-    mapView._clusterSources.set({
-      id: sourceOptions.clusterSourceId || 'source-cluster',
-      data: {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: []
-        }
-      },
-      options: _.extend({}, sourceOptions, { sourceId: sourceId })
+    sourceOptions = _.defaults(sourceOptions || {}, {
+      clusterSourceId: 'source-cluster'
     });
+
+    var clusterSources = mapView._clusterSources;
+
+    if (clusterSources.toJSON().length === 0) {
+      // Add new entry
+      clusterSources.add({
+        id: sourceOptions.clusterSourceId,
+        children: [sourceId],
+        data: {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: []
+          }
+        },
+        options: _.extend({}, sourceOptions)
+      });
+    } else {
+      // Add new child into the entry
+      _.each(clusterSources.models, function (cluster) {
+        if (cluster.get('id') === sourceOptions.clusterSourceId) {
+          cluster.set('children', cluster.get('children').concat(sourceId));
+        }
+      });
+    }
   },
 
   /**
