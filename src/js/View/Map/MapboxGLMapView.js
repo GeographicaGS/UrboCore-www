@@ -24,6 +24,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _availableBasemaps: ['positron', 'dark', 'ortofoto'],
   // Differents cluster sources
   _clusterSources: new Backbone.Collection([]),
+  // Original data about the points modified
+  _clusterSourcesSaved: [],
   _currentBasemap: 'positron',
   _is3dActive: false,
   // map default options
@@ -138,6 +140,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._onMapLoaded();
     // Add cluster sources to map
     this.addClusterSourcesToMap();
+    // We disable the variable
+    App.ctx.set('clusterEventLaunched', false);
   },
 
   /**
@@ -245,9 +249,13 @@ App.View.Map.MapboxView = Backbone.View.extend({
         // Add the source cluster
         this.addSource(element.id, options);
         // Setup the cluster layers
-        this.setupClusterSource(element.id, { paint: element.options.paint || null });
+        this.setupClusterLayer(element.id, element.options || null);
       }
     }.bind(this));
+
+    // The event is launched when all sources cluster
+    // were added to map
+    this.trigger('added-cluster');
   },
 
   /**
@@ -315,8 +323,19 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * @param {String} sourceId - source identification
    * @param {Object} optionsLayer - options to setup the cluster layer
    */
-  setupClusterSource: function (sourceId, optionsLayer) {
+  setupClusterLayer: function (sourceId, optionsLayer) {
+
+    // Default options
+    optionsLayer = _.defaults(optionsLayer || {}, {
+      paint: null
+    });
+
+    var layerClusterCircle = 'clusters-' + sourceId;
+    var layerClusterNumber = 'clusters-count-' + sourceId;
     var currentMap = this._map;
+    var findAndSaveSourceFromFeature = this._findAndSaveSourceFromFeature;
+    var modifyAndSetSources = this._modifyAndSetSources;
+    var resetClusterSources = this._resetClusterSources;
     var defaultPaintOptions = {
       'circle-color': [
         'step',
@@ -330,73 +349,99 @@ App.View.Map.MapboxView = Backbone.View.extend({
       'circle-radius': [
         'step',
         ['get', 'point_count'],
-        10,
-        5, // number of nearby points
-        15,
-        10, // number of nearby points
         20,
-        15, // number of nearby points
+        5, // number of nearby points
         25,
-        20, // number of nearby points
+        10, // number of nearby points
         30,
+        15, // number of nearby points
+        35,
+        20, // number of nearby points
+        40,
         25, // number of nearby points
-        35
+        45
       ]
     };
 
-    // Layers draws the circle color and size
-    if (!currentMap.getLayer('clusters-' + sourceId)) {
-      var clusterLayer = {
-        id: 'clusters-' + sourceId,
-        hasPopup: false, // To show "popup" when click on this layer
+    /**
+     * Draw the colour circles (cluster)
+     */
+    if (!currentMap.getLayer(layerClusterCircle)) {
+      // Add layer to map
+      currentMap.addLayer({
+        id: layerClusterCircle,
         type: 'circle',
         source: sourceId,
         filter: ['has', 'point_count'],
         paint: optionsLayer.paint
           ? paintOptions.paint
           : defaultPaintOptions
-      };
+      });
 
-      // Add layer
-      currentMap.addLayer(clusterLayer);
-
-      // event when we click on cluster layer
-      currentMap.on('click', 'clusters-' + sourceId, function (event) {
-        var features = currentMap.queryRenderedFeatures(
-          event.point,
-          {
-            layers: ['clusters-' + sourceId]
-          }
+      // event "click" on cluster layer
+      currentMap.on('click', layerClusterCircle, function (event) {
+        var features = 
+          currentMap.queryRenderedFeatures(
+            event.point,
+            { layers: [layerClusterCircle]}
         );
         var clusterId = features[0].properties.cluster_id;
 
-        // We do zoom
-        currentMap.getSource(sourceId)
-          .getClusterExpansionZoom(clusterId, function (err, zoom) {
-            if (err) return;
-            currentMap.easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom
+        // Event - we do zoom
+        if (currentMap.getZoom() < optionsLayer.clusterMaxZoom) {
+          // When the "clusterEventLaunched" is true any other event
+          // associated a map layer (tooltip) is launched
+          App.ctx.set('clusterEventLaunched', true);
+
+          currentMap.getSource(sourceId)
+            .getClusterExpansionZoom(clusterId, function (err, zoom) {
+              if (err) return;
+              currentMap.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom: zoom
+              });
             });
-          });
+        }
+
+        // Event- move the features (icons) that 
+        // they are in the same position
+        if (currentMap.getZoom() >= optionsLayer.clusterMaxZoom) {
+          // When the "clusterEventLaunched" is true any other event
+          // associated a map layer (tooltip) is launched
+          App.ctx.set('clusterEventLaunched', true);
+
+          currentMap.getSource(sourceId)
+          .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
+            // reset the points
+            resetClusterSources.apply(this);
+            _.each(clusterFeatures, function (clusterFeature) {
+              // Find any source associated to Feature and save it
+              findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
+            }.bind(this));
+            // Prepare and modify source data and set into source
+            modifyAndSetSources.apply(this);
+          }.bind(this));
+        }
 
         return false;
       }.bind(this));
 
-      // Change styles mouse (cursor)
-      currentMap.on('mouseenter', 'clusters-' + sourceId, function () {
+      // event "mouseenter" on cluster layer (change styles)
+      currentMap.on('mouseenter', layerClusterCircle, function () {
         currentMap.getCanvas().style.cursor = 'pointer';
       });
-      currentMap.on('mouseleave', 'clusters-' + sourceId, function () {
+      // event "mouseleave" on cluster layer (change styles)
+      currentMap.on('mouseleave', layerClusterCircle, function () {
         currentMap.getCanvas().style.cursor = '';
       });
     }
 
-    // Layer shows the items number
-    if (!currentMap.getLayer('clusters-count-' + sourceId)) {
-      // counter (number)
-      var clusterCountLayer = {
-        id: 'clusters-count-' + sourceId,
+    /**
+     * Draw the layer shows the items number (cluster)
+     */
+    if (!currentMap.getLayer(layerClusterNumber)) {
+      currentMap.addLayer({
+        id: layerClusterNumber,
         hasPopup: false, // To show "popup" when click on this layer
         type: 'symbol',
         source: sourceId,
@@ -405,9 +450,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
           'text-field': '{point_count_abbreviated}',
           'text-size': 12
         },
-      };
-      // Add source-layer (is required to layer that use a vector source)
-      currentMap.addLayer(clusterCountLayer);
+      });
     }
   },
 
@@ -423,6 +466,136 @@ App.View.Map.MapboxView = Backbone.View.extend({
    */
   _applyFilterToCluster: function () {
     // Extend on implementation
+  },
+
+  /**
+   * Get the layers from a feature (device in map)
+   * 
+   * @param {Object} feature - feature to search
+   * @return {Object} - source from feature
+   */
+  _findAndSaveSourceFromFeature: function (feature) {
+    var clusterSources = this._clusterSources.toJSON(); // clusters map
+    var dataSource = null;
+    var index = 0;
+
+    do {
+      var tmpSource = _.find(clusterSources[index].children, function (source) {
+        // Get data source
+        var currentSourceData = this.getSource(source);
+
+        // We looking for the element "feature"
+        return typeof currentSourceData !== 'undefined'
+          ? _.some(currentSourceData._data.features, function (currentFeature) {
+              return feature.properties.id_entity === currentFeature.properties.id_entity;
+            }.bind(this))
+          : false;
+      }.bind(this));
+
+      if (typeof tmpSource !== 'undefined') {
+        dataSource = this.getSource(tmpSource);
+      }
+      
+      index++;
+
+    } while (dataSource === null || index < clusterSources.length);
+
+    // Save source into the "_clusterSourcesSaved"
+    this._saveClusterSourcesSaved(dataSource, feature.properties.id_entity);
+  },
+
+  /**
+   * Save (set) a new entry in variable "_clusterSourcesSaved"
+   * 
+   * @param {Object} sourceData - data about the cluster sources
+   * @param {String} entity_id - entity_id associated to feature
+   */
+  _saveClusterSourcesSaved: function (sourceData, entity_id) {
+    var sourceIndex = this._clusterSourcesSaved.findIndex(function (source) {
+      return source.data.id === sourceData.id;
+    });
+
+    if (sourceIndex > -1) {
+      this._clusterSourcesSaved[sourceIndex]
+        .entities.push(entity_id);
+    } else {
+      this._clusterSourcesSaved.push({
+        data: sourceData,
+        entities: [entity_id]
+      });
+    }
+  },
+
+  /**
+   * Modify the differents sources associated to cluster to show the
+   * draw point in map like a cicle
+   */
+  _modifyAndSetSources: function () {
+    // Copy array with a new reference
+    var tmpClusterSourcesSaved = this._clusterSourcesSaved.slice();
+    var totalItems = _.reduce(tmpClusterSourcesSaved, function (sumTotal, source) {
+      sumTotal += source.entities.length;
+      return sumTotal;
+    }, 0);
+    var angle = 360/totalItems;
+
+    _.each(tmpClusterSourcesSaved, function (source, sourceIndex) {
+      var sourceData = _.extend({}, source.data);
+      var sourceDataFeatures = sourceData._data.features.slice();
+      var entities = source.entities;
+
+      _.each(sourceDataFeatures, function (feature, featureIndex) {
+        var matchIndex = 0;
+        // Modify the point and save
+        if (entities.includes(feature.properties.id_entity)) {
+          var newPosition = this._calculateNewPosition(
+            feature.geometry.coordinates,
+            {
+              distance: 40,
+              bearing: angle*((sourceIndex*entities.length) + matchIndex),
+              options: {
+                units: 'meters'
+              }
+            }
+          );
+
+          // Set new value into the sources data
+          sourceData._data.features[featureIndex].geometry.coordinates =
+            newPosition.geometry.coordinates;
+
+          // Add to index
+          matchIndex++;
+        }
+      }.bind(this));
+
+      // Set the modify data into the source
+      this._map.getSource(source.data.id)
+        .setData(sourceData._data);
+
+    }.bind(this));
+  },
+
+  /**
+   * Reset the cluster sources modify with the original
+   */
+  _resetClusterSources: function () {
+    _.each(this._clusterSourcesSaved, function (source) {
+      // Set the modify data into the source
+      this._map.getSource(source.data.id)
+        .setData(source.data._data);
+    }.bind(this));
+  },
+
+  /**
+   * Get a new coordinate (point) when we have a source
+   * point and other options
+   * 
+   * @param {Array} coordinate - coordinate point
+   * @param {Object} params - options various
+   * @return {Object} - new point
+   */
+  _calculateNewPosition: function (coordinate, params) {
+    return App.Utils.getPointByDistanceAndAngle(coordinate, params);
   },
 
   changeBasemap: function (name) {
