@@ -84,9 +84,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
       }
     }.bind(this));
 
-    // When a item is added we created the sources in the map
-    this.listenTo(this._clusterSources, 'add', this.addClusterSource);
-
     // filterModel change
     if (options.filterModel) {
       this.listenTo(options.filterModel, 'change', _.bind(function () {
@@ -520,7 +517,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
         .entities.push(entity_id);
     } else {
       this._clusterSourcesSaved.push({
-        data: sourceData,
+        data: _.extend({}, sourceData),
         entities: [entity_id]
       });
     }
@@ -531,46 +528,57 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * draw point in map like a cicle
    */
   _modifyAndSetSources: function () {
-    // Copy array with a new reference
-    var tmpClusterSourcesSaved = this._clusterSourcesSaved.slice();
-    var totalItems = _.reduce(tmpClusterSourcesSaved, function (sumTotal, source) {
+    // Copy from "_clusterSourcesSaved"
+    var _copyClusterSourcesSaved = _.reduce(this._clusterSourcesSaved, function (sumSources, source) {
+      sumSources.push(_.clone(source));
+      return sumSources;
+    }, []);
+
+    var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
       sumTotal += source.entities.length;
       return sumTotal;
     }, 0);
     var angle = 360/totalItems;
 
-    _.each(tmpClusterSourcesSaved, function (source, sourceIndex) {
-      var sourceData = _.extend({}, source.data);
-      var sourceDataFeatures = sourceData._data.features.slice();
-      var entities = source.entities;
-
-      _.each(sourceDataFeatures, function (feature, featureIndex) {
+    _.each(_copyClusterSourcesSaved, function (source, sourceIndex) {
+      var modifyFeatures = [];
+      _.each(source.data._data.features, function (feature, featureIndex) {
         var matchIndex = 0;
+
         // Modify the point and save
-        if (entities.includes(feature.properties.id_entity)) {
+        if (source.entities.includes(feature.properties.id_entity)) {
           var newPosition = this._calculateNewPosition(
             feature.geometry.coordinates,
             {
               distance: 40,
-              bearing: angle*((sourceIndex*entities.length) + matchIndex),
+              bearing: angle*((sourceIndex*source.entities.length) + matchIndex),
               options: {
                 units: 'meters'
               }
             }
           );
-
-          // Set new value into the sources data
-          sourceData._data.features[featureIndex].geometry.coordinates =
-            newPosition.geometry.coordinates;
-
           // Add to index
           matchIndex++;
         }
+
+        // Set new value into the sources data
+        modifyFeatures.push({
+          geometry: newPosition && newPosition.geometry
+            ? newPosition.geometry
+            : feature.geometry,
+          properties: feature.properties,
+          type: feature.type
+        })
+
       }.bind(this));
 
       // Set the modify data into the source
       this._map.getSource(source.data.id)
-        .setData(sourceData._data);
+        .setData(
+          {
+            type: 'FeatureCollection',
+            features: modifyFeatures
+          });
 
     }.bind(this));
   },
@@ -584,6 +592,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
       this._map.getSource(source.data.id)
         .setData(source.data._data);
     }.bind(this));
+    // reset Array
+    this._clusterSourcesSaved = [];
   },
 
   /**
@@ -674,12 +684,14 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   zoom: function (e) {
-    let currentZoom = this._map.getZoom();
+    var currentZoom = this._map.getZoom();
     if (e.target.classList.contains('out')) {
       this._map.setZoom(currentZoom - 1)
     } else {
       this._map.setZoom(currentZoom + 1)
     }
+    // reset positions
+    this._resetClusterSources();
   },
 
   /**
