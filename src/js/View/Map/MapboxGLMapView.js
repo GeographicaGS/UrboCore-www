@@ -139,6 +139,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.addClusterSourcesToMap();
     // We disable the variable
     App.ctx.set('clusterEventLaunched', false);
+    // We disable the tooltips
+    App.ctx.set('mapTooltipIsShow', false);
   },
 
   /**
