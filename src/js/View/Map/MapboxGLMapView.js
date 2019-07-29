@@ -259,6 +259,13 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   /**
+   * reset "_clusterSources"
+   */
+  resetClusterSourcesToMap: function () {
+    this._clusterSources.reset();
+  },
+
+  /**
    * update data (update) to array "_clusterSources"
    */
   updateDataToClusterSource: function () {
@@ -335,7 +342,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     var currentMap = this._map;
     var findAndSaveSourceFromFeature = this._findAndSaveSourceFromFeature;
     var modifyAndSetSources = this._modifyAndSetSources;
-    var resetClusterSources = this._resetClusterSources;
+    var resetClusterSources = this._resetClusterSourcesSaved;
     var defaultPaintOptions = {
       'circle-color': [
         'step',
@@ -588,7 +595,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   /**
    * Reset the cluster sources modify with the original
    */
-  _resetClusterSources: function () {
+  _resetClusterSourcesSaved: function () {
     _.each(this._clusterSourcesSaved, function (source) {
       // Set the modify data into the source
       this._map.getSource(source.data.id)
@@ -691,13 +698,13 @@ App.View.Map.MapboxView = Backbone.View.extend({
       this._map.setZoom(currentZoom - 1);
       // reset positions
       if (currentZoom > this._mapOptions.minZoom) {
-        this._resetClusterSources();
+        this._resetClusterSourcesSaved();
       }
     } else {
       this._map.setZoom(currentZoom + 1);
       // reset positions
       if (currentZoom < this._mapOptions.maxZoom) {
-        this._resetClusterSources();
+        this._resetClusterSourcesSaved();
       }
     }
   },
@@ -712,7 +719,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._map.remove();
     this.stopListening();
     this.basemapSelector.close(),
-      this.legend.close();
+    this.legend.close();
+
+    // reset cluster sources
+    this.resetClusterSourcesToMap();
 
     // Reset BBOX
     this._resetBBox();
