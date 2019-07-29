@@ -32,6 +32,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _mapDefaultOptions: {
     center: [0, 0],
     container: null,
+    distancePointToCluster: 40, //metres
     interactive: true,
     minZoom: 0,
     maxZoom: 22,
@@ -541,19 +542,18 @@ App.View.Map.MapboxView = Backbone.View.extend({
       return sumTotal;
     }, 0);
     var angle = 360/totalItems;
+    var matchIndex = 0;
 
     _.each(_copyClusterSourcesSaved, function (source, sourceIndex) {
       var modifyFeatures = [];
       _.each(source.data._data.features, function (feature, featureIndex) {
-        var matchIndex = 0;
-
         // Modify the point and save
         if (source.entities.includes(feature.properties.id_entity)) {
           var newPosition = this._calculateNewPosition(
             feature.geometry.coordinates,
             {
-              distance: 40,
-              bearing: angle*((sourceIndex*source.entities.length) + matchIndex),
+              distance: this._mapOptions.distancePointToCluster || 40,
+              bearing: angle*matchIndex,
               options: {
                 units: 'meters'
               }
@@ -688,12 +688,18 @@ App.View.Map.MapboxView = Backbone.View.extend({
   zoom: function (e) {
     var currentZoom = this._map.getZoom();
     if (e.target.classList.contains('out')) {
-      this._map.setZoom(currentZoom - 1)
+      this._map.setZoom(currentZoom - 1);
+      // reset positions
+      if (currentZoom > this._mapOptions.minZoom) {
+        this._resetClusterSources();
+      }
     } else {
-      this._map.setZoom(currentZoom + 1)
+      this._map.setZoom(currentZoom + 1);
+      // reset positions
+      if (currentZoom < this._mapOptions.maxZoom) {
+        this._resetClusterSources();
+      }
     }
-    // reset positions
-    this._resetClusterSources();
   },
 
   /**
