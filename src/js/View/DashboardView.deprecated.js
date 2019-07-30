@@ -191,6 +191,10 @@ App.View.Dashboard = Backbone.View.extend({
       });
 
       this.$('.title_page').text('Estado General');
+      this.$('.title_page').prepend(
+        '<span class="vertical" style="background-color:' +
+        '#00ccff;">' + 'Riego' + '</span>'
+      );
       var m = new App.Model.Widgets.Base({
         entities : ['watering.sosteco.weatherstation','watering.sosteco.solenoidvalve','watering.sosteco.sensor'],
         location : this.scopeModel.get('location'),
