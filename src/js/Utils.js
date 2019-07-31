@@ -466,3 +466,30 @@ App.Utils.setArrayToINSQL = function (data) {
   return currentData;
 }
 
+/**
+ * Get a new coordinate (point) when we have a source
+ * point and other options
+ *
+ * @param {Array} coordinate - coordinate point
+ * @param {Object} params - options various
+ * @return {Object} - new point
+ */
+App.Utils.getPointByDistanceAndAngle = function(coordinate, params) {
+  params = _.defaults(params, {
+    distance: 1,
+    bearing: 90, // angle
+    options: {
+      units: 'kilometers'
+    }
+  });
+
+  // varant bearing angle ranging from -180 to 180 degrees from north
+  if (params.bearing > 180) {
+    params.bearing = params.bearing - 360;
+  }
+
+  var point = turf.point(coordinate);
+
+  return turf.rhumbDestination(point, params.distance, params.bearing, params.options);
+}
+
