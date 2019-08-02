@@ -245,13 +245,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         ? _.bind(this._getUniqueDataEnableToDraw, this)
         : this.data.toJSON();
 
+      // Change Y Axis (The order here is important)
+      this._drawYAxis();
+
       // Put the new data in chart
       this.svgChart
         .datum(chartData)
-        .call(this.chart)
-
-      // Change Y Axis
-      this._drawYAxis();
+        .call(this.chart);
     }
   },
 
@@ -609,27 +609,31 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       }
     }
 
-    // The changes will be applied to the Y Axis
-    this.svgChart
-      .selectAll('.nv-focus .nv-y')
-      .call(this.chart.yAxis);
-
+    // Límites en el eje Y
     if (this._multiVariableModel.yAxisThresholds) {
-      d3.selectAll(this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)')).attr({ class: 'invisible' }).style({ opacity: 0 });
+      d3.selectAll(this.$('.chart > .nvd3 .nv-focus .nv-y > .nv-axis > g > g.tick:not(.zero)'))
+        .attr({ class: 'invisible' })
+        .style({ opacity: 0 });
     }
-
 
     // Force y axis domain
     if (this._multiVariableModel.normalized) {
       if (this._multiVariableModel.yAxisDomain &&
         this._multiVariableModel.yAxisDomain[realKey]) {
         this.chart.forceY(this._multiVariableModel.yAxisDomain[realKey]);
+      } else {
+        this.chart.forceY([0, 1]); // domains normalized
       }
     } else {
       if (this._multiVariableModel.yAxisDomain) {
         this.chart.forceY(this._multiVariableModel.yAxisDomain);
       }
     }
+
+    // The changes will be applied to the Y Axis
+    this.svgChart
+      .selectAll('.nv-focus .nv-y')
+      .call(this.chart.yAxis);
   },
 
   _drawThresholds: function () {
