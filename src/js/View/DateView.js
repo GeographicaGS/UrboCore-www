@@ -306,6 +306,8 @@ App.View.Date = Backbone.View.extend({
       || moment(currentFinishDatePicker).isBefore(this.options.maxDate)
         ? currentFinishDatePicker
         : moment(this.options.maxDate);
+    var IsSameStartModel = start.isSame(this.options.model.get('start'), 'day');
+    var IsSameFinishModel = finish.isSame(this.options.model.get('finish'), 'day');
 
     // Set current (valid) Date
     this.$('.date.start').datepicker('setDate', start.toDate());
@@ -314,11 +316,19 @@ App.View.Date = Backbone.View.extend({
     var diffTime = finish.diff(start, 'days');
 
     if (diffTime <= this.options.maxRange.asDays()) {
-      this.options.model.set('start', start.utc());
-      this.options.model.set('finish', finish.utc());
+      if (!IsSameStartModel) {
+        this.options.model.set('start', start.utc());
+      }
+      if (!IsSameFinishModel) {
+        this.options.model.set('finish', finish.utc());
+      }
     } else {
-      this.options.model.set('start', start.utc());
-      this.options.model.set('finish', start.clone().add(this.options.maxRange).utc());
+      if (!IsSameStartModel) {
+        this.options.model.set('start', start.utc());ç
+      }
+      if (!IsSameFinishModel) {
+        this.options.model.set('finish', start.clone().add(this.options.maxRange).utc());
+      }
     }
   },
 

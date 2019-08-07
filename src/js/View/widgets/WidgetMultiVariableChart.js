@@ -122,7 +122,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.render();
   },
 
-
   /**
    * Setup view events
    */
@@ -132,7 +131,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     // When the user change some parameters from "context"
     this.listenTo(App.ctx, 'change:start change:finish change:bbox',
-      _.debounce(function () {
+      function () {
         if (!this.requestLock) {
           // Block the rest of requests
           this.requestLock = true;
@@ -185,26 +184,26 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           // Render
           this.render();
         }
-      }.bind(this), 250, true));
+      }.bind(this));
 
     // When the user change the chart "step"
     if (this._stepModel) {
       this.collection.options.step = this._stepModel.get('step');
-      this.listenTo(this._stepModel, 'change:step', _.debounce(function () {
-        if (!this.requestLock) {
-          var regex = /\dd/;
+      this.listenTo(this._stepModel, 'change:step',
+        function () {
+          if (!this.requestLock) {
+            var regex = /\dd/;
 
-          this.mvModel.sizeDiff = regex.test(this._stepModel.get('step'))
-            ? 'days'
-            : 'hours';
-          this.collection.fetch({
-            reset: true,
-          });
+            this.mvModel.sizeDiff = regex.test(this._stepModel.get('step'))
+              ? 'days'
+              : 'hours';
+            this.collection.fetch({
+              reset: true,
+            });
 
-          this.render();
-        }
-
-      }.bind(this), 250, true));
+            this.render();
+          }
+        }.bind(this));
     }
   },
 
@@ -781,10 +780,21 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.mvModel
         .yAxisThresholds[this.mvModel.yAxisThresholds.length - 1].endValue
     ];
+    var wrapperY = d3.select(this.$('.chart > .nvd3 > g .nv-axis.nv-y1')[0])
+      .node();
+
+    // Remove ticks from Y Axis 1
+    setTimeout(function () {
+      this.removeTickYAxis1();
+    }.bind(this), 250);
+
+    // If we don't get the wrapper dimensions
+    if (!wrapperY) {
+      return;
+    }
+
     // Wrapper dimensions
-    var wrapRect = d3.select(this.$('.chart > .nvd3 > g .nv-axis.nv-y1')[0])
-      .node()
-      .getBBox();
+    var wrapRect = wrapperY.getBBox();
 
     // If we don't get the wrapper dimensions
     if (wrapRect.width === 0) {
