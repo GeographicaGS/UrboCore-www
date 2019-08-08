@@ -146,20 +146,40 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   _initAggs: function () {
     // Aggregation
     this._aggregationInfo = {};
-    var _this = this;
-    if (this.options.get('showAggSelector') && this.collection.options && this.collection.options.data && this.collection.options.data.agg && this.collection.options.data.agg.length > 0) {
+    if (this.options.get('showAggSelector') &&
+      this.collection.options &&
+      this.collection.options.data &&
+      this.collection.options.data.agg &&
+      this.collection.options.data.agg.length > 0) {
       _.each(this.collection.options.data.vars, function (var_id, idx) {
         var varMetadata = App.mv().getVariable(var_id);
         if (varMetadata && varMetadata.get('var_agg') && varMetadata.get('var_agg').length > 0) {
-          _this._aggregationInfo[var_id] = {
-            available: varMetadata.get('var_agg'),
-            current: _this.collection.options.data.agg[idx]
+          this._aggregationInfo[var_id] = {
+            available: this._sortAggregationsVariable(varMetadata.get('var_agg')),
+            current: this.collection.options.data.agg[idx]
           };
         }
-      });
+      }.bind(this));
     } else {
       this._aggregationInfo = false; // Ensure checks
     }
+  },
+
+  /**
+   * Sort the aggregation variables
+   *
+   * @param {Array} aggs - variable aggregations
+   * @return {Array} - aggregations sorted
+   */
+  _sortAggregationsVariable: function (aggs) {
+    var sortedAggs = ['SUM', 'MAX', 'AVG', 'MIN'];
+    return aggs.sort(function(a, b) {
+      if (sortedAggs.indexOf(a) < sortedAggs.indexOf(b)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
   },
 
   _drawChart: function () {

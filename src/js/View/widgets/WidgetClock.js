@@ -46,6 +46,10 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       this._drawClock();
     });
 
+    if(this.dataModel.get('popupTemplate')){
+      this._template_popup = _.template($(this.dataModel.get('popupTemplate')).html());
+    }
+
     this.render();
   },
 

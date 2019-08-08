@@ -172,6 +172,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // It works with the collection "DeviceTimeSerieChart"
     this.collection.options.agg[realKey] = agg;
     // It works with the collection "TimeSeries"
+    if (!this.collection.options.data) {
+      this.collection.options.data = {};
+    }
     this.collection.options.data.agg = [];
     _.each(this.collection.options.vars, function (value) {
       this.collection.options.data.agg.push(currentAggs[value]);

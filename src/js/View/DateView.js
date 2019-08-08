@@ -109,6 +109,8 @@ App.View.Date = Backbone.View.extend({
     var datepickerOptions = {
       dateFormat: this.options.dateFormat,
       beforeShow: this._placeDatePicker,
+      changeMonth: true,
+      changeYear: true,
       onClose: function () {
         this._close_datepicker();
       }.bind(this)
