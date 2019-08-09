@@ -66,9 +66,9 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
       });
       _.each(response, function (r) {
         _.each(Object.keys(r.data), function (k) {
-          if (!aux[k])
+          if (!aux[k]) {
             aux[k] = [];
-          // if(r.data[k] != null)
+          }
           aux[k].push({
             x: isNaN(r.time) ? new Date(r.time) : r.time,
             y: r.data[k] !== null ? k == 'seconds' ? r.data[k] / 60 : r.data[k] : null
