@@ -90,6 +90,8 @@ App.View.Date = Backbone.View.extend({
     this.listenTo(this.options.model, 'change:start change:finish', this._setValuesInDatePickers);
     // Events - Change date limits
     this.on('change:minDate change:maxDate', this._setMinAndMaxDatesToModel, this);
+    // Enabled o disabled date
+    this.listenTo(this.options.model, 'change:mapTooltipIsShow', this._enabledDate);
 
     _.bindAll(this, '_placeDatePicker');
   },
@@ -329,6 +331,15 @@ App.View.Date = Backbone.View.extend({
    */
   _removeCompact: function () {
     this.$el.removeClass('compact');
+  },
+
+  /**
+   * Enabled/Disabled Date
+   * 
+   * @param {Boolean} enabled - activa o desactiva las fechas
+   */
+  _enabledDate: function () {
+    this.$el.toggleClass('disabled', this.options.model.getMapTooltipIsShow());
   },
 
   /**
