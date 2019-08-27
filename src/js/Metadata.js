@@ -137,12 +137,13 @@
    * @return {Object} - current variable
    */
   metadata.prototype.getVariable = function(variable_id) {
-    // TODO: Remove this hack
+    // TODO: Remove this hack (usado en "irrigation" y "watering")
     if(variable_id == 'seconds') {
       return new Backbone.Model({
-        'id':'seconds',
-        'name':'Tiempo de encendido',
-        'units':'minutos'
+        id:'seconds',
+        name:'Tiempo de encendido',
+        units:'minutos',
+        var_agg: ['SUM']
       });
     }
 

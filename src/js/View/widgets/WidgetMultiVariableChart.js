@@ -714,11 +714,14 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           // Each value to tooltip
           _.each(data.series, function (s) {
             var model = this.data.findWhere({ 'key': s.key });
+            var currentValue = _.find(model.get('values'), function (v) {
+              return v.x.toString() == data.value.toString();
+            });
 
             s['realKey'] = model.get('realKey');
-            s.value = _.find(model.get('values'), function (v) {
-              return v.x.toString() == data.value.toString();
-            }).realY;
+            if (currentValue) {
+              s.value = currentValue.realY;
+            }
 
             // Change value in tooltip
             if (this._multiVariableModel.toolTipValueFunction) {
