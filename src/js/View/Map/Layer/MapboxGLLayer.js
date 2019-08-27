@@ -103,14 +103,25 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
    */
   setInteractivity: function (label, properties = [], deviceViewLink = false) {
     console.warn('setInteractivity is DEPRECATED. Please use setPopup instead.')
+    var mpopup = new mapboxgl.Popup();
+
+    // Change context variable 'mapTooltipIsShow' when tooltip is closed
+    mpopup.on('close', function () {
+      App.ctx.set('mapTooltipIsShow', false);
+    });
+    
     this.on('click', this.layers.map(l => l.id), function (e) {
-      let mpopup = new mapboxgl.Popup()
-        .setLngLat(e.lngLat);
       if (deviceViewLink) {
         deviceViewLink = deviceViewLink.replace('{{device}}', e.features[0].properties.id_entity);
       }
-      mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label, properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
+      mpopup
+        .setLngLat(e.lngLat)
+        .setHTML(this.popupTemplate
+        .drawTemplate(label, properties, e, mpopup, deviceViewLink))
+        .addTo(this._map._map);
+
+      // Change context variable 'mapTooltipIsShow'
+      App.ctx.set('mapTooltipIsShow', true);
     }.bind(this));
     return this;
   },

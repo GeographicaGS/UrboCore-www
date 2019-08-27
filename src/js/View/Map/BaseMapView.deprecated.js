@@ -41,7 +41,6 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
       this.filterModel = options.filterModel;
       this.listenTo(this.filterModel,'change',this.applyFilters);
     }
-
   },
 
   onClose: function(){
@@ -74,6 +73,10 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
     this.map.setView(this.options.center, this.options.zoom);
 
     this.map.on('moveend',this._onMapMoved);
+
+    // popup events
+    this.map.on('popupopen', this._onClickedPopupOpen);
+    this.map.on('popupclose', this._onClickedPopupClose);
 
     var _this = this;
     setTimeout(function(){
@@ -152,6 +155,25 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
         _this.$el.css('cursor', 'auto');
       }
     });
+  },
+
+  /**
+   * When we open a popup
+   * 
+   * @param {*} e - event triggered
+   */
+  _onClickedPopupOpen: function(e) {
+    // Set status tooltip
+    App.ctx.set('mapTooltipIsShow', true);
+  },
+  /**
+   * When we close a popup
+   * 
+   * @param {*} e - event triggered
+   */
+  _onClickedPopupClose: function(e) {
+    // Set status tooltip
+    App.ctx.set('mapTooltipIsShow', false);
   },
 });
 
