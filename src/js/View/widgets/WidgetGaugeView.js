@@ -89,19 +89,17 @@ App.View.Widgets.Gauge = Backbone.View.extend({
     if (varRange['max'] < this.model.get('var_value'))
       varRange['max'] = Math.ceil(this.model.get('var_value'));
 
-
     if (varRange) {
       if (metaData.reverse) {
-        if (this.model.get('var_value') <= varRange.error) {
+        if (this.model.get('var_value') <= varRange.warning) {
           this.$('.co_value .value').addClass('error');
-        } else if (this.model.get('var_value') <= varRange.warning) {
+        } else if (this.model.get('var_value') <= varRange.error) {
           this.$('.co_value .value').addClass('warning');
         }
-
       } else {
-        if (this.model.get('var_value') >= varRange.error) {
+        if (this.model.get('var_value') >= varRange.warning) {
           this.$('.co_value .value').addClass('error');
-        } else if (this.model.get('var_value') >= varRange.warning) {
+        } else if (this.model.get('var_value') >= varRange.error) {
           this.$('.co_value .value').addClass('warning');
         }
       }
