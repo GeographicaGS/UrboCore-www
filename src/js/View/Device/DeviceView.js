@@ -171,7 +171,11 @@ App.View.Device = Backbone.View.extend({
         : new App.View.DeviceRaw({
           model: new Backbone.Model(this.model.toJSON())
         }),
-      'other': otherView
+      'other': App.Utils.getAttrObject(App.View, categoryClassName.concat('.DeviceOther.', entityClassName), false)
+        ? new App.View[categoryClassName].DeviceOther[entityClassName]({
+          model: new Backbone.Model(this.model.toJSON())
+        })
+        : otherView
     };
 
     this._renderTab();

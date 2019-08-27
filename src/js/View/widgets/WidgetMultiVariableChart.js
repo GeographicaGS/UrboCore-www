@@ -41,6 +41,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.collection = options.collection;
     this._multiVariableModel = _.defaults(options.multiVariableModel.toJSON() || {}, {
       aggDefaultValues: [],
+      hideStepSelector: false,
       normalized: true,
       sizeDiff: 'days',
       yAxisLabelDefault: null
