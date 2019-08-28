@@ -94,10 +94,11 @@ App.View.Widgets.Deprecated.Table = Backbone.View.extend({
 
   _downloadCsv: function () {
     this._tableToCsv.options = App.Utils.toDeepJSON(this.collection.options);
+    this._tableToCsv.options.format = 'csv'; // TO GET
     this._tableToCsv.fetch({
       reset: false,
       dataType: 'text',
-      format: 'csv'
+      format: 'csv' // TO POST
     });
   }
 
