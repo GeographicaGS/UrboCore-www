@@ -129,7 +129,20 @@ App.Utils = {
   },
 
   getCartoAccount: function (category) {
-    return App.mv().getCategory(category).get('config').carto.account;
+    var defaultUser = 'urbo-admin';
+
+    if (!category) {
+      return defaultUser;
+    }
+
+    if (App.mv().getCategory(category)
+      && App.mv().getCategory(category).has('config')
+      && App.mv().getCategory(category).get('config').carto
+      && App.mv().getCategory(category).get('config').carto.account) {
+      defaultUser = App.mv().getCategory(category).get('config').carto.account;
+    }
+
+    return defaultUser;
   },
 
   getParameterByName: function (name, url) {
