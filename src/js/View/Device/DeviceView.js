@@ -126,9 +126,6 @@ App.View.Device = Backbone.View.extend({
       case 'watering.sosteco.solenoidvalve':
         otherView = new App.View.Watering.OtherView({ model: new Backbone.Model(this.model.toJSON()) });
         break;
-      case 'irrigation.solenoidvalve':
-        otherView = new App.View.Panels.Irrigation.Devices.OtherView({ model: new Backbone.Model(this.model.toJSON()) });
-        break;
       default:
         otherView = null;
     }
@@ -150,29 +147,29 @@ App.View.Device = Backbone.View.extend({
     });
 
     this._tabs = {
-      'lastdata': App.Utils.getAttrObject(App.View, categoryClassName.concat('.DeviceLastData.', entityClassName), false)
-        ? new App.View[categoryClassName].DeviceLastData[entityClassName]({
+      'lastdata': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceLastData.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceLastData[entityClassName]({
           model: this.model
         })
         : new App.View.DeviceLastData({
           model: this.model
         }),
-      'period': App.Utils.getAttrObject(App.View, categoryClassName.concat('.DevicePeriod.', entityClassName), false)
-        ? new App.View[categoryClassName].DevicePeriod[entityClassName]({
+      'period': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DevicePeriod.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DevicePeriod[entityClassName]({
           model: this.model
         })
         : new App.View.DevicePeriod({
           model: new Backbone.Model(this.model.toJSON())
         }),
-      'raw': App.Utils.getAttrObject(App.View, categoryClassName.concat('.DeviceRaw.', entityClassName), false)
-        ? new App.View[categoryClassName].DeviceRaw[entityClassName]({
+      'raw': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceRaw.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceRaw[entityClassName]({
           model: new Backbone.Model(this.model.toJSON())
         })
         : new App.View.DeviceRaw({
           model: new Backbone.Model(this.model.toJSON())
         }),
-      'other': App.Utils.getAttrObject(App.View, categoryClassName.concat('.DeviceOther.', entityClassName), false)
-        ? new App.View[categoryClassName].DeviceOther[entityClassName]({
+      'other': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceOther.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceOther[entityClassName]({
           model: new Backbone.Model(this.model.toJSON())
         })
         : otherView
