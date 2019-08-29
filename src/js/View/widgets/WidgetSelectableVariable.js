@@ -21,30 +21,35 @@
 'use strict';
 
 App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
-  _template: _.template( $('#widgets-widget_selectableVariable_template').html() ),
+  _template: _.template($('#widgets-widget_selectableVariable_template').html()),
 
   // TODO: Refactor Widget.Base to allow extending config
-  initialize: function(options){
+  initialize: function (options) {
     this.options = options;
 
     this.model = new App.Model.Widgets.Base({
       title: this.options.title,
       link: this.options.link,
-      titleLink: this.options.titleLink||null,
+      titleLink: this.options.titleLink || null,
       infoTemplate: this.options.infoTemplate,
       timeMode: this.options.timeMode,
       refreshTime: this.options.refreshTime,
-      dimension: this.options.dimension||'',
-      type: this.options.type||'',
+      dimension: this.options.dimension || '',
+      type: this.options.type || '',
       selectableVariables: this.options.selectableVariables || [],
-      exportable : this.options.exportable || false,
+      exportable: this.options.exportable || false,
       publishable: this.options.publishable || false,
       classname: this.options.classname || '',
-      embed: this.options.embed || false,
+      embed: this.options.embed || false,
       permissions: this.options.permissions || {}
     });
 
-    this.model.set('currentVariable',options.selectableVariables[0] ? options.selectableVariables[0].id : '');
+    // Set permissions over differents variables of entity
+    this.options.selectableVariables = _.filter(this.options.selectableVariables, function (variable) {
+      return App.mv().validateInMetadata({ 'variables': [variable.id] });
+    });
+
+    this.model.set('currentVariable', options.selectableVariables[0] ? options.selectableVariables[0].id : '');
 
     // Set a default refresh time for now widgets.
     // if (!this.model.get('refreshTime') && this.model.get('timeMode')=='now')
@@ -52,11 +57,11 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
 
     // this.listenTo(App.ctx,"change:bbox",this.refresh);
     if (this.model.get('timeMode') == 'historic')
-      this.listenTo(App.ctx,"change:start change:finish",this.refresh);
+      this.listenTo(App.ctx, "change:start change:finish", this.refresh);
 
-    this.listenTo(App.ctx,"change:bbox",this.refresh)
+    this.listenTo(App.ctx, "change:bbox", this.refresh)
 
-    if (this.model.get('refreshTime')){
+    if (this.model.get('refreshTime')) {
       this._setRefreshInterval()
     }
 
@@ -65,7 +70,7 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
 
     this.filterModel = App.getFilter(this.options.id_category);
     if (this.filterModel)
-      this.listenTo(this.filterModel,'change',this._onChangeFilter);
+      this.listenTo(this.filterModel, 'change', this._onChangeFilter);
 
     _.bindAll(this, '_drawContent');
 
@@ -77,7 +82,7 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
     'click .popup_widget.variableSelector .varsel li': '_changeVar'
   }, App.View.Widgets.Base.prototype.events),
 
-  _changeVar: function(e){
+  _changeVar: function (e) {
     var $target = $(e.currentTarget);
     this.model.set('currentVariable', $target.data('varid'));
 
@@ -89,7 +94,7 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
     this.refresh();
   },
 
-  _drawContent: function(){
+  _drawContent: function () {
     throw new Error('_drawContent not implemented');
   }
 });
