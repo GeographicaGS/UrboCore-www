@@ -27,6 +27,11 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
   initialize: function (options) {
     this.options = options;
 
+    // Set permissions over differents variables of entity
+    this.options.selectableVariables = _.filter(this.options.selectableVariables, function (variable) {
+      return App.mv().validateInMetadata({ 'variables': [variable.id] });
+    });
+
     this.model = new App.Model.Widgets.Base({
       title: this.options.title,
       link: this.options.link,
@@ -42,11 +47,6 @@ App.View.Widgets.SelectableVariable = App.View.Widgets.Base.extend({
       classname: this.options.classname || '',
       embed: this.options.embed || false,
       permissions: this.options.permissions || {}
-    });
-
-    // Set permissions over differents variables of entity
-    this.options.selectableVariables = _.filter(this.options.selectableVariables, function (variable) {
-      return App.mv().validateInMetadata({ 'variables': [variable.id] });
     });
 
     this.model.set('currentVariable', options.selectableVariables[0] ? options.selectableVariables[0].id : '');
