@@ -719,6 +719,19 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
           if(el.length > 0) {
             el.replaceWith(_this._template({m:data.toJSON()}));
           } else {
+            // Custom values from "model"
+            if (_this.model.has('device_summary_custom_values')) {
+              var customValues = _this.model.get('device_summary_custom_values');
+
+              // set custom value
+              if (customValues[data.get('id')]) {
+                var newValue = data.get('value') === null
+                  ? '--'
+                  : customValues[data.get('id')][data.get('value')];
+
+                data.set('value', newValue);
+              }
+            }
             _this.$('ul.row').append(_this._template({m:data.toJSON()}));
           }
         }
