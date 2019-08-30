@@ -97,9 +97,9 @@ App.View.Widgets.Gauge = Backbone.View.extend({
           this.$('.co_value .value').addClass('warning');
         }
       } else {
-        if (this.model.get('var_value') >= varRange.warning) {
+        if (this.model.get('var_value') >= varRange.error) {
           this.$('.co_value .value').addClass('error');
-        } else if (this.model.get('var_value') >= varRange.error) {
+        } else if (this.model.get('var_value') >= varRange.warning) {
           this.$('.co_value .value').addClass('warning');
         }
       }
