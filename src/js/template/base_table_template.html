@@ -1,4 +1,22 @@
 <div class="table <%=m.get('css_class')%>">
+  <!-- Paginator -->
+  <% if (m.get('paginator')) { %>
+  <a class="popup_widget paginator" href="#">
+    <span><%= m.get('itemsPerPageCurrent') %></span>
+    <% if (m.get('itemsPerPageOptions')) { %>
+    <div class="varsel">
+      <ul>
+        <% _.each(ippOptions, function(value, key) { %>
+        <li data-ipp="<%= value %>"
+            class="<% value === m.get('itemsPerPageCurrent') ? 'selected' : ''">
+          <%= value %>
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+  </a>
+  <% } %>
   <!-- Download button CSV -->
   <% if ( m.get('csv') ) { %>
   <button class="button empty up">
@@ -18,7 +36,7 @@
           <!--  Headers -->
           <%
             var formats = m.get('columns_format');
-            _.each(formats,function(c,i){
+            _.each(formats,function(c, i) {
           %>
             <th class="<%= c.css_class %>">
               <%= (typeof c.title === 'function') ? c.title() : c.title %>
@@ -29,7 +47,7 @@
           <% if (!elements.length) { %>
           <tr>
             <td class="noDataMsg" colspan="<%= Object.keys(formats).length %>">
-              <span>No hay datos</span>
+              <span><%= __('No hay datos') %></span>
             </td>
           </tr>
           <% } %>

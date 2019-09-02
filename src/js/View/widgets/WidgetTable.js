@@ -25,33 +25,42 @@ App.View.Widgets.Table = Backbone.View.extend({
   _template: _.template($('#base_table_template').html()),
 
   initialize: function (options) {
-    this.options = _.defaults(options, {
+    // default options
+    this.options = _.defaults(options || {}, {
       listenContext: true,
       context: App.ctx,
     });
 
+    // model options
+    this.model.set(_.extend({}, {
+      paginator: false,
+      itemsPerPageCurrent: 20, // items per page (current)
+      itemsPerPageOptions: [20, 40, 60, 80, 100, 'all']
+    }, this.options.model.toJSON()));
+
+    if (this.options['template']) {
+      this._template = options['template'];
+    }
+
     this._listenContext = this.options.listenContext;
-    this.model = options.model;
-    this.collection = options.data;
-    this.ctx = options.context;
+    this.collection = this.options.data;
+    this.ctx = this.options.context;
 
     // Re-draw table if context changes
     if (this._listenContext) {
       this.collection.options.data = {};
     }
 
+    // Events
     this.listenTo(this.collection, 'reset', this._drawTable);
 
-    if (options['template']) {
-      this._template = options['template'];
-    }
-
+    // Collection to CSV
     this._tableToCsv = new App.Collection.TableToCsv();
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
-    
+
     //Adjust top scrollbar when resizing
-    if(this.model.get('scrollTopBar')){
+    if (this.model.get('scrollTopBar')) {
       $(window).on('resize', this.setScrollTopBarWidth.bind(this))
     }
 
@@ -60,9 +69,8 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   events: {
     'click .table button': '_downloadCsv',
-    //'resize window': 'prueba'
   },
-  
+
   render: function () {
     this.$el.append(App.widgetLoading());
 
@@ -73,7 +81,7 @@ App.View.Widgets.Table = Backbone.View.extend({
       if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
-      
+
       if (this.model.get('method') == 'GET') {
         _.extend(this.collection.options.data, this.ctx.getDateRange());
       } else {
@@ -87,7 +95,10 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   _drawTable: function () {
-    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON()}));
+    this.$el.html(this._template({ 
+      m: this.model,
+      elements: this.collection.toJSON()
+    }));
 
     if (this.model.get('scrollTopBar') === true) {
       this.setScrollTopBarDOM();
@@ -107,7 +118,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
     // Merge the "collection" options with "csv" options
     this._tableToCsv.options = _.extend({}, this._tableToCsv.options, this.collection.options);
-    
+
     // Add  the neccesary attributes to "data"
     this._tableToCsv.options.data = _.extend({}, this._tableToCsv.options.data, {
       format: this._tableToCsv.options.format,
@@ -138,13 +149,13 @@ App.View.Widgets.Table = Backbone.View.extend({
     if (table.length && scrollTopBar.length) {
       $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
       scrollable.on('scroll', _.bind(this.setPositionScrollTopBar, this));
-      
+
       // scroll bar content width
       this.setScrollTopBarWidth()
     }
   },
 
-  setScrollTopBarWidth: function(){
+  setScrollTopBarWidth: function () {
     var scrollTopBar = this.$el.find('#top-scroll-bar');
     var table = this.$el.find('table');
 
@@ -159,7 +170,7 @@ App.View.Widgets.Table = Backbone.View.extend({
   setPositionScrollTopBar: function (event) {
     var scrollTopBar = this.$el.find('#top-scroll-bar');
     var moveLeft = $(event.currentTarget).scrollLeft();
-    
+
     // Move scrollTopBar
     if (scrollTopBar.length) {
       $(scrollTopBar[0]).scrollLeft(moveLeft);
@@ -172,17 +183,17 @@ App.View.Widgets.Table = Backbone.View.extend({
    * @param {Object | Event} event
    */
   handleTopScrollBar: function (event) {
-    
+
     var moveLeft = $(event.currentTarget).scrollLeft();
     var scrollable = this.$el.find('.scrollable');
-    
+
     scrollable.scrollLeft(moveLeft);
   },
 
   onClose: function () {
     this.stopListening();
-    
-    if(this.model.get('scrollTopBar')){
+
+    if (this.model.get('scrollTopBar')) {
       $(window).off('resize', this.setScrollTopBarWidth)
     }
   }
@@ -201,7 +212,7 @@ App.View.Widgets.TableCustomFilters = App.View.Widgets.Table.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    this.listenTo(this.collection, "reset", this._drawTable);
+    this.listenTo(this.collection, 'reset', this._drawTable);
 
     if (options['template']) {
       this._template = options['template'];
@@ -231,7 +242,7 @@ App.View.Widgets.TableNewCSV = App.View.Widgets.Table.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    this.listenTo(this.collection, "reset", this._drawTable);
+    this.listenTo(this.collection, 'reset', this._drawTable);
 
     if (options['template']) {
       this._template = options['template'];
