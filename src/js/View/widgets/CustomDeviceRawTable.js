@@ -115,7 +115,9 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       }
 
       columnsFormat[variable.id] = {
-        title: __(variable.title),
+        title: variable.title && variable.title !== null && variable.title !== ''
+          ? __(variable.title)
+          : '',
         formatFN: formatFN
       };
     }.bind(this));

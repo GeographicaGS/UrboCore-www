@@ -1,0 +1,28 @@
+<!-- No data -->
+<% if (!elements.length && currentPage === 0) { %>
+  <tr>
+    <td class="noDataMsg"
+        colspan="<%= Object.keys(formats).length %>">
+      <span><%= __('No hay datos') %></span>
+    </td>
+  </tr>
+<% } %>
+
+<!-- Table data -->
+<% 
+  if (elements.length > 0) {
+    _.each(elements, function(element) { %>
+    <tr>
+      <% _.each(formats, function (c, i) {
+        var tooltip =  c.tooltip ? element[i] : '';
+      %>
+      <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
+          class="<%= typeof c.css_class === 'function' ? c.css_class(element) : c.css_class %>">
+        <%= c.formatFN ? c.formatFN(element[i], element) : element[i] %>
+      </td>
+      <% }) %>
+    </tr>
+<% 
+    });
+  } 
+%>

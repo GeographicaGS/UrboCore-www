@@ -23,6 +23,13 @@
 App.View.Widgets.Table = Backbone.View.extend({
 
   _template: _.template($('#base_table_template').html()),
+  _template_content: _.template($('#base_table_content_template').html()),
+
+  events: {
+    'click .top-options .button.csv': '_downloadCsv',
+    'click .paginator .popup_widget ul li[data-ipp]': '_changePaginator',
+    'click .bottom-options .button.more': '_nextPage',
+  },
 
   initialize: function (options) {
     // default options
@@ -34,6 +41,7 @@ App.View.Widgets.Table = Backbone.View.extend({
     // model options
     this.model.set(_.extend({}, {
       paginator: false,
+      page: 0,
       itemsPerPageCurrent: 20, // items per page (current)
       itemsPerPageOptions: [20, 40, 60, 80, 100, 'all']
     }, this.options.model.toJSON()));
@@ -67,18 +75,43 @@ App.View.Widgets.Table = Backbone.View.extend({
     _.bindAll(this, '_showTooltip');
   },
 
-  events: {
-    'click .table button': '_downloadCsv',
+  /**
+   * When we click on the paginator selector
+   *
+   * @param {*} e - triggered event
+   */
+  _changePaginator: function (e) {
+    e.preventDefault();
+
+    // set loading
+    this.$el.append(App.widgetLoading());
+
+    var ipp = Number.parseInt($(e.currentTarget).attr('data-ipp'), 10);
+
+    this.model.set('itemsPerPageCurrent', ipp);
+    this.model.set('page', 0);
+    this.render();
+  },
+  /**
+   * When we click on the next page
+   *
+   * @param {*} e - triggered event
+   */
+  _nextPage: function () {
+    var currentPage = this.model.get('page') + 1;
+
+    this.model.set('page', currentPage);
+    this._loadElements();
   },
 
   render: function () {
-    this.$el.append(App.widgetLoading());
-
     // Re-draw table if context changes
     if (this._listenContext) {
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
-      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+      if (this.collection
+          && this.collection.options
+          && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
 
@@ -97,10 +130,15 @@ App.View.Widgets.Table = Backbone.View.extend({
     return this;
   },
 
+  /**
+   * draw the table at the beginnig
+   */
   _drawTable: function () {
+    // set loading
+    this.$el.append(App.widgetLoading());
+
     this.$el.html(this._template({ 
       m: this.model,
-      elements: this.collection.toJSON()
     }));
 
     if (this.model.get('scrollTopBar') === true) {
@@ -108,6 +146,59 @@ App.View.Widgets.Table = Backbone.View.extend({
     }
 
     this.delegateEvents(this.events);
+
+    // Load first page
+    this._loadElements();
+  },
+
+  /**
+   * Draw each page of items
+   */
+  _loadElements: function () {
+    var currentPage = this.model.get('page');
+    var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
+    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
+    var buttonMore = this.$el.find('.bottom-options .button.more');
+    
+    var paginatorDOM = this.$el.find('.top-options .paginator');
+    var tableDOM = this.$el.find('.table table tbody');
+    var elements = this.model.has('paginator')
+      ? this._getItesmPages()
+      : this.collection.toJSON();
+
+    // add new elements
+    tableDOM.append(this._template_content({ 
+      currentPage: currentPage,
+      formats: this.model.get('columns_format'),
+      elements: elements,
+    }));
+
+    // Hide button more
+    if (initialItemCurrentPage + currentItemsPerPage >= this.collection.toJSON().length) {
+      $(buttonMore).addClass('hide');
+    }
+
+    // Hide paginator
+    if (currentPage === 0 && this.collection.toJSON().length === 0) {
+      $(paginatorDOM).addClass('hide');
+    }
+  },
+
+  /**
+   * Get the items page
+   * 
+   * @return {Array} - items page
+   */
+  _getItesmPages: function () {
+    var items = this.collection.toJSON();
+    var currentPage = this.model.get('page');
+    var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
+    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent'); 
+    
+    return _.filter(items, function (item, key) {
+      return currentItemsPerPage === 'all' ||
+        (key >= initialItemCurrentPage && key < initialItemCurrentPage + currentItemsPerPage);
+    }.bind(this));
   },
 
   _downloadCsv: function () {
