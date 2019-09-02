@@ -1,14 +1,14 @@
 <div class="table <%=m.get('css_class')%>">
   <!-- Paginator -->
-  <% if (m.get('paginator')) { %>
+  <% if (m.has('paginator')) { %>
   <a class="popup_widget paginator" href="#">
     <span><%= m.get('itemsPerPageCurrent') %></span>
-    <% if (m.get('itemsPerPageOptions')) { %>
+    <% if (m.has('itemsPerPageOptions')) { %>
     <div class="varsel">
       <ul>
-        <% _.each(ippOptions, function(value, key) { %>
+        <% _.each(m.get('itemsPerPageOptions'), function(value, key) { %>
         <li data-ipp="<%= value %>"
-            class="<% value === m.get('itemsPerPageCurrent') ? 'selected' : ''">
+            class="<%= value === m.get('itemsPerPageCurrent') ? 'selected' : '' %>">
           <%= value %>
         </li>
         <% }) %>
@@ -18,13 +18,13 @@
   </a>
   <% } %>
   <!-- Download button CSV -->
-  <% if ( m.get('csv') ) { %>
+  <% if ( m.has('csv') ) { %>
   <button class="button empty up">
     <%= __('Descargar CSV') %>
   </button>
   <% } %>
   <!-- Table -->
-  <% if ( m.get('scrollTopBar') ){ %>
+  <% if ( m.has('scrollTopBar') ){ %>
     <div id="top-scroll-bar">
       <div></div>
     </div>

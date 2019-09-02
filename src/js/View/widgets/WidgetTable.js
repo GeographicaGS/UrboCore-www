@@ -89,7 +89,10 @@ App.View.Widgets.Table = Backbone.View.extend({
       }
     }
 
-    this.collection.fetch({ reset: true, data: this.collection.options.data });
+    this.collection.fetch({
+      reset: true,
+      data: this.collection.options.data
+    });
 
     return this;
   },
