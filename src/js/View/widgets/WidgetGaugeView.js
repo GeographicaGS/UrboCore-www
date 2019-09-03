@@ -275,6 +275,13 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 
   _deg2rad: function (deg) {
     return deg * Math.PI / 180;
+  },
+
+  /**
+   * behaviour when "close" the current view
+   */
+  onClose: function () {
+    this.stopListening();
   }
 
 });
