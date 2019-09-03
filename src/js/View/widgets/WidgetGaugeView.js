@@ -31,8 +31,6 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       global: false
     });
 
-    this.model = options.model;
-
     // Hide the widget if the scope has not permissions
     if (!App.mv().validateInMetadata({ 'variables': [this.model.get('var_id')] })) {
       return;
@@ -41,16 +39,15 @@ App.View.Widgets.Gauge = Backbone.View.extend({
     this.className = this.model.get('className');
   },
 
-
-  onClose: function () {
-    this.stopListening();
-  },
-
   render: function () {
     var _this = this;
     var metaData = App.Utils.toDeepJSON(App.mv().getVariable(this.model.get('var_id')));
 
-    this.$el.html(this._template({ m: this.model.toJSON(), 'metaData': metaData, 'fetchModel': this.options.fetchModel }));
+    this.$el.html(this._template({
+      m: this.model.toJSON(),
+      metaData: metaData,
+      fetchModel: this.options.fetchModel
+    }));
 
     this.$el.addClass(this.model.get('className'));
 
@@ -200,7 +197,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
         var y = (Math.sin(_this._deg2rad(angle)) * (-r) * 0.64) + 5;
         return 'translate(' + x + ',' + y + ')';
       })
-      .attr("text-anchor", function (d) {
+      .attr('text-anchor', function (d) {
         var angle = (minAngle + (scale(d) * range)) - minAngle + (minAngle + 90)
         var anchor = '';
         angle > 90 ? anchor = 'end' : (angle == 90 ? anchor = 'middle' : anchor = 'start');
@@ -217,11 +214,11 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       var y = Math.sin(_this._deg2rad(angle)) * (-r) * 0.77;
 
       lines.append('line')
-        .attr("x1", x)
-        .attr("y1", y)
-        .attr("x2", x * 0.9)
-        .attr("y2", y * 0.9)
-        .style("stroke-width", "1px");
+        .attr('x1', x)
+        .attr('y1', y)
+        .attr('x2', x * 0.9)
+        .attr('y2', y * 0.9)
+        .style('stroke-width', '1px');
     };
 
 
@@ -237,15 +234,11 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       .attr('class', 'pointer')
       .attr('transform', centerTx);
 
-    // var pointer = pg.append('path')
-    // 								.attr('d', pointerLine)
-    // 								.attr('transform', 'rotate(' + minAngle +')');
-
-    svg.append("circle")
-      .attr("cx", r)
-      .attr("cy", r)
-      .attr("r", 5)
-      .style("fill", "#00475d");
+    svg.append('circle')
+      .attr('cx', r)
+      .attr('cy', r)
+      .attr('r', 5)
+      .style('fill', '#00475d');
 
     var arc = d3.svg.arc()
       .innerRadius(5)
@@ -253,8 +246,8 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       .startAngle(0)
       .endAngle(360);
 
-    svg.append("path")
-      .attr("d", arc)
+    svg.append('path')
+      .attr('d', arc)
       .attr('transform', 'translate(' + r + ',' + r + ')')
       .attr('fill', '#fff');
 
@@ -282,6 +275,13 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 
   _deg2rad: function (deg) {
     return deg * Math.PI / 180;
+  },
+
+  /**
+   * behaviour when "close" the current view
+   */
+  onClose: function () {
+    this.stopListening();
   }
 
 });
