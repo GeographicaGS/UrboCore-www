@@ -23,7 +23,7 @@
 App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   initialize: function (options) {
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       title: __('Datos brutos'),
       dimension: 'fullWidth bgWhite custom-device-raw-table',
       timeMode: 'historic',
@@ -75,7 +75,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     return new Backbone.Model({
       csv: this.options.csv,
       scrollTopBar: this.options.scrollTopBar,
-      columns_format: this.getColumnsFormat()
+      columns_format: this.getColumnsFormat(),
+      paginator: true
     });
   },
 
@@ -114,7 +115,9 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       }
 
       columnsFormat[variable.id] = {
-        title: __(variable.title),
+        title: variable.title && variable.title !== null && variable.title !== ''
+          ? __(variable.title)
+          : '',
         formatFN: formatFN
       };
     }.bind(this));
@@ -135,8 +138,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
     return _.filter(metadata, function (el) {
       return el.config
-        && el.config.active
-        && el.config.active.toLowerCase() === 'true';
+        && ((typeof el.config.active === 'boolean' && el.config.active)
+          || (typeof el.config.active === 'string' && el.config.active.toLowerCase() === 'true'));
     });
   },
 
