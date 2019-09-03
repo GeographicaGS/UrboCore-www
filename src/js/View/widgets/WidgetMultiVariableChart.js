@@ -83,7 +83,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this._internalData = {
       disabledList: {},
-      elementsDisabled: 0,
+      elementsDisabled: -1, // to know what is the first time
       currentAggs: {}
     };
 
@@ -134,10 +134,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             success: function () {
               this._lockDateRequest = false; // UnBlock the rest of requests
             }.bind(this)
-          })
+          });
+
           // Render
           this.render();
-
         }
 
 
@@ -195,7 +195,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     var step = $(e.currentTarget).attr('data-step');
     this.collection.options.step = step;
     this._stepModel.set('step', step);
-    var data = typeof this.collection.options.data === 'string' ? JSON.parse(this.collection.options.data) : this.collection.options.data;
+    var data = typeof this.collection.options.data === 'string'
+      ? JSON.parse(this.collection.options.data)
+      : this.collection.options.data;
     if (data.time) {
       data.time.step = step;
     }
@@ -286,16 +288,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     this.$('.loading.widgetL').addClass('hiden');
     // Prepare data to chart
     this.data = this._prepareDataToChart();
-
-    // Set the keys (values) to 'disabled' to hide in the chart
-    _.each(this._internalData.disabledList, function (value, key) {
-      if (value) {
-        this.data.find({ 'realKey': key })
-          .set('disabled', true);
-        this.collection.find({ 'key': key })
-          .set('disabled', true);
-      }
-    }.bind(this));
 
     // Set 'normalized' CSS class
     if (this.data.where({ 'disabled': false }).length > 1) {
@@ -419,13 +411,25 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           var internalData = this._internalData;
           var meta = App.mv().getVariable(c.realKey);
 
-          // To save the current status in the chart
-          if (typeof internalData.disabledList[c.realKey] === 'undefined') {
-            if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
-              internalData.disabledList[c.realKey] = !meta.get('config').default
-            } else {
-              internalData.disabledList[c.realKey] = false;
+          // To save the current status in the chart (only the first time)
+          if (internalData.elementsDisabled === -1) {
+            if (typeof internalData.disabledList[c.realKey] === 'undefined') {
+              if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
+                internalData.disabledList[c.realKey] = !meta.get('config').default;
+              } else {
+                internalData.disabledList[c.realKey] = false;
+              }
             }
+          }
+
+          // We change "elementsDisabled" only once time
+          if (this.collection.toJSON().length === index + 1) {
+            internalData.elementsDisabled = _.reduce(internalData.disabledList, function (sumValue, item) {
+              if (item) {
+                sumValue++;
+              }
+              return sumValue;
+            }, 0);
           }
 
           if (!this.options.noAgg) {
@@ -478,6 +482,25 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         }.bind(this));
       }.bind(this))
     );
+
+    // Set value in attribute 'disabled' (every false)
+    _.each(parseData.models, function (model, key) {
+      model.set('disabled', false);
+    });
+
+    _.each(this.collection.models, function (model, key) {
+      model.set('disabled', false);
+    });
+
+    // Set value in attribute 'disabled'
+    _.each(this._internalData.disabledList, function (value, key) {
+      if (value) {
+        parseData.find({ 'realKey': key })
+          .set('disabled', true);
+        this.collection.find({ 'key': key })
+          .set('disabled', true);
+      }
+    }.bind(this));
 
     return parseData;
   },
