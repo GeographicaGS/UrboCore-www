@@ -452,7 +452,7 @@ App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
       var currentParams = this.model.get('params');
       var parseCurrentParams = _.reduce(currentParams, function (sumParams, param) {
         var currentMetadata = App.Utils.toDeepJSON(App.mv().getVariable(param.id));
-        
+
         sumParams.push({
           id: param.id,
           value: param.value,
@@ -546,7 +546,7 @@ App.View.LastDataWidgetMap = App.View.LastDataWidget.extend({
           icon.lat,
           icon.lng
         ];
-  
+
         // Add marker (icon)
         L.marker(iconPosition, {
           icon: iconOptions
@@ -715,23 +715,26 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
         // Defaults values
         _this.options = _.defaults(_this.options || {}, { hideVariableEmpty: false });
         // Show widget if the condition is agree
-        if (_this.options.hideVariableEmpty === false || (_this.options.hideVariableEmpty && data.get('value') !== null)) {
+        if (_this.options.hideVariableEmpty === false
+          || (_this.options.hideVariableEmpty && data.get('value') !== null)) {
+
+          // Custom values from "model"
+          if (_this.model.has('device_summary_custom_values')) {
+            var customValues = _this.model.get('device_summary_custom_values');
+
+            // set custom value
+            if (customValues[data.get('id')]) {
+              var newValue = data.get('value') === null
+                ? '--'
+                : customValues[data.get('id')][data.get('value')];
+
+              data.set('value', newValue);
+            }
+          }
+
           if(el.length > 0) {
             el.replaceWith(_this._template({m:data.toJSON()}));
           } else {
-            // Custom values from "model"
-            if (_this.model.has('device_summary_custom_values')) {
-              var customValues = _this.model.get('device_summary_custom_values');
-
-              // set custom value
-              if (customValues[data.get('id')]) {
-                var newValue = data.get('value') === null
-                  ? '--'
-                  : customValues[data.get('id')][data.get('value')];
-
-                data.set('value', newValue);
-              }
-            }
             _this.$('ul.row').append(_this._template({m:data.toJSON()}));
           }
         }
