@@ -37,7 +37,21 @@ App.View.Map.LayerTree.Filters.Category = App.View.Filter.MultiSelector.extend({
                  : '';
   },
 
-  setValue: function(value){
+  setValue: function(value) {
+    var fnStringToNumber = function (value) {
+      return typeof value !== 'string' || Number.isNaN(Number.parseFloat(value))
+        ? value
+        : Number.parseInt(value, 10);
+    }
+
+    if (Array.isArray(value)) {
+      _.each(value, function (v, i) {
+        value[i] = fnStringToNumber(v);
+      });
+    } else if (typeof value === 'string') {
+      value = fnStringToNumber(value);
+    }
+
     this.model.get('filters')[this.options.id] = value;
     this.model.trigger('change:filters',this.model);
   }

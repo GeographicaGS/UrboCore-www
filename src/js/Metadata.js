@@ -23,7 +23,7 @@
   /**
    * Metadata has all information about 'scopes',
    * 'catalogs' and others.
-   * 
+   *
    * This Object will be fill in the APP initialization,
    * because this information will be used in future actions.
    */
@@ -64,7 +64,7 @@
    */
   metadata.prototype.getScope = function(scope_id, cb) {
     var scope = this._metadataCollection.get(scope_id);
-    
+
     // If we didn't look for the current scope into
     // the collection, we will try other way to get it
     if(!scope) {
@@ -137,12 +137,13 @@
    * @return {Object} - current variable
    */
   metadata.prototype.getVariable = function(variable_id) {
-    // TODO: Remove this hack
+    // TODO: Remove this hack (usado en "irrigation" y "watering")
     if(variable_id == 'seconds') {
       return new Backbone.Model({
-        'id':'seconds',
-        'name':'Tiempo de encendido',
-        'units':'minutos'
+        id:'seconds',
+        name:'Tiempo de encendido',
+        units:'minutos',
+        var_agg: ['SUM', 'MAX', 'AVG', 'MIN']
       });
     }
 
@@ -222,7 +223,7 @@
           .find(function(ent) {
             return ent.get('variables').get(variable_id);
           });
-        
+
         if(temp) {
           element = temp.get('variables').get(variable_id);
         }

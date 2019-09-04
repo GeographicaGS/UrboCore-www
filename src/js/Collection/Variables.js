@@ -66,9 +66,9 @@ App.Collection.Variables.Timeserie = App.Collection.Post.extend({
       });
       _.each(response, function (r) {
         _.each(Object.keys(r.data), function (k) {
-          if (!aux[k])
+          if (!aux[k]) {
             aux[k] = [];
-          // if(r.data[k] != null)
+          }
           aux[k].push({
             x: isNaN(r.time) ? new Date(r.time) : r.time,
             y: r.data[k] !== null ? k == 'seconds' ? r.data[k] / 60 : r.data[k] : null
@@ -170,6 +170,22 @@ App.Collection.Variables.DailyAgg = App.Collection.Post.extend({
     var aux = {};
     var _this = this;
 
+    // We modify the "back" response, it depends
+    // the "start" date from request
+    var hourStart = moment(App.ctx.getDateRange().start).utc().hour();
+    var firstPartResponse = response.slice(hourStart) || [];
+    var secondPartResponse = response.slice(0, hourStart) || [];
+    var currentTime = 0; // seconds
+    
+    // change the order of array response
+    // and new value to time
+    response = firstPartResponse.concat(secondPartResponse);
+    response = _.map(response, function (item) {
+      item.time = currentTime;
+      currentTime += 3600;
+      return item;
+    });
+
     _.each(response, function (r) {
       _.each(Object.keys(r.data), function (k) {
         if (!aux[k])
@@ -187,7 +203,7 @@ App.Collection.Variables.DailyAgg = App.Collection.Post.extend({
           x = r.time;
         }
         var duration = moment.duration(x, 'seconds');
-        var date = moment.utc(duration.asMilliseconds());
+        var date = moment(App.ctx.getDateRange().start).add(duration.asMilliseconds());
         if (!_this.options.startOnMidnight)
           date = date.subtract(13, 'hours');
         x = date.toDate();

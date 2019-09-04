@@ -91,9 +91,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
             _.each(elem.values, function (value, idx) {
               procSubelem.values[idx] = {
-                // x: value.x === Date
-                //   ? d3.time.format.iso.parse(value.x)
-                //   : value.x,
+                x: value.x === Date
+                  ? d3.time.format.iso.parse(value.x)
+                  : value.x,
                 y: value.y[subElemIdx].value
               };
 
@@ -136,10 +136,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           max[axis] = max[axis] || [];
 
           _.each(elem.values, function (value, index) {
-            // // value 'X' axis is a Date
-            // value.x = value.x.constructor === Date
-            //   ? d3.time.format.iso.parse(value.x)
-            //   : value.x;
+            // value 'X' axis is a Date
+            value.x = value.x.constructor === Date
+              ? d3.time.format.iso.parse(value.x)
+              : value.x;
 
             if (this.options.get('stacked')) {
               max[axis][index] = max[axis][index]

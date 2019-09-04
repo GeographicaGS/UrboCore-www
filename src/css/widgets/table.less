@@ -18,6 +18,7 @@
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 .table {
+  position: relative;
   background-color: #fff;
   border: 1px solid @greyLight2;
   padding: 15px;
@@ -55,7 +56,61 @@
     }
   }
 
-  .button{
+  .top-options {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .paginator {
+      .popup_widget {
+        margin-right: 10px;
+        padding: 9px 15px;
+        display: inline-block;
+        text-align: center;
+        border: 1px solid #00b8c7;
+        border-radius: 2px;  
+        span{
+          color: @grey;
+          font-size: 11px;
+          &.number {
+            color: #00b8c7;
+            font-size: 13px;
+          }
+        }
+        .varsel ul {
+          li {
+            height: 30px;
+            line-height: 29px;
+            font-size: 15px;
+          }
+        }  
+      }
+    }
+    .button {
+      margin: 0;
+      min-width: 125px;
+      float: none;
+      margin-top: inherit;
+    }
+  
+  }
+
+  .bottom-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 15px;
+    .button {
+      &.more {
+        float: none;
+        margin: 0;
+      }
+    }
+  }
+
+  .button {
     float: right;
     margin-top: -5px;
     &.up{

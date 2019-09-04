@@ -25,7 +25,7 @@ App.View.Widgets.VariableValue = App.View.Widgets.Deprecated.Context.extend({
 
   initialize: function(options) {
 
-    App.View.Widgets.Deprecated.Context.prototype.initialize.call(this,options);
+    App.View.Widgets.Deprecated.Context.prototype.initialize.call(this, options);
 
     this.model = options.model;
     this.listenTo(this.model,"change:agg",function(){

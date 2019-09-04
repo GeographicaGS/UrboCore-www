@@ -171,7 +171,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             data: this.collection.options.data || {},
             success: function () {
               var response = arguments[1] || [];
-              
+
               // parse response
               if (typeof this.collection.parse === 'function') {
                 response = this.collection.parse(response);
@@ -255,7 +255,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     this.collection.options.step = step;
     this._stepModel.set('step', step);
-
     if (data.time) {
       data.time.step = step;
     }
@@ -1053,9 +1052,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   },
 
   /**
-   * Check if the current scope has permissions about 
+   * Check if the current scope has permissions about
    * entities or attributes to show into the widget
-   * 
+   *
    * @return {Boolean} ¿has permissions?
    */
   hasPermissions: function () {

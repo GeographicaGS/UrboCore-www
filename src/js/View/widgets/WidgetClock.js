@@ -46,6 +46,10 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       this._drawClock();
     });
 
+    if(this.dataModel.get('popupTemplate')){
+      this._template_popup = _.template($(this.dataModel.get('popupTemplate')).html());
+    }
+
     this.render();
   },
 
@@ -62,9 +66,15 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
 
   render: function(){
     this.$el.html(this._template(this.model.toJSON()));
-    if(this.dataModel.get('double'))
-    	this.$('.widget').addClass('double');
+
+    if(this.dataModel.get('double')) {
+      this.$('.widget').addClass('double');
+    }
+
     this.$('.widget_content').addClass('clock')
+
+    // Put the time icon into the widget
+    this.drawTimeIcon();
 
     // Fix old widgets (Andalucia)
     // this.$('.widget_content').append('<div class="popup_wrapper nvtooltip xy-tooltip"></div>')
