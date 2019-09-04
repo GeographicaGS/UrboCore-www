@@ -137,7 +137,7 @@ App.View.Widgets.Table = Backbone.View.extend({
     // set loading
     this.$el.append(App.widgetLoading());
 
-    this.$el.html(this._template({ 
+    this.$el.html(this._template({
       m: this.model,
     }));
 
@@ -158,43 +158,55 @@ App.View.Widgets.Table = Backbone.View.extend({
     var currentPage = this.model.get('page');
     var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
     var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
-    var buttonMore = this.$el.find('.bottom-options .button.more');
-    
+    var maxRegistersReached =
+      (initialItemCurrentPage + currentItemsPerPage >= this.collection.toJSON().length)
+    var buttonMoreDOM = this.$el.find('.bottom-options .button.more');
+
     var paginatorDOM = this.$el.find('.top-options .paginator');
+    var paginatorNumberDOM = this.$el.find('.bottom-options .paginator-counter .number');
+    var paginatorTotalDOM = this.$el.find('.bottom-options .paginator-counter .total');
     var tableDOM = this.$el.find('.table table tbody');
     var elements = this.model.has('paginator')
       ? this._getItesmPages()
       : this.collection.toJSON();
 
     // add new elements
-    tableDOM.append(this._template_content({ 
+    tableDOM.append(this._template_content({
       currentPage: currentPage,
       formats: this.model.get('columns_format'),
       elements: elements,
     }));
 
     // Hide button more
-    if (initialItemCurrentPage + currentItemsPerPage >= this.collection.toJSON().length) {
-      $(buttonMore).addClass('hide');
+    if (maxRegistersReached) {
+      $(buttonMoreDOM).addClass('hide');
     }
 
     // Hide paginator
     if (currentPage === 0 && this.collection.toJSON().length === 0) {
       $(paginatorDOM).addClass('hide');
     }
+
+    // Update counter paginator
+    $(paginatorNumberDOM).html(
+      maxRegistersReached
+        ? this.collection.toJSON().length
+        : initialItemCurrentPage + currentItemsPerPage
+    );
+    $(paginatorTotalDOM).html(this.collection.toJSON().length);
   },
 
   /**
    * Get the items page
-   * 
+   *
    * @return {Array} - items page
    */
   _getItesmPages: function () {
     var items = this.collection.toJSON();
     var currentPage = this.model.get('page');
     var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
-    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent'); 
-    
+    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
+
     return _.filter(items, function (item, key) {
       return currentItemsPerPage === 'all' ||
         (key >= initialItemCurrentPage && key < initialItemCurrentPage + currentItemsPerPage);
@@ -258,7 +270,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   /**
    * Set position in Scroll Top Bar
-   * 
+   *
    * @param {Object | Event} event
    */
   setPositionScrollTopBar: function (event) {
@@ -273,7 +285,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   /**
    * handler scroll top bar
-   * 
+   *
    * @param {Object | Event} event
    */
   handleTopScrollBar: function (event) {
