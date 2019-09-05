@@ -139,6 +139,8 @@ App.View.Widgets.Table = Backbone.View.extend({
 
     this.$el.html(this._template({ 
       m: this.model,
+      // "elements" are incluted to use in old "views"
+      elements: this.collection.toJSON()
     }));
 
     if (this.model.get('scrollTopBar') === true) {
