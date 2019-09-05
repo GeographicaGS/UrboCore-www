@@ -139,7 +139,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
     this.$el.html(this._template({
       m: this.model,
-      // "elements" are incluted to use in old "views"
+      // "elements" are included to use in old "views"
       elements: this.collection.toJSON()
     }));
 
@@ -168,7 +168,7 @@ App.View.Widgets.Table = Backbone.View.extend({
     var paginatorNumberDOM = this.$el.find('.bottom-options .paginator-counter .number');
     var paginatorTotalDOM = this.$el.find('.bottom-options .paginator-counter .total');
     var tableDOM = this.$el.find('.table table tbody');
-    var elements = this.model.has('paginator')
+    var elements = this.model.get('paginator')
       ? this._getItesmPages()
       : this.collection.toJSON();
 
