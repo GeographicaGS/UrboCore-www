@@ -328,7 +328,7 @@ App.View.Date = Backbone.View.extend({
       }
     } else {
       if (!IsSameStartModel) {
-        this.options.model.set('start', start.utc());ç
+        this.options.model.set('start', start.utc());
       }
       if (!IsSameFinishModel) {
         this.options.model.set('finish', start.clone().add(this.options.maxRange).utc());
