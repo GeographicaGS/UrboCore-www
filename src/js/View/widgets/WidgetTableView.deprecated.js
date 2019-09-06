@@ -53,7 +53,7 @@ App.View.Widgets.Deprecated.Table = Backbone.View.extend({
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
 
-    this.render();
+    // this.render();
     this.$('h4').append(App.circleLoading());
   },
 
