@@ -21,17 +21,17 @@
 
 App.View.Widgets.Variable = Backbone.View.extend({
 
-  _template: _.template( $('#widgets-widget_variable_template').html()),
+  _template: _.template($('#widgets-widget_variable_template').html()),
 
-  initialize: function(options) {
+  initialize: function (options) {
     this.options = options;
   },
 
-  render:function() {
+  render: function () {
     var _this = this;
     this.model.fetch({
       data: this.model.options.data,
-      success: function(m, data){
+      success: function (m, data) {
         var d = m.toJSON();
         d.value = data.value[_this.options.agg.toUpperCase()];
         d.max = _this.options.max || data.value['MAX'];
@@ -55,7 +55,7 @@ App.View.Widgets.Variable = Backbone.View.extend({
         }
         // show reference percentage
         if (_this.options.refValue) {
-          d.refPerc = 100 * (d.value/_this.options.refValue -1);
+          d.refPerc = 100 * (d.value / _this.options.refValue - 1);
         } else {
           d.refPerc = null;
         }
@@ -68,29 +68,69 @@ App.View.Widgets.Variable = Backbone.View.extend({
 });
 
 App.View.Widgets.VariableSimple = Backbone.View.extend({
-  
-    _template: _.template( $('#widgets-widget_variablesimple_template').html()),
-  
-    initialize: function(options) {
-      this.options = options;
-      this.listenTo(this.collection,"reset",this.render);      
-    },
-  
-    render:function() {
-      var _this = this;
-      var model = this.model.options.data;
-      model.start = App.ctx.getDateRange().start;
-      model.finish = App.ctx.getDateRange().finish;
-      this.model.fetch({
-        data: model,
-        success: function(m){
-          var d = m.toJSON();
-          if (!d.units) {
-            d.units = null;
-          }
-          _this.$el.html(_this._template(d));
-        }
-      });
-      return this;
+
+  _template: _.template($('#widgets-widget_variablesimple_template').html()),
+
+  initialize: function (options) {
+    this.options = options || {};
+  },
+
+  render: function () {
+
+    if (this.model) {
+      this.drawDataModel();
     }
-  });
+
+    if (this.collection) {
+      this.drawDataCollection();
+    }
+
+    return this;
+  },
+
+  drawDataModel: function() {
+    var model = this.model.options.data;
+
+    model.start = App.ctx.getDateRange().start;
+    model.finish = App.ctx.getDateRange().finish;
+
+    this.model.fetch({
+      data: model,
+      success: function (m) {
+        var d = m.toJSON();
+
+        if (!d.units) {
+          d.units = null;
+        }
+
+        this.$el.html(this._template(d));
+      }.bind(this)
+    });
+  },
+
+  drawDataCollection: function() {
+    if (this.collection.options && this.collection.options.data) {
+      this.collection.options.data.time = App.ctx.getDateRange();
+    }
+
+    this.collection.fetch({
+      reset: true,
+      success: function (response) {
+        var data = response.models.length 
+          ? response.models[0].toJSON()
+          : {
+            value: null,
+            units: null
+          };
+
+        if (!data.units) {
+          data.units = null;
+        }
+
+        this.$el.html(this._template(data));
+      }.bind(this)
+    });
+  },
+
+
+});
