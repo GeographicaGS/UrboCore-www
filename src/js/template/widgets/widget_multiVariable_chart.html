@@ -1,4 +1,4 @@
-<div class="widget chartContent widget_multiVariable_chart">
+<div class="widget chartContent widget_multiVariable_chart  <%= m.className %>">
 
   <div class="date_tooltip">
     <button></button>
@@ -8,12 +8,11 @@
     </div>
   </div>
 
-  <%if(m){%>
-    <div class="widget_header">
-      <h3><%=m.category ? m.category:''%></h3>
-      <span><%=m.title ? m.title:''%></span>
-    </div>
-  <%}%>
+  <% if (m.title) { %>
+  <div class="widget_header">
+    <div class="title"><%= m.title ? m.title : '' %></div>
+  </div>
+  <% } %>
 
   <% if (!m.hideStepSelector && s && s.step) { %>
   <div class="selectors">
