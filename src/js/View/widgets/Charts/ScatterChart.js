@@ -72,9 +72,7 @@ App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
 
     if (this.data.length > 1 &&
       this.data[0].values &&
-      this.data[0].values.length &&
-      this.data[1].values &&
-      this.data[1].values.length) {
+      this.data[0].values.length) {
 
       var start = null;
       var finish = null;
