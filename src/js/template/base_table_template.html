@@ -6,7 +6,7 @@
     <div class="paginator">
       <a class="popup_widget"
           href="#">
-        <span><%= __('Elementos por página - ') %></span>
+        <span><%= __('Elementos por página -') %></span>
         <span class="number">
           <%= m.get('itemsPerPageCurrent') === 'all' ? __('Todos') : m.get('itemsPerPageCurrent') %>
         </span>
@@ -61,6 +61,14 @@
     <button class="button more empty">
       <%= __('Cargar más elementos') %>
     </button>
+    <!-- Counter -->
+    <span class="paginator-counter">
+      <%= __('Mostrando') %>
+      <span class="number"></span>
+      <%= __('de') %>
+      <span class="total"></span>
+      <%= __('elementos') %>
+    </span>
   </div>
   <% } %>
   <!-- Legend -->

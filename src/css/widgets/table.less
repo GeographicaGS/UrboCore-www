@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 .table {
@@ -66,17 +66,15 @@
     .paginator {
       .popup_widget {
         margin-right: 10px;
-        padding: 9px 15px;
+        padding: 10px 15px;
         display: inline-block;
         text-align: center;
-        border: 1px solid #00b8c7;
-        border-radius: 2px;  
         span{
           color: @grey;
-          font-size: 11px;
+          text-transform: inherit;
+          font-weight: normal;
           &.number {
             color: #00b8c7;
-            font-size: 13px;
           }
         }
         .varsel ul {
@@ -85,7 +83,7 @@
             line-height: 29px;
             font-size: 15px;
           }
-        }  
+        }
       }
     }
     .button {
@@ -94,18 +92,32 @@
       float: none;
       margin-top: inherit;
     }
-  
+
   }
 
   .bottom-options {
+    min-height: 45px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding: 15px;
+    position: relative;
     .button {
       &.more {
         float: none;
         margin: 0;
+      }
+    }
+    .paginator-counter {
+      position: absolute;
+      top: 25px;
+      right: 15px;
+      line-height: 11px;
+      font-size: 11px;
+      color:@grey;
+      .number,
+      .total {
+        font-weight: bold;
       }
     }
   }
