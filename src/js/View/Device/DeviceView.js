@@ -120,16 +120,6 @@ App.View.Device = Backbone.View.extend({
     this.$('.device_name').html(this.model.get('id'));
     this.$('.deviceinfo').css({ 'background-image': 'url(/img/' + this.model.get('icon') + ')' });
 
-    // TAB 1
-    var otherView;
-    switch (this.model.get('entity')) {
-      case 'watering.sosteco.solenoidvalve':
-        otherView = new App.View.Watering.OtherView({ model: new Backbone.Model(this.model.toJSON()) });
-        break;
-      default:
-        otherView = null;
-    }
-
     // If we need a custom device view to a particular entity
     // we will create in the vertical the files with the next name
     // App.view.[Category].DeviceLastData.[Entity] <-- example to "DeviceLastData"
@@ -172,7 +162,7 @@ App.View.Device = Backbone.View.extend({
         ? new App.View.Device[categoryClassName].DeviceOther[entityClassName]({
           model: new Backbone.Model(this.model.toJSON())
         })
-        : otherView
+        : null
     };
 
     this._renderTab();
