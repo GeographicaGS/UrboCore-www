@@ -21,22 +21,24 @@
 'use strict';
 
 App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
-  initialize: function(options){
-    if(!options.opts.has('percentMode'))
-      options.opts.set({percentMode: false});
-    App.View.Widgets.Charts.Base.prototype.initialize.call(this,options);
+  initialize: function (options) {
+    if (!options.opts.has('percentMode'))
+      options.opts.set({ percentMode: false });
+    App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
     _.bindAll(this, "_drawChart");
   },
 
-  _processData: function(){
+  _processData: function () {
     this.data = [];
     var _this = this;
 
-    _.each(this.collection.toJSON(), function(c, index) {
-      for(var key in c){
+    _.each(this.collection.toJSON(), function (c, index) {
+      for (var key in c) {
         var item = {
           realKey: key,
-          key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key) ? _this.options.get('legendNameFunc')(key) : key,
+          key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key)
+            ? _this.options.get('legendNameFunc')(key)
+            : key,
           values: c[key]
         };
         _this.data.push(item);
@@ -44,94 +46,77 @@ App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
     });
   },
 
-  _initChartModel: function(){
+  _initChartModel: function () {
     this._chart = nv.models.scatterChart()
-        .margin({'right':30})
-        .height(300)
-        .pointSize(64)
-        .pointRange([64,64])
-        // .useVoronoi(false)
-        .noData(__('No hay datos disponibles'))
-        .color(this.options.get('colors'))
-    ;
+      .margin({ 'right': 30 })
+      .height(300)
+      .pointSize(64)
+      .pointRange([64, 64])
+      // .useVoronoi(false)
+      .noData(__('No hay datos disponibles'))
+      .color(this.options.get('colors'))
+      ;
 
     this._chart.yAxis.tickPadding(10);
 
-    if(this.options.get('percentMode')){
-      this._chart.forceY([0,100]);
+    if (this.options.get('percentMode')) {
+      this._chart.forceY([0, 100]);
     }
   },
 
-  _formatXAxis: function(){
+  _formatXAxis: function () {
     this._chart.xAxis
       .tickPadding(5)
-      .showMaxMin(this.options.has('xAxisShowMaxMin') ? this.options.get('xAxisShowMaxMin'): true)
-      .tickFormat(this.options.get('xAxisFunction'))
-      // TODO: parametrize or calculate the number of ticks
-      // .ticks(6)
-    ;
+      .showMaxMin(this.options.has('xAxisShowMaxMin') ? this.options.get('xAxisShowMaxMin') : true)
+      .tickFormat(this.options.get('xAxisFunction'));
 
-    var start, finish, diff;
-    if(this.options.has('xAxisDomain')){
-      start = this.options.get('xAxisDomain')[0];
-      finish = this.options.get('xAxisDomain')[1];
-    }else{
-      if(this.data.length > 1 && this.data[0].values && this.data[0].values.length && this.data[1].values && this.data[1].values.length
-      && typeof this.data[0].values[0].x === 'number'){
-        var start = Math.min(this.data[0].values[0].x,this.data[1].values[0].x); // To hours
-        var finish = Math.min(this.data[0].values[this.data[0].values.length - 1].x,this.data[1].values[this.data[1].values.length - 1].x); // To hours
+    if (this.data.length > 1 &&
+      this.data[0].values &&
+      this.data[0].values.length &&
+      this.data[1].values &&
+      this.data[1].values.length) {
+
+      var start = null;
+      var finish = null;
+
+      // Values X axis
+      if (this.options.has('xAxisDomain')) {
+        start = this.options.get('xAxisDomain')[0];
+        finish = this.options.get('xAxisDomain')[1];
+      } else if (typeof this.data[0].values[0].x === 'number') {
+        var allValuesX = _.reduce(this.data, function (sumVariables, variable) {
+          var valuesX = _.reduce(variable.values, function (sumValues, value) {
+            sumValues.push(value.x);
+            return sumValues;
+          }, []);
+
+          sumVariables.push.apply(sumVariables, valuesX);
+          
+          return sumVariables;
+        }, []);
+        
+        var start = Math.min.apply(Math, allValuesX);
+        var finish = Math.max.apply(Math, allValuesX);
       }
-    }
-    var diff = 2 * 60 * 60;
-    if((finish - start) > (72 * 60 * 60)){
-      diff = (24 * 60 * 60);
-    }else if((finish - start) > (24 * 60 * 60)){
-      diff = (12 * 60 * 60);
-    }
 
-    this._chart.xAxis
-      // .domain([start,finish])
-      .tickValues(_.range(start, finish, diff))
-    ;
+      // Set the total elements to fit in X axis
+      var diffFinishStart = finish - start;
+      var wrapperWidth = d3.select('svg.chart .nv-axis.nv-x') &&
+        d3.select('svg.chart .nv-axis.nv-x').node() &&
+        d3.select('svg.chart .nv-axis.nv-x').node().getBBox()
+        ? d3.select('svg.chart .nv-axis.nv-x').node().getBBox().width
+        : null;
+      var labelWidth = 75; //pixels
+      var totalLabels = wrapperWidth
+        ? Number.parseInt(wrapperWidth / labelWidth, 10)
+        : null;
+      var diff = totalLabels
+        ? Number.parseInt((diffFinishStart) / totalLabels, 10)
+        : 48;
+
+      this._chart.xAxis
+        .domain([start, finish])
+        .tickValues(_.range(start, finish, diff));
+    }
   },
-
-
-  //CÓIDGO DE PRUEBA PARA DIBUJAR UNA LÍNEA POR ENCIMA DE LOS PUNTOS, NO BORRAR !!
-
-  // _drawChart:function(){
-  //   App.View.Widgets.Charts.Base.prototype._drawChart.call(this);
-  //   var data = [
-  //     [0, 19.3],
-  //     [39600, 81.4],
-  //     [82800, 63.7],
-  //   ];
-
-  //   var x = d3.scale.linear()
-  //       .domain([0, d3.max(data, function (d) {return d[0];})])
-  //       .range([0, 1030]);
-
-  //   var y = d3.scale.linear()
-  //           .domain([0, 100])
-  //           .range([220, 0]);
-
-
-
-
-  //   var line = d3.svg.line()
-  //     .x(function(d){return x(d[0]);})
-  //     .y(function(d){return y(d[1]);})
-  //     .interpolate("linear");
-
-  //   var g = d3.select(this.$('.nv-groups')[0]).append('g');
-
-  //   g.append("path")
-  //   .attr("d", function(d) { return line(data)})
-  //   .attr("transform", "translate(0,0)")
-  //   .style("stroke-width", 2)
-  //           .style("stroke", "steelblue")
-  //           .style("fill", "none")
-  //   ;
-
-  // }
-
 });
