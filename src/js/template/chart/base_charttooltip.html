@@ -1,3 +1,4 @@
+<% var maxElements = 6; %>
 <div class="popup_stackbar popup_fixed">
   <% if (data.value) { %>
     <h3>
@@ -7,36 +8,44 @@
       %>
     </h3>
   <% } %>
-  <% _.each(data.series, function (el) { 
-      // Styles to legend
-      var styleLegend = 'background-color:' + el.color + ';border-color: ' + el.color;
-      if (el.type === 'line-dash') {
-        styleLegend = 'background-color: transparent;border: 2px dotted ' + el.color;
-      }
+  <% for (i = 0; i < maxElements; i++) {
+      var item = data.series[i] || null;
+      
+      if (item) {
+        // Styles to legend
+        var styleLegend = 'background-color:' + data.series[i].color + ';border-color: ' + data.series[i].color;
+        if (data.series[i].type === 'line-dash' || data.series[i].classed === 'dashed') {
+          styleLegend = 'background-color: transparent;border: 2px dotted ' + data.series[i].color;
+        }
     %>
     <div class="element">
-      <% if (el.color) { %>
-        <div class="icon circle color <%= el.cssClass %>" 
+      <% if (data.series[i].color) { %>
+        <div class="icon circle color <%= data.series[i].cssClass %>" 
              style="<%= styleLegend %>"></div>
       <% } %>
       <span class="value">
-        <% if (el.yAxisFunction) { %>
-          <%= el.yAxisFunction(el.value) %>
+        <% if (data.series[i].yAxisFunction) { %>
+          <%= data.series[i].yAxisFunction(data.series[i].value) %>
         <% } else if (utils.yAxisFunction) { %>
-          <%= utils.yAxisFunction(el.value) %>
+          <%= utils.yAxisFunction(data.series[i].value) %>
         <% } else { %>
-          <%= App.nbf(el.value) %>
-          <%= (el.realKey && App.mv().getVariable(el.realKey)) 
-            ? App.mv().getVariable(el.realKey).get('units') 
+          <%= App.nbf(data.series[i].value) %>
+          <%= (data.series[i].realKey && App.mv().getVariable(data.series[i].realKey)) 
+            ? App.mv().getVariable(data.series[i].realKey).get('units') 
             : '' %>
         <% } %>
       </span>
       <% if (utils.total) { %>
-      <span class="value_extra">(<%= App.nbf(el.value / utils.total * 100) %>%)</span>
+      <span class="value_extra">(<%= App.nbf(data.series[i].value / utils.total * 100) %>%)</span>
       <% } %>
       <span class="key">
-        <%= el.key ? __(el.key) : '' %>
+        <%= data.series[i].key ? __(data.series[i].key) : '' %>
       </span>
     </div>
-  <%})%>
+    <% } %>
+  <% } %>
+  <!-- More elements -->
+  <% if (data.series.length > maxElements) { %>
+    <span class="more"> <%= data.series.length - maxElements + ' ' +  __('elementos más') %></span>
+  <% } %>
 </div>

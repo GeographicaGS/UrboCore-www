@@ -115,11 +115,13 @@ App.View.Map.Layer.MapboxGeoJSONAPILayer = App.View.Map.Layer.MapboxGLLayer.exte
     var response = (model.changed && model.changed.response && model.changed.response.features)
       ? model.changed.response
       : { type: 'FeatureCollection', features: [] };
+    var currentSource = this._map
+      .getSource(this._idSource);
 
     // Set the response into the source
-    this._map
-      .getSource(this._idSource)
-      .setData(response);
+    if (typeof currentSource !== 'undefined') {
+      currentSource.setData(response);
+    }
 
     // The event is launched when the source is updated
     this.trigger('update', { id: this._idSource });
