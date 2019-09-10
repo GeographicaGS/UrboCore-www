@@ -26,7 +26,7 @@
 App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       title: __('Sin título'),
       stopEventsBbox: false,
     });
@@ -50,5 +50,17 @@ App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
     } else {
       this.subviews.push(options.widgetViewToContent);
     }
-  }
+  },
+
+  onClose: function () {
+    if (Array.isArray(this.options.widgetViewToContent)) {
+      _.each(this.options.widgetViewToContent, function(view) {
+        view.close();
+      }.bind(this));
+    } else {
+      this.options.widgetViewToContent.close();
+    }
+
+    App.View.Widgets.Base.prototype.onClose.call(this);
+  },
 });
