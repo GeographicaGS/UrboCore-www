@@ -562,7 +562,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     // "Y" value in the attribute "realY"
     return _.map(values, function (v) {
       // Aseguro que el valor "Y" es numérico
-      v.y = parseFloat(v.y);
+      v.y = parseFloat(d3.format('.4f')(v.y));
       var valueY = v.y;
 
       // Solo normalizo si no existen límites
@@ -898,8 +898,16 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               .replace(' (right axis)', '');
             var model = this.parseData.findWhere({ key: currentKey });
 
+            // set some attributes
             if (model) {
-              // set some attributes
+              var currentValue = _.find(model.get('values'), function (v) {
+                return v.x.toString() == data.value.toString();
+              });
+
+              if (currentValue) {
+                s.value = currentValue.realY;
+              }
+
               if (model.has('label')) {
                 s.key = model.get('label');
               }
@@ -911,10 +919,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               if (model.has('classed')) {
                 s.classed = model.get('classed');
               }
-
-              s.value = _.find(model.get('values'), function (v) {
-                return v.x.toString() == data.value.toString();
-              }).realY;
             }
 
             // Change value in tooltip
