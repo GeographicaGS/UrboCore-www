@@ -1374,32 +1374,63 @@ h4{
       }
     }
   }
-
   .split_handler {
-    height: 0;
-    width: 100%;
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 35px;
+    width: 65px;
+    position: absolute;
     z-index: 10;
-    &:before {
-      content: "";
-      display: block;
-      height: 32px;
-      width: 32px;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      background: url("/img/SM_desplazar.svg") @turquoise no-repeat center;
-      background-size: contain;
-      border-radius: 50%;
-      transform: translate(-50%,-50%) rotateZ(90deg);
-      cursor: pointer;
-      transition: transform .25s ease-out;
+    top: 50%;
+    left: 50%;
+    margin-left: -32.5px;
+    margin-top: -17.5px;
+    transition: all 0.2s linear;
+    &.top-collapsed {
+      top: 10px;
+      margin-top: 0;
     }
-    &.reverse {
-      &:before {
-        transform: translate(-50%,8px) rotateZ(-90deg);
-        .shadow_std;
+    &.bottom-collapsed {
+      bottom: 10px;
+      top: auto;
+      margin-top: 0;
+    }
+    .arrow-up,
+    .arrow-down {
+      cursor: pointer;
+      height: 35px;
+      width: 50%;
+      background-color: @accent;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-content: center;
+      img {
+        width: 12px;
+        height: 7px;
+        margin-top: 13px;
       }
+      &.disabled {
+        cursor: inherit;
+        background: @grey2;
+      }
+    }
+    .arrow-up {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      img {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+    }
+    .arrow-down {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
     }
   }
 }
