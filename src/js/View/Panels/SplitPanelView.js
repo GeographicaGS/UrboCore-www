@@ -28,7 +28,7 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
 
   events: _.extend(
     {
-      'click .split_handler span:not(.disabled)': 'toggleTopHiding',
+      'click .split_handler span:not(.disabled)': 'toggleSplitPanels',
       'click .co_fullscreen_toggle': 'toggleTopFullScreen',
       'click #backdetail': '_goBack'
     },
@@ -36,11 +36,11 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
   ),
 
   /**
-   * Toggle map size
+   * Toggle the different split panel elements
    * 
    * @param {Object} e - handler event
    */
-  toggleTopHiding: function (e) {
+  toggleSplitPanels: function (e) {
     e.preventDefault();
 
     var target = e.currentTarget;
@@ -50,26 +50,15 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
 
     // remove 'disabled' class to child
     $(parentTarget).find('span').removeClass('disabled');
-    
-    // set 'disabled' class to target element
-    if ($(target).hasClass('arrow-up')
-      && !$(topSplitElement).hasClass('collapsed')) {
-      $(target).toggleClass('disabled');
-    } else if ($(target).hasClass('arrow-down')
-      && !$(bottomSplitElement).hasClass('expanded')) {
-      $(target).toggleClass('disabled');
-    }
 
     // push "arrow-up"
     if ($(target).hasClass('arrow-up')) {
       if (!$(topSplitElement).hasClass('expanded')) {
         // hide top spliter
         this._collapseTop();
-        // toogle elements in top panel
-        this._toggleElementsPanel(e);
       } else if ($(topSplitElement).hasClass('expanded')) {
         // go back to split initial
-        this._initialTopAndBottom();
+        this._initialPositions();
       }
     }
 
@@ -77,14 +66,15 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     if ($(target).hasClass('arrow-down')) {
       if ($(bottomSplitElement).hasClass('expanded')) {
         // go back to split initial
-        this._initialTopAndBottom();
-        // toogle elements in top panel
-        this._toggleElementsPanel(e);
+        this._initialPositions();
       } else if (!$(bottomSplitElement).hasClass('expanded')) {
         // hide bottom
         this._collapseBottom();
       }
     }
+
+    // toogle elements in top panel
+    this._toggleElementsTopPanel();
 
     // Resize map
     this._resizeToggledMap();
@@ -93,17 +83,27 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
   /**
    * Initial position to split panel
    */
-  _initialTopAndBottom: function () {
+  _initialPositions: function () {
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
+    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
+    // top
     $(topSplitElement).removeClass('collapsed');
     $(topSplitElement).removeClass('expanded');
+    // bottom
     $(bottomSplitElement).removeClass('expanded');
     $(bottomSplitElement).removeClass('collapsed');
+    // handler
     $(splitHandlerElement).removeClass('top-collapsed');
     $(splitHandlerElement).removeClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up, span.arrow-down')
+      .removeClass('disabled');
+    // show button full-screen
+    $(buttonFullScreen).removeClass('hide');
+    $(buttonFullScreen).removeClass('restore');
   },
 
   /**
@@ -113,13 +113,22 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
+    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
+    // top
     $(topSplitElement).addClass('collapsed');
     $(topSplitElement).removeClass('expanded');
+    // bottom
     $(bottomSplitElement).addClass('expanded');
     $(bottomSplitElement).removeClass('collapsed');
+    // handler
     $(splitHandlerElement).addClass('top-collapsed');
     $(splitHandlerElement).removeClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up').addClass('disabled');
+    $(splitHandlerElement).find('span.arrow-down').removeClass('disabled');
+    // hide button full-screen
+    $(buttonFullScreen).addClass('hide');
   },
 
   /**
@@ -129,57 +138,99 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
+    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
+    // top
     $(topSplitElement).removeClass('collapsed');
     $(topSplitElement).addClass('expanded');
+    // bottom
     $(bottomSplitElement).removeClass('expanded');
     $(bottomSplitElement).addClass('collapsed');
+    // handler
     $(splitHandlerElement).removeClass('top-collapsed');
     $(splitHandlerElement).addClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up').removeClass('disabled');
+    $(splitHandlerElement).find('span.arrow-down').addClass('disabled');
+    // show button full-screen
+    $(buttonFullScreen).removeClass('hide');
+    $(buttonFullScreen).addClass('restore');
   },
 
   /**
-   * toggle (change position) other panel elements
-   * 
-   * @param {Object} e - event
+   * toggle (hide or show) other panel elements
    */
-  _toggleElementsPanel: function (e) {
-    // Hide date
-    if (this._dateView) {
-      this._dateView.$el.toggleClass('compact');
-      this._dateView._compact = $(e.currentTarget).hasClass('disabled')
-        ? true
-        : false;
-    }
+  _toggleElementsTopPanel: function () {
+    var splitHandlerArrows = 
+      this.$el.find('.split_handler span.disabled');
+    var buttonFullScreen = 
+      this.$el.find('.co_fullscreen_toggle');
 
-    // Hide filters
-    if (this._layerTree) {
-      this._layerTree.$el.removeClass('active').toggleClass('compact');
-      this._layerTree.$el.find('h4.active').removeClass('active');
-      this._layerTree._compact = $(e.currentTarget).hasClass('disabled')
-        ? true
-        : false;
-    }
+    if (splitHandlerArrows.length > 0
+        && $(splitHandlerArrows).hasClass('arrow-up')) {
+      // Hide elements
 
-    // Hide mapsearch
-    if (this._mapSearch) {
-      this._mapSearch._clearSearch();
-      this._mapSearch.toggleView();
-    }
+      // Date
+      if (this._dateView) {
+        this._dateView.$el.addClass('compact');
+        this._dateView._compact = true;
+      }
 
-    this.$('.co_fullscreen_toggle').toggleClass('hide');
+      // Filters
+      if (this._layerTree) {
+        this._layerTree.$el.removeClass('active').addClass('compact');
+        this._layerTree.$el.find('h4.active').addClass('active');
+        this._layerTree._compact = true;
+      }
+
+      // Mapsearch
+      if (this._mapSearch) {
+        this._mapSearch._clearSearch();
+        this._mapSearch.toggleView();
+      }
+
+      // button "fullscreen"
+      $(buttonFullScreen).hasClass('hide');
+
+    } else {
+      // Show elements
+
+      // Date
+      if (this._dateView) {
+        this._dateView.$el.removeClass('compact');
+        this._dateView._compact = false;
+      }
+
+      // Filters
+      if (this._layerTree) {
+        this._layerTree.$el.removeClass('active').removeClass('compact');
+        this._layerTree.$el.find('h4.active').removeClass('active');
+        this._layerTree._compact = false;
+      }
+
+      // Mapsearch
+      if (this._mapSearch) {
+        this._mapSearch._clearSearch();
+        this._mapSearch.toggleView();
+      }
+
+      // Button "fullscreen"
+      $(buttonFullScreen).hasClass('hide');
+    }
   },
 
   toggleTopFullScreen: function (e) {
     e.preventDefault();
 
-    var bottomSplitElement = this.$el.find('.bottom.h50');
-
+    // set 'restore' class over target
     $(e.currentTarget).toggleClass('restore');
 
-    this.$('.split_handler').toggleClass('hide');
-
-    $(bottomSplitElement).toggleClass('collapsed');
+    // set right CSS classes over "splitHandler"
+    if ($(e.currentTarget).hasClass('restore')) {
+      this._collapseBottom();
+    } else {
+      this._initialPositions();
+    }
 
     this._resizeToggledMap();
   },
