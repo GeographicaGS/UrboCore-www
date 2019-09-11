@@ -23,34 +23,163 @@
 <!doctype html>
 <head>
   <title>Telef&oacute;nica Smart City</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
   <style>
-    body{
-      background-color:#003146;
-      min-height:100vh;
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      background-color: #003146;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
-    img{
-      display:block;
-      margin:30px auto;
-      width:626px;
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform:translate(-50%,-50%);
-      -moz-transform:translate(-50%,-50%);
-      -webkit-transform:translate(-50%,-50%)
+    .browser-error {
+      background-color: #004660;
+      color: #FFF;
+      padding: 40px 0px;
+      max-width: 550px;
+    }
+    /* Header */
+    .browser-error .browser-error-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 0 0 45px;
+    }
+    .browser-error .browser-error-header .browser-error-header--logo {
+      display: inline-block;
+      padding: 0 20px;
+      border-right: 1px solid #FFF;
+    }
+    .browser-error .browser-error-header .browser-error-header--logo:last-child {
+      border-right: 0;
+    }
+    /* Content */
+    .browser-error .browser-error-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .browser-error .browser-error-content--title {
+      margin: 0 0 25px;
+      padding: 0;
+      width: 50%;
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 36px;
+      text-align: center;
+    }
+    .browser-error .browser-error-content--subtitle {
+      margin: 0 0 40px;
+      padding: 0;
+      width: 80%;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 24px;
+      color: #AAA;
+      text-align: center;
+    }
+    /* Footer */
+    .browser-error .browser-error-footer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .browser-error .browser-error-footer--element {
+      position: relative;
+      display: flex;
+      width: 230px;
+      border-top: 1px solid #336b7f;
+      padding: 20px 0 20px 10px;
+      margin: 0 10px;
+      text-decoration: none;
+      color: #FFF;
+      justify-content: flex-start;
+    }
+    .browser-error .browser-error-footer--element .icon {
+      width: 48px;
+      height: auto;
+    }
+    .browser-error .browser-error-footer--element .name {
+      font-size: 24px;
+      line-height: 48px;
+      display: inline-block;
+      margin-left: 20px;
+    }
+    .browser-error .browser-error-footer--element .number {
+      position: absolute;
+      bottom: 8px;
+      right: 4px;
+      color: #00b8c7;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 14px;
+    }
+    .browser-error .browser-error-footer--element:last-child,
+    .browser-error .browser-error-footer--element:nth-last-child(2) {
+      border-bottom: 1px solid #336b7f;
+    }
+    .browser-error .browser-error-footer--element:hover,
+    .browser-error .browser-error-footer--element:focus,
+    .browser-error .browser-error-footer--element:active {
+      text-decoration: none;
+      color: #FFF;
     }
   </style>
 </head>
 <body>
-  <img
-  src="/img/browser.png"
-  alt="Su navegador web actual no est&aacute; soportado. Esta aplicaci&oacute;n precisa funcionalidades avanzadas. Le recomendamos que actualice su navegador."
-  usemap="#browsermap"
-  />
-  <map name="browsermap" width="626" height="626">
-    <area shape="rect" coords="54,364,312,453" href="https://www.google.com/chrome" target="_blank" alt="Descargar Google Chrome">
-    <area shape="rect" coords="337,364,595,453" href="https://www.apple.com/safari" target="_blank" alt="Descargar Apple Safari">
-    <area shape="rect" coords="54,474,312,562" href="https://www.mozilla.org/firefox" target="_blank" alt="Descargar Mozilla Firefox">
-    <area shape="rect" coords="337,474,595,562" href="https://www.microsoft.com/windows/microsoft-edge" target="_blank" alt="Descargar Microsoft Internet Explorer">
-  </map>
+  <div class="browser-error">
+    <div class="browser-error-header">
+      <div class="browser-error-header--logo">
+        <img src="/img/urbo-logo_bicolorneg.svg" alt="Urbo">
+      </div>
+      <div class="browser-error-header--logo">
+        <img src="/img/telefonica-logo_negativo.svg" alt="Telefonica">
+      </div>
+    </div>
+    <div class="browser-error-content">
+      <h2 class="browser-error-content--title">
+        Su navegador actual no est&aacute; soportado
+      </h2>
+      <h4 class="browser-error-content--subtitle">
+        Esta aplicaci&oacute;n precisa de funcionalidades avanzadas.<br>
+        Le recomendamos que <strong>actualice</strong> a uno de los siguientes navegadores:
+      </h4>
+    </div>
+    <div class="browser-error-footer">
+      <a href="https://www.google.com/chrome"
+         target="_blank"
+         class="browser-error-footer--element">
+        <img class="icon" src="/img/browser_chrome.png" alt="Chrome">
+        <span class="name">Chrome</span>
+        <span class="number">41+</span>
+      </a>
+      <a href="https://www.apple.com/safari"
+         target="_blank"
+         class="browser-error-footer--element">
+         <img class="icon" src="/img/browser_safari.png" alt="Safari">
+         <span class="name">Safari</span>
+        <span class="number">9+</span>
+      </a>
+      <a href="https://www.mozilla.org/firefox"
+         target="_blank"
+         class="browser-error-footer--element">
+         <img class="icon" src="/img/browser_firefox.png" alt="Firefox">
+         <span class="name">Firefox</span>
+        <span class="number">38+</span>
+      </a>
+      <a href="https://www.microsoft.com/windows/microsoft-edge"
+         target="_blank"
+         class="browser-error-footer--element">
+         <img class="icon" src="/img/browser_edge.png" alt="Edge">
+         <span class="name">Edge</span>
+        <span class="number">13+</span>
+      </a>
+    </div>
+  </div>
 </body>
