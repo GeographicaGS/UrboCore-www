@@ -29,7 +29,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
   events: _.extend(
     {
       'click .split_handler span:not(.disabled)': 'toggleSplitPanels',
-      'click .co_fullscreen_toggle': 'toggleTopFullScreen',
       'click #backdetail': '_goBack'
     },
     App.View.Panels.Base.prototype.events
@@ -56,9 +55,13 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
       if (!$(topSplitElement).hasClass('expanded')) {
         // hide top spliter
         this._collapseTop();
+        // toogle elements in top panel
+        this._toggleElementsTopPanel();
       } else if ($(topSplitElement).hasClass('expanded')) {
         // go back to split initial
         this._initialPositions();
+        // Resize map
+        this._resizeMapElement();
       }
     }
 
@@ -67,17 +70,17 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
       if ($(bottomSplitElement).hasClass('expanded')) {
         // go back to split initial
         this._initialPositions();
+        // toogle elements in top panel
+        this._toggleElementsTopPanel();
+        // Resize map
+        this._resizeMapElement();
       } else if (!$(bottomSplitElement).hasClass('expanded')) {
         // hide bottom
         this._collapseBottom();
+        // Resize map
+        this._resizeMapElement();
       }
     }
-
-    // toogle elements in top panel
-    this._toggleElementsTopPanel();
-
-    // Resize map
-    this._resizeToggledMap();
   },
 
   /**
@@ -87,7 +90,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
-    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
     // top
     $(topSplitElement).removeClass('collapsed');
@@ -101,9 +103,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     // handler-arrow
     $(splitHandlerElement).find('span.arrow-up, span.arrow-down')
       .removeClass('disabled');
-    // show button full-screen
-    $(buttonFullScreen).removeClass('hide');
-    $(buttonFullScreen).removeClass('restore');
   },
 
   /**
@@ -113,7 +112,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
-    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
     // top
     $(topSplitElement).addClass('collapsed');
@@ -127,8 +125,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     // handler-arrow
     $(splitHandlerElement).find('span.arrow-up').addClass('disabled');
     $(splitHandlerElement).find('span.arrow-down').removeClass('disabled');
-    // hide button full-screen
-    $(buttonFullScreen).addClass('hide');
   },
 
   /**
@@ -138,7 +134,6 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     var topSplitElement = this.$el.find('.top.h50');
     var bottomSplitElement = this.$el.find('.bottom.h50');
     var splitHandlerElement = this.$el.find('.split_handler');
-    var buttonFullScreen = this.$el.find('.co_fullscreen_toggle');
 
     // top
     $(topSplitElement).removeClass('collapsed');
@@ -152,94 +147,48 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
     // handler-arrow
     $(splitHandlerElement).find('span.arrow-up').removeClass('disabled');
     $(splitHandlerElement).find('span.arrow-down').addClass('disabled');
-    // show button full-screen
-    $(buttonFullScreen).removeClass('hide');
-    $(buttonFullScreen).addClass('restore');
   },
 
   /**
    * toggle (hide or show) other panel elements
    */
   _toggleElementsTopPanel: function () {
-    var splitHandlerArrows = 
-      this.$el.find('.split_handler span.disabled');
-    var buttonFullScreen = 
-      this.$el.find('.co_fullscreen_toggle');
-
-    if (splitHandlerArrows.length > 0
-        && $(splitHandlerArrows).hasClass('arrow-up')) {
-      // Hide elements
-
-      // Date
-      if (this._dateView) {
-        this._dateView.$el.addClass('compact');
-        this._dateView._compact = true;
-      }
-
-      // Filters
-      if (this._layerTree) {
-        this._layerTree.$el.removeClass('active').addClass('compact');
-        this._layerTree.$el.find('h4.active').addClass('active');
-        this._layerTree._compact = true;
-      }
-
-      // Mapsearch
-      if (this._mapSearch) {
-        this._mapSearch._clearSearch();
-        this._mapSearch.toggleView();
-      }
-
-      // button "fullscreen"
-      $(buttonFullScreen).hasClass('hide');
-
-    } else {
-      // Show elements
-
-      // Date
-      if (this._dateView) {
-        this._dateView.$el.removeClass('compact');
-        this._dateView._compact = false;
-      }
-
-      // Filters
-      if (this._layerTree) {
-        this._layerTree.$el.removeClass('active').removeClass('compact');
-        this._layerTree.$el.find('h4.active').removeClass('active');
-        this._layerTree._compact = false;
-      }
-
-      // Mapsearch
-      if (this._mapSearch) {
-        this._mapSearch._clearSearch();
-        this._mapSearch.toggleView();
-      }
-
-      // Button "fullscreen"
-      $(buttonFullScreen).hasClass('hide');
-    }
-  },
-
-  toggleTopFullScreen: function (e) {
-    e.preventDefault();
-
-    // set 'restore' class over target
-    $(e.currentTarget).toggleClass('restore');
-
-    // set right CSS classes over "splitHandler"
-    if ($(e.currentTarget).hasClass('restore')) {
-      this._collapseBottom();
-    } else {
-      this._initialPositions();
+    // Date
+    if (this._dateView) {
+      this._dateView.$el.toggleClass('compact');
+      this._dateView._compact = !this._dateView._compact;
     }
 
-    this._resizeToggledMap();
+    // Filters
+    if (this._layerTree) {
+      // old filters
+      this._layerTree.$el.toggleClass('active')
+        .toggleClass('compact');
+      this._layerTree.$el.find('h4.active')
+        .toggleClass('active');
+      this._layerTree._compact = !this._layerTree._compact;
+      // new filters
+      this._layerTree.$el.find('#layer-tree')
+        .toggleClass('compact');
+    }
+
+    // Mapsearch
+    if (this._mapSearch) {
+      this._mapSearch._clearSearch();
+      this._mapSearch.toggleView();
+    }
+
+    // Spatial
+    if (this.filterSpatialView) {
+      this.filterSpatialView.$el.toggleClass('hide');
+    }
   },
 
   /**
    * Resize map after N seconds
    */
-  _resizeToggledMap: function () {
-    if (this._mapView) {
+  _resizeMapElement: function () {
+    if (this._mapView && typeof this._mapView.resetSize === 'function') {
       setTimeout(function () {
         this._mapView.resetSize();
       }.bind(this), 300);

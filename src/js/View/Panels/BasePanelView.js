@@ -92,12 +92,14 @@ App.View.Panels.Base = App.View.Container.extend({
       this.subviews.push(this.filterSpatialView);
     }
 
-    if (this.dateView)
-      this.subviews.push(new App.View.Date({
+    if (this.dateView) {
+      this._dateView = new App.View.Date({
         compact: false,
         maxRange: this.dateViewMaxRange,
         model: this.dateViewModel
-      }));
+      });
+      this.subviews.push(this._dateView);
+    }
   },
 
   events: {
