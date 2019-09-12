@@ -119,9 +119,16 @@ App.View.Widgets.VariableSimple = Backbone.View.extend({
         var data = response.models.length 
           ? response.models[0].toJSON()
           : {
-            value: null,
+            value: 0,
             units: null
           };
+
+        if (data.value === 'null'
+          || data.value === null
+          || data.value === ''
+          || data.value === ' ') {
+          data.value = 0;
+        }
 
         if (!data.units) {
           data.units = null;
