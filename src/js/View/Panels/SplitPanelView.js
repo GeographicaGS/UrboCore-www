@@ -21,69 +21,177 @@
 'use strict';
 
 App.View.Panels.Splitted = App.View.Panels.Base.extend({
-  _template: _.template( $('#dashboard_split_template').html() ),
+
+  _template: _.template($('#dashboard_split_template').html()),
 
   className: 'fill_height flex',
 
-	events: _.extend(
+  events: _.extend(
     {
-      'click .split_handler': 'toggleTopHiding',
-      'click .co_fullscreen_toggle': 'toggleTopFullScreen',
+      'click .split_handler span:not(.disabled)': 'toggleSplitPanels',
       'click #backdetail': '_goBack'
     },
     App.View.Panels.Base.prototype.events
   ),
 
-  toggleTopHiding: function(e){
+  /**
+   * Toggle the different split panel elements
+   * 
+   * @param {Object} e - handler event
+   */
+  toggleSplitPanels: function (e) {
     e.preventDefault();
-    $(e.currentTarget).toggleClass('reverse');
-    this.$('.bottom.h50').toggleClass('expanded');
 
-    this._onTopHidingToggled(e);
+    var target = e.currentTarget;
+    var parentTarget = e.currentTarget.parentElement;
+    var topSplitElement = this.$el.find('.top.h50');
+    var bottomSplitElement = this.$el.find('.bottom.h50');
+
+    // remove 'disabled' class to child
+    $(parentTarget).find('span').removeClass('disabled');
+
+    // push "arrow-up"
+    if ($(target).hasClass('arrow-up')) {
+      if (!$(topSplitElement).hasClass('expanded')) {
+        // hide top spliter
+        this._collapseTop();
+        // toogle elements in top panel
+        this._toggleElementsTopPanel();
+      } else if ($(topSplitElement).hasClass('expanded')) {
+        // go back to split initial
+        this._initialPositions();
+        // Resize map
+        this._resizeMapElement();
+      }
+    }
+
+    // push "arrow-down"
+    if ($(target).hasClass('arrow-down')) {
+      if ($(bottomSplitElement).hasClass('expanded')) {
+        // go back to split initial
+        this._initialPositions();
+        // toogle elements in top panel
+        this._toggleElementsTopPanel();
+        // Resize map
+        this._resizeMapElement();
+      } else if (!$(bottomSplitElement).hasClass('expanded')) {
+        // hide bottom
+        this._collapseBottom();
+        // Resize map
+        this._resizeMapElement();
+      }
+    }
   },
 
-  // Actions to perform when the top panel hiding mode is toggled
-  _onTopHidingToggled: function(e){
-    if(this._mapView)
-      this._mapView.$el.toggleClass('collapsed');
+  /**
+   * Initial position to split panel
+   */
+  _initialPositions: function () {
+    var topSplitElement = this.$el.find('.top.h50');
+    var bottomSplitElement = this.$el.find('.bottom.h50');
+    var splitHandlerElement = this.$el.find('.split_handler');
 
-    if(this._dateView){
+    // top
+    $(topSplitElement).removeClass('collapsed');
+    $(topSplitElement).removeClass('expanded');
+    // bottom
+    $(bottomSplitElement).removeClass('expanded');
+    $(bottomSplitElement).removeClass('collapsed');
+    // handler
+    $(splitHandlerElement).removeClass('top-collapsed');
+    $(splitHandlerElement).removeClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up, span.arrow-down')
+      .removeClass('disabled');
+  },
+
+  /**
+   * collapse top element
+   */
+  _collapseTop: function () {
+    var topSplitElement = this.$el.find('.top.h50');
+    var bottomSplitElement = this.$el.find('.bottom.h50');
+    var splitHandlerElement = this.$el.find('.split_handler');
+
+    // top
+    $(topSplitElement).addClass('collapsed');
+    $(topSplitElement).removeClass('expanded');
+    // bottom
+    $(bottomSplitElement).addClass('expanded');
+    $(bottomSplitElement).removeClass('collapsed');
+    // handler
+    $(splitHandlerElement).addClass('top-collapsed');
+    $(splitHandlerElement).removeClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up').addClass('disabled');
+    $(splitHandlerElement).find('span.arrow-down').removeClass('disabled');
+  },
+
+  /**
+   * collapse bottom element
+   */
+  _collapseBottom: function () {
+    var topSplitElement = this.$el.find('.top.h50');
+    var bottomSplitElement = this.$el.find('.bottom.h50');
+    var splitHandlerElement = this.$el.find('.split_handler');
+
+    // top
+    $(topSplitElement).removeClass('collapsed');
+    $(topSplitElement).addClass('expanded');
+    // bottom
+    $(bottomSplitElement).removeClass('expanded');
+    $(bottomSplitElement).addClass('collapsed');
+    // handler
+    $(splitHandlerElement).removeClass('top-collapsed');
+    $(splitHandlerElement).addClass('bottom-collapsed');
+    // handler-arrow
+    $(splitHandlerElement).find('span.arrow-up').removeClass('disabled');
+    $(splitHandlerElement).find('span.arrow-down').addClass('disabled');
+  },
+
+  /**
+   * toggle (hide or show) other panel elements
+   */
+  _toggleElementsTopPanel: function () {
+    // Date
+    if (this._dateView) {
       this._dateView.$el.toggleClass('compact');
-      this._dateView._compact = $(e.currentTarget).hasClass('reverse') ? true : false;
+      this._dateView._compact = !this._dateView._compact;
     }
 
-    if(this._layerTree){
-      this._layerTree.$el.removeClass('active').toggleClass('compact');
-      this._layerTree.$el.find('h4.active').removeClass('active');
-      this._layerTree._compact = $(e.currentTarget).hasClass('reverse') ? true : false;
+    // Filters
+    if (this._layerTree) {
+      // old filters
+      this._layerTree.$el.toggleClass('active')
+        .toggleClass('compact');
+      this._layerTree.$el.find('h4.active')
+        .toggleClass('active');
+      this._layerTree._compact = !this._layerTree._compact;
+      // new filters
+      this._layerTree.$el.find('#layer-tree')
+        .toggleClass('compact');
     }
 
-    if(this._mapSearch){
+    // Mapsearch
+    if (this._mapSearch) {
       this._mapSearch._clearSearch();
-        this._mapSearch.toggleView();
+      this._mapSearch.toggleView();
     }
 
-    this.$('.co_fullscreen_toggle').toggleClass('hide');
+    // Spatial
+    if (this.filterSpatialView) {
+      this.filterSpatialView.$el.toggleClass('hide');
+    }
   },
 
-  toggleTopFullScreen: function(e){
-    e.preventDefault();
-    $(e.currentTarget).toggleClass('restore');
-
-    this.$('.split_handler').toggleClass('hide');
-    this.$('.bottom.h50').toggleClass('collapsed');
-
-    this._onTopFullScreenToggled();
-  },
-
-  // Actions to perform when the top panel full screen mode is toggled
-  _onTopFullScreenToggled: function(){
-    var _this = this;
-    if(this._mapView){
-      this._mapView.$el.toggleClass('expanded');
-    	setTimeout(function(){
-      	_this._mapView.resetSize();
-    	}, 300);
+  /**
+   * Resize map after N seconds
+   */
+  _resizeMapElement: function () {
+    if (this._mapView && typeof this._mapView.resetSize === 'function') {
+      setTimeout(function () {
+        this._mapView.resetSize();
+      }.bind(this), 300);
     }
   }
 });

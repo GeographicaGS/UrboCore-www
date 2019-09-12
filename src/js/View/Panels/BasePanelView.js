@@ -30,58 +30,64 @@
  * we will envolve it in the Object 'App.View.Panels.<vertical_name>.Master'
  */
 App.View.Panels.Base = App.View.Container.extend({
-  _template: _.template( $('#dashboard_template').html() ),
+  _template: _.template($('#dashboard_template').html()),
 
-  initialize: function(options) {
-    App.View.Container.prototype.initialize.call(this,options);
-    this.listenTo(this.framesCol, 'reset', this.render);    
-    options = _.defaults(options, {
+  initialize: function (options) {
+    App.View.Container.prototype.initialize.call(this, options);
+
+    this.listenTo(this.framesCol, 'reset', this.render);
+    
+    options = _.defaults(options || {}, {
       dateView: true,
       dateViewMaxRange: moment.duration(1, 'year'),
       dateViewModel: App.ctx,
       manageNavBar: true,
       spatialFilter: true,
       filterView: true,
-      filterViewOpen:false,
+      filterViewOpen: false,
       framesList: false
     });
+
     // @alasarr says: I want to remove this lines
     for (var i in options)
       this[i] = options[i];
 
-    this.panelList = new App.Collection[App.Utils.capitalizeFirstLetter(this.id_category)].PanelList(null,options);
-    //this.panelList.fetch({scope: this.scopeModel.get('id')});
+    // Select panel in the top page
+    this.panelList = new App.Collection[App.Utils.capitalizeFirstLetter(this.id_category)]
+      .PanelList(null, options);
 
     this.category = this.scopeModel.get('categories').get(this.id_category);
 
-    if (this.filterView){
+    // Filters (_layerTree)
+    if (this.filterView) {
       this.filterModel = App.getFilter(this.id_category);
-      if(this.id_category === 'dumps') { // TODO: Please fix this
+      if (this.id_category === 'dumps') { // TODO: Please fix this
         if (!this.filterModel) {
           this.filterModel = new App.Model.Dumps.Filter();
-          App.setFilter(this.id_category,this.filterModel);
+          App.setFilter(this.id_category, this.filterModel);
         }
-
-        this.subviews.push(new App.View.Filter.Dumps({
+        this._layerTree = new App.View.Filter.Dumps({
           open: this.filterViewOpen,
           model: this.filterModel
-        }));
-      } else if(this.id_category === 'transport') {
-        this.subviews.push(new App.View.Filter.Transport.Vehicles({
+        });
+        this.subviews.push(this._layerTree);
+      } else if (this.id_category === 'transport') {
+        this._layerTree = new App.View.Filter.Transport.Vehicles({
           scope: this.scopeModel.get('id'),
           open: true
-        }));
+        });
+        this.subviews.push(this._layerTree);
       } else if (this.id_category === 'touring') {
         if (!this.filterModel) {
           this.filterModel = new App.Model.Touring.Filter();
-          App.setFilter(this.id_category,this.filterModel);
+          App.setFilter(this.id_category, this.filterModel);
         }
-
-        this.subviews.push(new App.View.Filter.Touring.Visitors({
+        this._layerTree = new App.View.Filter.Touring.Visitors({
           scope: this.scopeModel.get('id'),
           model: this.filterModel,
           open: true
-        }));
+        });
+        this.subviews.push(this._layerTree);
       }
     }
 
@@ -92,30 +98,32 @@ App.View.Panels.Base = App.View.Container.extend({
       this.subviews.push(this.filterSpatialView);
     }
 
-    if (this.dateView)
-      this.subviews.push(new App.View.Date({
+    if (this.dateView) {
+      this._dateView = new App.View.Date({
         compact: false,
         maxRange: this.dateViewMaxRange,
         model: this.dateViewModel
-      }));
+      });
+      this.subviews.push(this._dateView);
+    }
   },
 
   events: {
-    "click a.goToVertical" : "_goToVerticalLink",
+    "click a.goToVertical": "_goToVerticalLink",
     "click .add-iframe": "createFrame",
   },
 
-  _goToVerticalLink: function(e) {
+  _goToVerticalLink: function (e) {
     e.preventDefault();
     $(".menuPanel").toggleClass("active");
     $(".navElement.menu").addClass("active");
     $("#menuPanel").removeClass("translateRight");
   },
 
-  render: function(){
+  render: function () {
     this.$el.html(this._template());
     this.$el.attr('data-vertical', this.id_category);
-    
+
     for (var i in this.subviews)
       this.$el.append(this.subviews[i].render().$el);
 
@@ -125,29 +133,29 @@ App.View.Panels.Base = App.View.Container.extend({
       });
       this.framesCol.type = 'vertical';
       this.framesCol.vertical = this.category.id;
-      
+
       if (App.auth && App.auth.getUser() && App.auth.getUser().superadmin) {
         this.$el.append('<div class="add-iframe"><div><span>' + __('Añadir Frame') + '</span></div></div>');
         var _this = this;
-        this.listenTo(this.framesCol, 'update', function() {
+        this.listenTo(this.framesCol, 'update', function () {
           if (_this._popupView) {
             _this._onPopupClose();
           }
           _this._widgets = [];
           _this.drawFrames();
         });
-        this.framesCol.fetch({reset: true});
+        this.framesCol.fetch({ reset: true });
       }
     }
-    if (this.manageNavBar){
+    if (this.manageNavBar) {
       var navBar = App.getNavBar();
       var vertical = this.scopeModel.get('categories').get(this.vertical);
 
-      var listCollection =  new Backbone.Collection(this.panelList.toJSON());
+      var listCollection = new Backbone.Collection(this.panelList.toJSON());
       listCollection.get(this.id_panel).set('selected', true);
 
       var url = this.scopeModel.get('id') + '/categories/welcome';
-      
+
       //This lines makes backurl links to homepage from scope when it has only one vertical,
       //preventing from goint to multiscope map on children scopes
       // if(this.scopeModel.get('categories').length === 1) {
@@ -170,7 +178,7 @@ App.View.Panels.Base = App.View.Container.extend({
       var breadcrumb = [
         listCollection.toJSON(),
         {
-          url: this.scopeModel.get('id') + '/' + ((!vertical)?this.id_category:this.vertical) + '/dashboard',
+          url: this.scopeModel.get('id') + '/' + ((!vertical) ? this.id_category : this.vertical) + '/dashboard',
           title: sectionTitle
         },
         {
@@ -180,28 +188,28 @@ App.View.Panels.Base = App.View.Container.extend({
       ];
 
       //this.scopeModel.get('multi') is returning false for multiscope verticals
-      var parent = this.scopeModel.get('parent_id') 
-      if (parent && parent != 'orphan'){
+      var parent = this.scopeModel.get('parent_id')
+      if (parent && parent != 'orphan') {
         var parentModel = App.mv().getScope(parent);
         breadcrumb.push({
           url: parentModel.get('id') + '/scope',
           title: parentModel.get('name')
         });
       }
-      
+
       // var backurl = null;
       // if(this.scopeModel.get('categories').length === 1) {
       //   backurl = Backbone.history.getFragment();
       // }
 
       navBar.set({
-        visible : true,
-        breadcrumb : breadcrumb,
+        visible: true,
+        breadcrumb: breadcrumb,
         scopeInfo: App.Utils.toDeepJSON(this.scopeModel),
-        cities:[],
+        cities: [],
         section: this.id_category,
         scopeLoaded: this.scopeModel.get('id'),
-        menu: { showable : true},
+        menu: { showable: true },
       });
     }
 
@@ -210,18 +218,18 @@ App.View.Panels.Base = App.View.Container.extend({
     $title_page.addClass(this.id_category + 'IconBeforeM');
     $title_page.html(this.title);
 
-    if((App.getMetadata().getCategory(this.id_category) || this.id_category == 'correlations' || this.id_category === 'frames') && App.getMetadata().getAdditionalInfo(this.id_category)) {
+    if ((App.getMetadata().getCategory(this.id_category) || this.id_category == 'correlations' || this.id_category === 'frames') && App.getMetadata().getAdditionalInfo(this.id_category)) {
       var title;
       if (this.id_category === 'correlations') {
         title = __('Correlaciones');
       } else if (this.id_category == 'frames') {
         title = __('City Analytics');
       } else {
-        title =  __(App.getMetadata().getCategory(this.id_category).get('name'));
+        title = __(App.getMetadata().getCategory(this.id_category).get('name'));
       }
       $title_page.prepend(
         '<span class="vertical" style="background-color:' +
-        App.getMetadata().getAdditionalInfo(this.id_category).colour +';">' + title + '</span>'
+        App.getMetadata().getAdditionalInfo(this.id_category).colour + ';">' + title + '</span>'
       );
     }
 
@@ -230,7 +238,7 @@ App.View.Panels.Base = App.View.Container.extend({
 
     this.setFooter();
 
-    if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get(this.id_category).get('nodata')===true)
+    if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get(this.id_category).get('nodata') === true)
       this.$('.widgets').html('<div class="nodata"><p>' + __('No hay datos para este vertical') + '</p></div>');
     else {
       this.customRender();
@@ -238,14 +246,14 @@ App.View.Panels.Base = App.View.Container.extend({
         this.drawFrames();
     }
   },
-  customRender: function () {},
+  customRender: function () { },
 
   setFooter: function () {
     var logosContainer = $('footer.footer .logos');
     logosContainer.empty();
-    if(this.category) {
+    if (this.category) {
       var categoryConfig = this.category.get('config');
-      if(categoryConfig && categoryConfig.companies) {
+      if (categoryConfig && categoryConfig.companies) {
         categoryConfig.companies.forEach(function (company) {
           logosContainer.append('<a href="' + company.url + '" target="_blank"><img src="' + company.logo + '" alt="' + company.name + '" /></a>');
         });
@@ -253,11 +261,11 @@ App.View.Panels.Base = App.View.Container.extend({
     }
   },
 
-  createFrame: function(e) {
+  createFrame: function (e) {
     e.preventDefault();
 
     var _this = this;
-    if(this._popupView == undefined) {
+    if (this._popupView == undefined) {
       var popupModel = new Backbone.Model({
         title: __('Nuevo frame')
       });
@@ -278,38 +286,40 @@ App.View.Panels.Base = App.View.Container.extend({
     this._popupView.show();
   },
 
-  drawFrames: function() {
+  drawFrames: function () {
     var _this = this;
     _this.$('.widgetFrame').remove();
-    this.framesCol.fetch({data: {vertical:_this.category.id, type:'vertical'}, success: function(response) {
-      var _widgets2 = [];
+    this.framesCol.fetch({
+      data: { vertical: _this.category.id, type: 'vertical' }, success: function (response) {
+        var _widgets2 = [];
 
-      response.each(function(elem, idx){
-        _widgets2.push(new App.View.Widgets.Frame.BaseFrame({
-          link:  '/' + _this.scopeModel.get('id') + '/' + _this.category.id + '/frames/' + elem.id,
-          frameModel: elem,
-          dimension: '',          
+        response.each(function (elem, idx) {
+          _widgets2.push(new App.View.Widgets.Frame.BaseFrame({
+            link: '/' + _this.scopeModel.get('id') + '/' + _this.category.id + '/frames/' + elem.id,
+            frameModel: elem,
+            dimension: '',
+          }));
+        });
+        _this.$('.widgets').append(new App.View.Widgets.Container({
+          widgets: _widgets2,
+          el: _this.$('.widgets'),
         }));
-      });
-      _this.$('.widgets').append(new App.View.Widgets.Container({
-        widgets: _widgets2,
-        el: _this.$('.widgets'),
-      }));
-      _this.$('.widgets').masonry('reloadItems',{
-        gutter: 20,
-        columnWidth: 360
-      });
-    }, reset: true});
+        _this.$('.widgets').masonry('reloadItems', {
+          gutter: 20,
+          columnWidth: 360
+        });
+      }, reset: true
+    });
   },
 
-  onClose: function() {
+  onClose: function () {
     App.View.Container.prototype.onClose.call(this);
     if (this.filterSpatialView) {
       this.filterSpatialView.close()
     };
   },
 
-  _onPopupClose: function(e){
+  _onPopupClose: function (e) {
     this._popupView.closePopUp();
   }
 });
