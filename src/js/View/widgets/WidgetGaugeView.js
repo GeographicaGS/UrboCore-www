@@ -26,7 +26,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 
   initialize: function (options) {
 
-    this.options = _.defaults(options, {
+    this.options = _.defaults(options || {}, {
       fetchModel: false,
       global: false
     });
