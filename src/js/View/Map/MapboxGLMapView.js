@@ -214,7 +214,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * @return {Object} data about the source
    */
   getSource: function (idSource) {
-    return this._map.getSource(idSource);
+    return typeof idSource === 'string'
+      ? this._map.getSource(idSource)
+      : undefined;
   },
 
   updateData: function (layer) {},
@@ -344,30 +346,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     var modifyAndSetSources = this._modifyAndSetSources;
     var resetClusterSources = this._resetClusterSourcesSaved;
     var defaultPaintOptions = {
-      'circle-color': [
-        'step',
-        ['get', 'point_count'],
-        '#51bbd6',
-        10, // number of nearby points
-        '#f1f075',
-        15, // number of nearby points
-        '#f28cb1'
-      ],
-      'circle-radius': [
-        'step',
-        ['get', 'point_count'],
-        20,
-        5, // number of nearby points
-        25,
-        10, // number of nearby points
-        30,
-        15, // number of nearby points
-        35,
-        20, // number of nearby points
-        40,
-        25, // number of nearby points
-        45
-      ]
+      'circle-color': '#51bbd6',
+      'circle-radius': 20
     };
 
     /**
@@ -382,7 +362,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
         filter: ['has', 'point_count'],
         paint: optionsLayer.paint
           ? paintOptions.paint
-          : defaultPaintOptions
+          : defaultPaintOptions,
+        'icon-allow-overlap': true,
       });
 
       // event "click" on cluster layer
@@ -455,8 +436,12 @@ App.View.Map.MapboxView = Backbone.View.extend({
         filter: ['has', 'point_count'],
         layout: {
           'text-field': '{point_count_abbreviated}',
-          'text-size': 12
+          'text-size': 14
         },
+        paint: {
+          'text-color': '#FFF'
+        },
+        'icon-allow-overlap': true,
       });
     }
   },
