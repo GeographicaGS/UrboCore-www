@@ -22,46 +22,46 @@
 
 App.View.Map.Deprecated.Base = Backbone.View.extend({
 
-  _popupTemplate: _.template( $('#map-entity_popup_template').html()),
+  _popupTemplate: _.template($('#map-entity_popup_template').html()),
 
-  _layerGroups : {},
+  _layerGroups: {},
 
-  initialize: function(options) {
+  initialize: function (options) {
 
     this.options = options;
 
-    _.bindAll(this,'_onMapMoved','_onNamedMapCreated');
+    _.bindAll(this, '_onMapMoved', '_onNamedMapCreated');
 
     this._ctx = App.ctx;
-    this.listenTo(this._ctx,'change:bbox',this.changeBBOX);
-    this.listenTo(this._ctx,'change:bbox_status',this._changeBBOXStatus);
-    this.listenTo(this._ctx,'change:start change:finish',this.changeDate);
+    this.listenTo(this._ctx, 'change:bbox', this.changeBBOX);
+    this.listenTo(this._ctx, 'change:bbox_status', this._changeBBOXStatus);
+    this.listenTo(this._ctx, 'change:start change:finish', this.changeDate);
 
-    if (options.filterModel){
+    if (options.filterModel) {
       this.filterModel = options.filterModel;
-      this.listenTo(this.filterModel,'change',this.applyFilters);
+      this.listenTo(this.filterModel, 'change', this.applyFilters);
     }
   },
 
-  onClose: function(){
+  onClose: function () {
 
     this.stopListening();
 
     if (this.map)
       this.map.remove();
 
-    App.ctx.set('bbox',null);
+    App.ctx.set('bbox', null);
 
   },
 
-  render: function(){
+  render: function () {
 
     this.$el.append(App.mapLoading());
 
     this.map = new L.Map(this.$el[0], {
-      zoomControl : false,
-      minZoom : 2,
-      maxZoom : 19,
+      zoomControl: false,
+      minZoom: 2,
+      maxZoom: 19,
       scrollWheelZoom: false
     });
 
@@ -72,49 +72,52 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
 
     this.map.setView(this.options.center, this.options.zoom);
 
-    this.map.on('moveend',this._onMapMoved);
+    this.map.on('moveend', this._onMapMoved);
 
     // popup events
     this.map.on('popupopen', this._onClickedPopupOpen);
     this.map.on('popupclose', this._onClickedPopupClose);
 
-    var _this = this;
-    setTimeout(function(){
-       _this.map.invalidateSize();
-    },100);
+    setTimeout(function () {
+      this.resetSize();
+    }.bind(this), 100);
 
     return this;
   },
 
-  changeBBOX: function(){
+  resetSize: function () {
+    this.map.invalidateSize();
+  },
+
+  changeBBOX: function () {
     console.error('Virtual method call not supported [changeBBOX]');
   },
 
-  changeDate: function(){
+  changeDate: function () {
     console.error('Virtual method call not supported [changeDate]');
   },
 
-  applyFilters: function(){
+  applyFilters: function () {
     console.error('Virtual method call not supported [applyFilters]');
   },
 
-  _getCurrentBBOX: function(){
+  _getCurrentBBOX: function () {
     return this.map.getBounds().toBBoxString().split(',');
   },
 
-  _onMapMoved: function(){
+  _onMapMoved: function () {
     if (this._ctx.get('bbox_status'))
-      this._ctx.set('bbox',this._getCurrentBBOX());
+      this._ctx.set('bbox', this._getCurrentBBOX());
   },
 
-  _changeBBOXStatus: function(){
+  _changeBBOXStatus: function () {
     if (this._ctx.get('bbox_status'))
-      this._ctx.set('bbox',this._getCurrentBBOX());
+      this._ctx.set('bbox', this._getCurrentBBOX());
     else
-      this._ctx.set('bbox',null);
+      this._ctx.set('bbox', null);
   },
 
-  _onNamedMapCreated: function(layer){
+  _onNamedMapCreated: function (layer) {
     //var _this = this;
     this.$('.loading.map').addClass('hiden');
     // layer.on('loading', function() {
@@ -125,9 +128,9 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
     //   _this.$('.loading.map').addClass('hiden');
     // });
   },
-  _clickFN: function(dataFN) {
+  _clickFN: function (dataFN) {
     var _this = this;
-    return function(e, pos, pixel, data){
+    return function (e, pos, pixel, data) {
       if (!_this._popup) _this._popup = L.popup();
 
       _this._popup
@@ -137,21 +140,21 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
     }
   },
 
-  clickableLayer: function(layer,dataFN){
+  clickableLayer: function (layer, dataFN) {
 
     layer.getSubLayer(0).setInteraction(true);
-    layer.getSubLayer(0).on('featureClick',this._clickFN(dataFN));
+    layer.getSubLayer(0).on('featureClick', this._clickFN(dataFN));
     //
     var hovers = [], _this = this;
-    layer.bind('featureOver', function(e, latlon, pxPos, data, layer) {
+    layer.bind('featureOver', function (e, latlon, pxPos, data, layer) {
       hovers[layer] = 1;
-      if(_.any(hovers)) {
+      if (_.any(hovers)) {
         _this.$el.css('cursor', 'pointer');
       }
     });
-    layer.bind('featureOut', function(m, layer) {
+    layer.bind('featureOut', function (m, layer) {
       hovers[layer] = 0;
-      if(!_.any(hovers)) {
+      if (!_.any(hovers)) {
         _this.$el.css('cursor', 'auto');
       }
     });
@@ -162,7 +165,7 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
    * 
    * @param {*} e - event triggered
    */
-  _onClickedPopupOpen: function(e) {
+  _onClickedPopupOpen: function (e) {
     // Set status tooltip
     App.ctx.set('mapTooltipIsShow', true);
   },
@@ -171,32 +174,32 @@ App.View.Map.Deprecated.Base = Backbone.View.extend({
    * 
    * @param {*} e - event triggered
    */
-  _onClickedPopupClose: function(e) {
+  _onClickedPopupClose: function (e) {
     // Set status tooltip
     App.ctx.set('mapTooltipIsShow', false);
   },
 });
 
 App.View.Map.LayerMap = App.View.Map.Deprecated.Base.extend({
-  initialize: function(options){
-    this.layers = options.layers || [];
-    App.View.Map.Deprecated.Base.prototype.initialize.call(this,options);
+  initialize: function (options) {
+    this.layers = options.layers || [];
+    App.View.Map.Deprecated.Base.prototype.initialize.call(this, options);
   },
   /* Only used for old maps. */
-  toggleLayer: function(m){
+  toggleLayer: function (m) {
     console.error('Virtual method call not supported [toggleLayer]');
   },
   /* Only used for old maps. */
-  filtersLayer: function(m){
+  filtersLayer: function (m) {
     console.error('Virtual method call not supported [filtersLayer]');
   },
 
-  render: function(){
+  render: function () {
     App.View.Map.Deprecated.Base.prototype.render.call(this);
 
-    for (var i=0;i< this.layers.length;i++){
-      this.listenTo(this.layers.at(i),'change:enable',this.toggleLayer);
-      this.listenTo(this.layers.at(i),'change:filters',this.filtersLayer);
+    for (var i = 0; i < this.layers.length; i++) {
+      this.listenTo(this.layers.at(i), 'change:enable', this.toggleLayer);
+      this.listenTo(this.layers.at(i), 'change:filters', this.filtersLayer);
     }
   }
 });
