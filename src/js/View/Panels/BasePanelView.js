@@ -238,15 +238,26 @@ App.View.Panels.Base = App.View.Container.extend({
 
     this.setFooter();
 
-    if (this.id_category !== 'correlations' && this.id_category !== 'frames' && this.scopeModel.get('categories').get(this.id_category).get('nodata') === true)
+    if (this.id_category !== 'correlations'
+      && this.id_category !== 'frames'
+      && this.scopeModel.get('categories').get(this.id_category).get('nodata') === true) {
       this.$('.widgets').html('<div class="nodata"><p>' + __('No hay datos para este vertical') + '</p></div>');
-    else {
+    } else {
       this.customRender();
-      if (this.framesList)
+      if (this.framesList) {
         this.drawFrames();
+      }
     }
+
+    return this;
   },
-  customRender: function () { },
+
+  /**
+   * To customize in child view
+   */
+  customRender: function () {
+    // TODO in child
+  },
 
   setFooter: function () {
     var logosContainer = $('footer.footer .logos');
