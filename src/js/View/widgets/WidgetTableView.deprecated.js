@@ -100,6 +100,17 @@ App.View.Widgets.Deprecated.Table = Backbone.View.extend({
       dataType: 'text',
       format: 'csv' // TO POST
     });
-  }
+  },
+
+  /**
+   * TODO - Este método existe en los widgets actuales
+   * no en los antiguos, como este, solo creo este
+   * método vacío para poder usar estos widgets dentro
+   * de los paneles "modernos" -> "App.View.Panels.Splitted"
+   * 
+   */
+  hasPermissions: function () {
+    return true;
+  },
 
 });
