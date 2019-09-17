@@ -28,7 +28,7 @@ App.View.Widgets.Table = Backbone.View.extend({
   events: {
     'click .top-options .button.csv': '_downloadCsv',
     'click .paginator .popup_widget ul li[data-ipp]': '_changePaginator',
-    'click .bottom-options .button.more': '_nextPage',
+    'click .bottom-options .button.arrow:not(.disabled)': '_goToPage',
   },
 
   initialize: function (options) {
@@ -42,8 +42,9 @@ App.View.Widgets.Table = Backbone.View.extend({
     this.model.set(_.extend({}, {
       paginator: false,
       page: 0,
-      itemsPerPageCurrent: 20, // items per page (current)
-      itemsPerPageOptions: [20, 40, 60, 80, 100, 'all']
+      totalPages: 0, // total pages number
+      itemsPerPageCurrent: 15, // items per page (current)
+      itemsPerPageOptions: [15, 30, 50, 100]
     }, this.options.model.toJSON()));
 
     if (this.options['template']) {
@@ -93,12 +94,27 @@ App.View.Widgets.Table = Backbone.View.extend({
     this.render();
   },
   /**
-   * When we click on the next page
+   * When we click on any arrow
    *
    * @param {*} e - triggered event
    */
-  _nextPage: function () {
-    var currentPage = this.model.get('page') + 1;
+  _goToPage: function (event) {
+    var currentTarget = event.currentTarget;
+    var currentPage = 0;
+
+    if ($(currentTarget).hasClass('init')) {
+      currentPage = 0;
+    } else if ($(currentTarget).hasClass('prev')) {
+      currentPage = this.model.get('page') > 0
+        ? this.model.get('page') - 1
+        : 0;
+    } else if ($(currentTarget).hasClass('next')) {
+      currentPage = this.model.get('totalPages') >= this.model.get('page') + 1
+        ? this.model.get('page') + 1
+        : this.model.get('totalPages');
+    } else if ($(currentTarget).hasClass('last')) {
+      currentPage = this.model.get('totalPages');
+    }
 
     this.model.set('page', currentPage);
     this._loadElements();
@@ -159,43 +175,41 @@ App.View.Widgets.Table = Backbone.View.extend({
   _loadElements: function () {
     var currentPage = this.model.get('page');
     var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
-    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
-    var maxRegistersReached =
-      (initialItemCurrentPage + currentItemsPerPage >= this.collection.toJSON().length)
-    var buttonMoreDOM = this.$el.find('.bottom-options .button.more');
+    var totalPages = Number.parseInt(this.collection.toJSON().length/currentItemsPerPage, 10);
 
-    var paginatorDOM = this.$el.find('.top-options .paginator');
-    var paginatorNumberDOM = this.$el.find('.bottom-options .paginator-counter .number');
-    var paginatorTotalDOM = this.$el.find('.bottom-options .paginator-counter .total');
+    var currentPageDOM = this.$el.find('.bottom-options .paginator-counter .current-page');
+    var totalPagesDOM = this.$el.find('.bottom-options .paginator-counter .total-pages');
+    var elementsTotalDOM = this.$el.find('.bottom-options .paginator-counter .total');
+    var arrowInitDOM = this.$el.find('.bottom-options .paginator-nav .arrow.init');
+    var arrowPrevDOM = this.$el.find('.bottom-options .paginator-nav .arrow.prev');
+    var arrowNextDOM = this.$el.find('.bottom-options .paginator-nav .arrow.next');
+    var arrowLastDOM = this.$el.find('.bottom-options .paginator-nav .arrow.last');
     var tableDOM = this.$el.find('.table table tbody');
+    
     var elements = this.model.get('paginator')
       ? this._getItesmPages()
       : this.collection.toJSON();
 
-    // add new elements
-    tableDOM.append(this._template_content({
+    // Set paginator data in model
+    this.model.set('totalPages', totalPages);
+
+    // draw elements in table
+    tableDOM.html(this._template_content({
       currentPage: currentPage,
       formats: this.model.get('columns_format'),
       elements: elements,
     }));
 
-    // Hide button more
-    if (maxRegistersReached) {
-      $(buttonMoreDOM).addClass('hide');
-    }
+    // Set DOM elements
+    $(currentPageDOM).html(currentPage);
+    $(totalPagesDOM).html(totalPages);
+    $(elementsTotalDOM).html(this.collection.toJSON().length);
 
-    // Hide paginator
-    if (currentPage === 0 && this.collection.toJSON().length === 0) {
-      $(paginatorDOM).addClass('hide');
-    }
-
-    // Update counter paginator
-    $(paginatorNumberDOM).html(
-      maxRegistersReached
-        ? this.collection.toJSON().length
-        : initialItemCurrentPage + currentItemsPerPage
-    );
-    $(paginatorTotalDOM).html(this.collection.toJSON().length);
+    // Disabled arrow in paginator
+    $(arrowInitDOM).toggleClass('disabled', currentPage <= 0);
+    $(arrowPrevDOM).toggleClass('disabled', currentPage <= 0);
+    $(arrowNextDOM).toggleClass('disabled', currentPage == totalPages);
+    $(arrowLastDOM).toggleClass('disabled', currentPage == totalPages);
   },
 
   /**
@@ -210,8 +224,8 @@ App.View.Widgets.Table = Backbone.View.extend({
     var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
 
     return _.filter(items, function (item, key) {
-      return currentItemsPerPage === 'all' ||
-        (key >= initialItemCurrentPage && key < initialItemCurrentPage + currentItemsPerPage);
+      return key >= initialItemCurrentPage &&
+        key < initialItemCurrentPage + currentItemsPerPage;
     }.bind(this));
   },
 
