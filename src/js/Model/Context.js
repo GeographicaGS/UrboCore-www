@@ -85,7 +85,7 @@ App.Model.Context = Backbone.Model.extend({
   },
 
   /**
-   * Get dates from "context"
+   * Get BBOX from "context"
    *
    * @return {Array | NULL} - bbox data from the map is showed
    */
