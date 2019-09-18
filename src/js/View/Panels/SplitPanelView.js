@@ -56,7 +56,7 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
         // hide top spliter
         this._collapseTop();
         // toogle elements in top panel
-        this._toggleElementsTopPanel();
+        this._toggleElementsTopPanel('up');
       } else if ($(topSplitElement).hasClass('expanded')) {
         // go back to split initial
         this._initialPositions();
@@ -71,7 +71,7 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
         // go back to split initial
         this._initialPositions();
         // toogle elements in top panel
-        this._toggleElementsTopPanel();
+        this._toggleElementsTopPanel('down');
         // Resize map
         this._resizeMapElement();
       } else if (!$(bottomSplitElement).hasClass('expanded')) {
@@ -151,25 +151,27 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
 
   /**
    * toggle (hide or show) other panel elements
+   * 
+   * @param {String} arrow - it tells us what is the clicked arrow ('up' or 'down')
    */
-  _toggleElementsTopPanel: function () {
+  _toggleElementsTopPanel: function (arrow) {
     // Date
     if (this._dateView) {
-      this._dateView.$el.toggleClass('compact');
-      this._dateView._compact = !this._dateView._compact;
+      this._dateView.$el.toggleClass('compact', arrow === 'up');
+      this._dateView._compact = arrow === 'up';
     }
 
     // Filters
     if (this._layerTree) {
       // old filters
-      this._layerTree.$el.toggleClass('active')
-        .toggleClass('compact');
-      this._layerTree.$el.find('h4.active')
-        .toggleClass('active');
-      this._layerTree._compact = !this._layerTree._compact;
+      this._layerTree.$el.toggleClass('active', arrow !== 'up')
+        .toggleClass('compact', arrow === 'up');
+      this._layerTree.$el.find('h4.active', arrow !== 'up')
+        .toggleClass('active', arrow !== 'up');
+      this._layerTree._compact = arrow === 'up';
       // new filters
       this._layerTree.$el.find('#layer-tree')
-        .toggleClass('compact');
+        .toggleClass('compact', arrow === 'up');
     }
 
     // Mapsearch
@@ -180,7 +182,7 @@ App.View.Panels.Splitted = App.View.Panels.Base.extend({
 
     // Spatial
     if (this.filterSpatialView) {
-      this.filterSpatialView.$el.toggleClass('hide');
+      this.filterSpatialView.$el.toggleClass('hide', arrow === 'up');
     }
   },
 
