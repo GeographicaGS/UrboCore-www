@@ -17,7 +17,7 @@
   <div class="<%= m.get('scrollTopBar') ? 'scrollable' : '' %>">
     <!-- Table -->
     <table>
-      <tbody>
+      <thead>
         <tr>
         <!--  Headers -->
         <% _.each(m.get('columns_format'), function(c) { %>
@@ -26,12 +26,15 @@
           </th>
         <% }) %>
         </tr>
+      </thead>
+      <tbody>
+        <tr>
         <!-- Table content -->
       </tbody>
     </table>
   </div>
   <!-- bottom options -->
-  <% if (m.get('paginator') === true) { %>
+  <% if (m.get('paginator') === true && elements.length) { %>
   <div class="bottom-options">
     <!-- Counter -->
     <span class="paginator-counter">
@@ -44,7 +47,6 @@
       <span class="total"></span>
     </span>
     <!-- Paginator -->
-    <% if (m.get('paginator') === true) { %>
     <div class="paginator">
       <!-- selector número registros por página -->
       <div class="paginator-selector">
@@ -76,7 +78,6 @@
         <button class="button arrow last"> &#8250;&#8250; </button>
       </div>
     </div>
-    <% } %>
   </div>
   <% } %>
   <!-- Legend -->

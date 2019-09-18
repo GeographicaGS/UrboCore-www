@@ -1,5 +1,5 @@
 <!-- No data -->
-<% if (!elements.length && currentPage === 0) { %>
+<% if (elements.length === 0 && currentPage === 0) { %>
   <tr>
     <td class="noDataMsg"
         colspan="<%= Object.keys(formats).length %>">
