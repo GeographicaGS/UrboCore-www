@@ -32,8 +32,6 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       variables: []
     });
 
-    //this._variables = options.variables;
-
     _.bindAll(this, 'parseCollectionTable');
 
     // Init parent class
