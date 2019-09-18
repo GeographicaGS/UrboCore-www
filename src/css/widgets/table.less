@@ -119,11 +119,16 @@
         justify-content: flex-end;
         .button {
           &.arrow {
+            background:@white;
+            color: @accent;
+            border: 1px solid @accent;
             margin-right: 4px;
-            padding: 4px 0px;
+            padding: 2px 0 6px;
             min-width: 25px;
             float: none;
             margin-top: 0;
+            font-size: 16px;
+            line-height: 16px;
             &:last-child {
               margin-right: 0;
             }
@@ -157,69 +162,89 @@
   table{
     width: 100%;
     counter-reset: section;
-
-    tr{
-      border-bottom: 1px solid @lightgrey;
-      &:first-child{
-        border-color: @greyLight2;
-      }
-      color: @grey;
-      th,td{
-        text-align: right;
-        height: 38px;
-        // line-height: 38px;
-        // padding: 0 10px;
-        line-height: 1.2em;
-        padding: 10px;
-      }
-      th{
-        color: @grey;
-        .font(semibold);
-        font-size: 12px;
-        text-transform: uppercase;
-
-        &:empty {
-          height: 0;
-        }
-      }
-      td{
-        font-size: 14px;
-        .variable{
-          color: @blue;
-        }
-        .unit{
-          color:#97a1a7;
-        }
-        &.counter{
-          &:before{
-            counter-increment: section;
-            content: counters(section,".") '.';
-            margin-right: 5px;
+    thead {
+      tr {
+        border-bottom: 1px solid @greyLight2;
+        th {
+          text-align: right;
+          height: 38px;
+          line-height: 1.2em;
+          padding: 10px;
+          color: @grey;
+          .font(semibold);
+          font-size: 12px;
+          text-transform: uppercase;
+          &:first-child {
+            text-align: left;
+          }
+          &.borderLeft{
+            border-left: 1px solid @lightgrey;
+          }
+          &.borderRight{
+            border-right: 1px solid @lightgrey;
           }
         }
-        span.circle{
-          width: 10px;
-          height: 10px;
-          margin-left: 5px;
-        }
       }
-      th,td{
-        .units{
-          font-weight: normal;
-          color: #bbb;
-          margin-left: 2px;
+    }
+    tbody {
+      tr{
+        border-bottom: 1px solid @lightgrey;
+        color: @grey;
+        th, td{
+          text-align: right;
+          height: 38px;
+          line-height: 1.2em;
+          padding: 10px;
         }
-        &.borderLeft{
-          border-left: 1px solid @lightgrey;
+        th{
+          color: @grey;
+          .font(semibold);
+          font-size: 12px;
+          text-transform: uppercase;
+  
+          &:empty {
+            height: 0;
+          }
         }
-        &.borderRight{
-          border-right: 1px solid @lightgrey;
+        td{
+          font-size: 14px;
+          .variable{
+            color: @blue;
+          }
+          .unit{
+            color:#97a1a7;
+          }
+          &.counter{
+            &:before{
+              counter-increment: section;
+              content: counters(section,".") '.';
+              margin-right: 5px;
+            }
+          }
+          span.circle{
+            width: 10px;
+            height: 10px;
+            margin-left: 5px;
+          }
         }
-      }
-      th:first-child,td:first-child{
-        // width: 50%;
-        text-align: left;
-      }
+        th,td{
+          .units{
+            font-weight: normal;
+            color: #bbb;
+            margin-left: 2px;
+          }
+          &.borderLeft{
+            border-left: 1px solid @lightgrey;
+          }
+          &.borderRight{
+            border-right: 1px solid @lightgrey;
+          }
+        }
+        th:first-child,td:first-child{
+          // width: 50%;
+          text-align: left;
+        }
+      }  
     }
   }
 

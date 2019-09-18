@@ -84,9 +84,6 @@ App.View.Widgets.Table = Backbone.View.extend({
   _changePaginator: function (e) {
     e.preventDefault();
 
-    // set loading
-    this.$el.append(App.widgetLoading());
-
     var ipp = Number.parseInt($(e.currentTarget).attr('data-ipp'), 10);
 
     this.model.set('itemsPerPageCurrent', ipp);
@@ -121,6 +118,9 @@ App.View.Widgets.Table = Backbone.View.extend({
   },
 
   render: function () {
+    // add loading
+    this.$el.append(App.widgetLoading());
+
     // Re-draw table if context changes
     if (this._listenContext) {
 
@@ -150,14 +150,15 @@ App.View.Widgets.Table = Backbone.View.extend({
    * draw the table at the beginnig
    */
   _drawTable: function () {
-    // set loading
-    this.$el.append(App.widgetLoading());
 
     this.$el.html(this._template({
       m: this.model,
       // "elements" are included to use in old "views"
       elements: this.collection.toJSON()
     }));
+
+    // add loading (after first render)
+    this.$el.append(App.widgetLoading());
 
     if (this.model.get('scrollTopBar') === true) {
       this.setScrollTopBarDOM();
@@ -173,6 +174,9 @@ App.View.Widgets.Table = Backbone.View.extend({
    * Draw each page of items
    */
   _loadElements: function () {
+    // show loading
+    this.$el.find('.loading.widgetL').removeClass('hide');
+
     var currentPage = this.model.get('page');
     var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
     var totalPages = Number.parseInt(this.collection.toJSON().length/currentItemsPerPage, 10);
@@ -210,6 +214,9 @@ App.View.Widgets.Table = Backbone.View.extend({
     $(arrowPrevDOM).toggleClass('disabled', currentPage <= 0);
     $(arrowNextDOM).toggleClass('disabled', currentPage == totalPages);
     $(arrowLastDOM).toggleClass('disabled', currentPage == totalPages);
+
+    // hide loading
+    this.$el.find('.loading.widgetL').addClass('hide');
   },
 
   /**

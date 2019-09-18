@@ -32,8 +32,6 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       variables: []
     });
 
-    //this._variables = options.variables;
-
     _.bindAll(this, 'parseCollectionTable');
 
     // Init parent class
@@ -50,11 +48,17 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   getTableCollection: function () {
+    var variablesId = _.reduce(this.options.variables, function (sumVariables, variable) {
+      if (variable.id !== 'date') {
+        sumVariables.push(variable.id);
+      }
+      return sumVariables;
+    }, []);
     var tableCollection = new App.Collection.DeviceRaw(null, {
       scope: this.options.scope,
       entity: this.options.entity,
       device: this.options.device,
-      variables: _.pluck(this.getEntityVariables(), 'id')
+      variables: variablesId
     });
 
     tableCollection.parse = this.parseCollectionTable;
@@ -105,6 +109,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
             break;
           case 'boolean':
             formatFN = this.booleanFn(variable.format.options);
+          case 'text':
+            formatFN = this.textFn;
             break;
           case 'date':
             formatFN = this.dateFn;
@@ -130,17 +136,15 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
    * @return {Array} - variables
    */
   getEntityVariables: function () {
-    var metadata = App.Utils.toDeepJSON(
+    return App.Utils.toDeepJSON(
       App.mv()
         .getEntity(this.options.entity)
         .get('variables')
     );
+  },
 
-    return _.filter(metadata, function (el) {
-      return el.config
-        && ((typeof el.config.active === 'boolean' && el.config.active)
-          || (typeof el.config.active === 'string' && el.config.active.toLowerCase() === 'true'));
-    });
+  textFn: function (value) {
+    return value;
   },
 
   numericFn: function (id, options) {
