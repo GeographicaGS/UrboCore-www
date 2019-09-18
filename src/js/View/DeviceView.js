@@ -19,18 +19,50 @@
 // iot_support at tid dot es
 
 App.View.DevicePeriod = Backbone.View.extend({
+
   _template: _.template($('#devices-period_template').html()),
 
   events: {
     'click span.download': '_downloadCsv'
   },
 
+  _downloadCsv: function () {
+    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
+    var entityVariables = _.filter(metadata, function (el) {
+      return el.config ? el.config.active : el.units;
+    });
+    var vars = _.pluck(entityVariables, 'id');
 
-  initialize: function (options) {
-
+    const dateRange = App.ctx.getDateRange();
+    this.collection = new Backbone.Model();
+    this.collection.url = App.config.api_url + '/' + App.currentScope + '/devices/' + this.model.get('entity') + '/' + this.model.get('id') + '/raw',
+      this.collection.fetch({
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        dataType: "text",
+        data: JSON.stringify({
+          "time": {
+            start: moment.utc(dateRange.start).startOf('day').format(),
+            finish: moment.utc(dateRange.finish).endOf('day').format(),
+          },
+          "id_entity": this.model.get('id'),
+          "vars": vars,
+          "format": "csv"
+        })
+      });
+    this.collection.parse = function (response) {
+      var blob = new Blob([response], { type: 'text/csv' });
+      var csvUrl = window.URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.setAttribute("href", csvUrl);
+      link.setAttribute("download", "download.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   },
 
-  render: function (e) {
+  render: function () {
 
     var entity = App.mv().getEntity(this.model.get('entity'));
 
@@ -120,42 +152,6 @@ App.View.DevicePeriod = Backbone.View.extend({
     if (this._summaryView) this._summaryView.close();
     if (this._tableView) this._tableView.close();
   },
-
-  _downloadCsv: function () {
-    var metadata = App.Utils.toDeepJSON(App.mv().getEntity(this.model.get('entity')).get('variables'));
-    var entityVariables = _.filter(metadata, function (el) {
-      return el.config ? el.config.active : el.units;
-    });
-    var vars = _.pluck(entityVariables, 'id');
-
-    const dateRange = App.ctx.getDateRange();
-    this.collection = new Backbone.Model();
-    this.collection.url = App.config.api_url + '/' + App.currentScope + '/devices/' + this.model.get('entity') + '/' + this.model.get('id') + '/raw',
-      this.collection.fetch({
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        dataType: "text",
-        data: JSON.stringify({
-          "time": {
-            start: moment.utc(dateRange.start).startOf('day').format(),
-            finish: moment.utc(dateRange.finish).endOf('day').format(),
-          },
-          "id_entity": this.model.get('id'),
-          "vars": vars,
-          "format": "csv"
-        })
-      });
-    this.collection.parse = function (response) {
-      var blob = new Blob([response], { type: 'text/csv' });
-      var csvUrl = window.URL.createObjectURL(blob);
-      var link = document.createElement("a");
-      link.setAttribute("href", csvUrl);
-      link.setAttribute("download", "download.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  }
 
 });
 
@@ -725,6 +721,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     this.entityVariables = _.filter(this.metadata, function (el) {
       return el.config ? el.config.active : el.units;
     });
+    
     this.entityVariables = _.map(this.entityVariables, function (el) { return el.id }).sort();
 
     this.collection = new Backbone.Collection();
