@@ -103,6 +103,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
             break;
           case 'boolean':
             formatFN = this.booleanFn(variable.format.options);
+          case 'text':
+            formatFN = this.textFn;
             break;
           case 'date':
             formatFN = this.dateFn;
@@ -128,17 +130,15 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
    * @return {Array} - variables
    */
   getEntityVariables: function () {
-    var metadata = App.Utils.toDeepJSON(
+    return App.Utils.toDeepJSON(
       App.mv()
         .getEntity(this.options.entity)
         .get('variables')
     );
+  },
 
-    return _.filter(metadata, function (el) {
-      return el.config
-        && ((typeof el.config.active === 'boolean' && el.config.active)
-          || (typeof el.config.active === 'string' && el.config.active.toLowerCase() === 'true'));
-    });
+  textFn: function (value) {
+    return value;
   },
 
   numericFn: function (id, options) {
