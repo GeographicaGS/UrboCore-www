@@ -202,7 +202,10 @@ App.View.DeviceRaw = Backbone.View.extend({
     );
 
     return _.filter(metadata, function (el) {
-      return el.config ? el.config.active : el.units;
+      return el.config &&
+        el.config.active &&
+        el.var_agg &&
+        el.var_agg[0].toLowerCase() !== 'noagg';
     });
   },
 

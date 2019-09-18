@@ -48,11 +48,17 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   getTableCollection: function () {
+    var variablesId = _.reduce(this.options.variables, function (sumVariables, variable) {
+      if (variable.id !== 'date') {
+        sumVariables.push(variable.id);
+      }
+      return sumVariables;
+    }, []);
     var tableCollection = new App.Collection.DeviceRaw(null, {
       scope: this.options.scope,
       entity: this.options.entity,
       device: this.options.device,
-      variables: _.pluck(this.getEntityVariables(), 'id')
+      variables: variablesId
     });
 
     tableCollection.parse = this.parseCollectionTable;
