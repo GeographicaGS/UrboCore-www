@@ -45,8 +45,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   chartBehaviourData: {
     currentAggs: {},
     disabledList: {},
-    elementsDisabled: 0,
-    alreadyLoaded: false
+    elementsDisabled: 0
   },
   chartDOM: null,
   collection: null,
@@ -146,8 +145,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           if (!this.collection.options.data) {
             this.collection.options.data = { time: {} }
           }
-          this.collection.options.data.time.start = App.ctx.getDateRange().start;
-          this.collection.options.data.time.finish = App.ctx.getDateRange().finish;
+          // Set time
+          this.collection.options.data.time = App.ctx.getDateRange();
 
           // Set update step
           App.Utils.checkBeforeFetching(this);
@@ -487,7 +486,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
       // Almacenamos las opciones de "agregación" correctamente en la colección
       // y en el objeto "chartBehaviourData" (solo la primera vez)
-      if (!this.options.noAgg && this.chartBehaviourData.alreadyLoaded === false) {
+      if (!this.options.noAgg) {
         var currentDefaultAgg = !_.isEmpty(this.aggDefault)
           ? this.aggDefault[model.get('key')]
           : null;
@@ -509,9 +508,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         }
       }
     }.bind(this));
-
-    // The initial data was loaded
-    this.chartBehaviourData.alreadyLoaded = true;
 
     // Parseamos los datos (normalizamos si es necesario) de la colección inicial
     return new Backbone.Collection(
