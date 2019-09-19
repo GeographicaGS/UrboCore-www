@@ -205,8 +205,8 @@ App.View.Widgets.Table = Backbone.View.extend({
     }));
 
     // Set DOM elements
-    $(currentPageDOM).html(currentPage);
-    $(totalPagesDOM).html(totalPages);
+    $(currentPageDOM).html(currentPage + 1);
+    $(totalPagesDOM).html(totalPages + 1);
     $(elementsTotalDOM).html(this.collection.toJSON().length);
 
     // Disabled arrow in paginator
