@@ -492,7 +492,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           ? this.aggDefault[model.get('key')]
           : null;
 
-        if ((Array.isArray(model.get('aggs')) && !model.get('aggs').includes('NOAGG'))
+        if ((Array.isArray(model.get('aggs')) && model.get('aggs').length && !model.get('aggs').includes('NOAGG'))
           && (_.isEmpty(this.aggDefault) || (currentDefaultAgg !== 'NONE'))) {
           if (typeof currentDefaultAgg === undefined || !_.contains(model.get('aggs'), currentDefaultAgg.toUpperCase())) {
             currentDefaultAgg = model.get('aggs').length > 0
