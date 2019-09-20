@@ -50,6 +50,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
   chartDOM: null,
   collection: null,
   mvModel: {
+    afterRenderChart: null,
     aggDefaultValues: [],
     className: null,
     colorsFn: null,
@@ -317,6 +318,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .datum(chartData)
         .call(this.chart);
 
+      // Custom callback function
+      if (typeof this.mvModel.afterRenderChart === 'function') {
+        this.mvModel.afterRenderChart.apply(this);
+      }
+
       // Re-draw Y Axis or Thresholds
       this.updateYAxis();
     }
@@ -403,6 +409,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         // Dibujamos el eje Y
         this.updateYAxis();
 
+        // Custom callback function
+        if (typeof this.mvModel.afterRenderChart === 'function') {
+          this.mvModel.afterRenderChart.apply(this);
+        }
+
       }.bind(this)
     });
   },
@@ -475,7 +486,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         model.set('aggs', this.getAggregationsVariable(model.get('key')));
       }
 
-      // Almacenamos en "chartBehaviourData" el estado "diabled"
+      // Almacenamos en "chartBehaviourData" el estado "disabled"
       if (typeof this.chartBehaviourData.disabledList[model.key] === 'undefined') {
         if (meta && meta.get('config') && meta.get('config').hasOwnProperty('default')) {
           this.chartBehaviourData.disabledList[model.key] = !meta.get('config').default
