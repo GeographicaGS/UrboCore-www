@@ -204,8 +204,11 @@ App.Collection.Variables.DailyAgg = App.Collection.Post.extend({
         }
         var duration = moment.duration(x, 'seconds');
         var date = moment(App.ctx.getDateRange().start).add(duration.asMilliseconds());
-        if (!_this.options.startOnMidnight)
-          date = date.subtract(13, 'hours');
+
+        if (!_this.options.startOnMidnight) {
+          date = date.subtract(12, 'hours');
+        }
+
         x = date.toDate();
 
         aux[k].push({
