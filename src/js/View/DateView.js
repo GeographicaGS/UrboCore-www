@@ -36,6 +36,20 @@ $.datepicker.regional['es'] = {
     'Noviembre',
     'Diciembre'
   ],
+  monthNamesShort: [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic'
+  ],
   dayNames: [
     'Domingo',
     'Lunes',
@@ -64,6 +78,7 @@ $.datepicker.regional['es'] = {
     'S'
   ],
 };
+
 $.datepicker.setDefaults($.datepicker.regional['es']);
 
 App.View.Date = Backbone.View.extend({
