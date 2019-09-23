@@ -988,11 +988,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
       // chartContent
       var chartContent = d3.select(this.$('.chart .wrap .nv-axis.nv-y1')).node();
-
-      if (chartContent[0].getBBox !== 'function') {
-        return; // get out of here
-      }
-
       // chartContent dimensions
       var chartContentRect = chartContent[0].getBBox();
       // size label pixels put into the X axis
