@@ -357,10 +357,10 @@ App.View.Date = Backbone.View.extend({
 
     // Set separated values to avoid launch the event duplicated
     if (!IsSameStartModel && !IsSameFinishModel) {
-      this.options.model.set({
-        start: start.utc(),
-        finish: finish.utc()
-      });
+      // To avoid that the "dateviews" events will be triggered two times
+      // once by "start" and one more by "finish"
+      this.options.model.attributes.start = start.utc();
+      this.options.model.set('finish', finish.utc());
     } else if (!IsSameStartModel) {
       this.options.model.set('start', start.utc());
     } else if (!IsSameFinishModel) {
