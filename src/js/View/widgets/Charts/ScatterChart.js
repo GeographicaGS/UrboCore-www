@@ -22,10 +22,17 @@
 
 App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
   initialize: function (options) {
-    if (!options.opts.has('percentMode'))
+    // set options
+    if (!options.opts.has('percentMode')) {
       options.opts.set({ percentMode: false });
+    }
+
+    if (!options.opts.has('xAxisOClock')) {
+      options.opts.set({ xAxisOClock: false });
+    }
+
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
-    _.bindAll(this, "_drawChart");
+    _.bindAll(this, '_drawChart');
   },
 
   _processData: function () {
@@ -65,14 +72,24 @@ App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
   },
 
   _formatXAxis: function () {
+    // All values X axis (time) from "data"
+    var allValuesX = _.reduce(this.data, function (sumVariables, variable) {
+      var valuesX = _.reduce(variable.values, function (sumValues, value) {
+        sumValues.push(value.x);
+        return sumValues;
+      }, []);
+
+      sumVariables.push.apply(sumVariables, valuesX);
+
+      return sumVariables;
+    }, []);
+
     this._chart.xAxis
       .tickPadding(5)
       .showMaxMin(this.options.has('xAxisShowMaxMin') ? this.options.get('xAxisShowMaxMin') : true)
       .tickFormat(this.options.get('xAxisFunction'));
 
-    if (this.data.length > 1 &&
-      this.data[0].values &&
-      this.data[0].values.length) {
+    if (allValuesX[0]) {
 
       var start = null;
       var finish = null;
@@ -81,20 +98,9 @@ App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
       if (this.options.has('xAxisDomain')) {
         start = this.options.get('xAxisDomain')[0];
         finish = this.options.get('xAxisDomain')[1];
-      } else if (typeof this.data[0].values[0].x === 'number') {
-        var allValuesX = _.reduce(this.data, function (sumVariables, variable) {
-          var valuesX = _.reduce(variable.values, function (sumValues, value) {
-            sumValues.push(value.x);
-            return sumValues;
-          }, []);
-
-          sumVariables.push.apply(sumVariables, valuesX);
-          
-          return sumVariables;
-        }, []);
-        
-        var start = Math.min.apply(Math, allValuesX);
-        var finish = Math.max.apply(Math, allValuesX);
+      } else if (typeof allValuesX[0] === 'number') {
+        start = Math.min.apply(Math, allValuesX);
+        finish = Math.max.apply(Math, allValuesX);
       }
 
       // Set the total elements to fit in X axis
@@ -111,10 +117,14 @@ App.View.Widgets.Charts.Scatter = App.View.Widgets.Charts.Base.extend({
       var diff = totalLabels
         ? Number.parseInt((diffFinishStart) / totalLabels, 10)
         : 48;
+      // Hour o'clock
+      var tickValuesFN = this.options.get('xAxisOClock')
+        ? _.range(start, finish, 7200)
+        : _.range(start, finish, diff)
 
       this._chart.xAxis
         .domain([start, finish])
-        .tickValues(_.range(start, finish, diff));
+        .tickValues(tickValuesFN);
     }
   },
 });
