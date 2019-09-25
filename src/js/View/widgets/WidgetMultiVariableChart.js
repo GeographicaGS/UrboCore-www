@@ -56,6 +56,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     colorsFn: null,
     customNoDataMessage: __('No hay datos disponibles'),
     disabledList: [],
+    forceStep: null,
     hideStepSelector: false,
     normalized: true,
     sizeDiff: 'days',
@@ -150,14 +151,22 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           this.collection.options.data.time = App.ctx.getDateRange();
 
           // Set update step
-          App.Utils.checkBeforeFetching(this);
-          var currentStep = this._stepModel && this._stepModel.has('step')
-            ? this._stepModel.get('step')
-            : this.collection.options &&
-              this.collection.options.data &&
-              this.collection.options.data.step
-              ? this.collection.options.data.step
-              : this.collection.options.step || '1d';
+          var currentStep = null;
+
+          if (this.mvModel.forceStep !== null) { // force step
+            currentStep = this.mvModel.forceStep;
+            this._stepModel.set('step', currentStep);
+          } else {
+            App.Utils.checkBeforeFetching(this);
+            currentStep = this._stepModel && this._stepModel.has('step')
+              ? this._stepModel.get('step')
+              : this.collection.options &&
+                this.collection.options.data &&
+                this.collection.options.data.step
+                ? this.collection.options.data.step
+                : this.collection.options.step || '1d';  
+          }
+
           var regex = /\dd/;
           this.mvModel.sizeDiff = regex.test(currentStep)
             ? 'days'

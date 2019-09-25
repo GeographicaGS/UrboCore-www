@@ -99,6 +99,10 @@ App.View.Date = Backbone.View.extend({
     // To use in other View parts
     this.options = options;
 
+    // set initial values in Context object
+    this._setInitialDateValuesInContext();
+
+    // set max and min dates
     this._setMinAndMaxDatesToModel();
 
     // Events - Change dates model (App.ctx)
@@ -195,34 +199,56 @@ App.View.Date = Backbone.View.extend({
   },
 
   /**
+   * Set initial date in context
+   */
+  _setInitialDateValuesInContext: function () {
+    var dates = this._getRightValuesToDates();
+
+    this.options.model.set({
+      start: dates[0].utc(),
+      finish: dates[1].utc()
+    });
+  },
+
+  /**
    * Put the values object ctx (dates) inside the different inputs (datepickers)
    */
   _setValuesInDatePickers: function () {
+
+    var dates = this._getRightValuesToDates();
+
+    try {
+      this.$('.date.start').datepicker('setDate', dates[0].toDate());
+      this.$('.date.finish').datepicker('setDate', dates[1].toDate());
+    } catch (err) {
+      this.$('.date.start').val('--').datepicker();
+      this.$('.date.finish').val('--').datepicker();
+    }
+  },
+
+  /**
+   * Get the right values to dates (dateview)
+   */
+  _getRightValuesToDates: function () {
     // Check if the date is inside the "min" and "max"
     var dateStart = this.options.minDate === null 
       || moment(this.options.minDate).isBefore(this.options.model.get('start'))
-        ? this.options.model.get('start').toDate()
+        ? this.options.model.get('start')
         : this.options.minDate;
     var dateFinish = this.options.maxDate === null
       || moment(this.options.maxDate).isAfter(this.options.model.get('finish'))
-        ? this.options.model.get('finish').toDate()
+        ? this.options.model.get('finish')
         : this.options.maxDate;
     // The difference between start and finish is higher that "maxRange"
     var diffTime = moment(dateFinish).diff(dateStart, 'days');
 
     if (diffTime > this.options.maxRange.asDays()) {
       dateFinish = this.options.maxRange.asDays() >= 365
-        ? moment(dateStart).clone().add(this.options.maxRange.asYears(), 'years').toDate()
-        : moment(dateStart).clone().add(this.options.maxRange.asDays(), 'days').toDate();
+        ? moment(dateStart).clone().add(this.options.maxRange.asYears(), 'years')
+        : moment(dateStart).clone().add(this.options.maxRange.asDays(), 'days');
     }
 
-    try {
-      this.$('.date.start').datepicker('setDate', dateStart);
-      this.$('.date.finish').datepicker('setDate', dateFinish);
-    } catch (err) {
-      this.$('.date.start').val('--').datepicker();
-      this.$('.date.finish').val('--').datepicker();
-    }
+    return [dateStart, dateFinish];
   },
 
   /**
