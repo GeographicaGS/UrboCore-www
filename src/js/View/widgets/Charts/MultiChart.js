@@ -108,9 +108,6 @@ App.View.Widgets.Charts.MultiChart = App.View.Widgets.Charts.Base.extend({
     // Get max value for each axis and adjust domain
     // var domains = this.options.get('yAxisDomain') ? this.options.get('yAxisDomain') : [[0,1],[0,1]];
     var domains =[[0,1],[0,1]];
-    // Clear null from array
-    if(min[0]) min[0] = min[0].filter(Boolean);
-    if(min[1]) min[1] = min[1].filter(Boolean);
     var minAxis1 = Math.min.apply(null, min[0]),
         minAxis2 = Math.min.apply(null, min[1]);
     var maxAxis1 = Math.max.apply(null, max[0]),

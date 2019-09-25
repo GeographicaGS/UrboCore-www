@@ -207,6 +207,14 @@ App.View.Date = Backbone.View.extend({
       || moment(this.options.maxDate).isAfter(this.options.model.get('finish'))
         ? this.options.model.get('finish').toDate()
         : this.options.maxDate;
+    // The difference between start and finish is higher that "maxRange"
+    var diffTime = moment(dateFinish).diff(dateStart, 'days');
+
+    if (diffTime > this.options.maxRange.asDays()) {
+      dateFinish = this.options.maxRange.asDays() >= 365
+        ? moment(dateStart).clone().add(this.options.maxRange.asYears(), 'years').toDate()
+        : moment(dateStart).clone().add(this.options.maxRange.asDays(), 'days').toDate();
+    }
 
     try {
       this.$('.date.start').datepicker('setDate', dateStart);
