@@ -31,7 +31,7 @@ node("docker") {
               deploy_to = "dev"
             }
             else if (branch_name == "dev-andalucia") {
-              sh "cp src/js/Config.dev.js src/js/Config.js"
+              sh "cp src/js/Config.dev-and.js src/js/Config.js"
               deploy_to = "dev-andalucia"
             }
             else{
