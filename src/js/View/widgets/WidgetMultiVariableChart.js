@@ -325,6 +325,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Put the new data in chart
       this.chartDOM
         .datum(chartData)
+        .transition()
+        .each('start', function () {
+          // update the chart after the data are updating
+          this.chart.update();
+        }.bind(this))
+        .duration(250)
         .call(this.chart);
 
       // Custom callback function
