@@ -93,43 +93,53 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
   },
 
   _formatXAxis: function () {
-    var numElems = this.data[0] && this.data[0].values ? this.data[0].values.length : 0;
-    this._xScale = d3.time.scale();
-    this._container = d3.select(this.$('.chart')[0]);
-    this._availableWidth = (this._chart.width() || parseInt(this._container.style('width')) || 960) - this._chart.margin().left - this._chart.margin().right;
-
-    this._xScale.rangeBands = this._xScale.range;
-    var _this = this;
-    this._xScale.rangeBand = function () {
-      return Math.max((1 - _this._chart.groupSpacing()) * _this._availableWidth / numElems, 2);
-    };
-    this._chart.multibar.xScale(this._xScale);
-    // this._chart.xScale(this._xScale);
-
     // Fix the changes in models and collections (BaseModel & BaseCollections)
-    if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+    if (this.collection
+      && this.collection.options
+      && typeof this.collection.options.data === 'string') {
       this.collection.options.data = JSON.parse(this.collection.options.data);
     }
 
     var dateOptions = this.collection.options.data.time;
-    this._chart.xDomain([moment(dateOptions.start).toDate(), moment(dateOptions.finish).toDate()]);
+    var numElems = this.data[0] && this.data[0].values
+      ? this.data[0].values.length
+      : 0;
+
+    this._container = d3.select(this.$('.chart')[0]);
+    this._availableWidth = (this._chart.width() || parseInt(this._container.style('width')) || 960)
+      - (this._chart.margin().left + this._chart.margin().right);
+
+    var barWidth = (1 - this._chart.groupSpacing()) * this._availableWidth / numElems;
+
+    // Scale to the bands (columns)
+    this._xScale = d3.time.scale();
+    this._xScale.rangeBands = this._xScale.range;
+    this._xScale.rangeBand = function () {
+      return Math.max((1 - this._chart.groupSpacing()) * this._availableWidth / numElems, 2);
+    }.bind(this);
+    this._chart.multibar.xScale(this._xScale);
+
+    // set Scale in X Axis
+    this._chart
+      .xDomain([moment(dateOptions.start).toDate(), moment(dateOptions.finish).toDate()])
+      .xRange([0, this._availableWidth - barWidth]);
+
     this._chart.xAxis
       .tickPadding(5)
       .tickFormat(this.xAxisFunction)
-      .axisLabel(this.options.get('xAxisLabel'))
-      // .showMaxMin(this.options.has('xAxisShowMaxMin') ? this.options.get('xAxisShowMaxMin'): true)
-      ;
+      .axisLabel(this.options.get('xAxisLabel'));
   },
 
   _adjustXAxis: function () {
     this._chart.update();
+
     if (this.data.length > 0) {
-      var _this = this;
-      var width = _this._chart.xAxis.rangeBand();
+      var width = this._chart.xAxis.rangeBand();
       var ticks = d3.select(this.$('.nv-x')[0]).selectAll('.tick text,.tick foreignObject');
-      ticks.each(function (d, i) {
-        _this.insertLinebreaks(this, d, width);
-      });
+
+      ticks.each(function (d) {
+        this.insertLinebreaks(this, d, width);
+      }.bind(this));
     }
   },
 
