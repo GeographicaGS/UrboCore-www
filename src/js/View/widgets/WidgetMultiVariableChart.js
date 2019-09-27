@@ -325,6 +325,12 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Put the new data in chart
       this.chartDOM
         .datum(chartData)
+        .transition()
+        .each('start', function () {
+          // update the chart after the data are updating
+          this.chart.update();
+        }.bind(this))
+        .duration(250)
         .call(this.chart);
 
       // Custom callback function
@@ -390,6 +396,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             ? this.getEnabledDataToCollection()
             : this.parseData.toJSON()
           )
+          .duration(250)
           .call(this.chart);
 
         // Update chart (redraw) when the window size changes
