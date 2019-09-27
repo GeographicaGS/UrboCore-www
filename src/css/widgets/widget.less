@@ -35,6 +35,16 @@
     height: auto;
   }
 
+  &.widget-chart {
+    height: 380px;
+    .chart {
+      height: 330px;
+      &+.var_list {
+        top: -10px;
+      }
+    }
+  }
+
   &:not(.allWidth) {
     .title {
       display: flex;
