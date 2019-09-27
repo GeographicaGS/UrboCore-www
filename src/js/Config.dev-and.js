@@ -20,7 +20,7 @@
 
 var App = App || {};
 
-var baseURL = 'urbo-backend-dev-02.geographica.gs//api'
+var baseURL = 'urbo-backend-dev-02.geographica.gs/api'
 
 App.config = {
   'api_url' : 'https://' + baseURL,
