@@ -336,7 +336,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
     // Default options
     optionsLayer = _.defaults(optionsLayer || {}, {
-      paint: null
+      clusterRadius: 50,
+      clusterMaxZoom: 17,
+      paint: null,
     });
 
     var layerClusterCircle = 'clusters-' + sourceId;
@@ -346,7 +348,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     var modifyAndSetSources = this._modifyAndSetSources;
     var resetClusterSources = this._resetClusterSourcesSaved;
     var defaultPaintOptions = {
-      'circle-color': '#51bbd6',
+      'circle-color': '#909599',
       'circle-radius': 20
     };
 
@@ -363,7 +365,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
         paint: optionsLayer.paint
           ? paintOptions.paint
           : defaultPaintOptions,
-        'icon-allow-overlap': true,
       });
 
       // event "click" on cluster layer
@@ -374,6 +375,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
             { layers: [layerClusterCircle]}
         );
         var clusterId = features[0].properties.cluster_id;
+        var centerMap = features[0].geometry.coordinates;
 
         // Event - we do zoom
         if (currentMap.getZoom() < optionsLayer.clusterMaxZoom) {
@@ -407,7 +409,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
               findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
             }.bind(this));
             // Prepare and modify source data and set into source
-            modifyAndSetSources.apply(this);
+            modifyAndSetSources.apply(this, [centerMap]);
           }.bind(this));
         }
 
@@ -436,12 +438,11 @@ App.View.Map.MapboxView = Backbone.View.extend({
         filter: ['has', 'point_count'],
         layout: {
           'text-field': '{point_count_abbreviated}',
-          'text-size': 14
+          'text-size': 12
         },
         paint: {
           'text-color': '#FFF'
-        },
-        'icon-allow-overlap': true,
+        }
       });
     }
   },
@@ -521,8 +522,10 @@ App.View.Map.MapboxView = Backbone.View.extend({
   /**
    * Modify the differents sources associated to cluster to show the
    * draw point in map like a cicle
+   * 
+   * @param {Array} centerMap - array with coordinates
    */
-  _modifyAndSetSources: function () {
+  _modifyAndSetSources: function (centerMap) {
     // Copy from "_clusterSourcesSaved"
     var _copyClusterSourcesSaved = _.reduce(this._clusterSourcesSaved, function (sumSources, source) {
       sumSources.push(_.clone(source));
@@ -542,7 +545,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
         // Modify the point and save
         if (source.entities.includes(feature.properties.id_entity)) {
           var newPosition = this._calculateNewPosition(
-            feature.geometry.coordinates,
+            centerMap,
             {
               distance: this._mapOptions.distancePointToCluster || 40,
               bearing: angle*matchIndex,
