@@ -100,29 +100,28 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       this.collection.options.data = JSON.parse(this.collection.options.data);
     }
 
-    var dateOptions = this.collection.options.data.time;
+    var container = d3.select(this.$('.chart')[0]);
+    var containerWidth = (this._chart.width() || parseInt(container.style('width')) || 960)
+      - (this._chart.margin().left + this._chart.margin().right);
+    var startDate = this.data[0].values[0].x;
+    var finishDate = this.data[0].values[this.data[0].values.length - 1].x;
     var numElems = this.data[0] && this.data[0].values
       ? this.data[0].values.length
-      : 0;
-
-    this._container = d3.select(this.$('.chart')[0]);
-    this._availableWidth = (this._chart.width() || parseInt(this._container.style('width')) || 960)
-      - (this._chart.margin().left + this._chart.margin().right);
-
-    var barWidth = (1 - this._chart.groupSpacing()) * this._availableWidth / numElems;
+      : 1;
+    var barWidth = (1 - this._chart.groupSpacing()) * containerWidth / numElems;
 
     // Scale to the bands (columns)
     this._xScale = d3.time.scale();
     this._xScale.rangeBands = this._xScale.range;
     this._xScale.rangeBand = function () {
-      return Math.max((1 - this._chart.groupSpacing()) * this._availableWidth / numElems, 2);
+      return Math.max(barWidth, 2);
     }.bind(this);
     this._chart.multibar.xScale(this._xScale);
 
     // set Scale in X Axis
     this._chart
-      .xDomain([moment(dateOptions.start).toDate(), moment(dateOptions.finish).toDate()])
-      .xRange([0, this._availableWidth - barWidth]);
+      .xDomain([startDate, finishDate])
+      .xRange([0, containerWidth - barWidth]);
 
     this._chart.xAxis
       .tickPadding(5)
