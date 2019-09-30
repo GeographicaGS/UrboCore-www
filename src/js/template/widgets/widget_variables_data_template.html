@@ -32,7 +32,10 @@
           <% } %>
           <!-- Variable units (symbol) -->
           <% if (typeof currentData.units !== 'undefined') { %>
-          <span class="symbol"><%= currentData.units %></span>
+          <span class="symbol"
+                style="<%= !currentData.units ? 'visibility: hidden' : '' %>">
+                <%= currentData.units || '--' %>
+          </span>
           <% } %>
         </span>
       </div>
