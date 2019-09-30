@@ -396,7 +396,6 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             ? this.getEnabledDataToCollection()
             : this.parseData.toJSON()
           )
-          .duration(250)
           .call(this.chart);
 
         // Update chart (redraw) when the window size changes
