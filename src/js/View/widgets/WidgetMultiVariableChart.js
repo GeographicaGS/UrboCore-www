@@ -58,8 +58,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     disabledList: [],
     forceStep: null,
     hideStepSelector: false,
+    hideVarList: false,
     normalized: true,
     sizeDiff: 'days',
+    timeMode: 'date',
     yAxis1Domain: null,
     yAxis2Domain: null,
     yAxis1LabelDefault: null,
@@ -408,15 +410,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         this.setupToolTip();
 
         // Colocamos nuestra leyenda personalizada
-        this.$('.var_list').html(
-          this.listVariablesTemplate({
-            colors: this.mvModel.colorsFn || App.getSensorVariableColorList(),
-            currentAggs: this.chartBehaviourData.currentAggs,
-            data: this.parseData.toJSON(),
-            disabledList: this.chartBehaviourData.disabledList,
-            noAgg: this.options.noAgg
-          })
-        );
+        if (this.mvModel.hideVarList === false) {
+          this.$('.var_list').html(
+            this.listVariablesTemplate({
+              colors: this.mvModel.colorsFn || App.getSensorVariableColorList(),
+              currentAggs: this.chartBehaviourData.currentAggs,
+              data: this.parseData.toJSON(),
+              disabledList: this.chartBehaviourData.disabledList,
+              noAgg: this.options.noAgg
+            })
+          );
+        }
 
         // Dibujamos el eje X
         this.setupXAxis();
