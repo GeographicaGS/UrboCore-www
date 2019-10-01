@@ -19,261 +19,271 @@
 // iot_support at tid dot es
 
 #dateSelector{
-	width: 320px;
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	z-index: 5;
+  width: 320px;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 5;
 
-	&.dateTimeSelector {
-		.header {
-			.date_wrapper {
-				.date {
-					max-width: 128px;
-				}
-			}
-		}
-	}
+  &.dateTimeSelector {
+    .header {
+      .date_wrapper {
+        .date {
+          max-width: 128px;
+        }
+      }
+    }
+  }
 
-	&.disabled {
-		pointer-events: none;
-		.header .range_selector, .date_wrapper{
-			background-color: #EEEEEE;
-		}
-		.date_wrapper {
-			&:first-of-type{
-				z-index: 1;
-			}
-			span{
-				color: #808086;
-			}
-			input[type=text]{
-				color: rgba(85,85,93,0.5);
-			}
-		}
-	}
+  &.disabled {
+    pointer-events: none;
+    .header .range_selector, .date_wrapper{
+      background-color: #EEEEEE;
+    }
+    .date_wrapper {
+      &:first-of-type{
+        z-index: 1;
+      }
+      span{
+        color: #808086;
+      }
+      input[type=text]{
+        color: rgba(85,85,93,0.5);
+      }
+    }
+  }
   .shadow_std;
   // background-color: #fff;
   transition:width .25s 0s;
 
   &.compact:not(.all_height){
-  	width: 32px;
-  	transition:width .25s .25s;
-  	.header{
-  		border-right: none;
-  		.date_wrapper{
-  			opacity: 0;
-  			visibility: hidden;
-  			pointer-events: none;
-  		}
-  	}
+    width: 32px;
+    transition:width .25s .25s;
+    .header{
+      border-right: none;
+      .date_wrapper{
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
   }
 
   &.all_height{
-  	height: 314px;
+    height: 314px;
   }
 
   &.range_open{
-  	.header{
-	    border-bottom-left-radius: 0;
-  		.range_selector{
-  			position: relative;
-    		background-color: #f6f6f6;
-				&:before{
-					background-image: url('/img/SC_ic_cal2.svg');
-					opacity: 1;
-				}
-				&:after{
-					content: '';
-					position: absolute;
-					width: 100%;
-					height: 1px;
-					background-color: #f6f6f6;
-					bottom: -1px;
-					left: 0;
-				}
-			}
-  	}
-  	.range_values{
-			opacity: 1;
-			pointer-events: all;
-		}
+    .header{
+      border-bottom-left-radius: 0;
+      .range_selector{
+        position: relative;
+        background-color: #f6f6f6;
+        &:before{
+          background-image: url('/img/SC_ic_cal2.svg');
+          opacity: 1;
+        }
+        &:after{
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background-color: #f6f6f6;
+          bottom: -1px;
+          left: 0;
+        }
+      }
+    }
+    .range_values{
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 
   .header{
-  	background-color: #fff;
-		display: flex;
-		align-items: center;
-		height: 34px;
-		border: 1px solid #909599;
-		border-radius: 2px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    border: 1px solid #909599;
+    border-radius: 2px;
 
-		&.picker_open, &.range_open{
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
-		}
+    &.picker_open, &.range_open{
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
 
-		&.picker_open{
-			.date_wrapper{
-				border-right: none;
-				&:first-of-type{
-					border-right: none;
-					&:after{
-						opacity: 0;
-					}
-				}
-			}
-		}
+    &.picker_open{
+      .date_wrapper{
+        border-right: none;
+        &:first-of-type{
+          border-right: none;
+          &:after{
+            opacity: 0;
+          }
+        }
+      }
+    }
 
-		.range_selector, .date_wrapper{
-			flex:1 1 auto;
-		}
+    .range_selector, .date_wrapper{
+      flex:1 1 auto;
+    }
 
-		.range_selector{
-	  	background-color: transparent;
-			// width: 34px;
-			height: 100%;
-	  	border-right: 1px solid #909599;
-	  	&:before{
-	  		content: '';
-	  		display: inline-block;
-				background-image: url('/img/SC_ic_cal.svg');
-				width: 18px;
-				height: 18px;
-				background-repeat: no-repeat;
-				background-size: cover;
-				opacity: .5;
-				transition: opacity .25s;
-	  	}
-	  	&:hover{
-	  		&:before{
-	  			opacity: 1;
-	  		}
-	  	}
-	  }
-	  .date_wrapper{
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100%;
-			position: relative;
-			transition: opacity .25s .25s;
-			&.active{
-				background-color: #f6f6f6;
-				&:before{
-					content: '';
-					position: absolute;
-					width: 100%;
-					height: 1px;
-					background-color: #f6f6f6;
-					bottom: -1px;
-					left: 0;
-				}
-			}
-			&:first-of-type{
-	  		border-right: 1px solid #ccccce;
-	  		position: relative;
+    .range_selector{
+      background-color: transparent;
+      // width: 34px;
+      height: 100%;
+      border-right: 1px solid #909599;
+      &:before{
+        content: '';
+        display: inline-block;
+        background-image: url('/img/SC_ic_cal.svg');
+        width: 18px;
+        height: 18px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: .5;
+        transition: opacity .25s;
+      }
+      &:hover{
+        &:before{
+          opacity: 1;
+        }
+      }
+    }
+    .date_wrapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      transition: opacity .25s .25s;
+      &.active{
+        background-color: #f6f6f6;
+        &:before{
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background-color: #f6f6f6;
+          bottom: -1px;
+          left: 0;
+        }
+      }
+      &:first-of-type{
+        border-right: 1px solid #ccccce;
+        position: relative;
 
-	  		&.active{
-					border-right: 1px solid #909599;
-	  		}
+        &.active{
+          border-right: 1px solid #909599;
+        }
 
-	  		&:after{
-	  			content: '';
-	  			display: inline-block;
-	  			width: 13px;
-	  			height: 13px;
-	  			position: absolute;
-					right: -6px;
-					top: 11px;
-					background-image: url('/img/SC_ic_cal-rango.svg');
-					background-position: center;
-	  		}
-	  	}
+        &:after{
+          content: '';
+          display: inline-block;
+          width: 13px;
+          height: 13px;
+          position: absolute;
+          right: -6px;
+          top: 11px;
+          background-image: url('/img/SC_ic_cal-rango.svg');
+          background-position: center;
+        }
+      }
 
-	  	&:last-of-type{
-  			&.active{
-  				border-left: 1px solid #909599;
-  			}
-  		}
+      &:last-of-type{
+        &.active{
+          border-left: 1px solid #909599;
+        }
+      }
 
-			span{
-				padding-left: 10px;
-		    margin-right: 5px;
-		  	font-size: 16px;
-		  	color: #909599;
-		  }
-		  .date{
-		  	outline: none;
-  	    font-family: 'Source Sans Pro',sans-serif;
-	  		background-color: transparent;
-	  		border: none;
-	  		font-size: 16px;
-	  		max-width: 87px;
+      span{
+        padding-left: 10px;
+        margin-right: 5px;
+        font-size: 16px;
+        color: #909599;
+      }
+      .date{
+        outline: none;
+        font-family: 'Source Sans Pro',sans-serif;
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        max-width: 87px;
         cursor: pointer;
-	  	}
-	  }
+      }
+    }
   }
 
   .range_values{
-		position: absolute;
-		width: 100%;
-		left: 0;
-		text-align: left;
-		background-color: #f6f6f6;
-		top: 34px;
-		border: 1px solid #909599;
-		border-top: none;
-		opacity: 0;
-		pointer-events: none;
-		transition:opacity .25s;
-		h3{
-			font-weight: 600;
-			color:#909599;
-			text-transform: uppercase;
-			padding-left: 10px;
-			padding-top: 14px;
-		}
-		ul{
-			margin-top: 10px;
-			li{
-				cursor: pointer;
-				font-size: 14px;
-				color:#55555d;
-				line-height:36px;
-				border-bottom: 1px solid #eeeeee;
-				padding-left: 20px;
-				&:last-children{
-					border-bottom: none;
-				}
-			}
-		}
-	}
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: left;
+    background-color: #f6f6f6;
+    top: 34px;
+    border: 1px solid #909599;
+    border-top: none;
+    opacity: 0;
+    pointer-events: none;
+    transition:opacity .25s;
+    h3{
+      font-weight: 600;
+      color:#909599;
+      text-transform: uppercase;
+      padding-left: 10px;
+      padding-top: 14px;
+    }
+    ul{
+      margin-top: 10px;
+      li{
+        cursor: pointer;
+        font-size: 14px;
+        color:#55555d;
+        line-height:36px;
+        border-bottom: 1px solid #eeeeee;
+        padding-left: 20px;
+        &:last-children{
+          border-bottom: none;
+        }
+      }
+    }
+  }
 
-	.ui-timepicker-div {
-		display: flex;
-		background-color: #fff;
-		padding: 10px 20px;
-		dt {
-			&.ui_tpicker_time_label, &.ui_tpicker_hour_label, &.ui_tpicker_minute_label {
-				font-size: 14px;
-				color: #55555d;
-				font-weight: 700;
-			}
-		}
-		.ui-slider-horizontal {
-			border-radius: 4px;
-			border: 1px solid @grey2;
+  // Font in select form
+  .ui-datepicker-header {
+    .ui-datepicker-title {
+      select {
+        font-family: 'Source Sans Pro',sans-serif;
+        font-size: 16px;
+      }
+    }
+  }
 
-			.ui-slider-handle.ui-corner-all.ui-state-default {
-				background-color: @accent;
-				border-radius: 8px;
-			}
-		}
-		& + .ui-datepicker-buttonpane.ui-widget-content {
-			background: #fff;
-			margin: 0;
-			display: flex;
-		}
-	}
+  .ui-timepicker-div {
+    display: flex;
+    background-color: #fff;
+    padding: 10px 20px;
+    dt {
+      &.ui_tpicker_time_label, &.ui_tpicker_hour_label, &.ui_tpicker_minute_label {
+        font-size: 14px;
+        color: #55555d;
+        font-weight: 700;
+      }
+    }
+    .ui-slider-horizontal {
+      border-radius: 4px;
+      border: 1px solid @grey2;
+
+      .ui-slider-handle.ui-corner-all.ui-state-default {
+        background-color: @accent;
+        border-radius: 8px;
+      }
+    }
+    & + .ui-datepicker-buttonpane.ui-widget-content {
+      background: #fff;
+      margin: 0;
+      display: flex;
+    }
+  }
 }
