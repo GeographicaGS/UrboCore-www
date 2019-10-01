@@ -265,6 +265,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
     // Remove loading animation
     this.$('.loading.widgetL').addClass('hiden');
+
+    // The event 'finish-drawChart' is launched
+    this.trigger('finish-drawChart');
   },
 
   _fetchData: function () {
