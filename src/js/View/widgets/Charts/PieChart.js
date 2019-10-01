@@ -35,13 +35,20 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     if (!options.opts.has('img')) options.opts.set({ img: '' });
     if (!options.opts.has('showTotal')) options.opts.set({ showTotal: false });
     if (!options.opts.has('showLabels')) options.opts.set({ showLabels: false });
+    
     _.bindAll(this, '_centerChart');
+    
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
+
+    this.on('finish-drawChart', function () {
+      setTimeout(function () {
+        this._drawExtra();
+      }.bind(this), 250)
+    });
   },
 
   _drawChart: function () {
     App.View.Widgets.Charts.Base.prototype._drawChart.call(this);
-    this._drawExtra();
   },
 
   _processData: function () {
@@ -53,7 +60,9 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     var _this = this;
     _.each(this.collection.toJSON(), function (elem) {
       _this.data.push({
-        key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.name) ? _this.options.get('legendNameFunc')(elem.name) : elem.name,
+        key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.name)
+          ? _this.options.get('legendNameFunc')(elem.name)
+          : elem.name,
         y: parseFloat(elem.value) || 0
       });
     });
@@ -145,15 +154,15 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
         var labelTotal = svg.select('p.extraContent span');
         if (labelTotal[0][0] === null) {
           var textEl = svg.insert('foreignObject', '.nv-wrap')
-          .attr('x', clientSize[0].width / 4)
-          .attr('y', clientSize[0].height / 2)
-          .attr('width', clientSize[0].width / 2)
-          .attr('height', clientSize[0].height / 4)
-          .attr('transform', 'translate(-' + valueOffset.left +
-            ',-' + valueOffset.top + ')')
-          .append('xhtml:p')
-          .attr('class', 'extraContent')
-          .html(__('Total') + ' ');
+            .attr('x', clientSize[0].width / 4)
+            .attr('y', clientSize[0].height / 2)
+            .attr('width', clientSize[0].width / 2)
+            .attr('height', clientSize[0].height / 4)
+            .attr('transform', 'translate(-' + valueOffset.left +
+              ',-' + valueOffset.top + ')')
+            .append('xhtml:p')
+            .attr('class', 'extraContent')
+            .html(__('Total') + ' ');
 
           textEl
             .append('xhtml:span')
