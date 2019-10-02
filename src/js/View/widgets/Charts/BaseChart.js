@@ -189,77 +189,79 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     // Create chart
     this._initChartModel();
 
-    // Order data keys for legend
-    if (this.options.get('legendOrderFunc')) {
-      this._orderLegendKeys();
-    }
-
-    // Fix for sometimes incorrectly hidden legend in watemeter historic widget
-    $(this.el).children('.var_list').removeClass('hide');
-
     // Append data to chart
     d3.select(this.$('.chart')[0])
       .datum(this.data)
       .call(this._chart);
 
-    // Create legend
-    this._initLegend();
-
-    // Create tooltips
-    this._initTooltips();
-
-    // Adjustments
-    if (this.options.get('centerLegend')) {
-      this._centerLegend();
-    }
-
-    if (this.options.get('xAxisLabel')) {
-      this._chart.xAxis.axisLabel(this.options.get('xAxisLabel'));
-    }
-
-    if (this.options.get('yAxisLabel')) {
-      var optionsYAxisLabel = this.options.get('yAxisLabel');
-      if (this._chart.yAxis) {
-         // put the text to yAxis
-        if (typeof optionsYAxisLabel === 'string') {
-          this._chart.yAxis.axisLabel(optionsYAxisLabel);
-        // set various options
-        } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
-          _.each(Object.keys(optionsYAxisLabel), function (value) {
-            this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
-          }.bind(this));
-        }
-      } else if (this.options.get('yAxisLabel').length >= 2) {
-        this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
-        this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
+    // set the other chart elements
+    if (this.data.length) {
+      // Order data keys for legend
+      if (this.options.get('legendOrderFunc')) {
+        this._orderLegendKeys();
       }
-    }
 
-    if (this.xAxisFunction) {
-      this._formatXAxis();
-    }
+      // Fix for sometimes incorrectly hidden legend in watemeter historic widget
+      $(this.el).children('.var_list').removeClass('hide');
 
-    if (this.options.get('yAxisFunction')) {
-      this._formatYAxis();
-    }
+      // Create legend
+      this._initLegend();
 
-    if (this.options.has('xAxisDomain')) {
-      this._forceXAxisDomain();
-    }
+      // Create tooltips
+      this._initTooltips();
 
-    if (this.options.has('yAxisDomain')) {
-      this._forceYAxisDomain();
-    }
+      // Adjustments
+      if (this.options.get('centerLegend')) {
+        this._centerLegend();
+      }
 
-    if (this.options.get('yAxisAdjust')) {
-      this._adjustYAxis();
-    }
+      if (this.options.get('xAxisLabel')) {
+        this._chart.xAxis.axisLabel(this.options.get('xAxisLabel'));
+      }
 
-    // Force apply adjustments (TODO: fix this hack)
-    var _this = this;
-    setTimeout(function () {
-      _this._chart.update();
-    }, 100);
+      if (this.options.get('yAxisLabel')) {
+        var optionsYAxisLabel = this.options.get('yAxisLabel');
+        if (this._chart.yAxis) {
+          // put the text to yAxis
+          if (typeof optionsYAxisLabel === 'string') {
+            this._chart.yAxis.axisLabel(optionsYAxisLabel);
+          // set various options
+          } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
+            _.each(Object.keys(optionsYAxisLabel), function (value) {
+              this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
+            }.bind(this));
+          }
+        } else if (this.options.get('yAxisLabel').length >= 2) {
+          this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
+          this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
+        }
+      }
+
+      if (this.xAxisFunction) {
+        this._formatXAxis();
+      }
+
+      if (this.options.get('yAxisFunction')) {
+        this._formatYAxis();
+      }
+
+      if (this.options.has('xAxisDomain')) {
+        this._forceXAxisDomain();
+      }
+
+      if (this.options.has('yAxisDomain')) {
+        this._forceYAxisDomain();
+      }
+
+      if (this.options.get('yAxisAdjust')) {
+        this._adjustYAxis();
+      }
+
+      // Force apply adjustments (TODO: fix this hack)
+      setTimeout(function () {
+        this._chart.update();
+      }.bind(this), 100);
+    }
 
     nv.utils.windowResize(this._chart.update);
 

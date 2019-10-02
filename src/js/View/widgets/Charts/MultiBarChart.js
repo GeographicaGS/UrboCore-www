@@ -40,11 +40,14 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     return this;
   },
 
-  // _drawChart: function(){
-  //   App.View.Widgets.Charts.Base.prototype._drawChart.apply(this);
-  // },
-
   _processData: function () {
+
+    // stop processing data
+    if (this.collection.toJSON().length === 0) {
+      this.data = [];
+      return;
+    }
+
     // Extract colors
     this._colors = this.options.get('colors');
 
@@ -53,26 +56,37 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     var potMax = _.max(this.collection.toJSON(), function (c) {
       return c.data.length;
     });
+
     if (potMax.data) {
       max = potMax.data.length;
     }
+
     this.data = [];
+
     var _this = this;
     var timeFormatter = d3.time.format.iso;
+    
     for (var i = 0; i < max; i++) {
       this.data.push({ 'values': [] });
       _.each(this.collection.toJSON(), function (elem) {
         var value = 0;
+
         if (i < elem.data.length) {
           var key = Object.keys(elem.data[i])[0];
           value = elem.data[i][key];
           key += i.toString()
         }
-        if (_this.data[i]['key'] === undefined)
-          _this.data[i]['key'] = _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key) ? _this.options.get('legendNameFunc')(key) : key;
+
+        if (_this.data[i]['key'] === undefined) {
+          _this.data[i]['key'] = _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key)
+            ? _this.options.get('legendNameFunc')(key)
+            : key;
+        }
         _this.data[i]['realKey'] = key;
-        _this.data[i]['values'].push({ 'x': timeFormatter.parse(elem.time), 'y': parseFloat(value) });
-        // _this.data[i]['values'].push({'x': elem.time, 'y': parseFloat(value) });
+        _this.data[i]['values'].push({
+          x: timeFormatter.parse(elem.time),
+          y: parseFloat(value)
+        });
       });
     }
   },
@@ -86,10 +100,16 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .color(this._colors)
       .margin({ 'bottom': 15 })
       .height(270)
-      .noData(this.options.get('noDataMessage'))
-      ;
+      .noData(this.options.get('noDataMessage'));
 
     this._chart.yAxis.tickPadding(10);
+
+    // Custom callback function (afterRender)
+    this._chart.dispatch.on('renderEnd', function () {
+      if (typeof this.options.get('afterRenderChart') === 'function') {
+        this.options.get('afterRenderChart').apply(this);
+      }
+    }.bind(this));
   },
 
   _formatXAxis: function () {
