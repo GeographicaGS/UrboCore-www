@@ -23,19 +23,23 @@
 
   .var_list{
     .tags {
-      text-align: center;
-      min-height: 21px;
-      height: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
     }
     div.btnLegend{
       font-size: 12px;
-      height: 20px;
+      line-height: 19px;
+      height: 21px;
       border: 1px solid #587887;
-      padding-top:1px;
-      display:inline-block;
+      width: auto;
       border-radius: 10px;
-      margin: 0 5px 5px;
-
+      margin: 0 8px 8px 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       &.no_border{
         border: none;
         margin-left: 0;
@@ -51,7 +55,7 @@
 
       .text {
         color: @white;
-        padding: 0 5px 0 2px;
+        padding: 0 5px;
         cursor:pointer;
         vertical-align: top;
         .noselect;
@@ -63,8 +67,7 @@
       .icon {
         width:10px;
         height:10px;
-        vertical-align:top;
-        margin: 3px 2px 0 5px;
+        margin: 4px 2px 0 5px;
         border-radius: 50%;
       }
       &.inactive {
@@ -84,7 +87,7 @@
           content: none;
         }
         & > .icon .iconSelected {
-          margin: 2px 6px 0 0;
+          margin: 3px 3px 0 0;
         }
 
         .varsel {

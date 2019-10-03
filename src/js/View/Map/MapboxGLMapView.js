@@ -37,6 +37,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     minZoom: 0,
     maxZoom: 22,
     style: null,
+    stylesPaintClusterLayer: {},
     zoom: 12,
   },
   _map: {},
@@ -338,7 +339,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
     optionsLayer = _.defaults(optionsLayer || {}, {
       clusterRadius: 50,
       clusterMaxZoom: 17,
-      paint: null,
     });
 
     var layerClusterCircle = 'clusters-' + sourceId;
@@ -362,9 +362,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
         type: 'circle',
         source: sourceId,
         filter: ['has', 'point_count'],
-        paint: optionsLayer.paint
-          ? paintOptions.paint
-          : defaultPaintOptions,
+        paint: _.defaults(this._mapOptions.stylesPaintClusterLayer, defaultPaintOptions)
       });
 
       // event "click" on cluster layer
