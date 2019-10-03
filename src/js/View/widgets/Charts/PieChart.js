@@ -39,12 +39,6 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     _.bindAll(this, '_centerChart');
     
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
-
-    this.on('finish-drawChart', function () {
-      setTimeout(function () {
-        this._drawExtra();
-      }.bind(this), 250)
-    });
   },
 
   _drawChart: function () {
@@ -84,7 +78,10 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
       .growOnHover(false)
       .noData(this.options.get('noDataMessage'));
 
-    this._chart.dispatch.on('renderEnd', this._centerChart); // Force center on each refresh
+    this._chart.dispatch.on('renderEnd', function () {
+      this._drawExtra();
+      this._centerChart(); // Force center on each refresh
+    }.bind(this));
   },
 
   _initTooltips: function () {
