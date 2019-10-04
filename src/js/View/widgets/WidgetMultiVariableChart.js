@@ -334,13 +334,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .duration(250)
         .call(this.chart);
 
+      // Re-draw Y Axis or Thresholds
+      this.updateYAxis();
+
       // Custom callback function
       if (typeof this.mvModel.afterRenderChart === 'function') {
         this.mvModel.afterRenderChart.apply(this);
       }
-
-      // Re-draw Y Axis or Thresholds
-      this.updateYAxis();
     }
   },
 
