@@ -60,6 +60,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     hideStepSelector: false,
     normalized: true,
     sizeDiff: 'days',
+    xAxisFunctionTooltip: null,
     yAxis1Domain: null,
     yAxis2Domain: null,
     yAxis1LabelDefault: null,
@@ -103,7 +104,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (this.mvModel.disabledList && this.mvModel.disabledList.length > 0) {
       _.each(this.mvModel.disabledList, function (element) {
         this.chartBehaviourData.disabledList[element] = true;
-        this.chartBehaviourData.elementsDisabled ++;
+        this.chartBehaviourData.elementsDisabled++;
       }.bind(this));
     }
 
@@ -164,7 +165,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
                 this.collection.options.data &&
                 this.collection.options.data.step
                 ? this.collection.options.data.step
-                : this.collection.options.step || '1d';  
+                : this.collection.options.step || '1d';
           }
 
           var regex = /\dd/;
@@ -955,9 +956,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return this.popupTemplate({
             data: data,
             utils: {
-              xAxisFunction: function (d) {
-                return App.formatDateTime(d);
-              }
+              xAxisFunction: typeof this.mvModel.xAxisFunctionTooltip === 'function'
+                ? this.mvModel.xAxisFunctionTooltip
+                : function (d) { return App.formatDateTime(d); }
             }
           });
         }.bind(this));
