@@ -29,6 +29,6 @@ App.config = {
   'layout' : 'basetheme',
   'map_zoom':17,
   'maps_prefix':  'dev_',
-  'cartoUser': 'urbo-admin',
+  'cartoUser': 'smart-dev',
   'sendNotEncryptedPassword': false
 };
