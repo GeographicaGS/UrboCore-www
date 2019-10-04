@@ -60,6 +60,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     hideStepSelector: false,
     normalized: true,
     sizeDiff: 'days',
+    useInteractiveGuideline: true,
     xAxisFunctionTooltip: null,
     yAxis1Domain: null,
     yAxis2Domain: null,
@@ -385,7 +386,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Draw the chart with NVD3
         this.chart = nv.models.multiChart()
-          .useInteractiveGuideline(true)
+          .useInteractiveGuideline(this.mvModel.useInteractiveGuideline)
           .margin({ right: 45 })
           .height(268)
           .noData(this.mvModel.customNoDataMessage)
