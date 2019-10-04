@@ -60,6 +60,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     hideStepSelector: false,
     normalized: true,
     sizeDiff: 'days',
+    useInteractiveGuideline: true,
+    xAxisFunctionTooltip: null,
     yAxis1Domain: null,
     yAxis2Domain: null,
     yAxis1LabelDefault: null,
@@ -103,7 +105,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     if (this.mvModel.disabledList && this.mvModel.disabledList.length > 0) {
       _.each(this.mvModel.disabledList, function (element) {
         this.chartBehaviourData.disabledList[element] = true;
-        this.chartBehaviourData.elementsDisabled ++;
+        this.chartBehaviourData.elementsDisabled++;
       }.bind(this));
     }
 
@@ -164,7 +166,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
                 this.collection.options.data &&
                 this.collection.options.data.step
                 ? this.collection.options.data.step
-                : this.collection.options.step || '1d';  
+                : this.collection.options.step || '1d';
           }
 
           var regex = /\dd/;
@@ -333,13 +335,13 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .duration(250)
         .call(this.chart);
 
+      // Re-draw Y Axis or Thresholds
+      this.updateYAxis();
+
       // Custom callback function
       if (typeof this.mvModel.afterRenderChart === 'function') {
         this.mvModel.afterRenderChart.apply(this);
       }
-
-      // Re-draw Y Axis or Thresholds
-      this.updateYAxis();
     }
   },
 
@@ -384,7 +386,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
         // Draw the chart with NVD3
         this.chart = nv.models.multiChart()
-          .useInteractiveGuideline(true)
+          .useInteractiveGuideline(this.mvModel.useInteractiveGuideline)
           .margin({ right: 45 })
           .height(268)
           .noData(this.mvModel.customNoDataMessage)
@@ -955,9 +957,9 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return this.popupTemplate({
             data: data,
             utils: {
-              xAxisFunction: function (d) {
-                return App.formatDateTime(d);
-              }
+              xAxisFunction: typeof this.mvModel.xAxisFunctionTooltip === 'function'
+                ? this.mvModel.xAxisFunctionTooltip
+                : function (d) { return App.formatDateTime(d); }
             }
           });
         }.bind(this));
