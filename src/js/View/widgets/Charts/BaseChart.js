@@ -72,7 +72,7 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
       this._internalData = _.reduce(currentDisabledList, function (sumDisabledList, element) {
         sumDisabledList.disabledList[element] = true;
-        sumDisabledList.elementsDisabled ++;
+        sumDisabledList.elementsDisabled++;
         return sumDisabledList;
       }, this._internalData);
     }
@@ -115,13 +115,13 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
     if (this.options.has('currentStep')) {
       var dates = null;
-      
+
       if (this.collection && this.collection.timeMode === '24h') {
         dates = { start: moment.utc().subtract(24, 'hours'), finish: moment.utc() }
       }
-      
+
       this.options.set({ stepsAvailable: App.Utils.getStepsAvailable(dates) });
-      
+
       if (!_.contains(this.options.get('stepsAvailable'), this.options.get('currentStep'))
         && !forceInitialStep) {
         this.options.set({ currentStep: this.options.get('stepsAvailable')[this.options.get('stepsAvailable').length - 1] });
@@ -173,7 +173,7 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
    */
   _sortAggregationsVariable: function (aggs) {
     var sortedAggs = ['SUM', 'MAX', 'AVG', 'MIN'];
-    return aggs.sort(function(a, b) {
+    return aggs.sort(function (a, b) {
       if (sortedAggs.indexOf(a) < sortedAggs.indexOf(b)) {
         return -1;
       } else {
@@ -225,7 +225,7 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
           // put the text to yAxis
           if (typeof optionsYAxisLabel === 'string') {
             this._chart.yAxis.axisLabel(optionsYAxisLabel);
-          // set various options
+            // set various options
           } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
             _.each(Object.keys(optionsYAxisLabel), function (value) {
               this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
@@ -367,9 +367,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   },
 
   _clickLegend: function (element) {
-    var tags = $(".btnLegend").size();
-    var orderKey = $(element.target).closest("div").attr("tag"); // Prevent dups
-    var realKey = $(element.target).closest("div").attr("id") + '_' + orderKey;
+    var tags = this.$(".btnLegend").size();
+    var orderKey = this.$(element.target).closest("div").attr("tag"); // Prevent dups
+    var realKey = this.$(element.target).closest("div").attr("id") + '_' + orderKey;
     var disabledList = this._internalData.disabledList;
     var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false)
       && this._internalData.elementsDisabled != tags - 1);
@@ -378,8 +378,8 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     if (disabled || enabled) {
       ($(this.$(".chart .nv-series")
         .get($(element.target)
-        .parent()
-        .attr("tag")))
+          .parent()
+          .attr("tag")))
       ).d3Click();
 
       $(element.target)
