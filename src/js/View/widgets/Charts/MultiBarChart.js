@@ -130,27 +130,24 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       ? this.data[0].values.length
       : 1;
     var barWidth = (1 - this._chart.groupSpacing()) * containerWidth / numElems;
-    var maxTicks = 15;
-    var totalTicks = Number.parseInt((containerWidth - (labelWidth / 2)) / labelWidth, 10);
-    // get multiples total dateXAxis
-    var multiplesTotalXAxis = App.Utils.getMultipleNumbers(numElems);
+    // Operations to set the values to X axis
+    var valueXAxis = _.reduce(this.data[0].values, function (sumValues, value) {
+      sumValues.push(value.x);
+      return sumValues;
+    }, []);
+    var maxTicks = Number.parseInt((containerWidth - (labelWidth / 2)) / labelWidth, 10);
+    var diffTicks = maxTicks > 0
+      ? Math.ceil(numElems / maxTicks)
+      : 1;
 
-    // Set maxTick in X Axis
-    if (totalTicks > numElems) {
-      totalTicks = numElems;
-    } else if (multiplesTotalXAxis.length > 2) {
-      var newTotalTicks = 0;
-      for (var i = 0; i < multiplesTotalXAxis.length; i++) {
-        if (multiplesTotalXAxis[i] < totalTicks) {
-          newTotalTicks = multiplesTotalXAxis[i];
+    // Set new values to X Axis
+    if (maxTicks < numElems) {
+      valueXAxis = _.reduce(this.data[0].values, function (sumValues, value, key) {
+        if (key % diffTicks === 0) {
+          sumValues.push(value.x);
         }
-      }
-      totalTicks = newTotalTicks;
-    }
-
-    // maximum values in X Axis
-    if (totalTicks > maxTicks) {
-      totalTicks = maxTicks;
+        return sumValues;
+      }, []);
     }
 
     // Scale to the bands (columns)
@@ -166,8 +163,9 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .xDomain([startDate, finishDate])
       .xRange([0, containerWidth - barWidth]);
 
+    // We decide which values show in X Axis
     this._chart.xAxis
-      .ticks(totalTicks)
+      .tickValues(valueXAxis)
       .tickPadding(5)
       .tickFormat(this.xAxisFunction)
       .axisLabel(this.options.get('xAxisLabel'));
