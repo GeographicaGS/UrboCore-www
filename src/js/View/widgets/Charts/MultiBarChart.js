@@ -65,7 +65,7 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
 
     var _this = this;
     var timeFormatter = d3.time.format.iso;
-    
+
     for (var i = 0; i < max; i++) {
       this.data.push({ 'values': [] });
       _.each(this.collection.toJSON(), function (elem) {
@@ -120,6 +120,7 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       this.collection.options.data = JSON.parse(this.collection.options.data);
     }
 
+    var labelWidth = 70; //pixels
     var container = d3.select(this.$('.chart')[0]);
     var containerWidth = (this._chart.width() || parseInt(container.style('width')) || 960)
       - (this._chart.margin().left + this._chart.margin().right);
@@ -129,6 +130,28 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       ? this.data[0].values.length
       : 1;
     var barWidth = (1 - this._chart.groupSpacing()) * containerWidth / numElems;
+    var maxTicks = 15;
+    var totalTicks = Number.parseInt((containerWidth - (labelWidth / 2)) / labelWidth, 10);
+    // get multiples total dateXAxis
+    var multiplesTotalXAxis = App.Utils.getMultipleNumbers(numElems);
+
+    // Set maxTick in X Axis
+    if (totalTicks > numElems) {
+      totalTicks = numElems;
+    } else if (multiplesTotalXAxis.length > 2) {
+      var newTotalTicks = 0;
+      for (var i = 0; i < multiplesTotalXAxis.length; i++) {
+        if (multiplesTotalXAxis[i] < totalTicks) {
+          newTotalTicks = multiplesTotalXAxis[i];
+        }
+      }
+      totalTicks = newTotalTicks;
+    }
+
+    // maximum values in X Axis
+    if (totalTicks > maxTicks) {
+      totalTicks = maxTicks;
+    }
 
     // Scale to the bands (columns)
     this._xScale = d3.time.scale();
@@ -144,6 +167,7 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .xRange([0, containerWidth - barWidth]);
 
     this._chart.xAxis
+      .ticks(totalTicks)
       .tickPadding(5)
       .tickFormat(this.xAxisFunction)
       .axisLabel(this.options.get('xAxisLabel'));
