@@ -384,6 +384,12 @@ App.View.Map.MapboxView = Backbone.View.extend({
           currentMap.getSource(sourceId)
             .getClusterExpansionZoom(clusterId, function (err, zoom) {
               if (err) return;
+
+              // to fix problem with the last zoom
+              if (zoom === currentMap.getZoom()) {
+                zoom = currentMap.getMaxZoom();
+              }
+
               currentMap.easeTo({
                 center: features[0].geometry.coordinates,
                 zoom: zoom
