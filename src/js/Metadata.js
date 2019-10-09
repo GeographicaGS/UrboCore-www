@@ -277,22 +277,21 @@
    */
   metadata.prototype.validateInMetadata = function (elements) {
     var validateMetadata = [];
-    var typeMetadata = ['categories', 'entities', 'variables'];
     var FnMetadata = {
       categories: this.getCategory,
       entities: this.getEntity,
       variables: this.getVariable
     }
 
-    _.each(typeMetadata, function (type) {
+    _.each(FnMetadata, function (fn, key) {
       // Check if exist "property" and function
-      if (elements.hasOwnProperty(type) && typeof FnMetadata[type] === 'function') {
-        var parameters = Array.isArray(elements[type])
-          ? elements[type]
-          : [elements[type]];
+      if (elements.hasOwnProperty(key)) {
+        var parameters = Array.isArray(elements[key])
+          ? elements[key]
+          : [elements[key]];
         // Check each parameter
         _.each(parameters, function (parameter) {
-          var result = FnMetadata[type].apply(this, [parameter])
+          var result = fn.apply(this, [parameter])
             ? true
             : false;
 
