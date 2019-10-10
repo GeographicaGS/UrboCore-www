@@ -273,7 +273,7 @@
    * Check if the indicated parameters exists in the "metadatas"
    * 
    * @param {Object} elements - Object with associated variables
-   * @return {Boolean} - Exist parameter?
+   * @return {Object} - Metada variable (entity or category)
    */
   metadata.prototype.validateInMetadata = function (elements) {
     var validateMetadata = [];
@@ -289,22 +289,25 @@
         var parameters = Array.isArray(elements[key])
           ? elements[key]
           : [elements[key]];
+
         // Check each parameter
         _.each(parameters, function (parameter) {
-          var result = fn.apply(this, [parameter])
-            ? true
-            : false;
-
-          validateMetadata.push(result);
+          validateMetadata.push(fn.apply(this, [parameter]) || false);
         }.bind(this));
       }
     }.bind(this));
 
-    return validateMetadata.length === 0
-      ? false
-      : _.every(validateMetadata, function (validation) {
-        return validation;
-      });
+    var allIsValidated = _.every(validateMetadata, function (validation) {
+      return validation !== false;
+    })
+
+    if (validateMetadata.length === 0 || !allIsValidated) {
+      return false;
+    }
+
+    // return Metadata Object because in sometimes
+    // this function is used to get these data 
+    return validateMetadata[0];
   }
 
   metadata.prototype.removeScope = function (scope_id, cb, parentScope) {
