@@ -334,6 +334,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         }.bind(this))
         .duration(250)
         .call(this.chart);
+        // .call(this.adjustTextLabels);
 
       // Re-draw Y Axis or Thresholds
       this.updateYAxis();
@@ -399,6 +400,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             : this.parseData.toJSON()
           )
           .call(this.chart);
+          // .call(this.adjustTextLabels.call(this));
 
         // Update chart (redraw) when the window size changes
         nv.utils.windowResize(this.chart.update);
@@ -648,11 +650,24 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var startDate = dataChart[0].values[0].x;
       var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
       var fnRemoveMaxMinXAxis = _.debounce(_.bind(this.removeMaxMinXAxis, this), 350);
+      // chartContent
+      // var chartContent = d3.select(this.$('.chart .wrap .nv-axis.nv-y1')).node();
+      // var chartContentRect = chartContent[0].getBBox();
+      // // debugger;
+      // var xScale = d3.time.scale()
+      //   .domain([startDate, finishDate])
+      //   .rangeRoundBands([0, chartContentRect.width]);
+
+      // xScale.rangeBands = xScale.range;
+      // xScale.rangeBand = function () {
+      //   return chartContentRect.width / dataChart[0].values.length;
+      // }.bind(this);
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
       this.chart
         .xAxis
+        // .scale(xScale)
         .tickPadding(15)
         .showMaxMin(false)
         .tickFormat(function (d) {
@@ -670,7 +685,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return d3.time.format('%d/%m/%Y')(localdate);
 
         }.bind(this))
-        .tickValues(this.getXTickValues(dataChart))
+        .tickValues(this.getXTickValues(dataChart));
 
       // When the windows is resized
       nv.utils.windowResize(function () {
@@ -687,6 +702,21 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Remove max and min
       fnRemoveMaxMinXAxis();
     }
+  },
+
+  adjustTextLabels: function () {
+    debugger;
+    d3.select(this.$('svg.chart')[0])
+      .selectAll('.nv-x.nv-axis .nv-axis .tick text')
+      .attr('transform', 'translate(' + this.daysToPixels(1) / 2 + ',0)');
+  },
+
+  // calculate the width of the days in the timeScale
+  daysToPixels: function (days, timeScale) {
+    debugger;
+    var d1 = new Date();
+    timeScale || (timeScale = Global.timeScale);
+    return timeScale(d3.time.day.offset(d1, days)) - timeScale(d1);
   },
 
   /**
