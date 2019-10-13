@@ -37,7 +37,17 @@ App.View.Widgets.MultiVariableSelectedChart = App.View.Widgets.MultiVariableChar
       return App.mv().validateInMetadata({ variables: [variable.id] });
     });
 
+    // set others parameters
+    if (options.multiVariableModel) {
+      options.multiVariableModel
+        .set('selectableVariables', options.selectableVariables || []);
+      options.multiVariableModel
+        .set('selectedVariable', options.selectedVariable || null);
+    }
+
     App.View.Widgets.MultiVariableChart.prototype.initialize.call(this, options);
+
+    _.bindAll(this, 'onChangeVariable');
   },
 
   events: _.extend({
@@ -50,16 +60,19 @@ App.View.Widgets.MultiVariableSelectedChart = App.View.Widgets.MultiVariableChar
    * @param {Object} e - triggered event
    */
   onChangeVariable: function (e) {
-    debugger;
-    // var $target = $(e.currentTarget);
-    // this.model.set('currentVariable', $target.data('varid'));
+    var selectedVariable = $(e.currentTarget);
+    var selectedVariableId = selectedVariable.data('varid');
 
-    // this.$('.popup_widget.variableSelector > span').html($target.html());
-    // this.$('.popup_widget.variableSelector .selected').removeClass('selected');
-    // $target.addClass('selected');
+    // Set variable selected
+    this.mvModel.selectedVariable = selectedVariableId;
+
+    // set changes in DOM
+    this.$('.popup_widget.variableSelector > span').html(selectedVariable.html());
+    this.$('.popup_widget.variableSelector .selected').removeClass('selected');
+    selectedVariable.addClass('selected');
 
     // this._drawContent();
-    // this.refresh();
+    this.collection.fetch();
   },
 
 });

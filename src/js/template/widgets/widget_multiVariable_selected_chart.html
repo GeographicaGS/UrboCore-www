@@ -11,18 +11,18 @@
   <% if (m.title) { %>
   <div class="widget_header">
     <div class="title">
-      <% if (selectableVariables.length) { %>
+      <% if (m.selectableVariables.length) { %>
         <a class="popup_widget variableSelector">
           <%
-          var selectedTitle = _.find(selectableVariables, function (item) {
-            return item.id === currentVariable;
+          var selectedTitle = _.find(m.selectableVariables, function (item) {
+            return item.id === m.selectedVariable;
           }) %>
           <span><%= selectedTitle.title %></span>
           <div class="varsel">
             <ul>
-            <% _.each(selectableVariables, function (elem, idx) { %>
+            <% _.each(m.selectableVariables, function (elem, idx) { %>
               <li data-varid="<%= elem.id %>"
-                  class="<%= elem.id === currentVariable ? 'selected': ''%>">
+                  class="<%= elem.id === m.selectedVariable ? 'selected': ''%>">
                 <%= elem.title %>
               </li>
             <% }); %>

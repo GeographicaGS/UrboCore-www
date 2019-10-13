@@ -813,6 +813,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this.mvModel.yAxis2TickFormat
       : App.nbf;
 
+    // Domain in yAxis2
+    if (this.mvModel.yAxis2Domain) {
+      this.chart.yDomain2(this.mvModel.yAxis2Domain);
+    }
+
     // Put the label and values
     // in Y Axis 2
     this.chart
