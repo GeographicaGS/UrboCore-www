@@ -55,11 +55,35 @@ App.View.Widgets.MultiVariableSelectedChart = App.View.Widgets.MultiVariableChar
   }, App.View.Widgets.MultiVariableChart.prototype.events),
 
   /**
+   * When we click on the step selector (Override parent function)
+   *
+   * @param {*} e - triggered event
+   */
+  onChangeStep: function (e) {
+    e.preventDefault();
+
+    var step = $(e.currentTarget).attr('data-step');
+    var data = typeof this.collection.options.data === 'string'
+      ? JSON.parse(this.collection.options.data)
+      : this.collection.options.data;
+
+    this.collection.options.step = step;
+    this._stepModel.set('step', step);
+    if (data.time) {
+      data.time.step = step;
+    }
+
+    this.collection.fetch();
+  },
+
+  /**
    * When change the value of selector (title)
    *
    * @param {Object} e - triggered event
    */
   onChangeVariable: function (e) {
+    e.preventDefault();
+
     var selectedVariable = $(e.currentTarget);
     var selectedVariableId = selectedVariable.data('varid');
 
@@ -75,7 +99,6 @@ App.View.Widgets.MultiVariableSelectedChart = App.View.Widgets.MultiVariableChar
     this.$('.popup_widget.variableSelector .selected').removeClass('selected');
     selectedVariable.addClass('selected');
 
-    // this._drawContent();
     this.collection.fetch();
   },
 

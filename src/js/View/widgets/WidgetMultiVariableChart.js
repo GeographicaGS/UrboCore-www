@@ -648,24 +648,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       var startDate = dataChart[0].values[0].x;
       var finishDate = dataChart[0].values[dataChart[0].values.length - 1].x;
       var fnRemoveMaxMinXAxis = _.debounce(_.bind(this.removeMaxMinXAxis, this), 350);
-      // chartContent
-      // var chartContent = d3.select(this.$('.chart .wrap .nv-axis.nv-y1')).node();
-      // var chartContentRect = chartContent[0].getBBox();
-      // // debugger;
-      // var xScale = d3.time.scale()
-      //   .domain([startDate, finishDate])
-      //   .rangeRoundBands([0, chartContentRect.width]);
-
-      // xScale.rangeBands = xScale.range;
-      // xScale.rangeBand = function () {
-      //   return chartContentRect.width / dataChart[0].values.length;
-      // }.bind(this);
 
       // Draw the X axis with values (date) with 'hours'
       // If the difference between dates is minus to two days
       this.chart
         .xAxis
-        // .scale(xScale)
         .tickPadding(15)
         .showMaxMin(false)
         .tickFormat(function (d) {
