@@ -65,6 +65,10 @@ App.View.Widgets.MultiVariableSelectedChart = App.View.Widgets.MultiVariableChar
 
     // Set variable selected
     this.mvModel.selectedVariable = selectedVariableId;
+    this.options.selectedVariable = selectedVariableId;
+
+    // Set options model
+    _.extend(this.mvModel, this.getMultivariableModel().toJSON());
 
     // set changes in DOM
     this.$('.popup_widget.variableSelector > span').html(selectedVariable.html());
