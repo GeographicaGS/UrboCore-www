@@ -40,11 +40,14 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     return this;
   },
 
-  // _drawChart: function(){
-  //   App.View.Widgets.Charts.Base.prototype._drawChart.apply(this);
-  // },
-
   _processData: function () {
+
+    // stop processing data
+    if (this.collection.toJSON().length === 0) {
+      this.data = [];
+      return;
+    }
+
     // Extract colors
     this._colors = this.options.get('colors');
 
@@ -53,26 +56,37 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
     var potMax = _.max(this.collection.toJSON(), function (c) {
       return c.data.length;
     });
+
     if (potMax.data) {
       max = potMax.data.length;
     }
+
     this.data = [];
+
     var _this = this;
     var timeFormatter = d3.time.format.iso;
+
     for (var i = 0; i < max; i++) {
       this.data.push({ 'values': [] });
       _.each(this.collection.toJSON(), function (elem) {
         var value = 0;
+
         if (i < elem.data.length) {
           var key = Object.keys(elem.data[i])[0];
           value = elem.data[i][key];
           key += i.toString()
         }
-        if (_this.data[i]['key'] === undefined)
-          _this.data[i]['key'] = _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key) ? _this.options.get('legendNameFunc')(key) : key;
+
+        if (_this.data[i]['key'] === undefined) {
+          _this.data[i]['key'] = _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(key)
+            ? _this.options.get('legendNameFunc')(key)
+            : key;
+        }
         _this.data[i]['realKey'] = key;
-        _this.data[i]['values'].push({ 'x': timeFormatter.parse(elem.time), 'y': parseFloat(value) });
-        // _this.data[i]['values'].push({'x': elem.time, 'y': parseFloat(value) });
+        _this.data[i]['values'].push({
+          x: timeFormatter.parse(elem.time),
+          y: parseFloat(value)
+        });
       });
     }
   },
@@ -86,10 +100,16 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .color(this._colors)
       .margin({ 'bottom': 15 })
       .height(270)
-      .noData(this.options.get('noDataMessage'))
-      ;
+      .noData(this.options.get('noDataMessage'));
 
     this._chart.yAxis.tickPadding(10);
+
+    // Custom callback function (afterRender)
+    this._chart.dispatch.on('renderEnd', function () {
+      if (typeof this.options.get('afterRenderChart') === 'function') {
+        this.options.get('afterRenderChart').apply(this);
+      }
+    }.bind(this));
   },
 
   _formatXAxis: function () {
@@ -100,6 +120,7 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       this.collection.options.data = JSON.parse(this.collection.options.data);
     }
 
+    var labelWidth = 70; //pixels
     var container = d3.select(this.$('.chart')[0]);
     var containerWidth = (this._chart.width() || parseInt(container.style('width')) || 960)
       - (this._chart.margin().left + this._chart.margin().right);
@@ -109,6 +130,25 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       ? this.data[0].values.length
       : 1;
     var barWidth = (1 - this._chart.groupSpacing()) * containerWidth / numElems;
+    // Operations to set the values to X axis
+    var valueXAxis = _.reduce(this.data[0].values, function (sumValues, value) {
+      sumValues.push(value.x);
+      return sumValues;
+    }, []);
+    var maxTicks = Number.parseInt((containerWidth - (labelWidth / 2)) / labelWidth, 10);
+    var diffTicks = maxTicks > 0
+      ? Math.ceil(numElems / maxTicks)
+      : 1;
+
+    // Set new values to X Axis
+    if (maxTicks < numElems) {
+      valueXAxis = _.reduce(this.data[0].values, function (sumValues, value, key) {
+        if (key % diffTicks === 0) {
+          sumValues.push(value.x);
+        }
+        return sumValues;
+      }, []);
+    }
 
     // Scale to the bands (columns)
     this._xScale = d3.time.scale();
@@ -123,7 +163,9 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .xDomain([startDate, finishDate])
       .xRange([0, containerWidth - barWidth]);
 
+    // We decide which values show in X Axis
     this._chart.xAxis
+      .tickValues(valueXAxis)
       .tickPadding(5)
       .tickFormat(this.xAxisFunction)
       .axisLabel(this.options.get('xAxisLabel'));

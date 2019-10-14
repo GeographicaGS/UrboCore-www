@@ -218,9 +218,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var _this = this;
 
     this._chart.svg = d3.select(this.$('.chart')[0])
-      .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
-      .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
-      .attr('class', 'chart d3')
+      // .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
+      // .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
+      .attr('class', 'chart nvd3-svg d3')
       .append('g')
       .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')')
 
@@ -653,8 +653,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         })
         // .tickValues(datesInterval)
         .tickSize([])
-        .tickPadding(10)
-        ;
+        .tickPadding(10);
 
     } else if (this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor != Date) {
       var _this = this;
