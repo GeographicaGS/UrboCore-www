@@ -531,37 +531,47 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * @param {Array} centerMap - array with coordinates
    */
   _modifyAndSetSources: function (centerMap) {
-    var itemsInCircle = 6;
     // Copy from "_clusterSourcesSaved"
     var _copyClusterSourcesSaved = _.reduce(this._clusterSourcesSaved, function (sumSources, source) {
       sumSources.push(_.clone(source));
       return sumSources;
     }, []);
-    var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
-      sumTotal += source.entities.length;
-      return sumTotal;
-    }, 0);
-    var angle = totalItems <= itemsInCircle
-      ? 360 / totalItems
-      : 360 / itemsInCircle;
-    var matchIndex = 0;
+    // var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
+    //   sumTotal += source.entities.length;
+    //   return sumTotal;
+    // }, 0);
+    var itemsInCircle = 6;
+    var angle = 0;
+    var matchIndex = 1;
+    var matchIndexInCircle = 1;
+    var concentricCircles = 1;
 
     _.each(_copyClusterSourcesSaved, function (source, sourceIndex) {
       var modifyFeatures = [];
       _.each(source.data._data.features, function (feature, featureIndex) {
         // Modify the point and save
         if (source.entities.includes(feature.properties.id_entity)) {
+
+          if (matchIndexInCircle > itemsInCircle) {
+            matchIndexInCircle = 1;
+            concentricCircles += Math.trunc(matchIndex / itemsInCircle);
+            itemsInCircle = itemsInCircle * concentricCircles;
+          }
+  
+          angle = 360 / itemsInCircle;
+
           var newPosition = this._calculateNewPosition(
             centerMap,
             {
-              distance: this._mapOptions.distancePointToCluster
-                + (this._mapOptions.distancePointToCluster * Math.trunc((matchIndex) / itemsInCircle)),
-              bearing: angle * matchIndex,
+              distance: this._mapOptions.distancePointToCluster * concentricCircles,
+              bearing: angle * (itemsInCircle - matchIndexInCircle),
               options: {
                 units: 'meters'
               }
             }
           );
+          // Add to index circle
+          matchIndexInCircle++;
           // Add to index
           matchIndex++;
         }
