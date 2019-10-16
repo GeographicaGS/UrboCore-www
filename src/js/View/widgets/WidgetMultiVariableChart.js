@@ -670,7 +670,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
           return d3.time.format('%d/%m/%Y')(localdate);
 
         }.bind(this))
-        .tickValues(this.getXTickValues(dataChart))
+        .tickValues(this.getXTickValues(dataChart));
 
       // When the windows is resized
       nv.utils.windowResize(function () {
@@ -783,15 +783,19 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this.mvModel.yAxis2TickFormat
       : App.nbf;
 
+    // Domain in yAxis2
+    if (this.mvModel.yAxis2Domain) {
+      this.chart.yDomain2(this.mvModel.yAxis2Domain);
+    }
+
     // Put the label and values
     // in Y Axis 2
     this.chart
       .yAxis2
       .axisLabel(this.mvModel.yAxis2LabelDefault || '')
-      .axisLabelDistance(-25)
+      .axisLabelDistance(-30)
       .tickFormat(fnYAxis2TickFormat);
   },
-
 
   /**
    * Draw limits (horizontal lines) in the chart
@@ -851,6 +855,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
 
     // Draw each thresholds line and rect
     _.each(this.mvModel.yAxisThresholds, function (threshold) {
+      var diffLines = 5; // To fix position lines and values Y Axis (HACK)
       var thresholdGroup = g.append('g').attr({
         class: 'thresholdGroup'
       });
@@ -862,8 +867,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .attr({
           x1: 0,
           x2: thWidth,
-          y1: fnYScale.apply(this)(threshold.startValue),
-          y2: fnYScale.apply(this)(threshold.startValue),
+          y1: fnYScale.apply(this)(threshold.startValue) - diffLines,
+          y2: fnYScale.apply(this)(threshold.startValue) - diffLines,
           'stroke-dasharray': 4,
           stroke: threshold.color
         });
@@ -872,7 +877,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .attr('class', 'thresholds')
         .attr({
           x: 0,
-          y: fnYScale.apply(this)(threshold.endValue),
+          y: fnYScale.apply(this)(threshold.endValue) - diffLines,
           width: thWidth,
           height: thHeight,
           fill: threshold.color,
@@ -883,7 +888,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         .text(__(threshold.realName))
         .attr('class', 'axis-label')
         .attr('x', 10)
-        .attr('y', fnYScale.apply(this)(threshold.endValue) + thHeight / 2)
+        .attr('y', fnYScale.apply(this)(threshold.endValue) + (thHeight  - diffLines) / 2)
         .attr('dy', '.32em')
         .attr('width', thWidth)
         .attr('height', thHeight / 2)
@@ -892,13 +897,20 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       thresholdGroup.append('text')
         .text(__(threshold.endValue))
         .attr('class', 'axis-label')
-        .attr('x', -20)
-        .attr('y', fnYScale.apply(this)(threshold.endValue))
+        .attr('x', -28)
+        .attr('y', fnYScale.apply(this)(threshold.endValue) - diffLines)
         .attr('dy', '.32em')
         .attr('width', thWidth)
         .attr('class', 'thresholdValue');
 
     }.bind(this));
+
+    // Put the label and values
+    // in Y Axis 1
+    this.chart
+      .yAxis1
+      .axisLabel(this.mvModel.yAxis1LabelDefault || '')
+      .axisLabelDistance(-10);
 
     // When the windows is resized
     nv.utils.windowResize(function () {
