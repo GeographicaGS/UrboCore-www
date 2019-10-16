@@ -37,6 +37,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     minZoom: 0,
     maxZoom: 22,
     style: null,
+    stylesPaintClusterLayer: {},
     zoom: 12,
   },
   _map: {},
@@ -148,7 +149,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * This event is called after data in map is loaded.
    * Implement in child class
    */
-  dataLoaded: function () {},
+  dataLoaded: function () { },
 
   /**
    * This event is called after data in map is moved.
@@ -219,7 +220,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
       : undefined;
   },
 
-  updateData: function (layer) {},
+  updateData: function (layer) { },
 
   /**
    * Add layers to the map
@@ -302,7 +303,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
       }.bind(this));
 
       // We fill the data
-      if (features.length > 0 && 
+      if (features.length > 0 &&
         typeof this._map.getSource(cluster.get('id')) !== 'undefined') {
         // Set the response into the source
         this._map.getSource(cluster.get('id'))
@@ -338,7 +339,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
     optionsLayer = _.defaults(optionsLayer || {}, {
       clusterRadius: 50,
       clusterMaxZoom: 17,
-      paint: null,
     });
 
     var layerClusterCircle = 'clusters-' + sourceId;
@@ -362,18 +362,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
         type: 'circle',
         source: sourceId,
         filter: ['has', 'point_count'],
-        paint: optionsLayer.paint
-          ? paintOptions.paint
-          : defaultPaintOptions,
+        paint: _.defaults(this._mapOptions.stylesPaintClusterLayer, defaultPaintOptions),
       });
 
       // event "click" on cluster layer
       currentMap.on('click', layerClusterCircle, function (event) {
-        var features = 
+        var features =
           currentMap.queryRenderedFeatures(
             event.point,
-            { layers: [layerClusterCircle]}
-        );
+            { layers: [layerClusterCircle] }
+          );
         var clusterId = features[0].properties.cluster_id;
         var centerMap = features[0].geometry.coordinates;
 
@@ -386,6 +384,12 @@ App.View.Map.MapboxView = Backbone.View.extend({
           currentMap.getSource(sourceId)
             .getClusterExpansionZoom(clusterId, function (err, zoom) {
               if (err) return;
+
+              // to fix problem with the last zoom
+              if (zoom === currentMap.getZoom()) {
+                zoom = currentMap.getMaxZoom();
+              }
+
               currentMap.easeTo({
                 center: features[0].geometry.coordinates,
                 zoom: zoom
@@ -401,16 +405,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
           App.ctx.set('clusterEventLaunched', true);
 
           currentMap.getSource(sourceId)
-          .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
-            // reset the points
-            resetClusterSources.apply(this);
-            _.each(clusterFeatures, function (clusterFeature) {
-              // Find any source associated to Feature and save it
-              findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
+            .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
+              // reset the points
+              resetClusterSources.apply(this);
+              _.each(clusterFeatures, function (clusterFeature) {
+                // Find any source associated to Feature and save it
+                findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
+              }.bind(this));
+              // Prepare and modify source data and set into source
+              modifyAndSetSources.apply(this, [centerMap]);
             }.bind(this));
-            // Prepare and modify source data and set into source
-            modifyAndSetSources.apply(this, [centerMap]);
-          }.bind(this));
         }
 
         return false;
@@ -438,6 +442,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
         filter: ['has', 'point_count'],
         layout: {
           'text-field': '{point_count_abbreviated}',
+          'text-allow-overlap': true,
           'text-size': 12
         },
         paint: {
@@ -480,15 +485,15 @@ App.View.Map.MapboxView = Backbone.View.extend({
         // We looking for the element "feature"
         return typeof currentSourceData !== 'undefined'
           ? _.some(currentSourceData._data.features, function (currentFeature) {
-              return feature.properties.id_entity === currentFeature.properties.id_entity;
-            }.bind(this))
+            return feature.properties.id_entity === currentFeature.properties.id_entity;
+          }.bind(this))
           : false;
       }.bind(this));
 
       if (typeof tmpSource !== 'undefined') {
         dataSource = this.getSource(tmpSource);
       }
-      
+
       index++;
 
     } while (dataSource === null || index < clusterSources.length);
@@ -526,17 +531,19 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * @param {Array} centerMap - array with coordinates
    */
   _modifyAndSetSources: function (centerMap) {
+    var itemsInCircle = 6;
     // Copy from "_clusterSourcesSaved"
     var _copyClusterSourcesSaved = _.reduce(this._clusterSourcesSaved, function (sumSources, source) {
       sumSources.push(_.clone(source));
       return sumSources;
     }, []);
-
     var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
       sumTotal += source.entities.length;
       return sumTotal;
     }, 0);
-    var angle = 360/totalItems;
+    var angle = totalItems <= itemsInCircle
+      ? 360 / totalItems
+      : 360 / itemsInCircle;
     var matchIndex = 0;
 
     _.each(_copyClusterSourcesSaved, function (source, sourceIndex) {
@@ -547,8 +554,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
           var newPosition = this._calculateNewPosition(
             centerMap,
             {
-              distance: this._mapOptions.distancePointToCluster || 40,
-              bearing: angle*matchIndex,
+              distance: this._mapOptions.distancePointToCluster
+                + (this._mapOptions.distancePointToCluster * Math.trunc((matchIndex) / itemsInCircle)),
+              bearing: angle * matchIndex,
               options: {
                 units: 'meters'
               }
@@ -707,7 +715,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._map.remove();
     this.stopListening();
     this.basemapSelector.close(),
-    this.legend.close();
+      this.legend.close();
 
     // reset cluster sources
     this.resetClusterSourcesToMap();
