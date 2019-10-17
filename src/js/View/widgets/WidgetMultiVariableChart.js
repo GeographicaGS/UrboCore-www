@@ -59,6 +59,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     forceStep: null,
     hideStepSelector: false,
     hideVarList: false,
+    margin: { right: 45 },
     normalized: true,
     sizeDiff: 'days',
     timeMode: 'date',
@@ -389,7 +390,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         // Draw the chart with NVD3
         this.chart = nv.models.multiChart()
           .useInteractiveGuideline(this.mvModel.useInteractiveGuideline)
-          .margin({ right: 45 })
+          .margin(this.mvModel.margin)
           .height(268)
           .noData(this.mvModel.customNoDataMessage)
           .showLegend(false);
