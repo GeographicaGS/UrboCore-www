@@ -23,7 +23,7 @@
   /**
    * Metadata has all information about 'scopes',
    * 'catalogs' and others.
-   * 
+   *
    * This Object will be fill in the APP initialization,
    * because this information will be used in future actions.
    */
@@ -64,7 +64,7 @@
    */
   metadata.prototype.getScope = function(scope_id, cb) {
     var scope = this._metadataCollection.get(scope_id);
-    
+
     // If we didn't look for the current scope into
     // the collection, we will try other way to get it
     if(!scope) {
@@ -222,7 +222,7 @@
           .find(function(ent) {
             return ent.get('variables').get(variable_id);
           });
-        
+
         if(temp) {
           element = temp.get('variables').get(variable_id);
         }
@@ -268,30 +268,63 @@
     });
   }
 
-  metadata.prototype.validateInMetadata = function(elements) {
-    var valid = true;
-    if('categories' in elements) {
-      var categories = (typeof elements.categories !== 'object') ? elements.categories : [elements.categories];
-      _.each(categories, (function(category) {
-        valid = valid && this.getCategory(category);
-      }).bind(this));
+  /**
+   * Check if the indicated parameters exists in the "metadatas"
+   *
+   * @param {Object} elements - Object with associated variables
+   * @return {Object} - Metada variable (entity or category)
+   */
+  metadata.prototype.validateInMetadata = function (elements) {
+    var validateMetadata = [];
+    var FnMetadata = {
+      categories: this.getCategory,
+      entities: this.getEntity,
+      variables: this.getVariable
     }
 
-    if('entities' in elements) {
-      var entities = (typeof elements.entities !== 'object') ? elements.entities : [elements.entities];
-      _.each(entities, (function(entity) {
-        valid = valid && this.getEntity(entity);
-      }).bind(this));
+    _.each(FnMetadata, function (fn, key) {
+      // Check if exist "property" and function
+      if (elements.hasOwnProperty(key)) {
+        var parameters = Array.isArray(elements[key])
+          ? elements[key]
+          : [elements[key]];
+
+        // Check each parameter
+        _.each(parameters, function (parameter) {
+          var metadataItem = fn.apply(this, [parameter]);
+          var metadataItemJSON = metadataItem
+            ? metadataItem.toJSON()
+            : false;
+          var resultValidation = false;
+
+          // It exists variable metadata
+          if (metadataItemJSON !== false) {
+            resultValidation = metadataItem;
+            // Is active = false?
+            if (metadataItemJSON.config &&
+                typeof metadataItemJSON.config.active !== 'undefined' &&
+              (metadataItemJSON.config.active === false ||
+                metadataItemJSON.config.active.toLowerCase() === 'false')) {
+              resultValidation = false;
+            }
+          }
+
+          validateMetadata.push(resultValidation);
+        }.bind(this));
+      }
+    }.bind(this));
+
+    var allIsValidated = _.every(validateMetadata, function (validation) {
+      return validation !== false;
+    })
+
+    if (validateMetadata.length === 0 || !allIsValidated) {
+      return false;
     }
 
-    if('variables' in elements) {
-      var variables = (typeof elements.variables !== 'object') ? elements.variables : [elements.variables];
-      _.each(variables, (function(variable) {
-        valid = valid && this.getVariable(variable);
-      }).bind(this));
-    }
-    return valid;
-
+    // return Metadata Object because in sometimes
+    // this function is used to get these data
+    return validateMetadata[0];
   }
 
   metadata.prototype.removeScope = function(scope_id, cb, parentScope) {
