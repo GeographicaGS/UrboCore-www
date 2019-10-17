@@ -304,7 +304,8 @@
             if (metadataItemJSON.config &&
                 typeof metadataItemJSON.config.active !== 'undefined' &&
               (metadataItemJSON.config.active === false ||
-                metadataItemJSON.config.active.toLowerCase() === 'false')) {
+                (typeof metadataItemJSON.config.active === 'string'
+                  && metadataItemJSON.config.active.toLowerCase() === 'false'))) {
               resultValidation = false;
             }
           }
