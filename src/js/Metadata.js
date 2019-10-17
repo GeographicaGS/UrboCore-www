@@ -271,7 +271,7 @@
 
   /**
    * Check if the indicated parameters exists in the "metadatas"
-   * 
+   *
    * @param {Object} elements - Object with associated variables
    * @return {Object} - Metada variable (entity or category)
    */
@@ -292,7 +292,25 @@
 
         // Check each parameter
         _.each(parameters, function (parameter) {
-          validateMetadata.push(fn.apply(this, [parameter]) || false);
+          var metadataItem = fn.apply(this, [parameter]);
+          var metadataItemJSON = metadataItem
+            ? metadataItem.toJSON()
+            : false;
+          var resultValidation = false;
+
+          // It exists variable metadata
+          if (metadataItemJSON !== false) {
+            resultValidation = metadataItem;
+            // Is active = false?
+            if (metadataItemJSON.config &&
+                typeof metadataItemJSON.config.active !== 'undefined' &&
+              (metadataItemJSON.config.active === false ||
+                metadataItemJSON.config.active.toLowerCase() === 'false')) {
+              resultValidation = false;
+            }
+          }
+
+          validateMetadata.push(resultValidation);
         }.bind(this));
       }
     }.bind(this));
@@ -306,7 +324,7 @@
     }
 
     // return Metadata Object because in sometimes
-    // this function is used to get these data 
+    // this function is used to get these data
     return validateMetadata[0];
   }
 
