@@ -159,10 +159,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       return sumElements;
     }.bind(this), []);
 
-    // Sort data to bring lines to the end
+    // Sort data to bring bar to the end
     this.data.sort(function (a, b) {
-      return a.type > b.type;
+      return a.type.localeCompare(b.type);
     });
+
     // Get max value for each axis and adjust domain
     var domains = [[0, 1]];
     if (this.options.get('yAxisDomain')) {
