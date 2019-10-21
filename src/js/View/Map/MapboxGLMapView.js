@@ -26,6 +26,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _clusterSources: new Backbone.Collection([]),
   // Original data about the points modified
   _clusterSourcesSaved: [],
+  _clusterCircleDrawn: false,
   _currentBasemap: 'positron',
   _is3dActive: false,
   // map default options
@@ -70,7 +71,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._currentBasemap = options.defaultBasemap || 'positron';
     this._availableBasemaps = options.availableBasemaps || ['positron', 'dark', 'ortofoto'];
     this._sprites = options.sprites;
-    this.$el[0].id = "map";
+    this.$el[0].id = 'map';
     this.legend = new App.View.Map.MapboxLegendView([], this);
     this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this._availableBasemaps, this);
     this.$el.append(this.legend.render().$el);
@@ -404,17 +405,23 @@ App.View.Map.MapboxView = Backbone.View.extend({
           // associated a map layer (tooltip) is launched
           App.ctx.set('clusterEventLaunched', true);
 
-          currentMap.getSource(sourceId)
-            .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
-              // reset the points
-              resetClusterSources.apply(this);
-              _.each(clusterFeatures, function (clusterFeature) {
-                // Find any source associated to Feature and save it
-                findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
+          if (this._clusterCircleDrawn === false) {
+            currentMap.getSource(sourceId)
+              .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
+                // reset the points
+                resetClusterSources.apply(this);
+                _.each(clusterFeatures, function (clusterFeature) {
+                  // Find any source associated to Feature and save it
+                  findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
+                }.bind(this));
+                // Prepare and modify source data and set into source
+                modifyAndSetSources.apply(this, [centerMap]);
               }.bind(this));
-              // Prepare and modify source data and set into source
-              modifyAndSetSources.apply(this, [centerMap]);
-            }.bind(this));
+          } else {
+            // reset the points
+            resetClusterSources.apply(this);
+          }
+
         }
 
         return false;
@@ -536,11 +543,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
       sumSources.push(_.clone(source));
       return sumSources;
     }, []);
-    // var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
-    //   sumTotal += source.entities.length;
-    //   return sumTotal;
-    // }, 0);
-    var itemsInCircle = 6;
+    var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
+        sumTotal += source.entities.length;
+        return sumTotal;
+      }, 0);
+    var initialItemsInCircle = totalItems < 6
+      ? totalItems
+      : 6;
+    var itemsInCircle = totalItems < 6
+      ? totalItems
+      : 6;
     var angle = 0;
     var matchIndex = 1;
     var matchIndexInCircle = 1;
@@ -555,9 +567,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
           if (matchIndexInCircle > itemsInCircle) {
             matchIndexInCircle = 1;
             concentricCircles += Math.trunc(matchIndex / itemsInCircle);
-            itemsInCircle = itemsInCircle * concentricCircles;
+            itemsInCircle = initialItemsInCircle * concentricCircles;
           }
-  
+
           angle = 360 / itemsInCircle;
 
           var newPosition = this._calculateNewPosition(
@@ -596,6 +608,9 @@ App.View.Map.MapboxView = Backbone.View.extend({
           });
 
     }.bind(this));
+
+    // The cluster circle (point) is showed
+    this._clusterCircleDrawn = true;
   },
 
   /**
@@ -609,6 +624,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     }.bind(this));
     // reset Array
     this._clusterSourcesSaved = [];
+    // The cluster circle (point) is hidden
+    this._clusterCircleDrawn = false;
   },
 
   /**
