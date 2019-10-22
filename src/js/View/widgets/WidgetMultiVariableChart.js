@@ -924,8 +924,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
    */
   setupToolTip: function () {
     if (this.chart) {
-      this.chart
-        .interactiveLayer
+      var chartInteractive = this.mvModel.useInteractiveGuideline
+        ? this.chart.interactiveLayer
+        : this.chart;
+
+      chartInteractive
         .tooltip
         .contentGenerator(function (data) {
           // Each value to tooltip
