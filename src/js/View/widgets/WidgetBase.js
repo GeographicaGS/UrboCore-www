@@ -23,32 +23,60 @@
 App.View.Widgets.Base = Backbone.View.extend({
 
   _template: _.template($('#widgets-widget_base_template').html()),
+  _template_aggs_menu: _.template($('#widgets-widget_base_aggs_menu_template').html()),
   _template_timemode_historic: _.template($('#widgets-widget_date_template').html()),
   _template_timemode_now: _.template($('#widgets-widget_time_template').html()),
 
-  initialize: function (options) {
-    this.options = options;
+  events: {
+    'click .botons .tooltipIcon.info': '_onClickIconInfo',
+    'click .botons .tooltipIcon.close': '_onClickIconCloseInfo',
+    'click .widget_content': '_onClickContent',
+    'click .botons .tooltipIcon li.exportable': '_onClickIconExport',
+    'click .botons .tooltipIcon li.download': '_onClickIconExport',
+    'click .botons .tooltipIcon.download': '_onClickIconExport',
+    'click .botons .tooltipIcon.export': '_onClickIconExport',
+    'click .widget_header .title .popup_widget.agg ul li': '_onChangeAgg'
+  },
 
-    this.model = new App.Model.Widgets.Base({
-      title: typeof this.options.title === 'function' ? '' : this.options.title,
-      link: this.options.link,
-      titleLink: this.options.titleLink || null,
-      infoTemplate: this.options.infoTemplate,
-      exportable: this.options.exportable || false,
-      publishable: this.options.publishable || false,
-      timeMode: this.options.timeMode,
-      refreshTime: this.options.refreshTime,
-      dimension: this.options.dimension || '',
-      type: this.options.type || '',
-      correlationTitle: this.options.correlationTitle || null,
-      correlationIcon: this.options.correlationIcon || null,
-      embed: this.options.embed || false,
-      classname: this.options.classname || '',
-      context: this.options.context || App.ctx,
-      bigTitle: this.options.bigTitle || false,
-      extraMenu: this.options.extraMenu || null,
-      footerTemplate: this.options.footerTemplate || null
-    });
+  initialize: function (options) {
+    // default options to widget
+    var defaultOptions = {
+      aggsMenu: false,
+      aggsMenuOptions: ['SUM', 'MAX', 'AVG', 'MIN'],
+      aggSelected: 'SUM',
+      title: __('Título del widget'),
+      link: null,
+      titleLink: null,
+      infoTemplate: null,
+      exportable: false,
+      publishable: false,
+      timeMode: 'now',
+      refreshTime: false,
+      dimension: '',
+      type: '',
+      correlationTitle: null,
+      correlationIcon: null,
+      embed: false,
+      classname: '',
+      context: App.ctx,
+      bigTitle: false,
+      extraMenu: null,
+      footerTemplate: null
+    };
+
+    this.options = _.defaults(options || {}, defaultOptions);
+
+    // Merge options (allowed) with the model of "Widget.Base"
+    this.model = new App.Model.Widgets.Base(
+      _.reduce(defaultOptions, function(sumOptions, option, key) {
+
+        if (typeof this.options[key] !== 'undefined') {
+          sumOptions[key] = this.options[key];
+        }
+
+        return  sumOptions;
+      }.bind(this), {})
+    );
 
     this.ctx = this.model.get('context');
 
@@ -85,16 +113,6 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     this.subviews = [];
     this.filterables = [];
-  },
-
-  events: {
-    'click .botons .tooltipIcon.info': '_onClickIconInfo',
-    'click .botons .tooltipIcon.close': '_onClickIconCloseInfo',
-    'click .widget_content': '_onClickContent',
-    'click .botons .tooltipIcon li.exportable': '_onClickIconExport',
-    'click .botons .tooltipIcon li.download': '_onClickIconExport',
-    'click .botons .tooltipIcon.download': '_onClickIconExport',
-    'click .botons .tooltipIcon.export': '_onClickIconExport'
   },
 
   /**
@@ -195,6 +213,26 @@ App.View.Widgets.Base = Backbone.View.extend({
         }
       })
     }
+  },
+
+  /**
+   * Change the aggregation option
+   *
+   * @param {Object} e - triggered event
+   */
+  _onChangeAgg: function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var currentAgg = $(e.currentTarget).data('agg');
+
+    // Set in model
+    this.model.set('aggSelected', currentAgg);
+    // Change in DOM
+    this.$('.widget_header .title .popup_widget.agg .currentAggSelected')
+      .html(App.getAggStr(currentAgg));
+    // Trigger event to child views
+    this.trigger('change-agg', currentAgg);
   },
 
   /**
@@ -304,10 +342,22 @@ App.View.Widgets.Base = Backbone.View.extend({
     // Put the time icon into the widget
     this.drawTimeIcon();
 
+    // Add aggregation menu
+    if (this.model.get('aggsMenu')) {
+      this.drawAggsMenu();
+    }
+
     this.updateFilters();
 
     for (var i in this.subviews) {
-      this.$('.widget_content').append(this.subviews[i].render().$el);
+      // Set any events from parent to child
+      if (typeof this.subviews[i].handlerChangeAgg === 'function') {
+        this.on('change-agg', _.bind(this.subviews[i].handlerChangeAgg, this.subviews[i]));
+      }
+
+      // Add to widget to content
+      this.$('.widget_content')
+        .append(this.subviews[i].render().$el);
     }
 
     if (this.model.get('footerTemplate')) {
@@ -337,6 +387,18 @@ App.View.Widgets.Base = Backbone.View.extend({
       // Add template time Icon
       $(wrapper[0]).prepend(templateTimeIcon);
     }
+  },
+
+  /**
+   * Draw aggregation menu in the widget (title)
+   */
+  drawAggsMenu: function () {
+    var wrapperTitle = this.$('.widget_header .title');
+    
+    wrapperTitle.append(this._template_aggs_menu({
+      aggSelected: this.model.get('aggSelected'),
+      aggsMenuOptions: this.model.get('aggsMenuOptions')
+    }));
   },
 
   onClose: function () {
