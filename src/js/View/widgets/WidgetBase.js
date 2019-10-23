@@ -228,9 +228,13 @@ App.View.Widgets.Base = Backbone.View.extend({
 
     // Set in model
     this.model.set('aggSelected', currentAgg);
-    // Change in DOM
+    // Changes in the DOM
     this.$('.widget_header .title .popup_widget.agg .currentAggSelected')
       .html(App.getAggStr(currentAgg));
+    this.$('.widget_header .title .popup_widget.agg ul li')
+      .removeClass('selected');
+    this.$('.widget_header .title .popup_widget.agg ul li[ data-agg="' + currentAgg + '"]')
+      .addClass('selected');
     // Trigger event to child views
     this.trigger('change-agg', currentAgg);
   },
