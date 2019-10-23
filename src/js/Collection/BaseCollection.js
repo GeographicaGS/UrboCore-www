@@ -65,6 +65,12 @@ App.Collection.Post = App.Collection.Base.extend({
       delete options.format;
     }
 
+    // There are collections that they need this param to get the CSV file
+    if (options.csv) {
+      options.data.csv = true;
+      delete options.csv;
+    }
+
     // We transform to STRING to send in the requests
     if (typeof options.data !== 'string') {
       options.data = JSON.stringify(options.data);

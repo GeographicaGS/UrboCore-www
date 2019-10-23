@@ -30,6 +30,7 @@ App.Collection.TableToCsv = Backbone.Collection.extend({
       data_tz: 'Europe/Madrid', //to get the correct date attribute
       dataType: 'text',
       format: 'csv',
+      csv: true // There are collections that they need this param to get the CSV file
     });
   },
 
