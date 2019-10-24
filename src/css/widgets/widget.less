@@ -1488,6 +1488,21 @@
     }
     .title {
       padding-left: 0;
+      // Aggregation menu
+      .popup_widget {
+        &.agg {
+          margin: 0 0 0 10px;
+          font-size: 13px;
+          &::before {
+            content: ' - ';
+            display: inline-block;
+            margin-right: 5px;
+          }
+          .currentAggSelected {
+            font-size: 13px;
+          }
+        }
+      }
       img {
         float: left;
       }
