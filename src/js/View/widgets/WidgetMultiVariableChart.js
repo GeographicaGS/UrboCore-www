@@ -100,9 +100,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this.mvModel.aggDefaultValues
       : [];
 
-    this.collection.options.agg = this.aggDefault
-      ? this.aggDefault
-      : this.collection.options.agg;
+    // Add options variable to object
+    // "options" if it doesn't exist
+    if (typeof this.collection.options === 'undefined') {
+      this.collection.options = {};
+    }
+
+    if (this.options.noAgg === false) {
+      this.collection.options.agg = this.aggDefault
+        ? this.aggDefault
+        : this.collection.options.agg;
+    }
 
     // Initial disabledList
     if (this.mvModel.disabledList && this.mvModel.disabledList.length > 0) {
