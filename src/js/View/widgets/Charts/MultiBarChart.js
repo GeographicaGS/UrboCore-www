@@ -181,6 +181,11 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       ticks.each(function (d) {
         this.insertLinebreaks(this, d, width);
       }.bind(this));
+
+      // Move labels in X axis
+      setTimeout(function () {
+        this.moveLabelXAxis(width);
+      }.bind(this), 500);
     }
   },
 
@@ -201,5 +206,25 @@ App.View.Widgets.Charts.MultiBarChart = App.View.Widgets.Charts.Bar.extend({
       .html(this.xAxisFunction ? this.xAxisFunction(d) : d);
 
     el.remove();
+  },
+
+  /**
+   * Move label x axis to adjust with the center of bar
+   * 
+   * @param {Number} width - with bar
+   */
+  moveLabelXAxis: function (width) {
+    d3.select(this.$('.nv-x')[0])
+      .selectAll('.tick')
+      .each(function (d) {
+        var positionXTick = Number.parseFloat(
+          this.getAttribute('transform')
+          .split(',')
+          .shift()
+          .replace('translate(', '')
+        );
+        var movePx = positionXTick + Number.parseFloat(width/2);
+        this.setAttribute('transform', 'translate(' + movePx + ',0)');
+      });
   }
 });
