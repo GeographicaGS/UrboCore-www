@@ -21,32 +21,33 @@
 'use strict';
 App.View.Map.RowsTemplate = {
   BASIC_ROW: _.template($('#map-popups-basic_row_template').html()),
+  CLUSTER_ROW: _.template($('#map-popups-cluster_row_template').html()),
   EXTENDED_TITLE: _.template($('#map-popups-extended_title_template').html()),
   ACTION_BUTTON: _.template($('#map-popups-action_button_template').html())
 };
 
 App.View.Map.MapboxGLPopup = Backbone.View.extend({
-  initialize: function(template) {
+  initialize: function (template) {
     this._template = _.template($(template).html());
   },
 
   /**
    * @deprecated
    */
-  bindData: function(label, properties, clicked, deviceViewLink = false) {
+  bindData: function (label, properties, clicked, deviceViewLink = false) {
     return this._template({
       'classes': '',
       'name': label,
-      'properties': _.filter(_.map(properties, function(p) {
+      'properties': _.filter(_.map(properties, function (p) {
         var multipleFeatures = p.feature.split(" ");
         let value;
         p.value = '';
         _.each(multipleFeatures, (attr, i) => {
           let forTranslate = attr.includes('|translate');
           if (forTranslate) {
-            attr = attr.replace('|translate','')
+            attr = attr.replace('|translate', '')
           }
-          
+
           if (attr.includes('#')) {
             let access = attr.split('#');
             value = JSON.parse(clicked.features[0].properties[access[0]])[access[1]];
@@ -54,29 +55,29 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             //optional feature
             let access = attr.split("?");
             value = clicked.features[0].properties[access[0]];
-            if(!value) {
+            if (!value) {
               if (i === 0) {
                 p.optional = true;
                 return;
               }
               p.optional = true && p.optional;
-              return ;
+              return;
             }
-          }else {
-            value = clicked.features[0].properties[attr];  
+          } else {
+            value = clicked.features[0].properties[attr];
           }
 
           if (forTranslate) {
             value = __(value);
           }
 
-          if(p && (value || value === 0))
-            p.value = ((p.value)? p.value + ' · ' : '' ) + value;
-          
-          if(p && !p.value && p.value !== 0) {
+          if (p && (value || value === 0))
+            p.value = ((p.value) ? p.value + ' · ' : '') + value;
+
+          if (p && !p.value && p.value !== 0) {
             p.value = '--';
           }
-          if(p && p.value && p.nbf) {
+          if (p && p.value && p.nbf) {
             p.value = p.nbf(p.value);
           }
         });
@@ -84,7 +85,7 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
           p = null;
         }
         return p;
-      }),function(e){return e !== null}),
+      }), function (e) { return e !== null }),
       'loading': false,
       'deviceViewLink': deviceViewLink
     });
@@ -93,11 +94,11 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
   /**
    * @deprecated
    */
-  drawTemplate: function(label, properties, clicked, popup, deviceViewLink = false) {
+  drawTemplate: function (label, properties, clicked, popup, deviceViewLink = false) {
     if (typeof properties === 'function') {
-      setTimeout(function() {
+      setTimeout(function () {
         properties = properties(clicked, popup, this)
-      }.bind(this),500);
+      }.bind(this), 500);
       return this._template({
         'name': label,
         'properties': [],
@@ -110,25 +111,28 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
 
   },
 
-  drawTemplatesRow: function(classes, label, templates, clicked, popup) {
+  drawTemplatesRow: function (classes, label, templates, clicked, popup) {
     var _this = this;
+
     if (typeof templates === 'function') {
       templates = templates(clicked, popup);
     }
 
-    templates = _.filter(templates, function(t) {
+    templates = _.filter(templates, function (t) {
       if (t.hasOwnProperty('permissions')) {
         return App.mv().validateInMetadata(t.permissions);
       }
       return true;
-    })
+    });
+
     return this._template({
       'classes': classes,
       'name': label,
-      'templates': _.filter(_.map(templates, function(template) {
-        var props = _.map(template.properties, function(property) {
-          var value = _this.__replacePropertyByValue(property,clicked);
-          if (value != undefined) {
+      'templates': _.filter(_.map(templates, function (template) {
+        var props = _.map(template.properties, function (property) {
+          var value = _this.__replacePropertyByValue(property, clicked);
+
+          if (typeof value !== 'undefined') {
             return {
               label: property.label ? __(property.label) : '',
               value: value,
@@ -138,13 +142,15 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
             return undefined;
           }
         });
-        if (!props.includes(undefined))
+
+        if (!props.includes(undefined)) {
           return {
             classes: template.classes,
-            output: template.output({ properties: props})
+            output: template.output({ properties: props })
           };
-      }),function(i) { 
-        return i 
+        }
+      }), function (i) {
+        return i
       }),
       'loading': false,
       'properties': [], // TODO: DEPRECATED PROPERTIES
@@ -161,25 +167,27 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
    * 
    *  e.g. 'MORE DETAILS | translate | exactly' 
    */
-  __replacePropertyByValue: function(property, event) {
-    property = _.assign({},property);
-    var clickedProperties = event.features[0].properties;
+  __replacePropertyByValue: function (property, event) {
+    property = _.assign({}, property);
+    var clickedProperties = event
+      ? event.features[0].properties
+      : null;
     // property can contains '#' (navigation), '| translate' (for translation) and '?' (optionals)
     var isOptional = property.value.includes('?');
-    property.value = property.value.replace(/\?/g,'');
+    property.value = property.value.replace(/\?/g, '');
 
     var toTranslate = property.value.includes('| translate');
-    property.value = property.value.replace(/\| translate/g,'');
+    property.value = property.value.replace(/\| translate/g, '');
 
     var isExactly = property.value.includes('| exactly');
-    property.value = property.value.replace(/\| exactly/g,'');
-    
+    property.value = property.value.replace(/\| exactly/g, '');
+
     var propertiesNavigated;
     var exists = true;
     if (!isExactly) {
       var navigation = property.value.split('#');
       propertiesNavigated = clickedProperties;
-      for(var i = 0; i < navigation.length; i++) {
+      for (var i = 0; i < navigation.length; i++) {
         var step = navigation[i];
         if (!propertiesNavigated.hasOwnProperty(step)) {
           exists = false;
@@ -191,14 +199,14 @@ App.View.Map.MapboxGLPopup = Backbone.View.extend({
       propertiesNavigated = property.value;
     }
 
-    if (toTranslate && !propertiesNavigated) {
+    if (toTranslate && !propertiesNavigated) {
       propertiesNavigated = __(propertiesNavigated);
     }
 
     if (isOptional && !exists) {
       return undefined;
     }
-    
+
     if (property.nbf) {
       propertiesNavigated = property.nbf(propertiesNavigated);
     }
