@@ -174,7 +174,13 @@
           .font(semibold);
           font-size: 12px;
           text-transform: uppercase;
-          &:first-child {
+          &.order {
+            min-width: 25px;
+            width: 25px;
+            padding: 10px 0 10px 5px;
+          }
+          &:first-child,
+          &.first {
             text-align: left;
           }
           &.borderLeft{
@@ -201,7 +207,11 @@
           .font(semibold);
           font-size: 12px;
           text-transform: uppercase;
-  
+          &.order {
+            min-width: 25px;
+            width: 25px;
+            padding: 10px 0 10px 5px;
+          }
           &:empty {
             height: 0;
           }
@@ -240,7 +250,10 @@
             border-right: 1px solid @lightgrey;
           }
         }
-        th:first-child,td:first-child{
+        th:first-child,
+        td:first-child,
+        th.first,
+        td.first{
           // width: 50%;
           text-align: left;
         }

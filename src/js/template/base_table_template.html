@@ -19,11 +19,17 @@
     <table>
       <thead>
         <tr>
+        <!-- Order (ranking) -->
+        <% if (m.get('showOrder') === true) { %>
+        <th class="order"></th>
+        <% } %>
         <!--  Headers -->
+        <% var isFirstItem = true; %>
         <% _.each(m.get('columns_format'), function(c) { %>
-          <th class="<%= c.css_class %>">
+          <th class="<%= c.css_class %> <%= isFirstItem ? 'first' : '' %>">
             <%= (typeof c.title === 'function') ? c.title() : c.title %>
           </th>
+        <% isFirstItem = false; %>
         <% }) %>
         </tr>
       </thead>
