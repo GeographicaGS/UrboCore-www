@@ -24,15 +24,16 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _availableBasemaps: ['positron', 'dark', 'ortofoto'],
   // Differents cluster sources
   _clusterSources: new Backbone.Collection([]),
+  // current cluster features
+  _clusterFeatures: [],
   // Original data about the points modified
-  _clusterSourcesSaved: [],
   _currentBasemap: 'positron',
   _is3dActive: false,
   // map default options
   _mapDefaultOptions: {
     center: [0, 0],
     container: null,
-    distancePointToCluster: 40, //metres
+    clusterZoomJumps: 4,
     interactive: true,
     minZoom: 0,
     maxZoom: 22,
@@ -54,6 +55,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     'click .toggle-3d': 'toggle3d',
     'click .control.in': 'zoom',
     'click .control.out': 'zoom',
+    'click .mapboxgl-popup .cluster-devices .info-block': 'handlerClickClusterPopup'
   },
 
   initialize: function (options) {
@@ -70,7 +72,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._currentBasemap = options.defaultBasemap || 'positron';
     this._availableBasemaps = options.availableBasemaps || ['positron', 'dark', 'ortofoto'];
     this._sprites = options.sprites;
-    this.$el[0].id = "map";
+    this.$el[0].id = 'map';
     this.legend = new App.View.Map.MapboxLegendView([], this);
     this.basemapSelector = new App.View.Map.MapboxBaseMapSelectorView(this._availableBasemaps, this);
     this.$el.append(this.legend.render().$el);
@@ -78,6 +80,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this.$el.append(this.button3d);
     this.$el.append(this.zoomControl);
     this.filterModel = options.filterModel;
+    // Setup cluster popup
+    this.setupClusterPopup();
 
     this.listenTo(App.ctx, 'change:bbox_status', this._changeBBOXStatus);
     this.listenTo(App.ctx, 'change:start change:finish', function () {
@@ -107,7 +111,8 @@ App.View.Map.MapboxView = Backbone.View.extend({
   render: function () {
     setTimeout(() => {
       // TODO: move token to settings
-      mapboxgl.accessToken = 'pk.eyJ1Ijoiam9zbW9yc290IiwiYSI6ImNqYXBvcW9oNjVlaDAyeHIxejdtbmdvbXIifQ.a3H7tK8uHIaXbU7K34Q1RA';
+      mapboxgl.accessToken =
+        'pk.eyJ1Ijoiam9zbW9yc290IiwiYSI6ImNqYXBvcW9oNjVlaDAyeHIxejdtbmdvbXIifQ.a3H7tK8uHIaXbU7K34Q1RA';
       this._preloadBasemaps()
         .then(function () {
           // New map
@@ -334,7 +339,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
    * @param {Object} optionsLayer - options to setup the cluster layer
    */
   setupClusterLayer: function (sourceId, optionsLayer) {
-
     // Default options
     optionsLayer = _.defaults(optionsLayer || {}, {
       clusterRadius: 50,
@@ -344,9 +348,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     var layerClusterCircle = 'clusters-' + sourceId;
     var layerClusterNumber = 'clusters-count-' + sourceId;
     var currentMap = this._map;
-    var findAndSaveSourceFromFeature = this._findAndSaveSourceFromFeature;
-    var modifyAndSetSources = this._modifyAndSetSources;
-    var resetClusterSources = this._resetClusterSourcesSaved;
+    var showClusterPopup = this.showClusterPopup;
     var defaultPaintOptions = {
       'circle-color': '#909599',
       'circle-radius': 20
@@ -375,8 +377,21 @@ App.View.Map.MapboxView = Backbone.View.extend({
         var clusterId = features[0].properties.cluster_id;
         var centerMap = features[0].geometry.coordinates;
 
-        // Event - we do zoom
-        if (currentMap.getZoom() < optionsLayer.clusterMaxZoom) {
+        // Show tooltip with devices inside tooltip
+        if (currentMap.getZoom() + 1 == optionsLayer.clusterMaxZoom) {
+          // When the "clusterEventLaunched" is true any other event
+          // associated a map layer (tooltip) is launched
+          App.ctx.set('clusterEventLaunched', true);
+
+          currentMap.getSource(sourceId)
+            .getClusterLeaves(clusterId, 1000, 0, function (err, clusterFeatures) {
+              if (err) return;
+              // Show tooltip with features (list devices)
+              showClusterPopup.apply(this, [centerMap, clusterFeatures]);
+            }.bind(this));
+
+          // We do zoom
+        } else if (currentMap.getZoom() < optionsLayer.clusterMaxZoom) {
           // When the "clusterEventLaunched" is true any other event
           // associated a map layer (tooltip) is launched
           App.ctx.set('clusterEventLaunched', true);
@@ -384,6 +399,17 @@ App.View.Map.MapboxView = Backbone.View.extend({
           currentMap.getSource(sourceId)
             .getClusterExpansionZoom(clusterId, function (err, zoom) {
               if (err) return;
+
+              var clusterZoomJumps = this._mapOptions.clusterZoomJumps; // jumps maximum between zooms
+              var zoomJump = Number.parseInt(optionsLayer.clusterMaxZoom/clusterZoomJumps, 10);
+
+              zoom = zoomJump < (zoom - currentMap.getZoom())
+                ? zoom
+                : currentMap.getZoom() + zoomJump;
+
+              if (zoom > optionsLayer.clusterMaxZoom) {
+                zoom = optionsLayer.clusterMaxZoom;
+              }
 
               // to fix problem with the last zoom
               if (zoom === currentMap.getZoom()) {
@@ -394,26 +420,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
                 center: features[0].geometry.coordinates,
                 zoom: zoom
               });
-            });
-        }
-
-        // Event- move the features (icons) that 
-        // they are in the same position
-        if (currentMap.getZoom() >= optionsLayer.clusterMaxZoom) {
-          // When the "clusterEventLaunched" is true any other event
-          // associated a map layer (tooltip) is launched
-          App.ctx.set('clusterEventLaunched', true);
-
-          currentMap.getSource(sourceId)
-            .getClusterLeaves(clusterId, 100, 0, function (err, clusterFeatures) {
-              // reset the points
-              resetClusterSources.apply(this);
-              _.each(clusterFeatures, function (clusterFeature) {
-                // Find any source associated to Feature and save it
-                findAndSaveSourceFromFeature.apply(this, [clusterFeature]);
-              }.bind(this));
-              // Prepare and modify source data and set into source
-              modifyAndSetSources.apply(this, [centerMap]);
             }.bind(this));
         }
 
@@ -453,6 +459,161 @@ App.View.Map.MapboxView = Backbone.View.extend({
   },
 
   /**
+   * Setup cluster popup to show the devices list
+   */
+  setupClusterPopup: function () {
+    // Cluster template
+    this._clusterPopupTemplate = new App.View.Map.MapboxGLPopup('#map-mapbox_base_popup_template');
+
+    // Create cluster popup
+    if (!this._clusterPopup) {
+      this._clusterPopup = new mapboxgl.Popup();
+
+      // Change context variable 'mapTooltipIsShow' when tooltip is closed
+      this._clusterPopup.on('close', function () {
+        App.ctx.set('mapTooltipIsShow', false);
+      });
+    }
+  },
+
+  /**
+   * Show cluter popup with feature inside it
+   * 
+   * @param {Object} position - geography position
+   * @param {Array} features - features to show
+   */
+  showClusterPopup: function (position, features) {
+    // get each items with its template
+    var itemsTemplate = _.reduce(features, function (sumFeatures, feature) {
+      sumFeatures.push({
+        output: App.View.Map.RowsTemplate.CLUSTER_ROW,
+        properties: [{
+          value: feature.properties.id_entity + '| exactly',
+        }]
+      })
+      return sumFeatures;
+    }, []);
+    // get all items template together
+    var allTemplatesDone = this._clusterPopupTemplate
+      .drawTemplatesRow(
+        'cluster-devices',
+        __('Dispositivos'),
+        itemsTemplate,
+        null,
+        this._clusterPopup
+      );
+
+    // To use later in "handlerClickClusterPopup"
+    this._clusterFeatures = features;
+
+    // Draw the cluster in the map
+    this._clusterPopup
+      .setLngLat({ lat: position[1], lng: position[0] })
+      .setHTML(allTemplatesDone)
+      .addTo(this._map);
+
+    // Change context variable 'mapTooltipIsShow'
+    App.ctx.set('mapTooltipIsShow', true);
+  },
+
+  /**
+   * handler click on "button" cluster tooltip (devices list)
+   * 
+   * @param {Object} e - triggered event
+   */
+  handlerClickClusterPopup: function (e) {
+    // get some parameters to use in the new modal
+    var entityId = $(e.currentTarget).data('entity-id');
+    var currentFeature = _.find(this._clusterFeatures, function (feature) {
+      return feature.properties.id_entity === entityId;
+    });
+    var coordinates = this._clusterPopup._lngLat;
+    var layerView = this.findCurrentLayerToTooltip(entityId);
+
+    // close current popup
+    this._clusterPopup.remove();
+
+    // Show tooltip entity
+    if (layerView) {
+      // Draw the cluster in the map
+      this._clusterPopup
+        .setLngLat(coordinates)
+        .setHTML(
+          this._clusterPopupTemplate
+            .drawTemplatesRow(
+              layerView.options
+                ? layerView.options.tooltipCSSClass || ''
+                : '',
+              layerView.options
+                ? layerView.options.tooltipTitle || ''
+                : '',
+              typeof layerView.getContentTooltip === 'function'
+                ? layerView.getContentTooltip({
+                    features: [currentFeature] // this format is to avoid to change original function
+                  })
+                : [],
+                {
+                  features: [currentFeature] // this format is to avoid to change original function
+                },
+              this._clusterPopup
+            )
+        )
+        .addTo(this._map);
+
+      // Change context variable 'mapTooltipIsShow'
+      App.ctx.set('mapTooltipIsShow', true);
+    }
+  },
+
+  /**
+   * Find layer (Backbone.View) that it uses the
+   * source data that contains the entity indicated
+   * 
+   * @param {String} entityId - entity id
+   * @return {Object} - Backbone.View
+   */
+  findCurrentLayerToTooltip: function (entityId) {
+    // all map sources
+    var sources = this._map.style.sourceCaches;
+    // selected cluster source id when we create the layer
+    var clusterSourceId = _.reduce(this.layers, function (sourceId, layer) {
+      if (layer.options && layer.options.cluster && layer.options.clusterSourceId) {
+        sourceId = layer.options.clusterSourceId;
+      }
+      return sourceId;
+    }, null);
+    // current source id used in the layer
+    var currentSourceId = _.reduce(Object.keys(sources), function (sourceId, key) {
+      if (key !== 'openmaptiles' && key !== clusterSourceId) {
+        var features = sources[key]._source
+          && sources[key]._source._data
+          && sources[key]._source._data.features
+          ? sources[key]._source._data.features
+          : [];
+
+        if (_.find(features, function (feature) {
+          return feature.properties.id_entity === entityId;
+        })) {
+          sourceId = key;
+        }
+      }
+      return sourceId;
+    }, null);
+    // I looking for the used layer (Backbone.View)
+    // to use its tooltip design
+    var currentLayerView = _.find(this.layers, function (layer) {
+      if (layer.layersView) {
+        return _.find(layer.layersView, function (layersView) {
+          return layersView._idSource === currentSourceId;
+        });
+      }
+      return false;
+    });
+
+    return currentLayerView;
+  },
+
+  /**
    * Apply filter over all layers
    */
   _applyFilter: function () {
@@ -464,153 +625,6 @@ App.View.Map.MapboxView = Backbone.View.extend({
    */
   _applyFilterToCluster: function () {
     // Extend on implementation
-  },
-
-  /**
-   * Get the layers from a feature (device in map)
-   * 
-   * @param {Object} feature - feature to search
-   * @return {Object} - source from feature
-   */
-  _findAndSaveSourceFromFeature: function (feature) {
-    var clusterSources = this._clusterSources.toJSON(); // clusters map
-    var dataSource = null;
-    var index = 0;
-
-    do {
-      var tmpSource = _.find(clusterSources[index].children, function (source) {
-        // Get data source
-        var currentSourceData = this.getSource(source);
-
-        // We looking for the element "feature"
-        return typeof currentSourceData !== 'undefined'
-          ? _.some(currentSourceData._data.features, function (currentFeature) {
-            return feature.properties.id_entity === currentFeature.properties.id_entity;
-          }.bind(this))
-          : false;
-      }.bind(this));
-
-      if (typeof tmpSource !== 'undefined') {
-        dataSource = this.getSource(tmpSource);
-      }
-
-      index++;
-
-    } while (dataSource === null || index < clusterSources.length);
-
-    // Save source into the "_clusterSourcesSaved"
-    this._saveClusterSourcesSaved(dataSource, feature.properties.id_entity);
-  },
-
-  /**
-   * Save (set) a new entry in variable "_clusterSourcesSaved"
-   * 
-   * @param {Object} sourceData - data about the cluster sources
-   * @param {String} entity_id - entity_id associated to feature
-   */
-  _saveClusterSourcesSaved: function (sourceData, entity_id) {
-    var sourceIndex = this._clusterSourcesSaved.findIndex(function (source) {
-      return source.data.id === sourceData.id;
-    });
-
-    if (sourceIndex > -1) {
-      this._clusterSourcesSaved[sourceIndex]
-        .entities.push(entity_id);
-    } else {
-      this._clusterSourcesSaved.push({
-        data: _.extend({}, sourceData),
-        entities: [entity_id]
-      });
-    }
-  },
-
-  /**
-   * Modify the differents sources associated to cluster to show the
-   * draw point in map like a cicle
-   * 
-   * @param {Array} centerMap - array with coordinates
-   */
-  _modifyAndSetSources: function (centerMap) {
-    var itemsInCircle = 6;
-    // Copy from "_clusterSourcesSaved"
-    var _copyClusterSourcesSaved = _.reduce(this._clusterSourcesSaved, function (sumSources, source) {
-      sumSources.push(_.clone(source));
-      return sumSources;
-    }, []);
-    var totalItems = _.reduce(_copyClusterSourcesSaved, function (sumTotal, source) {
-      sumTotal += source.entities.length;
-      return sumTotal;
-    }, 0);
-    var angle = totalItems <= itemsInCircle
-      ? 360 / totalItems
-      : 360 / itemsInCircle;
-    var matchIndex = 0;
-
-    _.each(_copyClusterSourcesSaved, function (source, sourceIndex) {
-      var modifyFeatures = [];
-      _.each(source.data._data.features, function (feature, featureIndex) {
-        // Modify the point and save
-        if (source.entities.includes(feature.properties.id_entity)) {
-          var newPosition = this._calculateNewPosition(
-            centerMap,
-            {
-              distance: this._mapOptions.distancePointToCluster
-                + (this._mapOptions.distancePointToCluster * Math.trunc((matchIndex) / itemsInCircle)),
-              bearing: angle * matchIndex,
-              options: {
-                units: 'meters'
-              }
-            }
-          );
-          // Add to index
-          matchIndex++;
-        }
-
-        // Set new value into the sources data
-        modifyFeatures.push({
-          geometry: newPosition && newPosition.geometry
-            ? newPosition.geometry
-            : feature.geometry,
-          properties: feature.properties,
-          type: feature.type
-        })
-
-      }.bind(this));
-
-      // Set the modify data into the source
-      this._map.getSource(source.data.id)
-        .setData(
-          {
-            type: 'FeatureCollection',
-            features: modifyFeatures
-          });
-
-    }.bind(this));
-  },
-
-  /**
-   * Reset the cluster sources modify with the original
-   */
-  _resetClusterSourcesSaved: function () {
-    _.each(this._clusterSourcesSaved, function (source) {
-      // Set the modify data into the source
-      this._map.getSource(source.data.id)
-        .setData(source.data._data);
-    }.bind(this));
-    // reset Array
-    this._clusterSourcesSaved = [];
-  },
-
-  /**
-   * Get a new coordinate (point) when we have a source
-   * point and other options
-   * 
-   * @param {Array} coordinate - coordinate point
-   * @param {Object} params - options various
-   * @return {Object} - new point
-   */
-  _calculateNewPosition: function (coordinate, params) {
-    return App.Utils.getPointByDistanceAndAngle(coordinate, params);
   },
 
   changeBasemap: function (name) {
@@ -690,19 +704,15 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   zoom: function (e) {
     var currentZoom = this._map.getZoom();
+
     if (e.target.classList.contains('out')) {
       this._map.setZoom(currentZoom - 1);
-      // reset positions
-      if (currentZoom > this._mapOptions.minZoom) {
-        this._resetClusterSourcesSaved();
-      }
     } else {
       this._map.setZoom(currentZoom + 1);
-      // reset positions
-      if (currentZoom < this._mapOptions.maxZoom) {
-        this._resetClusterSourcesSaved();
-      }
     }
+
+    // close current popup
+    this._clusterPopup.remove();
   },
 
   /**
@@ -715,7 +725,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     this._map.remove();
     this.stopListening();
     this.basemapSelector.close(),
-      this.legend.close();
+    this.legend.close();
 
     // reset cluster sources
     this.resetClusterSourcesToMap();

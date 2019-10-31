@@ -216,5 +216,4 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     console.error("Error");
   }
 
-
 });
