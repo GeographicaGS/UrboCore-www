@@ -744,34 +744,19 @@
               align-items: center;
               position: relative;
               &:hover {
-                font-weight: 700;
                 span {
                   color:#FFF;
+                  text-decoration: underline;
                 }
-                &::after {
-                  border-left-color: @accent;
-                }
-              }
-              &::after {
-                position: absolute;
-                top: 2px;
-                right: -3px;
-                content: ' ';
-                width: 0; 
-                height: 0; 
-                border-top: 5px solid transparent;
-                border-bottom: 5px solid transparent;
-                border-left: 5px solid transparent;
               }
               span {
-                color: #EEE;
+                color: #DDD;
                 display: inline;
-                &.button {
-                  min-width: 1px;
-                  width: auto;
-                  padding: 4px 6px;
-                  font-size: 12px;
-                  line-height: 12px;
+                &.icon {
+                  width: 14px;
+                  height: 14px;
+                  display: block;
+                  margin-right: 8px;
                 }
               }  
             }
