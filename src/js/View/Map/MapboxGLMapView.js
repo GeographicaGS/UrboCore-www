@@ -33,7 +33,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   _mapDefaultOptions: {
     center: [0, 0],
     container: null,
-    distancePointToCluster: 40, //metres
+    clusterZoomJumps: 4,
     interactive: true,
     minZoom: 0,
     maxZoom: 22,
@@ -400,12 +400,12 @@ App.View.Map.MapboxView = Backbone.View.extend({
             .getClusterExpansionZoom(clusterId, function (err, zoom) {
               if (err) return;
 
-              var maxZoomJumps = 5; // jumps maximum between zooms
-              var zoomJump = Number.parseInt(optionsLayer.clusterMaxZoom/maxZoomJumps, 10);
+              var clusterZoomJumps = this._mapOptions.clusterZoomJumps; // jumps maximum between zooms
+              var zoomJump = Number.parseInt(optionsLayer.clusterMaxZoom/clusterZoomJumps, 10);
 
               zoom = zoomJump < (zoom - currentMap.getZoom())
                 ? zoom
-                : zoom + zoomJump;
+                : currentMap.getZoom() + zoomJump;
 
               if (zoom > optionsLayer.clusterMaxZoom) {
                 zoom = optionsLayer.clusterMaxZoom;
@@ -420,7 +420,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
                 center: features[0].geometry.coordinates,
                 zoom: zoom
               });
-            });
+            }.bind(this));
         }
 
         return false;
