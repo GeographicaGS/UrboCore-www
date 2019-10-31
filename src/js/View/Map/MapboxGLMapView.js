@@ -485,14 +485,19 @@ App.View.Map.MapboxView = Backbone.View.extend({
   showClusterPopup: function (position, features) {
     // get each items with its template
     var itemsTemplate = _.reduce(features, function (sumFeatures, feature) {
+      var layerView = this.findCurrentLayerToTooltip(feature.properties.id_entity);
+
       sumFeatures.push({
         output: App.View.Map.RowsTemplate.CLUSTER_ROW,
         properties: [{
+          label: layerView && typeof layerView.getSymbolToClusterTooltip === 'function'
+            ? layerView.getSymbolToClusterTooltip(feature)
+            : null,
           value: feature.properties.id_entity + '| exactly',
         }]
       })
       return sumFeatures;
-    }, []);
+    }.bind(this), []);
     // get all items template together
     var allTemplatesDone = this._clusterPopupTemplate
       .drawTemplatesRow(
