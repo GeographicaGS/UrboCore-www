@@ -591,8 +591,8 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       min = this.mvModel.yAxis1Domain[key][0];
       max = this.mvModel.yAxis1Domain[key][1];
     } else {
-      min = _.min(values, function (v) { return v.y; }).y;
-      max = _.max(values, function (v) { return v.y; }).y;
+      min = _.min(values, function (v) { return parseFloat(v.y); }).y;
+      max = _.max(values, function (v) { return parseFloat(v.y); }).y;
     }
 
     // Normalization the charts, we save the original
