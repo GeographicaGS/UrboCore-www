@@ -21,14 +21,20 @@
 'use strict';
 
 App.View.Widgets.Clock = App.View.Widgets.Base.extend({
+
   _template_popup: _.template($('#chart-clockPoupTemplate').html()),
 
+  events: {
+    'click .selector span': '_changeCurrentTime'
+  },
+
   initialize: function (options) {
-    this.options = _.defaults(options, {
-      title: 'Distribución horaria de riego',
+    this.options = _.defaults(options || {}, {
+      title: __('Distribución horaria de riego'),
       timeMode: 'now',
       refreshTime: null
     });
+
     App.View.Widgets.Base.prototype.initialize.call(this, this.options);
 
     // Remove parent event
@@ -56,17 +62,6 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     this.render();
   },
 
-  events: {
-    'click .selector span': '_changeCurrentTime'
-  },
-
-
-  onClose: function () {
-    if (this._miniClockIntervale)
-      clearInterval(this._miniClockIntervale)
-    this.stopListening();
-  },
-
   render: function () {
     this.$el.html(this._template(this.model.toJSON()));
 
@@ -80,15 +75,24 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     this.drawTimeIcon();
 
     // Fix old widgets (Andalucia)
-    if (!this.dataModel.get('disablePopup'))
+    if (!this.dataModel.get('disablePopup')) {
       this.$('.widget_content').append('<div class="popup_wrapper nvtooltip xy-tooltip"></div>')
+    }
 
-    if (!this.dataModel.get('double'))
-      this.$('.widget_content').append('<div class="selector"><span class="' + (this.dataModel.get('currentTime') == 'am' ? 'active' : '') + '">AM</span><span class="' + (this.dataModel.get('currentTime') == 'pm' ? 'active' : '') + '">PM</span></div>');
-    else
+    if (!this.dataModel.get('double')) {
+      this.$('.widget_content')
+        .append('\
+          <div class="selector">\
+            <span class="' + (this.dataModel.get('currentTime') == 'am' ? 'active' : '') + '">AM</span>\
+            <span class="' + (this.dataModel.get('currentTime') == 'pm' ? 'active' : '') + '">PM</span>\
+          </div>\
+        ');
+    } else {
       this.$('.widget_content').addClass('double')
+    }
 
     this.$('.widget').append(App.widgetLoading());
+
     return this;
   },
 
@@ -112,17 +116,23 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       d3.select(this.$el[0]).on('mouseleave', null);
 
       d3.selectAll(this.$('svg')).selectAll('.arc').on('mousemove', function (e) {
-        _this.$('.widget_content .popup_wrapper').html(_this._template_popup({ 'm': _this.dataModel, 'elements': e.data.elements, 'colors': ['#00d4e7'] }))
-        _this.$('.widget_content .popup_wrapper').css({ opacity: 1 })
+        _this.$('.widget_content .popup_wrapper').html(_this._template_popup({
+          m: _this.dataModel,
+          elements: e.data.elements,
+          colors: ['#00d4e7']
+        }));
+
+        _this.$('.widget_content .popup_wrapper').css({ opacity: 1 });
+
         if (!_this.$('.popup_clock').hasClass('active')) {
           _this.$('.popup_clock').addClass('active');
-          // _this.$('.popup_clock').css({'transform':'translate(' + d3.event.clientX + 'px,' + d3.event.clientY + 'px)'})
-          _this.$('.popup_wrapper').css({ 'transform': 'translate(' + d3.event.layerX + 'px,' + d3.event.layerY + 'px)' })
+          _this.$('.popup_wrapper').css({
+            transform: 'translate(' + d3.event.layerX + 'px,' + d3.event.layerY + 'px)'
+          });
         }
       });
 
       d3.select(this.$('svg')[0]).selectAll('.arc').on('mouseleave', function (e) {
-        // d3.select(this.$el[0]).on('mouseleave', function(e){
         _this.$('.popup_clock').removeClass('active');
         _this.$('.widget_content .popup_wrapper').css({ opacity: 0 })
       });
@@ -135,13 +145,14 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     var currentData = [];
 
     _.each(this.collection.toJSON(), function (c, i) {
-      if (max < c.elements.length)
+      if (max < c.elements.length) {
         max = c.elements.length;
+      }
 
-      if ((currentTime == 'am' && i < 12) || (currentTime == 'pm' && i >= 12))
+      if ((currentTime == 'am' && i < 12) || (currentTime == 'pm' && i >= 12)) {
         currentData.push(c);
+      }
     });
-
 
     var width = 328;
     var height = 328;
@@ -151,13 +162,18 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     var arc = d3.svg.arc()
       .outerRadius(function (d) {
         var result = radius * (d.data.elements.length / max);
-        if (result < 20 && result > 0)
+
+        if (result < 20 && result > 0) {
           return 30;
+        }
+
         return result;
       })
       .innerRadius(function (d) {
-        if (d.data.elements.length == 0)
+        if (d.data.elements.length === 0) {
           return 0;
+        }
+
         return 20;
       });
     var pie = d3.layout.pie()
@@ -185,12 +201,17 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
 
     g.append('path').attr('d', arc);
 
-    svg.selectAll('.arc').attr('transform', 'scale(0,0)').transition().duration(function (d, i) {
-      return 250 * i
-    }).attr('transform', 'scale(1,1)')
+    svg.selectAll('.arc')
+      .attr('transform', 'scale(0,0)')
+      .transition()
+      .duration(function (d, i) {
+        return 250 * i
+      })
+      .attr('transform', 'scale(1,1)');
 
-    var hourScale = d3.scale.linear().range([0, 330]).domain([0, 11]);
-
+    var hourScale = d3.scale.linear()
+      .range([0, 330])
+      .domain([0, 11]);
     var radians = 0.0174532925;
 
     svg.selectAll('.hour-label')
@@ -214,17 +235,14 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
         .attr('x', 0)
         .attr('y', 20)
         .attr('class', 'time_info')
-        .text(currentTime)
-        ;
+        .text(currentTime);
     }
 
     this._drawMiniClock($(svg.node()).closest('svg')[0]);
   },
 
   _drawMiniClock: function (svg) {
-
     var clockRadius = 18;
-
     var minuteScale = d3.scale.linear().range([0, 354]).domain([0, 59]);
     var secondScale = minuteScale;
     var hourScale = d3.scale.linear().range([0, 330]).domain([0, 11]);
@@ -252,7 +270,6 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
 
     updateData();
 
-    // var svg = d3.select(this.$('svg')[0]);
     svg = d3.select(svg);
 
     var face = svg.append('g')
@@ -260,7 +277,6 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       .attr('transform', 'translate(164,154)');
 
     face.selectAll('.second-tick')
-      // .data(d3.range(0,60)).enter()
       .data(d3.range(0, 12)).enter()
       .append('line')
       .attr('class', 'second-tick')
@@ -269,15 +285,15 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       .attr('y1', clockRadius)
       .attr('y2', clockRadius - 4)
       .attr('transform', function (d) {
-        // return 'rotate(' + secondScale(d) + ')';
-        var scale = d3.scale.linear().range([0, 330]).domain([0, 11]);
+        var scale = d3.scale.linear()
+          .range([0, 330])
+          .domain([0, 11]);
         return 'rotate(' + scale(d) + ')';
       });
 
 
 
     face.selectAll('.hour-tick')
-      // .data(d3.range(0,12)).enter()
       .data(d3.range(0, 4)).enter()
       .append('line')
       .attr('class', 'hour-tick')
@@ -326,8 +342,9 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
       handData[2].value = t.getSeconds();
     }
 
-    if (this._miniClockIntervale)
+    if (this._miniClockIntervale) {
       clearInterval(this._miniClockIntervale)
+    }
 
     this._miniClockIntervale = setInterval(function () {
       updateData();
@@ -339,6 +356,13 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     this.$('.selector span').removeClass('active');
     $(e.currentTarget).addClass('active');
     this.dataModel.set('currentTime', $(e.currentTarget).text().toLocaleLowerCase());
-  }
+  },
+
+  onClose: function () {
+    if (this._miniClockIntervale) {
+      clearInterval(this._miniClockIntervale)
+    }
+    this.stopListening();
+  },
 
 });
