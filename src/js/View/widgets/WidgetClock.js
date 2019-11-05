@@ -167,7 +167,7 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
 
         if (result < 20 && result > 0) {
           result = minRadius;
-        } else if (result > 20 && result < radius) {
+        } else if (result > 20 && result + minRadius < radius) {
           result += minRadius;
         }
 
