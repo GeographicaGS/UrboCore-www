@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 'use strict';
@@ -34,6 +34,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     center: [0, 0],
     container: null,
     clusterZoomJumps: 4,
+    clusterTooltipTitle: __('Dispositivos'),
     interactive: true,
     minZoom: 0,
     maxZoom: 22,
@@ -332,7 +333,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   /**
    * Setup the cluster layer associated to source id
-   * 
+   *
    * IMPORTANT - this in only possible in the layers with GEOJSON
    *
    * @param {String} sourceId - source identification
@@ -478,7 +479,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   /**
    * Show cluter popup with feature inside it
-   * 
+   *
    * @param {Object} position - geography position
    * @param {Array} features - features to show
    */
@@ -502,7 +503,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
     var allTemplatesDone = this._clusterPopupTemplate
       .drawTemplatesRow(
         'cluster-devices',
-        __('Dispositivos'),
+        this._mapOptions.clusterTooltipTitle,
         itemsTemplate,
         null,
         this._clusterPopup
@@ -523,7 +524,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
 
   /**
    * handler click on "button" cluster tooltip (devices list)
-   * 
+   *
    * @param {Object} e - triggered event
    */
   handlerClickClusterPopup: function (e) {
@@ -573,7 +574,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
   /**
    * Find layer (Backbone.View) that it uses the
    * source data that contains the entity indicated
-   * 
+   *
    * @param {String} entityId - entity id
    * @return {Object} - Backbone.View
    */
