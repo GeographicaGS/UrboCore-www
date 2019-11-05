@@ -119,6 +119,7 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
         _this.$('.widget_content .popup_wrapper').html(_this._template_popup({
           m: _this.dataModel,
           elements: e.data.elements,
+          time_convert: e.data.time_convert || null, // Only used in "device view" (solenoid valve)
           colors: ['#00d4e7']
         }));
 
@@ -161,10 +162,13 @@ App.View.Widgets.Clock = App.View.Widgets.Base.extend({
     var numTicks = 4;
     var arc = d3.svg.arc()
       .outerRadius(function (d) {
+        var minRadius = 30;
         var result = radius * (d.data.elements.length / max);
 
         if (result < 20 && result > 0) {
-          return 30;
+          result = minRadius;
+        } else if (result > 20 && result < radius) {
+          result += minRadius;
         }
 
         return result;
