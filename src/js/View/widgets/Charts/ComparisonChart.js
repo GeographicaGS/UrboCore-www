@@ -1,20 +1,20 @@
 // Copyright 2017 Telefónica Digital España S.L.
-// 
+//
 // This file is part of UrboCore WWW.
-// 
+//
 // UrboCore WWW is free software: you can redistribute it and/or
 // modify it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // UrboCore WWW is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
 // General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with UrboCore WWW. If not, see http://www.gnu.org/licenses/.
-// 
+//
 // For those usages not covered by this license please contact with
 // iot_support at tid dot es
 
@@ -27,14 +27,20 @@
  *    - nofilter (Boolean, default: false). Hides date selector for comparison timeserie
  */
 App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
+
   initialize: function (options) {
     if (!options.opts.has('showLineDots')) options.opts.set({ showLineDots: false });
     if (!options.opts.has('nofilter')) options.opts.set({ nofilter: false });
 
     this.collectionComp = options.dataComparative;
-    this.listenTo(this.collectionComp, 'reset', this._drawChart);
 
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
+
+    // To fix a problem with the chart drawn
+    this.stopListening(this.collection);
+    // To launch the draw with both collections are reseted
+    this.listenTo(this.collectionComp, 'reset', this._launchDrawChart);
+    this.listenTo(this.collection, 'reset', this._launchDrawChart);
 
     this._dateModel = new App.Model.Context({
       local: true,
@@ -47,11 +53,41 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
 
   render: function () {
     App.View.Widgets.Charts.Base.prototype.render.call(this);
+
     if (this.options.get('showLineDots')) {
       this.$el.addClass('showLineDots');
     }
-    if (!this.options.get('nofilter')) this.$el.prepend(this._dateControl.render().$el);
+
+    if (!this.options.get('nofilter')) {
+      this.$el.prepend(this._dateControl.render().$el);
+    }
+
     return this;
+  },
+
+  _launchDrawChart: function () {
+    var elementsCollection = this.collection.toJSON();
+    var elementsCollectionComp = this.collectionComp.toJSON();
+
+    if (elementsCollection.length
+        && Object.keys(elementsCollection[0]).length
+        && elementsCollectionComp.length
+        && Object.keys(elementsCollectionComp[0]).length) {
+      // Draw chart normally
+      this._drawChart();
+    } else {
+      // Show empty chart
+      this.data = [];
+
+      this._initChartModel();
+
+      d3.select(this.$('.chart')[0])
+        .datum(this.data)
+        .call(this._chart);
+
+      // Remove loading animation
+      this.$('.loading.widgetL').addClass('hiden');
+    }
   },
 
   _initAggs: function () {
@@ -100,25 +136,21 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
 
     var disabledCol = false;
     var disabledColComp = false;
-    var _this = this;
     var disabledList = this._internalData.disabledList;
+
     if (Object.keys(disabledList).length !== 0) {
       _.each(disabledList, function (value, key) {
 
         var total = key.split('_').length;
-        var var_name = key.split('_')[0];
         var var_idx = parseInt(key.split('_')[total - 1]);
 
         if (value) {
-
           if (var_idx === 1) {
             disabledColComp = true;
-          }
-          else if (var_idx === 0) {
+          } else if (var_idx === 0) {
             disabledCol = true;
           }
-        }
-        else {
+        } else {
           disabledCol = false;
           disabledColComp = false;
         }
@@ -126,13 +158,13 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
 
     }
 
-
     if (this.collection.toJSON().length) {
       this.data.push(this._extractData(this.collection, disabledCol));
 
       // If we have no dates we have no compared data to show
-      if (this._dateModel.getDateRange() && this.collectionComp.toJSON().length)
+      if (this._dateModel.getDateRange() && this.collectionComp.toJSON().length) {
         this.data.push(this._extractData(this.collectionComp, disabledColComp));
+      }
     }
 
     // Check number of values
@@ -279,17 +311,17 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
       .showMaxMin(this.options.has('xAxisShowMaxMin') ? this.options.get('xAxisShowMaxMin') : true)
       .tickFormat(this.options.get('xAxisFunction'))
       ;
-    if (this.data.length > 1 && 
-        this.data[0].values && 
-        this.data[0].values.length && 
-        this.data[1].values && 
-        this.data[1].values.length) {
+    if (this.data.length > 1 &&
+      this.data[0].values &&
+      this.data[0].values.length &&
+      this.data[1].values &&
+      this.data[1].values.length) {
       // Values X axis
       var start = Math.min(this.data[0].values[0].x, this.data[1].values[0].x);
-      var finish = Math.min(this.data[0].values[this.data[0].values.length - 1].x, 
+      var finish = Math.min(this.data[0].values[this.data[0].values.length - 1].x,
         this.data[1].values[this.data[1].values.length - 1].x);
       // Set the total elements to fit in X axis
-      var diffFinishStart = finish-start;
+      var diffFinishStart = finish - start;
       var wrapperWidth = d3.select('svg.chart .nv-background') &&
         d3.select('svg.chart .nv-background').node() &&
         d3.select('svg.chart .nv-background').node().getBBox()
@@ -297,10 +329,10 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
         : null;
       var labelWidth = 75; //pixels
       var totalLabels = wrapperWidth
-        ? Number.parseInt(wrapperWidth/labelWidth, 10)
+        ? Number.parseInt(wrapperWidth / labelWidth, 10)
         : null;
       var diff = totalLabels
-        ? Number.parseInt((diffFinishStart)/totalLabels, 10)
+        ? Number.parseInt((diffFinishStart) / totalLabels, 10)
         : 48;
 
       this._chart.xAxis
@@ -361,7 +393,7 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
     var orderKey = $(element.target).closest('div').attr('tag'); // Prevent dups
     var realKey = $(element.target).closest('div').attr('id') + '_' + orderKey;
     var disabledList = this._internalData.disabledList;
-    var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false) && 
+    var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false) &&
       this._internalData.elementsDisabled != tags - 1);
     var enabled = (disabledList[realKey] === true);
 
@@ -376,7 +408,7 @@ App.View.Widgets.Charts.Comparison = App.View.Widgets.Charts.Base.extend({
       }
 
       disabledList[realKey] = !disabledList[realKey];
-      this._internalData.elementsDisabled = disabledList[realKey] 
+      this._internalData.elementsDisabled = disabledList[realKey]
         ? this._internalData.elementsDisabled + 1
         : this._internalData.elementsDisabled - 1;
 
