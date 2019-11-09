@@ -11,10 +11,10 @@
 <!-- Table data -->
 <% 
   if (elements.length > 0) {
-    var isFirstItem = true;
+    var isFirstItem = false;
     _.each(elements, function(element, index) { %>
     <tr>
-      <!-- Order (ranking) -->
+      <!-- Order  (ranking) -->
       <% if (showOrder) { %>
       <th class="order">
         <%= (currentItemsPerPage * currentPage) + (index + 1) %>.
@@ -22,7 +22,7 @@
       <% } %>
       <% _.each(formats, function (c, i) {
         var tooltip =  c.tooltip ? element[i] : '';
-        isFirstItem = true;
+        isFirstItem = false;
       %>
       <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
           class="
