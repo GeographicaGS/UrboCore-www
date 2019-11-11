@@ -8,10 +8,37 @@
   </tr>
 <% } %>
 
-<!-- Table data -->
+<!-- Table data normal -->
 <% 
-  if (elements.length > 0) {
+  if (elements.length > 0 && !showOrder) {
     var isFirstItem = false;
+    _.each(elements, function(element, index) { %>
+    <tr>
+      <% _.each(formats, function (c, i) {
+        var tooltip =  c.tooltip ? element[i] : '';
+        isFirstItem = false;
+      %>
+      <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
+          class="
+          <%= isFirstItem ? 'first' : '' %>
+          <%= typeof c.css_class === 'function' ? c.css_class(element) : c.css_class %>
+          ">
+        <%= c.formatFN ? c.formatFN(element[i], element) : element[i] %>
+      </td>
+      <% isFirstItem = false; %>
+      <% }) %>
+    </tr>
+<% 
+    });
+  } 
+%>
+
+
+
+<!-- Table data  with order-->
+<% 
+  if (elements.length > 0 && showOrder ) {
+    var isFirstItem = true;
     _.each(elements, function(element, index) { %>
     <tr>
       <!-- Order  (ranking) -->
@@ -26,12 +53,12 @@
       %>
       <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
           class="
-          <%= isFirstItem ? 'first' : '' %>
+          <%= i === 'id_entity' ? 'first' : '' %>
           <%= typeof c.css_class === 'function' ? c.css_class(element) : c.css_class %>
           ">
         <%= c.formatFN ? c.formatFN(element[i], element) : element[i] %>
       </td>
-      <% isFirstItem = false; %>
+      <% isFirstItem = true; %>
       <% }) %>
     </tr>
 <% 
