@@ -223,7 +223,7 @@
             return ent.get('variables').get(variable_id);
           });
 
-        if(temp) {
+        if (temp) {
           element = temp.get('variables').get(variable_id);
         }
         return temp;
