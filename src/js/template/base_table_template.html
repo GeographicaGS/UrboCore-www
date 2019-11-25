@@ -1,55 +1,91 @@
 <div class="table <%=m.get('css_class')%>">
-  <!-- Download button CSV -->
-  <% if ( m.get('csv') ) { %>
-  <button class="button empty up">
-    <%= __('Descargar CSV') %>
-  </button>
-  <% } %>
-  <!-- Table -->
-  <% if ( m.get('scrollTopBar') ){ %>
-    <div id="top-scroll-bar">
-      <div></div>
-    </div>
+  <!-- Top options -->
+  <div class="top-options">
+    <!-- Download button CSV -->
+    <% if (m.get('csv') === true) { %>
+    <button class="button empty csv">
+      <%= __('Descargar CSV') %>
+    </button>
+    <% } %>
+  </div>
+  <!-- Scroll top table -->
+  <% if (m.get('scrollTopBar') === true){ %>
+  <div id="top-scroll-bar">
+    <div></div>
+  </div>
   <% } %>
   <div class="<%= m.get('scrollTopBar') ? 'scrollable' : '' %>">
+    <!-- Table -->
     <table>
-        <tbody>
-          <tr>
-          <!--  Headers -->
-          <%
-            var formats = m.get('columns_format');
-            _.each(formats,function(c,i){
-          %>
-            <th class="<%= c.css_class %>">
-              <%= (typeof c.title === 'function') ? c.title() : c.title %>
-            </th>
-          <% }) %>
-          </tr>
-          <!-- No data -->
-          <% if (!elements.length) { %>
-          <tr>
-            <td class="noDataMsg" colspan="<%= Object.keys(formats).length %>">
-              <span>No hay datos</span>
-            </td>
-          </tr>
-          <% } %>
-          <!-- Table data -->
-          <% _.each(elements,function(el){ %>
-          <tr>
-            <% _.each(formats, function (c,i) {
-              var tooltip =  c.tooltip? el[i] : '';
-            %>
-            <td <%= tooltip ? 'title="' + el[i] + '"':'' %>
-                class="<%= typeof c.css_class === 'function' ? c.css_class(el) : c.css_class %>">
-              <%= c.formatFN ? c.formatFN(el[i], el) : el[i] %>
-            </td>
-            <% }) %>
-          </tr>
-          <% }) %>
-          <!-- End data -->
-        </tbody>
-      </table>
+      <thead>
+        <tr>
+        <!-- Order (ranking) -->
+        <% if (m.get('showOrder') === true) { %>
+        <th class="order"></th>
+        <% } %>
+        <!--  Headers -->
+        <% var isFirstItem = true; %>
+        <% _.each(m.get('columns_format'), function(c) { %>
+          <th class="<%= c.css_class %> <%= isFirstItem ? 'first' : '' %>">
+            <%= (typeof c.title === 'function') ? c.title() : c.title %>
+          </th>
+        <% isFirstItem = false; %>
+        <% }) %>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <!-- Table content -->
+      </tbody>
+    </table>
   </div>
+  <!-- bottom options -->
+  <% if (m.get('paginator') === true && elements.length) { %>
+  <div class="bottom-options">
+    <!-- Counter -->
+    <span class="paginator-counter">
+      <%= __('Página') %>
+      <span class="current-page"></span>
+      <%= __('de') %>
+      <span class="total-pages"></span>
+      &nbsp; / &nbsp;
+      <%= __('Elementos totales:') %>
+      <span class="total"></span>
+    </span>
+    <!-- Paginator -->
+    <div class="paginator">
+      <!-- selector número registros por página -->
+      <div class="paginator-selector">
+        <a class="popup_widget"
+            href="#">
+          <span><%= __('Tamaño de la página:') %></span>
+          <span class="number">
+            <%= m.get('itemsPerPageCurrent') === 'all' ? __('Todos') : m.get('itemsPerPageCurrent') %>
+          </span>
+          <% if (m.has('itemsPerPageOptions')) { %>
+          <div class="varsel">
+            <ul>
+              <% _.each(m.get('itemsPerPageOptions'), function(value, key) { %>
+              <li data-ipp="<%= value %>"
+                  class="<%= value === m.get('itemsPerPageCurrent') ? 'selected' : '' %>">
+                <%= value === 'all' ? __('Todos') : value %>
+              </li>
+              <% }) %>
+            </ul>
+          </div>
+          <% } %>
+        </a>
+      </div>
+      <!-- Navegación -->
+      <div class="paginator-nav">
+        <button class="button arrow init"> &#8249;&#8249; </button>
+        <button class="button arrow prev"> &#8249; </button>
+        <button class="button arrow next"> &#8250; </button>
+        <button class="button arrow last"> &#8250;&#8250; </button>
+      </div>
+    </div>
+  </div>
+  <% } %>
   <!-- Legend -->
   <% if (m.get('legend')) { %>
   <%= m.get('legend') %>

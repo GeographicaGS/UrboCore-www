@@ -36,6 +36,20 @@ $.datepicker.regional['es'] = {
     'Noviembre',
     'Diciembre'
   ],
+  monthNamesShort: [
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic'
+  ],
   dayNames: [
     'Domingo',
     'Lunes',
@@ -64,6 +78,7 @@ $.datepicker.regional['es'] = {
     'S'
   ],
 };
+
 $.datepicker.setDefaults($.datepicker.regional['es']);
 
 App.View.Date = Backbone.View.extend({
@@ -84,12 +99,18 @@ App.View.Date = Backbone.View.extend({
     // To use in other View parts
     this.options = options;
 
+    // set initial values in Context object
+    this._setInitialDateValuesInContext();
+
+    // set max and min dates
     this._setMinAndMaxDatesToModel();
 
     // Events - Change dates model (App.ctx)
     this.listenTo(this.options.model, 'change:start change:finish', this._setValuesInDatePickers);
     // Events - Change date limits
     this.on('change:minDate change:maxDate', this._setMinAndMaxDatesToModel, this);
+    // Enabled o disabled date
+    this.listenTo(this.options.model, 'change:mapTooltipIsShow', this._enabledDate);
 
     _.bindAll(this, '_placeDatePicker');
   },
@@ -109,6 +130,8 @@ App.View.Date = Backbone.View.extend({
     var datepickerOptions = {
       dateFormat: this.options.dateFormat,
       beforeShow: this._placeDatePicker,
+      changeMonth: true,
+      changeYear: true,
       onClose: function () {
         this._close_datepicker();
       }.bind(this)
@@ -176,26 +199,56 @@ App.View.Date = Backbone.View.extend({
   },
 
   /**
+   * Set initial date in context
+   */
+  _setInitialDateValuesInContext: function () {
+    var dates = this._getRightValuesToDates();
+
+    this.options.model.set({
+      start: dates[0].utc(),
+      finish: dates[1].utc()
+    });
+  },
+
+  /**
    * Put the values object ctx (dates) inside the different inputs (datepickers)
    */
   _setValuesInDatePickers: function () {
-    // Check if the date is inside the "min" and "max"
-    var dateStart = this.options.minDate === null 
-      || moment(this.options.minDate).isBefore(this.options.model.get('start'))
-        ? this.options.model.get('start').toDate()
-        : this.options.minDate;
-    var dateFinish = this.options.maxDate === null
-      || moment(this.options.maxDate).isAfter(this.options.model.get('finish'))
-        ? this.options.model.get('finish').toDate()
-        : this.options.maxDate;
+
+    var dates = this._getRightValuesToDates();
 
     try {
-      this.$('.date.start').datepicker('setDate', dateStart);
-      this.$('.date.finish').datepicker('setDate', dateFinish);
+      this.$('.date.start').datepicker('setDate', dates[0].toDate());
+      this.$('.date.finish').datepicker('setDate', dates[1].toDate());
     } catch (err) {
       this.$('.date.start').val('--').datepicker();
       this.$('.date.finish').val('--').datepicker();
     }
+  },
+
+  /**
+   * Get the right values to dates (dateview)
+   */
+  _getRightValuesToDates: function () {
+    // Check if the date is inside the "min" and "max"
+    var dateStart = this.options.minDate === null 
+      || moment(this.options.minDate).isBefore(this.options.model.get('start'))
+        ? this.options.model.get('start')
+        : this.options.minDate;
+    var dateFinish = this.options.maxDate === null
+      || moment(this.options.maxDate).isAfter(this.options.model.get('finish'))
+        ? this.options.model.get('finish')
+        : this.options.maxDate;
+    // The difference between start and finish is higher that "maxRange"
+    var diffTime = moment(dateFinish).diff(dateStart, 'days');
+
+    if (diffTime > this.options.maxRange.asDays()) {
+      dateFinish = this.options.maxRange.asDays() >= 365
+        ? moment(dateStart).clone().add(this.options.maxRange.asYears(), 'years')
+        : moment(dateStart).clone().add(this.options.maxRange.asDays(), 'days');
+    }
+
+    return [dateStart, dateFinish];
   },
 
   /**
@@ -207,36 +260,15 @@ App.View.Date = Backbone.View.extend({
    * @param {Object} inst - datepicker instance
    */
   _placeDatePicker: function (input, inst) {
-    if (input.classList.contains('start')) {
-      // Check the "min" and "max" date
-      var lastDate = this.options.maxDate === null
-        || moment(this.options.maxDate).isBefore(this.$('.date.finish').datepicker('getDate'))
-          ? moment(this.$('.date.finish').datepicker('getDate')).startOf('day')
-          : moment(this.options.maxDate).startOf('day');
-      var lastDateMinusRange = lastDate.clone().subtract(this.options.maxRange);
-      var firstDate = this.options.minDate === null
-        || moment(this.options.minDate).isBefore(lastDateMinusRange)
-          ? lastDateMinusRange
-          : moment(this.options.minDate);
-
-      inst.settings.minDate = firstDate.toDate();
-      inst.settings.maxDate = lastDate.toDate();
-    } else if (input.classList.contains('finish')) {
-      var firstDate = this.options.minDate === null
-        || moment(this.options.minDate).isAfter(moment(this.$('.date.start').datepicker('getDate')))
-          ? moment(this.$('.date.start').datepicker('getDate')).startOf('day')
-          : moment(this.options.minDate).startOf('day');
-      var firstDateAddRange = firstDate.clone().add(this.options.maxRange);
-      var lastDate = this.options.maxDate === null
-        || moment(this.options.maxDate).isAfter(firstDateAddRange)
-          ? firstDateAddRange
-          : moment(this.options.maxDate);
-
-      inst.settings.minDate = firstDate.toDate();
-      inst.settings.maxDate = lastDate.toDate();
-    } else {
-      return -1;
+    // min and max limitation
+    if (this.options.minDate !== null) {
+      inst.settings.minDate = this.options.minDate.toDate();
     }
+
+    if (this.options.maxDate !== null) {
+      inst.settings.maxDate = this.options.maxDate.toDate();
+    }
+
     this.$el.append(inst.dpDiv);
   },
 
@@ -290,36 +322,85 @@ App.View.Date = Backbone.View.extend({
     this._addCompact();
   },
 
-  /**
+ /**
    * Event triggered when the user change the date
    * or select (click) other date from datepicker
    */
-  _dateChange: function () {
-    var currentStartDatePicker = moment(this.$('.date.start').datepicker('getDate'));
-    var currentFinishDatePicker = moment(this.$('.date.finish').datepicker('getDate'));
-    // Check if the date is inside the "min" and "max"
-    var start = this.options.minDate === null
-      || moment(currentStartDatePicker).isAfter(this.options.minDate)
-        ? currentStartDatePicker
-        : moment(this.options.minDate);
-    var finish = this.options.maxDate === null
-      || moment(currentFinishDatePicker).isBefore(this.options.maxDate)
-        ? currentFinishDatePicker
-        : moment(this.options.maxDate);
+  _dateChange: function (event) {
+    var currentTarget = event.currentTarget;
+    var start = moment(this.$('.date.start').datepicker('getDate'));
+    var finish = moment(this.$('.date.finish').datepicker('getDate'));
 
-    // Set current (valid) Date
-    this.$('.date.start').datepicker('setDate', start.toDate());
-    this.$('.date.finish').datepicker('setDate', finish.toDate());
+    // we change "start" date
+    if (currentTarget.classList.contains('start')) {
+      // we exceed "minDate"
+      if (this.options.minDate !== null && start.isBefore(this.options.minDate)) {
+        start = moment(this.options.minDate);
+      }
 
-    var diffTime = finish.diff(start, 'days');
+      // we exceed "maxDate"
+      if (this.options.maxDate !== null && start.isAfter(this.options.maxDate)) {
+        start = moment(this.options.maxDate);
+      }
 
-    if (diffTime <= this.options.maxRange.asDays()) {
-      this.options.model.set('start', start.utc());
-      this.options.model.set('finish', finish.utc());
-    } else {
-      this.options.model.set('start', start.utc());
-      this.options.model.set('finish', start.clone().add(this.options.maxRange).utc());
+      // "start" is higher that "finish"
+      if (start.isAfter(finish)) {
+        finish = start;
+      }
+
+      // The difference between start and finish is higher that "maxRange"
+      var diffTime = finish.diff(start, 'days');
+
+
+      if (diffTime > this.options.maxRange.asDays()) {
+        finish = this.options.maxRange.asDays() >= 365
+          ? start.clone().add(this.options.maxRange.asYears(), 'years')
+          : start.clone().add(this.options.maxRange.asDays(), 'days')
+      }
     }
+
+    // we change "finish" date
+    if (currentTarget.classList.contains('finish')) {
+      // we exceed "minDate"
+      if (this.options.minDate !== null && finish.isBefore(this.options.minDate)) {
+        finish = moment(this.options.minDate);
+      }
+
+      // we exceed "maxDate"
+      if (this.options.maxDate !== null && finish.isAfter(this.options.maxDate)) {
+        finish = moment(this.options.maxDate);
+      }
+
+      // "finish" is lower that "start"
+      if (finish.isBefore(start)) {
+        start = finish;
+      }
+
+      // The difference between start and finish is higher that "maxRange"
+      var diffTime = finish.diff(start, 'days');
+
+      if (diffTime > this.options.maxRange.asDays()) {
+        start = this.options.maxRange.asDays() >= 365
+          ? finish.clone().subtract(this.options.maxRange.asYears(), 'years')
+          : finish.clone().subtract(this.options.maxRange.asDays(), 'days')
+      }
+    }
+
+    var IsSameStartModel = start.isSame(this.options.model.get('start'), 'day');
+    var IsSameFinishModel = finish.isSame(this.options.model.get('finish'), 'day');
+
+    // Set separated values to avoid launch the event duplicated
+    if (!IsSameStartModel && !IsSameFinishModel) {
+      // To avoid that the "dateviews" events will be triggered two times
+      // once by "start" and one more by "finish"
+      this.options.model.attributes.start = start.utc();
+      this.options.model.set('finish', finish.utc());
+    } else if (!IsSameStartModel) {
+      this.options.model.set('start', start.utc());
+    } else if (!IsSameFinishModel) {
+      this.options.model.set('finish', finish.utc());
+    }
+
   },
 
   /**
@@ -327,6 +408,15 @@ App.View.Date = Backbone.View.extend({
    */
   _removeCompact: function () {
     this.$el.removeClass('compact');
+  },
+
+  /**
+   * Enabled/Disabled Date
+   * 
+   * @param {Boolean} enabled - activa o desactiva las fechas
+   */
+  _enabledDate: function () {
+    this.$el.toggleClass('disabled', this.options.model.getMapTooltipIsShow());
   },
 
   /**

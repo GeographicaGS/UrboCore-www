@@ -1,0 +1,67 @@
+<!-- No data -->
+<% if (elements.length === 0 && currentPage === 0) { %>
+  <tr>
+    <td class="noDataMsg"
+        colspan="<%= Object.keys(formats).length %>">
+      <span><%= __('No hay datos') %></span>
+    </td>
+  </tr>
+<% } %>
+
+<!-- Table data normal -->
+<% 
+  if (elements.length > 0 && !showOrder) {
+    var isFirstItem = false;
+    _.each(elements, function(element, index) { %>
+    <tr>
+      <% _.each(formats, function (c, i) {
+        var tooltip =  c.tooltip ? element[i] : '';
+        isFirstItem = false;
+      %>
+      <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
+          class="
+          <%= isFirstItem ? 'first' : '' %>
+          <%= typeof c.css_class === 'function' ? c.css_class(element) : c.css_class %>
+          ">
+        <%= c.formatFN ? c.formatFN(element[i], element) : element[i] %>
+      </td>
+      <% isFirstItem = false; %>
+      <% }) %>
+    </tr>
+<% 
+    });
+  } 
+%>
+
+
+
+<!-- Table data  with order-->
+<% 
+  if (elements.length > 0 && showOrder ) {
+    var isFirstItem = true;
+    _.each(elements, function(element, index) { %>
+    <tr>
+      <!-- Order  (ranking) -->
+      <% if (showOrder) { %>
+      <th class="order">
+        <%= (currentItemsPerPage * currentPage) + (index + 1) %>.
+      </th>
+      <% } %>
+      <% _.each(formats, function (c, i) {
+        var tooltip =  c.tooltip ? element[i] : '';
+        isFirstItem = false;
+      %>
+      <td <%= tooltip ? 'title="' + element[i] + '"':'' %>
+          class="
+          <%= i === 'id_entity' ? 'first' : '' %>
+          <%= typeof c.css_class === 'function' ? c.css_class(element) : c.css_class %>
+          ">
+        <%= c.formatFN ? c.formatFN(element[i], element) : element[i] %>
+      </td>
+      <% isFirstItem = true; %>
+      <% }) %>
+    </tr>
+<% 
+    });
+  } 
+%>

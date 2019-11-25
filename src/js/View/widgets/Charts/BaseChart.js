@@ -72,7 +72,7 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
       this._internalData = _.reduce(currentDisabledList, function (sumDisabledList, element) {
         sumDisabledList.disabledList[element] = true;
-        sumDisabledList.elementsDisabled ++;
+        sumDisabledList.elementsDisabled++;
         return sumDisabledList;
       }, this._internalData);
     }
@@ -115,13 +115,13 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
 
     if (this.options.has('currentStep')) {
       var dates = null;
-      
+
       if (this.collection && this.collection.timeMode === '24h') {
         dates = { start: moment.utc().subtract(24, 'hours'), finish: moment.utc() }
       }
-      
+
       this.options.set({ stepsAvailable: App.Utils.getStepsAvailable(dates) });
-      
+
       if (!_.contains(this.options.get('stepsAvailable'), this.options.get('currentStep'))
         && !forceInitialStep) {
         this.options.set({ currentStep: this.options.get('stepsAvailable')[this.options.get('stepsAvailable').length - 1] });
@@ -146,20 +146,40 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   _initAggs: function () {
     // Aggregation
     this._aggregationInfo = {};
-    var _this = this;
-    if (this.options.get('showAggSelector') && this.collection.options && this.collection.options.data && this.collection.options.data.agg && this.collection.options.data.agg.length > 0) {
+    if (this.options.get('showAggSelector') &&
+      this.collection.options &&
+      this.collection.options.data &&
+      this.collection.options.data.agg &&
+      this.collection.options.data.agg.length > 0) {
       _.each(this.collection.options.data.vars, function (var_id, idx) {
         var varMetadata = App.mv().getVariable(var_id);
         if (varMetadata && varMetadata.get('var_agg') && varMetadata.get('var_agg').length > 0) {
-          _this._aggregationInfo[var_id] = {
-            available: varMetadata.get('var_agg'),
-            current: _this.collection.options.data.agg[idx]
+          this._aggregationInfo[var_id] = {
+            available: this._sortAggregationsVariable(varMetadata.get('var_agg')),
+            current: this.collection.options.data.agg[idx]
           };
         }
-      });
+      }.bind(this));
     } else {
       this._aggregationInfo = false; // Ensure checks
     }
+  },
+
+  /**
+   * Sort the aggregation variables
+   *
+   * @param {Array} aggs - variable aggregations
+   * @return {Array} - aggregations sorted
+   */
+  _sortAggregationsVariable: function (aggs) {
+    var sortedAggs = ['SUM', 'MAX', 'AVG', 'MIN'];
+    return aggs.sort(function (a, b) {
+      if (sortedAggs.indexOf(a) < sortedAggs.indexOf(b)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
   },
 
   _drawChart: function () {
@@ -169,77 +189,79 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     // Create chart
     this._initChartModel();
 
-    // Order data keys for legend
-    if (this.options.get('legendOrderFunc')) {
-      this._orderLegendKeys();
-    }
-
-    // Fix for sometimes incorrectly hidden legend in watemeter historic widget
-    $(this.el).children('.var_list').removeClass('hide');
-
     // Append data to chart
     d3.select(this.$('.chart')[0])
       .datum(this.data)
       .call(this._chart);
 
-    // Create legend
-    this._initLegend();
-
-    // Create tooltips
-    this._initTooltips();
-
-    // Adjustments
-    if (this.options.get('centerLegend')) {
-      this._centerLegend();
-    }
-
-    if (this.options.get('xAxisLabel')) {
-      this._chart.xAxis.axisLabel(this.options.get('xAxisLabel'));
-    }
-
-    if (this.options.get('yAxisLabel')) {
-      var optionsYAxisLabel = this.options.get('yAxisLabel');
-      if (this._chart.yAxis) {
-         // put the text to yAxis
-        if (typeof optionsYAxisLabel === 'string') {
-          this._chart.yAxis.axisLabel(optionsYAxisLabel);
-        // set various options
-        } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
-          _.each(Object.keys(optionsYAxisLabel), function (value) {
-            this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
-          }.bind(this));
-        }
-      } else if (this.options.get('yAxisLabel').length >= 2) {
-        this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
-        this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
+    // set the other chart elements
+    if (this.data.length) {
+      // Order data keys for legend
+      if (this.options.get('legendOrderFunc')) {
+        this._orderLegendKeys();
       }
-    }
 
-    if (this.xAxisFunction) {
-      this._formatXAxis();
-    }
+      // Fix for sometimes incorrectly hidden legend in watemeter historic widget
+      $(this.el).children('.var_list').removeClass('hide');
 
-    if (this.options.get('yAxisFunction')) {
-      this._formatYAxis();
-    }
+      // Create legend
+      this._initLegend();
 
-    if (this.options.has('xAxisDomain')) {
-      this._forceXAxisDomain();
-    }
+      // Create tooltips
+      this._initTooltips();
 
-    if (this.options.has('yAxisDomain')) {
-      this._forceYAxisDomain();
-    }
+      // Adjustments
+      if (this.options.get('centerLegend')) {
+        this._centerLegend();
+      }
 
-    if (this.options.get('yAxisAdjust')) {
-      this._adjustYAxis();
-    }
+      if (this.options.get('xAxisLabel')) {
+        this._chart.xAxis.axisLabel(this.options.get('xAxisLabel'));
+      }
 
-    // Force apply adjustments (TODO: fix this hack)
-    var _this = this;
-    setTimeout(function () {
-      _this._chart.update();
-    }, 100);
+      if (this.options.get('yAxisLabel')) {
+        var optionsYAxisLabel = this.options.get('yAxisLabel');
+        if (this._chart.yAxis) {
+          // put the text to yAxis
+          if (typeof optionsYAxisLabel === 'string') {
+            this._chart.yAxis.axisLabel(optionsYAxisLabel);
+            // set various options
+          } else if (typeof optionsYAxisLabel === 'object' && optionsYAxisLabel !== null) {
+            _.each(Object.keys(optionsYAxisLabel), function (value) {
+              this._chart.yAxis[value].call(this._chart.yAxis, optionsYAxisLabel[value]);
+            }.bind(this));
+          }
+        } else if (this.options.get('yAxisLabel').length >= 2) {
+          this._chart.yAxis1.axisLabel(this.options.get('yAxisLabel')[0]);
+          this._chart.yAxis2.axisLabel(this.options.get('yAxisLabel')[1]);
+        }
+      }
+
+      if (this.xAxisFunction) {
+        this._formatXAxis();
+      }
+
+      if (this.options.get('yAxisFunction')) {
+        this._formatYAxis();
+      }
+
+      if (this.options.has('xAxisDomain')) {
+        this._forceXAxisDomain();
+      }
+
+      if (this.options.has('yAxisDomain')) {
+        this._forceYAxisDomain();
+      }
+
+      if (this.options.get('yAxisAdjust')) {
+        this._adjustYAxis();
+      }
+
+      // Force apply adjustments (TODO: fix this hack)
+      setTimeout(function () {
+        this._chart.update();
+      }.bind(this), 100);
+    }
 
     nv.utils.windowResize(this._chart.update);
 
@@ -345,9 +367,9 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
   },
 
   _clickLegend: function (element) {
-    var tags = $(".btnLegend").size();
-    var orderKey = $(element.target).closest("div").attr("tag"); // Prevent dups
-    var realKey = $(element.target).closest("div").attr("id") + '_' + orderKey;
+    var tags = this.$(".btnLegend").size();
+    var orderKey = this.$(element.target).closest("div").attr("tag"); // Prevent dups
+    var realKey = this.$(element.target).closest("div").attr("id") + '_' + orderKey;
     var disabledList = this._internalData.disabledList;
     var disabled = ((disabledList[realKey] === undefined || disabledList[realKey] === false)
       && this._internalData.elementsDisabled != tags - 1);
@@ -356,8 +378,8 @@ App.View.Widgets.Charts.Base = Backbone.View.extend({
     if (disabled || enabled) {
       ($(this.$(".chart .nv-series")
         .get($(element.target)
-        .parent()
-        .attr("tag")))
+          .parent()
+          .attr("tag")))
       ).d3Click();
 
       $(element.target)

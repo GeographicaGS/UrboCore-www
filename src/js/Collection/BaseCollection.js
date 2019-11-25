@@ -58,6 +58,18 @@ App.Collection.Post = App.Collection.Base.extend({
     });
     // Add initial model options
     options = _.extend({}, this.options || {}, options);
+    
+    // format CSV
+    if (options.format === 'csv') {
+      options.data.format = 'csv';
+      delete options.format;
+    }
+
+    // There are collections that they need this param to get the CSV file
+    if (options.csv) {
+      options.data.csv = true;
+      delete options.csv;
+    }
 
     // We transform to STRING to send in the requests
     if (typeof options.data !== 'string') {

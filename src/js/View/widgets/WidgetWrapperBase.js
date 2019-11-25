@@ -26,7 +26,7 @@
 App.View.Widgets.WidgetWrapperBase = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       title: __('Sin título'),
       stopEventsBbox: false,
     });

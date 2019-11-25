@@ -1,7 +1,7 @@
 <!-- Link -->
-<%if(link){%>
+<% if (link) { %>
 <a jslink href="<%=link%>" class="noOutline">
-<%}%>
+<% } %>
 
 <div class="widget active <%=classname === 'custom' ? 'custom' : '' %> <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
   <!-- Action buttons -->
@@ -30,8 +30,8 @@
                   </li>
                 <% } %>
 
-                <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) { %>
-                  <% if(publishable) {%>
+                <% if (App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) { %>
+                  <% if (publishable) { %>
                     <li data-export="publish" class="iconAction exportable <%= !exportable ? 'selected':'' %>">
                       <%=__('Publicar widget')%>
                     </li>
@@ -57,12 +57,12 @@
       class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>"
       title="<%=title%>"
       >
-      <% if(category){%>
+      <% if (category) { %>
         <h3><%=category%></h3>
-      <%}%>
-      <%if(correlationIcon){%>
+      <% } %>
+      <% if (correlationIcon) { %>
         <img src="/img/<%=correlationIcon%>">
-      <%}%>
+      <% } %>
       <%=title%>
       <span><%=correlationTitle%></span>
     </div>
@@ -82,10 +82,10 @@
   <% } %>
 
 <!-- End Link -->
-<%if(link){%>
+<% if (link) { %>
   <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
   </div>
 </a>
-<%}else{%>
+<% } else { %>
 </div>
-<%}%>
+<% } %>

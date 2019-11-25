@@ -98,9 +98,9 @@ App.View.Widgets.Base = Backbone.View.extend({
   },
 
   /**
-   * Check if the current scope has permissions about 
+   * Check if the current scope has permissions about
    * entities or attributes to show into the widget
-   * 
+   *
    * @return {Boolean} ¿has permissions?
    */
   hasPermissions: function () {
@@ -131,7 +131,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
   /**
    * Export the showed data to a CSV file
-   * 
+   *
    * @param {Object} e - triggered event
    */
   _onClickIconExport: function (e) {
@@ -199,7 +199,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
   /**
    * Show more information about widget
-   * 
+   *
    * @param {Object} e - triggered event
    */
   _onClickIconInfo: function (e) {
@@ -215,7 +215,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
   /**
    * Hide the information about the widget
-   * 
+   *
    * @param {*} e - triggered event
    */
   _onClickIconCloseInfo: function (e) {
@@ -231,7 +231,7 @@ App.View.Widgets.Base = Backbone.View.extend({
 
   /**
    * Event triggered when do click on widget content
-   * 
+   *
    * @param {*} e - triggered event
    */
   _onClickContent: function (e) {
@@ -252,7 +252,7 @@ App.View.Widgets.Base = Backbone.View.extend({
   updateFilters: function () {
 
     for (var i in this.filterables) {
-      
+
       if (!this.filterables[i].options) {
         this.filterables[i].options = { data: {} };
       }
@@ -283,6 +283,11 @@ App.View.Widgets.Base = Backbone.View.extend({
       } else if (data.filters.hasOwnProperty('bbox')) {
         delete data.filters.bbox;
       }
+
+      // Corrige la particuridad de que la vista "App.View.Widgets.Gauge"
+      // obtiene las modificaciones del modelo en el atributo "data" en
+      // lugar del atributo "options.data"
+      this.filterables[i].set('data', data);
     }
 
     return this;
@@ -326,7 +331,7 @@ App.View.Widgets.Base = Backbone.View.extend({
       var templateTimeIcon = timeMode === 'historic'
         ? this._template_timemode_historic
         : this._template_timemode_now;
-        
+
       // Remove element DOM
       this.$el.find('#timeIcon').remove();
       // Add template time Icon
@@ -337,7 +342,7 @@ App.View.Widgets.Base = Backbone.View.extend({
   onClose: function () {
     for (var i in this.subviews) {
       this.subviews[i].close();
-    } 
+    }
 
     if (this._refreshInterval) {
       clearInterval(this._refreshInterval);

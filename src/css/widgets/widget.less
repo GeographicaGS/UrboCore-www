@@ -35,6 +35,19 @@
     height: auto;
   }
 
+  &.widget-chart {
+    height: 380px;
+    &.widget-chart-d3 {
+      height: 370px;
+    }
+    .chart {
+      height: 330px;
+      &+.var_list {
+        top: -10px;
+      }
+    }
+  }
+
   &:not(.allWidth) {
     .title {
       display: flex;
@@ -536,6 +549,8 @@
       .selector{
         position: absolute;
         top: 56px;
+        min-width: auto;
+        background: transparent;
         span{
           display: inline-block;
           width: 35px;
@@ -1365,7 +1380,7 @@
     padding-top: 26px;
 
     &.d3 {
-      height: 315px;
+      height: 320px;
     }
 
     & + .var_list {

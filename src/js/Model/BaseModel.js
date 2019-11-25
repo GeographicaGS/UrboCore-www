@@ -165,3 +165,67 @@ App.Model.MapsModel = App.Model.Post.extend({
     return App.Model.Post.prototype.fetch.call(this, options);
   }
 });
+
+/**
+ * Model to get the GEOJSON from CartoDB
+ * 
+ * We use the API --> https://carto.com/developers/sql-api/reference/
+ */
+App.Model.CartoSqlApiV2Model = Backbone.Model.extend({
+
+  /**
+   * The "custom" options to this model are:
+   * -cartoAccount: the carto account saved in metadata to build the URL
+   * -format: the format that the data will be returned
+   *  ("GPKG","CSV", "SHP", "SVG", "KML", "SpatiaLite", "GeoJSON")
+   * -q: query to launch in Carto
+   * -userUrl: custom URL provided by the user
+   * 
+   * @param {Object} options different options to Model
+   */
+  initialize: function (options) {
+    this.options = _.defaults(options || {}, {
+      cartoAccount: null,
+      format: 'GeoJSON',
+      q: null,
+      userUrl: null
+    });
+  },
+
+  /**
+   * return the URL to use in the request
+   * 
+   * @return {String} - url customized
+   */
+  url: function () {
+    var cartoAccount = this.options.cartoAccount
+      ? App.Utils.getCartoAccount(this.options.cartoAccount)
+      : false;
+
+    if (this.options.userUrl) {
+      return this.options.userUrl
+    } else if (cartoAccount) {
+      return 'https://' + cartoAccount + '.carto.com/api/v2/sql'
+    } else {
+      return false;
+    }
+  },
+
+  /**
+   * Customizable "fetch" function to model
+   */
+  fetch: function (options) {
+    var params = _.extend({}, {
+      format: this.options.format,
+      q: this.options.q
+    }, options || {});
+    var currentUrl = this.url() || false;
+
+    if (params.q && currentUrl) {
+      $.post(currentUrl, params)
+        .done(function (response) {
+          this.set('response', response);
+        }.bind(this));
+    }
+  }
+});

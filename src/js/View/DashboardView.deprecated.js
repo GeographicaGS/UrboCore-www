@@ -35,8 +35,6 @@ App.View.Dashboard = Backbone.View.extend({
     this._widgetModels = [];
     this._ctx = App.ctx;
     this.scopeModel = App.mv().getScope(this.model.get('scope'))
-    // this.listenTo(this.scopeModel,"change:id",this._createDashboard);
-    // this.scopeModel.fetch({"reset": true});
     this.render();
     this._createDashboard();
   },
@@ -191,6 +189,10 @@ App.View.Dashboard = Backbone.View.extend({
       });
 
       this.$('.title_page').text('Estado General');
+      this.$('.title_page').prepend(
+        '<span class="vertical" style="background-color:' +
+        '#00ccff;">' + 'Riego' + '</span>'
+      );
       var m = new App.Model.Widgets.Base({
         entities : ['watering.sosteco.weatherstation','watering.sosteco.solenoidvalve','watering.sosteco.sensor'],
         location : this.scopeModel.get('location'),
@@ -211,19 +213,6 @@ App.View.Dashboard = Backbone.View.extend({
       this._widgets.push(new App.View.Widgets.Watering.Consumption({
         id_scope: this.scopeModel.get('id')
       }));
-
-      // var wasteLinkModel = new Backbone.Model({
-      //   'title': 'Análisis de variables',
-      //   'buttonLink': '/' + scope + '/watering/analysisVars',
-      //   'buttonText': 'EMPEZAR',
-      //   'isExternalLink': false,
-      //   'imgBackground': 'SC_ic_analizar_XL.svg'
-      // });
-      //
-      // var wasteLinkWidget = new App.View.Widgets.ButtonLinkBackground({
-      //   'model': wasteLinkModel
-      // });
-      // this._widgets.push(wasteLinkWidget);
 
     } else if (section == 'waste'){
 
@@ -291,37 +280,9 @@ App.View.Dashboard = Backbone.View.extend({
       });
       this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
-
       this._widgets.push(new App.View.Widgets.Waste.WidgetIssueStacked({'scope':this.scopeModel.get('id')}));
 
-      // var stackCollection = new App.Collection.Variables.Now([],{'scope':this.scopeModel.get('id')});
-      // // var stackCollection = new App.Collection.Waste.WasteStacked([],{'scope':this.scopeModel.get('id')});
-      // this._widgets.push(new App.View.Widgets.Dumps.TotalWeight({'id_scope':this.scopeModel.get('id'), 'collection':stackCollection}));
-
       this.listenTo(this._ctx,'change:start change:finish',this._render_widgets);
-
-      // var wasteIssuesCategorizedCollection = new App.Collection.WidgetContext([],
-      //   {
-      //     'url': App.config.api_url + '/' + this.scopeModel.get('id') + '/waste/issues/resolution',
-      //     'data': { 'agg':'max' }
-      //   }
-      // );
-      // var wasteIssuesCategorizedWidget = new App.View.Widgets.CategorizedVariableValue({
-      //   'category': 'Residuos',
-      //   'title': 'Tiempo medio de resolución de incidencias por categorías',
-      //   'cssClass': 'wasteAverageTime',
-      //   'titleFunc': function(d){return App.Static.Collection.Waste.IssueCategories.get(d).get('name')},
-      //   'iconFunc': function(d){return App.Static.Collection.Waste.IssueCategories.get(d).get('class')},
-      //   'dataFunc': function(d){
-      //     var time = moment.duration(d, 'seconds');
-      //     return time.hours();
-      //   },
-      //   'collection':wasteIssuesCategorizedCollection,
-      //   'unit': 'h'
-      // });
-      // this.listenTo(wasteIssuesCategorizedWidget,'widget:ready',this._render_widgets);
-      // wasteIssuesCategorizedWidget.listenTo(this._ctx,'change:start change:finish',wasteIssuesCategorizedWidget.render);
-      // this._widgets.push(wasteIssuesCategorizedWidget);
 
       var wasteIssuesValueModel = new App.Model.SimpleValue(
         {

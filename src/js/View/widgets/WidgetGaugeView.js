@@ -26,12 +26,10 @@ App.View.Widgets.Gauge = Backbone.View.extend({
 
   initialize: function (options) {
 
-    this.options = _.defaults(options, {
+    this.options = _.defaults(options || {}, {
       fetchModel: false,
       global: false
     });
-
-    this.model = options.model;
 
     // Hide the widget if the scope has not permissions
     if (!App.mv().validateInMetadata({ 'variables': [this.model.get('var_id')] })) {
@@ -41,16 +39,15 @@ App.View.Widgets.Gauge = Backbone.View.extend({
     this.className = this.model.get('className');
   },
 
-
-  onClose: function () {
-    this.stopListening();
-  },
-
   render: function () {
     var _this = this;
     var metaData = App.Utils.toDeepJSON(App.mv().getVariable(this.model.get('var_id')));
 
-    this.$el.html(this._template({ m: this.model.toJSON(), 'metaData': metaData, 'fetchModel': this.options.fetchModel }));
+    this.$el.html(this._template({
+      m: this.model.toJSON(),
+      metaData: metaData,
+      fetchModel: this.options.fetchModel
+    }));
 
     this.$el.addClass(this.model.get('className'));
 
@@ -78,26 +75,43 @@ App.View.Widgets.Gauge = Backbone.View.extend({
     chart.html('');
 
     var varRange = {
-      'min': parseFloat(this.options.global ? metaData.config.global_threshold[0] : metaData.var_thresholds[0]),
-      'warning': parseFloat(this.options.global ? metaData.config.global_threshold[1] : metaData.var_thresholds[1]),
-      'error': parseFloat(this.options.global ? metaData.config.global_threshold[2] : metaData.var_thresholds[2]),
-      'max': parseFloat(this.options.global ? metaData.config.global_threshold[3] : metaData.var_thresholds[3])
+      min: parseFloat(
+        this.options.global
+          ? metaData.config.global_threshold[0]
+          : metaData.var_thresholds[0]
+      ),
+      warning: parseFloat(
+        this.options.global
+          ? metaData.config.global_threshold[1]
+          : metaData.var_thresholds[1]
+      ),
+      error: parseFloat(
+        this.options.global
+          ? metaData.config.global_threshold[2]
+          : metaData.var_thresholds[2]
+      ),
+      max: parseFloat(
+        this.options.global
+          ? metaData.config.global_threshold[3]
+          : metaData.var_thresholds[3]
+      )
     };
 
-    this.model.set('var_value', this.model.get('var_value') == 'null' ? varRange.min : parseFloat(this.model.get('var_value')));
+    this.model.set('var_value', this.model.get('var_value') == 'null'
+      ? varRange.min
+      : parseFloat(this.model.get('var_value'))
+    );
 
     if (varRange['max'] < this.model.get('var_value'))
       varRange['max'] = Math.ceil(this.model.get('var_value'));
 
-
     if (varRange) {
       if (metaData.reverse) {
-        if (this.model.get('var_value') <= varRange.error) {
+        if (this.model.get('var_value') <= varRange.warning) {
           this.$('.co_value .value').addClass('error');
-        } else if (this.model.get('var_value') <= varRange.warning) {
+        } else if (this.model.get('var_value') <= varRange.error) {
           this.$('.co_value .value').addClass('warning');
         }
-
       } else {
         if (this.model.get('var_value') >= varRange.error) {
           this.$('.co_value .value').addClass('error');
@@ -152,8 +166,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       })
       ;
 
-
-    //TODO cambiar esto
+    // TODO cambiar esto
     if (metaData.reverse) {
       arcs.selectAll('path')
         .data(tickData)
@@ -185,9 +198,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
         })
         .attr('d', arc);
     }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////
+    // END - TODO ///////////////////////////////////////////////////////////////////////////////////////
 
     var lg = svg.append('g')
       .attr('class', 'label')
@@ -202,7 +213,7 @@ App.View.Widgets.Gauge = Backbone.View.extend({
         var y = (Math.sin(_this._deg2rad(angle)) * (-r) * 0.64) + 5;
         return 'translate(' + x + ',' + y + ')';
       })
-      .attr("text-anchor", function (d) {
+      .attr('text-anchor', function (d) {
         var angle = (minAngle + (scale(d) * range)) - minAngle + (minAngle + 90)
         var anchor = '';
         angle > 90 ? anchor = 'end' : (angle == 90 ? anchor = 'middle' : anchor = 'start');
@@ -219,11 +230,11 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       var y = Math.sin(_this._deg2rad(angle)) * (-r) * 0.77;
 
       lines.append('line')
-        .attr("x1", x)
-        .attr("y1", y)
-        .attr("x2", x * 0.9)
-        .attr("y2", y * 0.9)
-        .style("stroke-width", "1px");
+        .attr('x1', x)
+        .attr('y1', y)
+        .attr('x2', x * 0.9)
+        .attr('y2', y * 0.9)
+        .style('stroke-width', '1px');
     };
 
 
@@ -239,15 +250,11 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       .attr('class', 'pointer')
       .attr('transform', centerTx);
 
-    // var pointer = pg.append('path')
-    // 								.attr('d', pointerLine)
-    // 								.attr('transform', 'rotate(' + minAngle +')');
-
-    svg.append("circle")
-      .attr("cx", r)
-      .attr("cy", r)
-      .attr("r", 5)
-      .style("fill", "#00475d");
+    svg.append('circle')
+      .attr('cx', r)
+      .attr('cy', r)
+      .attr('r', 5)
+      .style('fill', '#00475d');
 
     var arc = d3.svg.arc()
       .innerRadius(5)
@@ -255,35 +262,42 @@ App.View.Widgets.Gauge = Backbone.View.extend({
       .startAngle(0)
       .endAngle(360);
 
-    svg.append("path")
-      .attr("d", arc)
+    svg.append('path')
+      .attr('d', arc)
       .attr('transform', 'translate(' + r + ',' + r + ')')
       .attr('fill', '#fff');
 
-    if (this.model.get('var_value') != null && this.model.get('var_value') != undefined) {
+    var newValue = isNaN(this.model.get('var_value'))
+      ? minValue
+      : this.model.get('var_value');
+    var pointer = pg.append('path')
+      .attr('d', pointerLine)
+      .attr('transform', 'rotate(' + minAngle + ')');
+    var ratio = scale(newValue);
 
-      var pointer = pg.append('path')
-        .attr('d', pointerLine)
-        .attr('transform', 'rotate(' + minAngle + ')');
-
-      var newValue = this.model.get('var_value');
-      var ratio = scale(newValue);
-      if (ratio < 0) {
-        ratio = -0.01;
-      } else if (ratio > 1) {
-        ratio = 1.01;
-      }
-      var newAngle = minAngle + (ratio * range);
-      pointer.attr('transform', 'rotate(-110)')
-        .transition()
-        .duration(2000)
-        .ease('elastic')
-        .attr('transform', 'rotate(' + newAngle + ')');
+    if (ratio < 0) {
+      ratio = -0.01;
+    } else if (ratio > 1) {
+      ratio = 1.01;
     }
+
+    var newAngle = minAngle + (ratio * range);
+    pointer.attr('transform', 'rotate(-110)')
+      .transition()
+      .duration(2000)
+      .ease('elastic')
+      .attr('transform', 'rotate(' + newAngle + ')');
   },
 
   _deg2rad: function (deg) {
     return deg * Math.PI / 180;
+  },
+
+  /**
+   * behaviour when "close" the current view
+   */
+  onClose: function () {
+    this.stopListening();
   }
 
 });
