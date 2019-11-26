@@ -21,41 +21,41 @@
 'use strict';
 
 App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
-  _popupTemplate: _.template( $('#map-popup_template').html()),
-  _torqueSqlTemplate: _.template( $('#waste-Map-torque_summary_sql_template').html()),
+  _popupTemplate: _.template($('#map-popup_template').html()),
+  _torqueSqlTemplate: _.template($('#waste-Map-torque_summary_sql_template').html()),
   _torqueNamedmaps: false,
 
-  initialize: function(options) {
-    _.bindAll(this,'_onNamedMapCreated','_onFeatureMobaClick', '_onFeatureIssueClick');
-    App.View.Map.LayerMap.prototype.initialize.call(this,options);
+  initialize: function (options) {
+    _.bindAll(this, '_onNamedMapCreated', '_onFeatureMobaClick', '_onFeatureIssueClick');
+    App.View.Map.LayerMap.prototype.initialize.call(this, options);
     this._cdbLayer = null;
-    this._torquePlaceholders = {scope:options.scope,container: 1,issue:1,status_filter:0,statuses:"'blablabla'",category_filter: 0,categories: "'blablabla'"};
+    this._torquePlaceholders = { scope: options.scope, container: 1, issue: 1, status_filter: 0, statuses: "'blablabla'", category_filter: 0, categories: "'blablabla'" };
   },
 
-  onClose: function(){
+  onClose: function () {
     App.View.Map.LayerMap.prototype.onClose.call(this);
-    if (this._cdbLayer){
+    if (this._cdbLayer) {
       this.map.removeLayer(this._cdbLayer);
       // this._cdbLayer.clear();
     }
-    if (this._torqueLayer){
+    if (this._torqueLayer) {
       this.map.removeLayer(this._torqueLayer);
       //this._torqueLayer.clear();
     }
   },
 
-  filtersLayer: function(m){
+  filtersLayer: function (m) {
     var filters = m.get('filters');
 
     //TODO: IMprove this creating a filter function for namedmaps
-    if (m.get('id')=='waste.issues'){
+    if (m.get('id') == 'waste.issues') {
       var opts;
-      if(filters.categorias !== null) {
+      if (filters.categorias !== null) {
         opts = {
           categories: "'" + filters.categorias.join("','") + "'",
           category_filter: 1
         };
-      }else if (filters.estados !== null){
+      } else if (filters.estados !== null) {
         opts = {
           statuses: "'" + filters.estados.join("','") + "'",
           status_filter: 1
@@ -66,18 +66,18 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
     }
   },
 
-  changeBBOX: function(){
+  changeBBOX: function () {
     //TODO: update counters
   },
 
-  toggleLayer: function(m){
+  toggleLayer: function (m) {
     var opts = {};
 
-    if (m.get('id') == 'MOBA'){
+    if (m.get('id') == 'MOBA') {
       //opts['container'] = this._torqueOpts['container'] = m.get('enable') ? 1 : 0;
       opts['container'] = m.get('enable') ? 1 : 0;
     }
-    if (m.get('id') == 'waste.issues'){
+    if (m.get('id') == 'waste.issues') {
       //opts['issue'] = this._torqueOpts['issue'] = m.get('enable') ? 1 : 0;
       opts['issue'] = m.get('enable') ? 1 : 0;
     }
@@ -86,12 +86,12 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
     this._torqueLayer.setSQL(this._torqueSqlTemplate(_.extend(this._torquePlaceholders, opts)));
   },
 
-  render: function(){
+  render: function () {
     App.View.Map.LayerMap.prototype.render.call(this);
 
     var _this = this;
 
-    if(this._torqueNamedmaps){
+    if (this._torqueNamedmaps) {
 
       // WAITING FOR CartoDB/cartodb#5904
 
@@ -100,67 +100,66 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
         type: 'torque',
         order: 1,
         options: {
-          user_name:  App.config.scopes.guadalajara.cartodb_user,
+          user_name: App.config.scopes.guadalajara.cartodb_user,
           tile_style: 'Map{-torque-frame-count:10;-torque-animation-duration:1;-torque-time-attribute:"t";-torque-aggregation-function:"CDB_Math_Mode(torque_category)";-torque-resolution:1;-torque-data-aggregation:linear;}#alert{comp-op:xor;marker-fill-opacity:0.9;marker-line-color:#FFF;marker-line-width:0;marker-line-opacity:1;marker-type:ellipse;marker-width:9;marker-fill:#00ff00;}#alert[value=2]{marker-fill:#ff3300;}#alert[value=1]{marker-fill:#ff9900;}#alert[frame-offset=1]{marker-width:14;marker-fill-opacity:0.20;}#alert[frame-offset=2]{marker-width:16;marker-fill-opacity:0.18;}#alert[frame-offset=3]{marker-width:18;marker-fill-opacity:0.17;}#alert[frame-offset=4]{marker-width:20;marker-fill-opacity:0.15;}#alert[frame-offset=5]{marker-width:22;marker-fill-opacity:0.13;}#alert[frame-offset=6]{marker-width:24;marker-fill-opacity:0.11;}#alert[frame-offset=7]{marker-width:26;marker-fill-opacity:0.09;}#alert[frame-offset=8]{marker-width:28;marker-fill-opacity:0.07;}#alert[frame-offset=9]{marker-width:30;marker-fill-opacity:0.05;}#alert[frame-offset=10]{marker-width:32;marker-fill-opacity:0.03;}'
         },
         named_map: {
           name: this.options.namedmap,
           layers: [{
             layer_name: "t"
-           }]
-         }
-      },{https:true,time_slider: false})
-      .addTo(this.map)
-      .done(function(layer) {
-        layer.setZIndex(1);
-        _this._torqueLayer = layer;
-      });
+          }]
+        }
+      }, { https: true, time_slider: false })
+        .addTo(this.map)
+        .done(function (layer) {
+          layer.setZIndex(1);
+          _this._torqueLayer = layer;
+        });
 
     }
-    else{
+    else {
 
       var sql = this._torqueSqlTemplate(this._torquePlaceholders);
       cartodb.createLayer(this.map, {
-          type: "torque",
-          options: {
-              query: sql,
-              user_name:  App.config.scopes.guadalajara.cartodb_user,
-              cartocss: 'Map{-torque-frame-count:10;-torque-animation-duration:1;-torque-time-attribute:"t";-torque-aggregation-function:"CDB_Math_Mode(torque_category)";-torque-resolution:1;-torque-data-aggregation:linear;}#alert{comp-op:xor;marker-fill-opacity:0.9;marker-line-color:#FFF;marker-line-width:0;marker-line-opacity:1;marker-type:ellipse;marker-width:9;marker-fill:#00ff00;}#alert[value=2]{marker-fill:#ff3300;}#alert[value=1]{marker-fill:#ff9900;}#alert[frame-offset=1]{marker-width:14;marker-fill-opacity:0.20;}#alert[frame-offset=2]{marker-width:16;marker-fill-opacity:0.18;}#alert[frame-offset=3]{marker-width:18;marker-fill-opacity:0.17;}#alert[frame-offset=4]{marker-width:20;marker-fill-opacity:0.15;}#alert[frame-offset=5]{marker-width:22;marker-fill-opacity:0.13;}#alert[frame-offset=6]{marker-width:24;marker-fill-opacity:0.11;}#alert[frame-offset=7]{marker-width:26;marker-fill-opacity:0.09;}#alert[frame-offset=8]{marker-width:28;marker-fill-opacity:0.07;}#alert[frame-offset=9]{marker-width:30;marker-fill-opacity:0.05;}#alert[frame-offset=10]{marker-width:32;marker-fill-opacity:0.03;}'
-          }
+        type: "torque",
+        options: {
+          query: sql,
+          user_name: App.config.scopes.guadalajara.cartodb_user,
+          cartocss: 'Map{-torque-frame-count:10;-torque-animation-duration:1;-torque-time-attribute:"t";-torque-aggregation-function:"CDB_Math_Mode(torque_category)";-torque-resolution:1;-torque-data-aggregation:linear;}#alert{comp-op:xor;marker-fill-opacity:0.9;marker-line-color:#FFF;marker-line-width:0;marker-line-opacity:1;marker-type:ellipse;marker-width:9;marker-fill:#00ff00;}#alert[value=2]{marker-fill:#ff3300;}#alert[value=1]{marker-fill:#ff9900;}#alert[frame-offset=1]{marker-width:14;marker-fill-opacity:0.20;}#alert[frame-offset=2]{marker-width:16;marker-fill-opacity:0.18;}#alert[frame-offset=3]{marker-width:18;marker-fill-opacity:0.17;}#alert[frame-offset=4]{marker-width:20;marker-fill-opacity:0.15;}#alert[frame-offset=5]{marker-width:22;marker-fill-opacity:0.13;}#alert[frame-offset=6]{marker-width:24;marker-fill-opacity:0.11;}#alert[frame-offset=7]{marker-width:26;marker-fill-opacity:0.09;}#alert[frame-offset=8]{marker-width:28;marker-fill-opacity:0.07;}#alert[frame-offset=9]{marker-width:30;marker-fill-opacity:0.05;}#alert[frame-offset=10]{marker-width:32;marker-fill-opacity:0.03;}'
+        }
       }).addTo(this.map)
-      .done(function(layer) {
-        layer.setZIndex(1);
-        _this._torqueLayer = layer;
-      });
+        .done(function (layer) {
+          layer.setZIndex(1);
+          _this._torqueLayer = layer;
+        });
 
-  }
+    }
     cartodb.createLayer(this.map, {
-      user_name:  App.config.scopes.guadalajara.cartodb_user,
+      user_name: App.config.scopes.guadalajara.cartodb_user,
       type: 'namedmap',
       named_map: {
         name: this.options.namedmap,
         layers: [{
           layer_name: "t2",
           interactivity: "cartodb_id"
-        },{
+        }, {
           layer_name: "t3",
           interactivity: "cartodb_id"
         }]
       }
-    },{ https: true}).addTo(this.map)
-    .done(this._onNamedMapCreated);
+    }, { https: true }).addTo(this.map)
+      .done(this._onNamedMapCreated);
 
     return this;
   },
 
-  _onFeatureMobaClick: function(e, pos, pixel, data) {
-
+  _onFeatureMobaClick: function (e, pos, pixel, data) {
     var templateData = {
-      name : 'Contenedor',
-      device_id : data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
+      name: 'Contenedor',
+      device_id: data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
       entity_id: 'waste.moba',
-      date_start : null,
-      date_finish : null,
+      date_start: null,
+      date_finish: null,
       scope: this.options.scope,
       values: [
         {
@@ -171,7 +170,8 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
         }
       ],
       button_label: 'contenedor',
-      disable_button: false
+      disable_button: false,
+      url: false
     };
 
     this._popup
@@ -181,13 +181,18 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
 
   },
 
-  _onFeatureIssueClick: function(e, pos, pixel, data) {
+  _onFeatureIssueClick: function (e, pos, pixel, data) {
+    var url = false;
+    if (data && data.url) {
+      url = data.url;
+    }
+
     var templateData = {
-      name : 'Incidencia',
-      device_id : data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
+      name: 'Incidencia',
+      device_id: data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
       entity_id: 'waste.issue',
-      date_start : null,
-      date_finish : null,
+      date_start: null,
+      date_finish: null,
       scope: this.options.scope,
       values: [
         {
@@ -200,9 +205,9 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
         }
       ],
       button_label: 'incidencia',
-      disable_button: true
+      disable_button: true,
+      url: url
     };
-
     this._popup
       .setLatLng(pos)
       .setContent(this._popupTemplate(templateData))
@@ -210,8 +215,8 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
 
   },
 
-  _onNamedMapCreated: function(layer){
-    App.View.Map.LayerMap.prototype._onNamedMapCreated.apply(this,[layer]);
+  _onNamedMapCreated: function (layer) {
+    App.View.Map.LayerMap.prototype._onNamedMapCreated.apply(this, [layer]);
     this._cdbLayer = layer;
     this._cdbLayer.setZIndex(2);
     layer.setParams({
@@ -222,21 +227,21 @@ App.View.Map.Waste.Base = App.View.Map.LayerMap.extend({
     this.setInteraction(layer);
 
     var hovers = [], _this = this;
-    layer.bind('featureOver', function(e, latlon, pxPos, data, layer) {
+    layer.bind('featureOver', function (e, latlon, pxPos, data, layer) {
       hovers[layer] = 1;
-      if(_.any(hovers)) {
+      if (_.any(hovers)) {
         _this.$el.css('cursor', 'pointer');
       }
     });
-    layer.bind('featureOut', function(m, layer) {
+    layer.bind('featureOut', function (m, layer) {
       hovers[layer] = 0;
-      if(!_.any(hovers)) {
+      if (!_.any(hovers)) {
         _this.$el.css('cursor', 'auto');
       }
     });
   },
 
-  setInteraction: function(layer){
+  setInteraction: function (layer) {
     layer.getSubLayer(0).setInteraction(true);
     layer.getSubLayer(1).setInteraction(true);
     this._popup = L.popup();
@@ -253,21 +258,21 @@ App.View.Map.Waste.SummaryMap = App.View.Map.Waste.Base.extend({
 
 App.View.Map.Waste.IssuesMap = App.View.Map.Waste.Base.extend({
 
-  _torqueSqlTemplate: _.template( $('#waste-Map-torque_issues_sql_template').html()),
-  _popupTemplate: _.template( $('#waste-Map-issues_evolution_popup_template').html() ),
+  _torqueSqlTemplate: _.template($('#waste-Map-torque_issues_sql_template').html()),
+  _popupTemplate: _.template($('#waste-Map-issues_evolution_popup_template').html()),
 
 
-  initialize: function(options) {
-    App.View.Map.Waste.Base.prototype.initialize.call(this,options);
+  initialize: function (options) {
+    App.View.Map.Waste.Base.prototype.initialize.call(this, options);
     _.extend(this._torquePlaceholders, this._getDateOpts());
   },
 
-  _onNamedMapCreated: function(layer){
+  _onNamedMapCreated: function (layer) {
     App.View.Map.Waste.Base.prototype._onNamedMapCreated.call(this, layer);
     layer.setParams(this._getDateOpts());
   },
 
-  _getDateOpts: function(){
+  _getDateOpts: function () {
     var date = this._ctx.getDateRange();
 
     return {
@@ -276,41 +281,42 @@ App.View.Map.Waste.IssuesMap = App.View.Map.Waste.Base.extend({
     };
   },
 
-  changeDate: function(){
+  changeDate: function () {
     var opts = this._getDateOpts();
     this._cdbLayer.setParams(opts);
-    this._torqueLayer.setSQL(this._torqueSqlTemplate(_.extend(this._torquePlaceholders,opts)));
+    this._torqueLayer.setSQL(this._torqueSqlTemplate(_.extend(this._torquePlaceholders, opts)));
   },
 
-  setInteraction: function(layer){
+  setInteraction: function (layer) {
     layer.getSubLayer(0).setInteraction(true);
     this._popup = L.popup();
     layer.getSubLayer(0).on('featureClick', this._onFeatureIssueClick);
   },
 
-  _onFeatureIssueClick: function(e, pos, pixel, data) {
+  _onFeatureIssueClick: function (e, pos, pixel, data) {
     var date = this._ctx.getDateRange();
     var templateData = {
-      name : 'Incidencia',
-      device_id : data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
+      name: 'Incidencia',
+      device_id: data.id_device || data.id_entity, // Hack to avoid and update at CartoDB cache
       entity_id: 'waste.issue',
       device_name: data.subject.toLowerCase(),
-      date_start : date.start,
-      date_finish : date.finish,
+      date_start: date.start,
+      date_finish: date.finish,
       data: null,
       scope: this.options.scope,
       button_label: 'incidencia',
       disable_button: true,
+      url: false,
       data_functions: {
-        title_format: function(d){
-          if(App.Static.Collection.Waste.IssueStatusesFull.get(d))
+        title_format: function (d) {
+          if (App.Static.Collection.Waste.IssueStatusesFull.get(d))
             return App.Static.Collection.Waste.IssueStatusesFull.get(d).get('name');
           else
             return d;
         },
-        date_format: function(d){return App.formatDateTime(d);},
-        class: function(d){
-          if(App.Static.Collection.Waste.IssueStatusesFull.get(d))
+        date_format: function (d) { return App.formatDateTime(d); },
+        class: function (d) {
+          if (App.Static.Collection.Waste.IssueStatusesFull.get(d))
             return App.Static.Collection.Waste.IssueStatusesFull.get(d).get('class');
           else
             return '';
@@ -324,19 +330,21 @@ App.View.Map.Waste.IssuesMap = App.View.Map.Waste.Base.extend({
     });
 
     var _this = this;
-    issueEvolutionModel.fetch({success: function(data){
-      var evolutionData = data.toJSON();
-      var lastStatus = data.getLastStatusByDate(_this._ctx.getDateRange().finish);
-      var index = _.findIndex(evolutionData.evolution,lastStatus);
-      evolutionData.evolution[index].last = true;
-      templateData.data = data.toJSON();
-      _this.renderPopup(pos, templateData);
-    }})
+    issueEvolutionModel.fetch({
+      success: function (data) {
+        var evolutionData = data.toJSON();
+        var lastStatus = data.getLastStatusByDate(_this._ctx.getDateRange().finish);
+        var index = _.findIndex(evolutionData.evolution, lastStatus);
+        evolutionData.evolution[index].last = true;
+        templateData.data = data.toJSON();
+        _this.renderPopup(pos, templateData);
+      }
+    })
 
     this.renderPopup(pos, templateData);
   },
 
-  renderPopup: function(pos, templateData){
+  renderPopup: function (pos, templateData) {
     this._popup
       .setLatLng(pos)
       .setContent(this._popupTemplate(templateData))
