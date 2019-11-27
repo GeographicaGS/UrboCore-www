@@ -28,8 +28,15 @@
     }
   }
 
+  .toggler:not(.active) + .legendInline {
+    .legendInline {
+      height: 0;
+      overflow-x: hidden;
+    }
+  }
+
   &:not(.active) {
-    .legendInline, .co_range_filter {
+    .co_range_filter {
       height: 0;
       overflow-x: hidden;
     }
