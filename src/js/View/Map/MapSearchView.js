@@ -28,14 +28,15 @@ App.View.MapSearch = Backbone.View.extend({
   initialize: function (options) {
 
     this.options = _.defaults(options || {}, {
-      placeholderInput: __('buscar sensor, emplazamiento...')
+      placeholderInput: __('buscar sensor, emplazamiento...'),
+      historic: false, // To search by dates
     });
 
     _.bindAll(this, '_updateTerm');
 
     this._map = this.options.map;
     this._collection = this.options.collection;
-    this.listenTo(this._collection, "reset", this._collectionReset);
+    this.listenTo(this._collection, 'reset', this._collectionReset);
 
     var icon = L.icon({
       iconUrl: '/img/SC_marcador_busqueda.svg',
@@ -66,9 +67,21 @@ App.View.MapSearch = Backbone.View.extend({
   },
 
   _updateTerm: _.debounce(function (e) {
+    // set some options
     this._collection.options.term = $(e.currentTarget).val();
-    this._collection.fetch({ 'reset': true });
-    if (this._collection.options.term.length > 0) {
+
+    if (this.options.historic) {
+      this._collection.options.time = {
+        start: App.ctx.getDateRange().start,
+        finish: App.ctx.getDateRange().finish
+      }
+    }
+
+    if (this._collection.options.term.length) {
+      this._collection.fetch({
+        reset: true
+      });
+
       this.$('#search_map').addClass('searching');
       this.$('.loading').remove();
       this.$('#search_map').append(App.circleLoading());
@@ -79,11 +92,16 @@ App.View.MapSearch = Backbone.View.extend({
 
   _collectionReset: function () {
     this.$('.loading').remove();
-    this.$('ul').html(this._template_list({ 'elements': this._collection.toJSON() }));
-    if (this._collection.toJSON().length > 0)
+
+    if (this._collection.toJSON().length > 0
+      && this._collection.options.term.length) {
       this.$('ul').addClass('active');
-    else
+      this.$('ul').html(this._template_list({
+        elements: this._collection.toJSON() 
+      }));
+    } else {
       this.$('ul').removeClass('active');
+    }
   },
 
   _selectTerm: function (e) {

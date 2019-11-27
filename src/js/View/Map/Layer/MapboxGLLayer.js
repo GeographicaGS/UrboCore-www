@@ -30,21 +30,30 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   layers: [],
   popupTemplate: new App.View.Map.MapboxGLPopup('#map-mapbox_base_popup_template'),
 
-
   initialize: function (model, body, legend, map) {
     this._map = map;
     this._model = model;
     this.legendConfig = legend;
     this._mapEvents = {};
-    this._map.addSource(this._idSource, {
-      'type': 'geojson',
-      'data': {
-        "type": "FeatureCollection",
-        "features": []
-      },
-    });
+
+    // Add the source data in the beginning
+    if (!this._map.getSource(this._idSource)) {
+      this._map.addSource(this._idSource,
+        _.extend(
+          {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: []
+            }
+          }, this._sourceOptions || {})
+      );
+    }
+
+    // Add the differents layers to map
     this._map._layers = this._map._layers.concat(this._layersConfig());
     this._map.addLayers(this._layersConfig());
+
     this.listenTo(this._model, 'change', this._success);
     this.updateData(body);
     this.addToLegend();
@@ -94,14 +103,25 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
    */
   setInteractivity: function (label, properties = [], deviceViewLink = false) {
     console.warn('setInteractivity is DEPRECATED. Please use setPopup instead.')
+    var mpopup = new mapboxgl.Popup();
+
+    // Change context variable 'mapTooltipIsShow' when tooltip is closed
+    mpopup.on('close', function () {
+      App.ctx.set('mapTooltipIsShow', false);
+    });
+    
     this.on('click', this.layers.map(l => l.id), function (e) {
-      let mpopup = new mapboxgl.Popup()
-        .setLngLat(e.lngLat);
       if (deviceViewLink) {
         deviceViewLink = deviceViewLink.replace('{{device}}', e.features[0].properties.id_entity);
       }
-      mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label, properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
+      mpopup
+        .setLngLat(e.lngLat)
+        .setHTML(this.popupTemplate
+        .drawTemplate(label, properties, e, mpopup, deviceViewLink))
+        .addTo(this._map._map);
+
+      // Change context variable 'mapTooltipIsShow'
+      App.ctx.set('mapTooltipIsShow', true);
     }.bind(this));
     return this;
   },
@@ -118,17 +138,38 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
     var layersWithPopups = this.layers.filter(l => l.hasPopup).length > 0
       ? this.layers.filter(l => l.hasPopup)
       : this.layers;
+    var mpopup = new mapboxgl.Popup();
 
-    this.on('click', layersWithPopups.map(l => l.id), function (e) {
-      let mpopup = new mapboxgl.Popup()
-        .setLngLat(e.lngLat);
+    // Change context variable 'mapTooltipIsShow' when tooltip is closed
+    mpopup.on('close', function () {
+      App.ctx.set('mapTooltipIsShow', false);
+    });
 
-      var fullyProcessedTemplate = this.popupTemplate
-        .drawTemplatesRow(classes, label, templates, e, mpopup)
+    // To delay some second to add events to layer
+    setTimeout(function () {
+      this.on('click', layersWithPopups.map(l => l.id), function (e) {
+        // If there is cluster setup in the map
+        // we must to wait that the cluster action finish
+        if (!App.ctx.getClusterLaunchedEvent() &&
+          !App.ctx.getMapTooltipIsShow() &&
+          e.features &&
+          typeof e.features[0].properties.cluster === 'undefined') {
+          var fullyProcessedTemplate = this.popupTemplate
+            .drawTemplatesRow(classes, label, templates, e, mpopup)
 
-      mpopup.setHTML(fullyProcessedTemplate).addTo(this._map._map);
+          // Set positions and content to popup
+          mpopup
+            .setLngLat(e.lngLat)
+            .setHTML(fullyProcessedTemplate)
+            .addTo(this._map._map);
 
-    }.bind(this));
+          // Change context variable 'mapTooltipIsShow'
+          // when tooltip is closed
+          App.ctx.set('mapTooltipIsShow', true);
+        }
+      }.bind(this));
+    }.bind(this), 500);
+
     return this;
   },
 
@@ -148,25 +189,25 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   _success: function (change) {
     this.dataSource = (change.changed.type)
       ? change.changed
-      : { 
-          type: 'FeatureCollection', 
-          features: change.changed.features || [] 
-        },
+      : {
+        type: 'FeatureCollection',
+        features: change.changed.features || []
+      },
 
-    // Change the data in layer
-    this._map.getSource(this._idSource)
-      .setData(this.dataSource);
+      // Change the data in layer
+      this._map.getSource(this._idSource)
+        .setData(this.dataSource);
     this._map._sources
       .find(function (src) {
         return src.id === this._idSource;
       }.bind(this))
-      .data = { 
+      .data = {
         type: 'geojson',
-        data: this.dataSource 
+        data: this.dataSource
       };
 
     // The event is launched
-    this.trigger('update', { id: this._idSource } );
+    this.trigger('update', { id: this._idSource });
 
     return change;
   },
@@ -174,6 +215,5 @@ App.View.Map.Layer.MapboxGLLayer = Backbone.View.extend({
   _error: function () {
     console.error("Error");
   }
-
 
 });

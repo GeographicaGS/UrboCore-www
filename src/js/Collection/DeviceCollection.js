@@ -179,9 +179,14 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
     var stepOption = options.data && options.data.time
       ? options.data.time.step || this.options.step
       : this.options.step;
+    // Change step aggregation
     var currentAggOptions = options.data && Array.isArray(options.data.agg)
       ? options.data.agg
       : this.options.agg;
+    // Change noData option
+    var noData = options.data && options.data.noData
+      ? options.data.noData
+      : this.options.data.noData || false
 
     options.data = JSON.stringify({
       agg: _.map(currentAggOptions, function (val) { return val }),
@@ -196,7 +201,8 @@ App.Collection.DeviceTimeSerieChart = Backbone.Collection.extend({
         condition: {
           id_entity__eq: this.options.id
         }
-      }
+      },
+      noData: noData
     });
 
     return Backbone.Collection.prototype.fetch.call(this, options);

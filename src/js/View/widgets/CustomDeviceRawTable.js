@@ -23,7 +23,7 @@
 App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
 
   initialize: function (options) {
-    options = _.defaults(options, {
+    options = _.defaults(options || {}, {
       title: __('Datos brutos'),
       dimension: 'fullWidth bgWhite custom-device-raw-table',
       timeMode: 'historic',
@@ -31,8 +31,6 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
       scrollTopBar: true,
       variables: []
     });
-
-    //this._variables = options.variables;
 
     _.bindAll(this, 'parseCollectionTable');
 
@@ -50,11 +48,17 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
   },
 
   getTableCollection: function () {
+    var variablesId = _.reduce(this.options.variables, function (sumVariables, variable) {
+      if (variable.id !== 'date') {
+        sumVariables.push(variable.id);
+      }
+      return sumVariables;
+    }, []);
     var tableCollection = new App.Collection.DeviceRaw(null, {
       scope: this.options.scope,
       entity: this.options.entity,
       device: this.options.device,
-      variables: _.pluck(this.getEntityVariables(), 'id')
+      variables: variablesId
     });
 
     tableCollection.parse = this.parseCollectionTable;
@@ -75,7 +79,8 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
     return new Backbone.Model({
       csv: this.options.csv,
       scrollTopBar: this.options.scrollTopBar,
-      columns_format: this.getColumnsFormat()
+      columns_format: this.getColumnsFormat(),
+      paginator: true
     });
   },
 
@@ -104,15 +109,21 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
             break;
           case 'boolean':
             formatFN = this.booleanFn(variable.format.options);
+          case 'text':
+            formatFN = this.textFn;
             break;
           case 'date':
             formatFN = this.dateFn;
             break;
+          default:
+            formatFN = this.numericFn(variable.id, variable.format.options);
         }
       }
 
       columnsFormat[variable.id] = {
-        title: __(variable.title),
+        title: variable.title && variable.title !== null && variable.title !== ''
+          ? __(variable.title)
+          : '',
         formatFN: formatFN
       };
     }.bind(this));
@@ -130,6 +141,10 @@ App.View.Widgets.CustomDeviceRawTable = App.View.Widgets.Base.extend({
         .getEntity(this.options.entity)
         .get('variables')
     );
+  },
+
+  textFn: function (value) {
+    return value;
   },
 
   numericFn: function (id, options) {

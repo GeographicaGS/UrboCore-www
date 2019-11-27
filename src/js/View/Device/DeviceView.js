@@ -21,31 +21,31 @@
 'use strict';
 
 App.View.Device = Backbone.View.extend({
-  _template: _.template( $('#devices-basic_template').html() ),
+  _template: _.template($('#devices-basic_template').html()),
 
   className: 'device_detail',
 
-  initialize: function(options) {
+  initialize: function (options) {
     this.scopeModel = App.mv().getScope(this.model.get('scope'));
     this.model.url = this.model.durl() + '/metadata?deventity=' + this.model.get('entity');
-    this.listenTo(this.model,'change:tab',this._renderTab);
+    this.listenTo(this.model, 'change:tab', this._renderTab);
   },
 
   events: {
     'click .nav_ctrl li': '_changeControl'
   },
 
-  onClose: function(){
+  onClose: function () {
     this.stopListening();
 
     for (var i in this._tabs)
-      if(this._tabs[i]) this._tabs[i].close();
+      if (this._tabs[i]) this._tabs[i].close();
 
 
-    if(this._deviceListView)
+    if (this._deviceListView)
       this._deviceListView.close();
 
-    if(this._dateView)
+    if (this._dateView)
       this._dateView.close();
 
 
@@ -53,16 +53,16 @@ App.View.Device = Backbone.View.extend({
 
   },
 
-  _changeControl: function(e){
+  _changeControl: function (e) {
     var $e = $(e.target),
       tab = $e.attr('data-el').substring(5);
 
-    this.model.set('tab',tab);
+    this.model.set('tab', tab);
   },
 
-  _renderTab: function(e){
+  _renderTab: function (e) {
     var _this = this;
-    _.each(this._tabs, function(nil, tab) {
+    _.each(this._tabs, function (nil, tab) {
       if (_this._tabs[tab]) {
         _this._tabs[tab].close();
       }
@@ -70,19 +70,19 @@ App.View.Device = Backbone.View.extend({
     var v = this._tabs[this.model.get('tab')];
     this.$('.ctrl_container').html(v.$el);
     this.$('.nav_ctrl ul li').removeAttr('selected');
-    this.$('.nav_ctrl [data-el=ctrl_'+this.model.get('tab')+']').attr('selected',true);
-    
+    this.$('.nav_ctrl [data-el=ctrl_' + this.model.get('tab') + ']').attr('selected', true);
+
     v.render().delegateEvents();
     App.router.navigate('/' + this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id') + '/' + this.model.get('tab'));
     this._showDateSelector();
 
   },
 
-  _initBaseViews: function(){
+  _initBaseViews: function () {
 
     var breadcrumb = [{
       url: this.model.get('scope') + '/' + this.model.get('entity') + '/' + this.model.get('id'),
-      title : __('Ficha de dispositivo')
+      title: __('Ficha de dispositivo')
     },
     {
       url: this.model.get('scope') + '/' + this.model.get('entity').split('.')[0] + '/dashboard',
@@ -106,83 +106,98 @@ App.View.Device = Backbone.View.extend({
     }
 
     App.getNavBar().set({
-      breadcrumb : breadcrumb,
+      breadcrumb: breadcrumb,
       visible: true
     });
 
     var entityMetadata = App.mv().getEntity(this.model.get('entity'));
     var entityAdditionalInfo = App.mv().getAdditionalInfo(this.model.get('entity'));
-    if(entityMetadata && entityAdditionalInfo){
+    if (entityMetadata && entityAdditionalInfo) {
       this.$('.device_type').html(__(entityMetadata.get('name')));
-      this.$('.device_type').css({'color': entityAdditionalInfo.colour});
-      if(entityAdditionalInfo.icon) this.model.set({icon: entityAdditionalInfo.icon});
+      this.$('.device_type').css({ 'color': entityAdditionalInfo.colour });
+      if (entityAdditionalInfo.icon) this.model.set({ icon: entityAdditionalInfo.icon });
     }
     this.$('.device_name').html(this.model.get('id'));
-    this.$('.deviceinfo').css({'background-image': 'url(/img/' + this.model.get('icon') + ')'});
+    this.$('.deviceinfo').css({ 'background-image': 'url(/img/' + this.model.get('icon') + ')' });
 
-    // TAB 1
-    var otherView;
-    switch (this.model.get('entity')) {
-      case 'watering.sosteco.solenoidvalve':
-        otherView = new App.View.Watering.OtherView({model: new Backbone.Model(this.model.toJSON())});
-        break;
-      case 'irrigation.solenoidvalve':
-        otherView = new App.View.Panels.Irrigation.Devices.OtherView({model: new Backbone.Model(this.model.toJSON())});
-        break;
-      default:
-        otherView = null;
-    }
+    // If we need a custom device view to a particular entity
+    // we will create in the vertical the files with the next name
+    // App.view.[Category].DeviceLastData.[Entity] <-- example to "DeviceLastData"
+    var categoryClassName = '';
+    var entityClassName = '';
+    var entityData = this.model.get('entity').split('.');
+
+    _.each(entityData, function (item, index) {
+      if (index === 0) {
+        categoryClassName = App.Utils.capitalizeFirstLetter(item);
+      }
+      if (index === entityData.length - 1) {
+        entityClassName = App.Utils.capitalizeFirstLetter(item);
+      }
+    });
+
     this._tabs = {
-      'lastdata':  new App.View.DeviceLastData({model: this.model}),
-      'period': new App.View.DevicePeriod({model: new Backbone.Model(this.model.toJSON())}),
-      'raw': new App.View.DeviceRaw({model: new Backbone.Model(this.model.toJSON())}),
-      'other': otherView
+      'lastdata': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceLastData.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceLastData[entityClassName]({
+          model: this.model
+        })
+        : new App.View.DeviceLastData({
+          model: this.model
+        }),
+      'period': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DevicePeriod.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DevicePeriod[entityClassName]({
+          model: this.model
+        })
+        : new App.View.DevicePeriod({
+          model: new Backbone.Model(this.model.toJSON())
+        }),
+      'raw': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceRaw.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceRaw[entityClassName]({
+          model: new Backbone.Model(this.model.toJSON())
+        })
+        : new App.View.DeviceRaw({
+          model: new Backbone.Model(this.model.toJSON())
+        }),
+      'other': App.Utils.getAttrObject(App.View.Device, categoryClassName.concat('.DeviceOther.', entityClassName), false)
+        ? new App.View.Device[categoryClassName].DeviceOther[entityClassName]({
+          model: new Backbone.Model(this.model.toJSON())
+        })
+        : null
     };
 
     this._renderTab();
   },
 
-  _showDateSelector(){  
-    if(this.model.get('tab') === 'lastdata'){   
+  _showDateSelector() {
+    if (this.model.get('tab') === 'lastdata') {
       $('#dateSelector').hide();
-    }else{
+    } else {
       $('#dateSelector').show();
-    } 
+    }
   },
 
-  render: function(){
-    this.$el.html(this._template({'entity':this.model.get('entity')}));
+  render: function () {
+    this.$el.html(this._template({ 'entity': this.model.get('entity') }));
 
     this.model.set(App.mv().getEntityMetadata(this.model.get('entity')));
     this._initBaseViews();
 
     var deviceListModel = new Backbone.Model({
-      'id':this.model.get('id'),
-      'scope':this.model.get('scope'),
-      'entity':this.model.get('entity')
+      'id': this.model.get('id'),
+      'scope': this.model.get('scope'),
+      'entity': this.model.get('entity')
     });
-    this._deviceListView = new App.View.DeviceList({'model':deviceListModel});
+    this._deviceListView = new App.View.DeviceList({ 'model': deviceListModel });
     this.$('.deviceinfo').append(this._deviceListView.$el);
 
-    // TODO - DELETE AFTER AQUASIG PILOT JULY 2019
-    // REMOVE "minDate" and "maxDate" from the "App.View.Date"
     this._dateView = new App.View.Date({
       compact: false,
-      minDate: this.scopeModel.get('id') === 'ecija'
-        && this.model.get('entity') === 'aq_cons.sensor'
-          ? new Date(2018, 10, 6)
-          : null,
-      maxDate: this.scopeModel.get('id') === 'ecija'
-        && this.model.get('entity') === 'aq_cons.sensor'
-          ? new Date(2018, 10, 13)
-          : null
     });
-    // END TODO
 
     this.$el.append(this._dateView.render().$el);
     // dateView need time to be rendered  before to check if show or hide
     setTimeout(this._showDateSelector.bind(this), 100);
-    
+
     return this;
   }
 

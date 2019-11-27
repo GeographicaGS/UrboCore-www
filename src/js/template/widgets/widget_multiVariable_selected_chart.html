@@ -10,7 +10,28 @@
 
   <% if (m.title) { %>
   <div class="widget_header">
-    <div class="title"><%= m.title ? m.title : '' %></div>
+    <div class="title">
+      <% if (m.selectableVariables.length) { %>
+        <a class="popup_widget variableSelector">
+          <%
+          var selectedTitle = _.find(m.selectableVariables, function (item) {
+            return item.id === m.selectedVariable;
+          }) %>
+          <span><%= selectedTitle.title %></span>
+          <div class="varsel">
+            <ul>
+            <% _.each(m.selectableVariables, function (elem, idx) { %>
+              <li data-varid="<%= elem.id %>"
+                  class="<%= elem.id === m.selectedVariable ? 'selected': ''%>">
+                <%= elem.title %>
+              </li>
+            <% }); %>
+            </ul>
+          </div>
+        </a>
+      <% } %>
+      <%= m.title ? m.title : '' %>
+    </div>
   </div>
   <% } %>
 

@@ -47,18 +47,33 @@ App.Collection.Base = Backbone.Collection.extend({
 
 App.Collection.Post = App.Collection.Base.extend({
   fetch: function (options) {
-    options = _.defaults(options, {
+    // We transforms the options to JSON to merge with other options
+    if (typeof options !== 'undefined' && typeof options.data === 'string') {
+      options.data = JSON.parse(options.data);
+    }
+    // Default values 
+    options = _.defaults(options || {}, {
       type: 'POST',
       contentType: 'application/json',
     });
-
     // Add initial model options
-    options = _.extend(this.options || {}, options);
+    options = _.extend({}, this.options || {}, options);
+    
+    // format CSV
+    if (options.format === 'csv') {
+      options.data.format = 'csv';
+      delete options.format;
+    }
 
-    if (options.data) {
-      if (typeof options.data !== 'string') {
-        options.data = JSON.stringify(options.data);
-      }
+    // There are collections that they need this param to get the CSV file
+    if (options.csv) {
+      options.data.csv = true;
+      delete options.csv;
+    }
+
+    // We transform to STRING to send in the requests
+    if (typeof options.data !== 'string') {
+      options.data = JSON.stringify(options.data);
     }
 
     return Backbone.Collection.prototype.fetch.call(this, options);

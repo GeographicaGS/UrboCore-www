@@ -91,9 +91,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
 
             _.each(elem.values, function (value, idx) {
               procSubelem.values[idx] = {
-                // x: value.x === Date
-                //   ? d3.time.format.iso.parse(value.x)
-                //   : value.x,
+                x: value.x === Date
+                  ? d3.time.format.iso.parse(value.x)
+                  : value.x,
                 y: value.y[subElemIdx].value
               };
 
@@ -136,10 +136,10 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           max[axis] = max[axis] || [];
 
           _.each(elem.values, function (value, index) {
-            // // value 'X' axis is a Date
-            // value.x = value.x.constructor === Date
-            //   ? d3.time.format.iso.parse(value.x)
-            //   : value.x;
+            // value 'X' axis is a Date
+            value.x = value.x.constructor === Date
+              ? d3.time.format.iso.parse(value.x)
+              : value.x;
 
             if (this.options.get('stacked')) {
               max[axis][index] = max[axis][index]
@@ -159,10 +159,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       return sumElements;
     }.bind(this), []);
 
-    // Sort data to bring lines to the end
+    // Sort data to bring bar to the end
     this.data.sort(function (a, b) {
-      return a.type > b.type;
+      return a.type.localeCompare(b.type);
     });
+
     // Get max value for each axis and adjust domain
     var domains = [[0, 1]];
     if (this.options.get('yAxisDomain')) {
@@ -218,9 +219,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var _this = this;
 
     this._chart.svg = d3.select(this.$('.chart')[0])
-      .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
-      .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
-      .attr('class', 'chart d3')
+      // .attr('width', this._chart.w + (this._chart.margin.left + this._chart.margin.right))
+      // .attr('height', this._chart.h + (this._chart.margin.top + this._chart.margin.bottom))
+      .attr('class', 'chart nvd3-svg d3')
       .append('g')
       .attr('transform', 'translate(' + this._chart.margin.left + ',' + this._chart.margin.top + ')')
 
@@ -312,14 +313,31 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
       var yAxis1 = this._chart.svg.append('g')
         .attr('class', 'axis y-axis y-axis-1')
         .call(this._chart.yAxis1);
-      if (this.options.get('yAxisLabel')) {
+      var currentyAxisLabel1 = Array.isArray(this.options.get('yAxisLabel'))
+        ? this.options.get('yAxisLabel')[0]
+        : '';
+
+      // If only it exists a line (variable) to draw in the chart
+      // we put in the yAxis1 (left) the information
+      // about of this variable
+      if(this.options.get('showMetaVariableYAxis') && 
+        Array.isArray(this.data) &&
+        this.data.length -1 === this._internalData.elementsDisabled) {
+        var variable = _.find(this.data, function (currentVariable) {
+          return !this._internalData.disabledList[currentVariable.realKey];
+        }.bind(this));
+        var variableMetadata = App.mv().getVariable(variable.realKey).toJSON();
+
+        currentyAxisLabel1 = variableMetadata.name + ' (' + variableMetadata.units + ')';
+      }
+
+      if (this.options.get('yAxisLabel') || this.options.get('showMetaVariableYAxis')) {
         yAxis1.append('text')
           .attr('class', 'axis-label')
           .attr('x', -1 * this._chart.h / 2)
           .attr('transform', 'rotate(270) translate(0,' + (12 - _this._chart.margin.left) + ')')
           .style('text-anchor', 'middle')
-          .text(_this.options.get('yAxisLabel')[0])
-          ;
+          .text(currentyAxisLabel1);
       }
 
       if (this.yAxisDomain[1] && !this.options.get('hideYAxis2')) {
@@ -331,7 +349,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           yAxis2.append('text')
             .attr('class', 'axis-label')
             .attr('x', this._chart.h / 2)
-            .attr('transform', 'rotate(90) translate(0,-68)')
+            .attr('transform', 'rotate(90) translate(0, -40)')
             .style('text-anchor', 'middle')
             .text(this.options.get('yAxisLabel')[1])
             ;
@@ -390,7 +408,11 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         .attr('x', '50%')
         .attr('y', '50%')
         .style('text-anchor', 'middle')
-        .text(__('No hay datos disponibles'));
+        .text(
+          this.options.has('customNoDataMessage')
+            ? this.options.get('customNoDataMessage')
+            : __('No hay datos disponibles')
+        );
     }
   },
 
@@ -563,9 +585,16 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   },
 
   _formatXAxis: function () {
-    if (this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor == Date) {
+    if (this.data.length &&
+      this.data[0].values &&
+      this.data[0].values.length &&
+      this.data[0].values[0].x &&
+      this.data[0].values[0].x.constructor === Date) {
+      var _this = this;
       var start = moment(this.data[0].values[0].x).startOf('hour');
-      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x).endOf('hour').add(1, 'millisecond');
+      var finish = moment(this.data[0].values[this.data[0].values.length - 1].x)
+        .endOf('hour')
+        .add(1, 'millisecond');
       var diff = parseInt(finish.diff(start, 'hours') / 6); // Diff / Default number of ticks
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
@@ -593,28 +622,39 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
         nextDate = d3.time.hour.offset(nextDate, diff);
       } while (finish.isAfter(nextDate) && diff > 0);
 
-      var _this = this;
+
       this._chart.xAxis = d3.svg.axis()
         .scale(this.xScaleBars)
         .orient('bottom')
         .tickFormat(function (d) {
           var absStepDiff = Math.abs(stepDiff);
+          var formatDate = _this._getStepRange() === 'd'
+            ? App.formatDate
+            : App.formatDateTime;
 
           if (_this.data[0].values.length > datesInterval.length + 1) {
-            if ((d * absStepDiff) % diff === 0 && (d * absStepDiff / diff) < datesInterval.length)
-              return _this.xAxisFunction(datesInterval[d * absStepDiff / diff]);
-            else
+            if ((d * absStepDiff) % diff === 0 && (d * absStepDiff / diff) < datesInterval.length) {
+              return typeof _this.xAxisFunction === 'function'
+                ? _this.xAxisFunction(datesInterval[d * absStepDiff / diff])
+                : datesInterval[d * absStepDiff / diff] instanceof Date
+                  ? formatDate(datesInterval[d * absStepDiff / diff])
+                  : datesInterval[d * absStepDiff / diff];
+            } else {
               return '';
+            }
           } else if (d < datesInterval.length) {
-            return _this.xAxisFunction(datesInterval[d]);
+            return typeof _this.xAxisFunction === 'function'
+              ? _this.xAxisFunction(datesInterval[d])
+              : datesInterval[d] instanceof Date
+                ? formatDate(datesInterval[d])
+                : datesInterval[d];
           } else {
             return '';
           }
         })
         // .tickValues(datesInterval)
         .tickSize([])
-        .tickPadding(10)
-        ;
+        .tickPadding(10);
 
     } else if (this.data.length && this.data[0].values && this.data[0].values.length && this.data[0].values[0].x && this.data[0].values[0].x.constructor != Date) {
       var _this = this;
@@ -717,7 +757,7 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     var realKey = $(element.target).closest('div').attr('id');
     var disabledList = this._internalData.disabledList;
 
-    if (((disabledList[realKey] == undefined || disabledList[realKey] === false) &&
+    if (((disabledList[realKey] === undefined || disabledList[realKey] === false) &&
       this._internalData.elementsDisabled != tags - 1) || disabledList[realKey] === true) {
       disabledList[realKey] = !disabledList[realKey];
       this._internalData.elementsDisabled = disabledList[realKey]
@@ -746,27 +786,37 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
   _setTooltipEvents: function (elem, _this) {
     elem
       .on('mouseover', function (d, serie, index) {
-        _this._drawTooltip(d, serie, index, this);
+        _this._drawTooltip(d, serie, index, this, _this);
       })
       .on('mousemove', function (d, serie, index) {
-        _this._drawTooltip(d, serie, index, this);
+        _this._drawTooltip(d, serie, index, this, _this);
       })
       .on('mouseout', function (d, serie, index) {
-        _this._hideTooltip(d, serie, index, this);
+        _this._hideTooltip(d, serie, index, this, _this);
       })
       ;
   },
 
-  _drawTooltip: function (d, serie, index, _this) {
-    var $tooltip = this.$('#chart_tooltip');
-    if (!$tooltip.length) {
-      $tooltip = $('<div id="chart_tooltip" class="hidden"></div>');
-      this.$el.append($tooltip);
-    }
+  _drawTooltip: function (d, serie, index, _this, view) {
+    // Set default data
     var data = {
       value: d.x,
       series: []
     };
+
+    // The value in "dta.value" depends from "step"
+    if (typeof view.xAxisFunction !== 'function') {
+      data.value = view._getStepRange() === 'd'
+        ? App.formatDate(d.x)
+        : App.formatDateTime(d.x);
+    }
+
+    var $tooltip = this.$('#chart_tooltip');
+
+    if (!$tooltip.length) {
+      $tooltip = $('<div id="chart_tooltip" class="hidden"></div>');
+      this.$el.append($tooltip);
+    }
 
     var that = this;
     var keysConfig = that.options.get('keysConfig');
@@ -780,7 +830,9 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
           realKey: el.realKey,
           color: that._getColor(el, serie),
           cssClass: that.options.has('classes') ? that.options.get('classes')(el) : '',
-          yAxisFunction: that.options.get('yAxisFunction')[el.yAxis - 1],
+          yAxisFunction: that.options.has('yAxisFunctionTooltipValue')
+            ? that.options.get('yAxisFunctionTooltipValue')
+            : that.options.get('yAxisFunction')[el.yAxis - 1],
           type: keysConfig[el.realKey] && keysConfig[el.realKey].type
             ? keysConfig[el.realKey].type
             : 'line'
@@ -811,6 +863,34 @@ App.View.Widgets.Charts.D3.BarsLine = App.View.Widgets.Charts.Base.extend({
     }
 
     $tooltip.removeClass('hidden');
+  },
+
+  /**
+   * Get the step range choosen by the user
+   * 
+   * @param {String} - One option "d" (day), "h" (hour), "m" (minute)
+   */
+  _getStepRange: function () {
+    // Request data (default)
+    var requestData = {
+      time: {
+        step: '1d'
+      }
+    };
+
+    if (this.collection && this.collection.options && this.collection.options.data) {
+      requestData = typeof this.collection.options.data === 'string'
+        ? JSON.parse(this.collection.options.data)
+        : this.collection.options.data;
+    }
+
+    // current Step
+    var currentStep = requestData.time && requestData.time.step
+      ? requestData.time.step
+      : '1d';
+    var matchStep = /(\d+)(\w+)/g.exec(currentStep);
+    
+    return matchStep[2] || 'd';
   },
 
   _hideTooltip: function () {

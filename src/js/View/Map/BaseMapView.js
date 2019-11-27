@@ -239,18 +239,27 @@ App.View.Map.Base = Backbone.View.extend({
   },
 
   _onFeatureOut: function(e, pos, pixel, data) {
-    if(!this._clickedPopup)
+    if(!this._clickedPopup) {
       this.map.closePopup();
+      // Set status tooltip
+      App.ctx.set('mapTooltipIsShow', false);
+    }
   },
 
   _onClickedPopupOpen: function(e){
-    if(e.popup.options.className !== 'hoverPopup')
+    if(e.popup.options.className !== 'hoverPopup') {
       this._clickedPopup = true;
+      // Set status tooltip
+      App.ctx.set('mapTooltipIsShow', true);
+    }
   },
 
   _onClickedPopupClose: function(e){
-    if(e.popup.options.className !== 'hoverPopup')
+    if(e.popup.options.className !== 'hoverPopup') {
       this._clickedPopup = false;
+      // Set status tooltip
+      App.ctx.set('mapTooltipIsShow', false);
+    }
   },
 
   _hoverFeatureContent: function(e, pos, pixel, data, sublayer){
@@ -264,6 +273,8 @@ App.View.Map.Base = Backbone.View.extend({
   redraw: function(timeout){
     var _this = this;
     setTimeout(function(){
+      // Set status tooltip
+      App.ctx.set('mapTooltipIsShow', false);
       _this.map.closePopup();
       _this.map.eachLayer(function(layer){
         try {

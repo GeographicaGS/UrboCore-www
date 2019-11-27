@@ -28,7 +28,9 @@ App.Model.Context = Backbone.Model.extend({
     finish: false,
     bbox_info: true,
     bbox_status: false,
-    bbox: null
+    bbox: null,
+    mapTooltipIsShow: false, // There is a tooltip showed?
+    clusterEventLaunched: false, // A cluster event was launched?
   },
 
   initialize: function (attributes, options) {
@@ -65,6 +67,14 @@ App.Model.Context = Backbone.Model.extend({
     if (!(attributes && attributes.local)) {
       this.on('change', this._save);
     }
+
+    // After N seconds the value "clusterEventLaunched"
+    // return tu false
+    this.listenTo(this, 'change:clusterEventLaunched', _.debounce(function () {
+      if (this.get('clusterEventLaunched') === true) {
+        this.set('clusterEventLaunched', false);
+      }
+    }.bind(this), 500));
   },
 
   /**
@@ -75,7 +85,7 @@ App.Model.Context = Backbone.Model.extend({
   },
 
   /**
-   * Get dates from "context"
+   * Get BBOX from "context"
    *
    * @return {Array | NULL} - bbox data from the map is showed
    */
@@ -98,6 +108,24 @@ App.Model.Context = Backbone.Model.extend({
     } catch (err) {
       return false;
     }
-  }
+  },
+
+  /**
+   * Get status tooltip in current map
+   *
+   * @return {Boolean}
+   */
+  getMapTooltipIsShow: function () {
+    return this.get('mapTooltipIsShow') || false;
+  },
+
+  /**
+   * Get status cluster event
+   *
+   * @return {Boolean}
+   */
+  getClusterLaunchedEvent: function () {
+    return this.get('clusterEventLaunched') || false;
+  },
 
 });

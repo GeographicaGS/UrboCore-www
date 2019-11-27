@@ -1,35 +1,47 @@
 <div class="tags">
-  <%_.each(data, function(dato, index) { %>
-    <% 
-      __color = colors[index];
-      if (typeof colors === 'function') { 
-        __color = colors(dato.realKey);
+  <%
+    _.each(data, function(dato, index) {
+      var colorLabel = null;
+      if (dato.color) {
+        colorLabel = dato.color;
+      } else {
+        colorLabel = typeof colors === 'function'
+          ? colors(dato.realKey)
+          : colors[index]
       }
-    %>
-      
+
+      // Styles to circle
+      var circleStyle = 'background-color:' + colorLabel + ';border: 1px solid ' + colorLabel;
+      if (dato.classed && dato.classed === 'dashed') {
+        circleStyle = 'background-color: transparent;border: 2px dashed ' + colorLabel;
+      } else if (dato.classed && dato.classed === 'dotted') {
+        circleStyle = 'background-color: transparent;border: 2px dotted ' + colorLabel;
+      }
+  %>
   <div class="btnLegend <%= disabledList[dato.realKey] ? 'inactive' : ''%>"
        id="<%=dato.realKey%>"
        tag="<%=index%>"
-       style="color:<%=__color%>;border:1px solid <%=__color%>">
+       style="color:<%=colorLabel%>;border:1px solid <%=colorLabel%>">
     <span
       class="icon circle"
-      style="background-color:<%=__color%>;border:1px solid <%=__color%>">
+      style="<%=circleStyle%>">
     </span>
     <span class="text first"
           data-key="<%=__(dato.key)%>">
-      <%=__(dato.key)%>
+      <%= dato.label || __(dato.key) %>
     </span>
     <!-- Aggregations (Max, Min, Avg) -->
-    <% if (currentAggs && currentAggs[dato.realKey]) { %>
+    <% if (noAgg === false && currentAggs && currentAggs[dato.realKey] && dato.aggs.length) { %>
     <a style="<%= disabledList[dato.realKey] ? 'visibility:hidden' : ''%>"
        class="popup_widget agg multivarChart"
        href="#">
       <span class="icon">
         <img class="iconSelected"
              src="<%=App.getPictureAgg(currentAggs[dato.realKey])%>" />
-      </span><div class="varsel">
+      </span>
+      <div class="varsel">
         <ul data-id="<%=dato.realKey%>">
-          <%_.each(dato.aggs,function(v){%>
+          <%_.each(dato.aggs, function (v) { %>
           <li data-agg="<%=v%>" class="<%=v == currentAggs[dato.realKey].toUpperCase() ? 'selected':''%>">
             <span class="icon">
               <img class="iconPopup"
@@ -39,9 +51,9 @@
               <%=App.getAggStr(v)%>
             </span>
           </li>
-          <%})%>
-        </ul>
-      </div>
+        <%})%>
+      </ul>
+    </div>
     </a>
     <% } %>
   </div>

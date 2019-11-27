@@ -23,57 +23,115 @@
 App.View.Widgets.Table = Backbone.View.extend({
 
   _template: _.template($('#base_table_template').html()),
+  _template_content: _.template($('#base_table_content_template').html()),
+
+  events: {
+    'click .top-options .button.csv': '_downloadCsv',
+    'click .paginator .popup_widget ul li[data-ipp]': '_changePaginator',
+    'click .bottom-options .button.arrow:not(.disabled)': '_goToPage',
+  },
 
   initialize: function (options) {
-    this.options = _.defaults(options, {
+    // default options
+    this.options = _.defaults(options || {}, {
       listenContext: true,
       context: App.ctx,
     });
 
-    this._listenContext = this.options.listenContext;
-    this.model = options.model;
-    this.collection = options.data;
-    this.ctx = options.context;
+    // model options
+    this.model.set(_.extend({}, {
+      showOrder: false,
+      paginator: false,
+      page: 0,
+      totalPages: 0, // total pages number
+      itemsPerPageCurrent: 15, // items per page (current)
+      itemsPerPageOptions: [15, 30, 50, 100]
+    }, this.options.model.toJSON()));
 
-    // Re-draw table if context changes
-    if (this._listenContext) {
-      this.collection.options.data = {};
-    }
-
-    this.listenTo(this.collection, 'reset', this._drawTable);
-
-    if (options['template']) {
+    if (this.options['template']) {
       this._template = options['template'];
     }
 
+    this._listenContext = this.options.listenContext;
+    this.collection = this.options.data;
+    this.ctx = this.options.context;
+
+    // Re-draw table if context changes
+    if (this._listenContext && !this.collection.options.data) {
+      this.collection.options.data = {};
+    }
+
+    // Events
+    this.listenTo(this.collection, 'reset', this._drawTable);
+
+    // Collection to CSV
     this._tableToCsv = new App.Collection.TableToCsv();
     this._tableToCsv.url = this.collection.url;
     this._tableToCsv.fetch = this.collection.fetch;
-    
+
     //Adjust top scrollbar when resizing
-    if(this.model.get('scrollTopBar')){
+    if (this.model.get('scrollTopBar')) {
       $(window).on('resize', this.setScrollTopBarWidth.bind(this))
     }
 
     _.bindAll(this, '_showTooltip');
   },
 
-  events: {
-    'click .table button': '_downloadCsv',
-    //'resize window': 'prueba'
+  /**
+   * When we click on the paginator selector
+   *
+   * @param {*} e - triggered event
+   */
+  _changePaginator: function (e) {
+    e.preventDefault();
+
+    var ipp = Number.parseInt($(e.currentTarget).attr('data-ipp'), 10);
+
+    this.model.set('itemsPerPageCurrent', ipp);
+    this.model.set('page', 0);
+    this.render();
   },
-  
+  /**
+   * When we click on any arrow
+   *
+   * @param {*} e - triggered event
+   */
+  _goToPage: function (event) {
+    var currentTarget = event.currentTarget;
+    var currentPage = 0;
+
+    if ($(currentTarget).hasClass('init')) {
+      currentPage = 0;
+    } else if ($(currentTarget).hasClass('prev')) {
+      currentPage = this.model.get('page') > 0
+        ? this.model.get('page') - 1
+        : 0;
+    } else if ($(currentTarget).hasClass('next')) {
+      currentPage = this.model.get('totalPages') >= this.model.get('page') + 1
+        ? this.model.get('page') + 1
+        : this.model.get('totalPages');
+    } else if ($(currentTarget).hasClass('last')) {
+      currentPage = this.model.get('totalPages');
+    }
+
+    this.model.set('page', currentPage);
+    this._loadElements();
+  },
+
   render: function () {
+    // add loading
     this.$el.append(App.widgetLoading());
 
     // Re-draw table if context changes
     if (this._listenContext) {
 
       // Fix the changes in models and collections (BaseModel & BaseCollections)
-      if (this.collection && this.collection.options && typeof this.collection.options.data === 'string') {
+      if (this.collection
+          && this.collection.options
+          && typeof this.collection.options.data === 'string') {
         this.collection.options.data = JSON.parse(this.collection.options.data);
       }
-      
+
       if (this.model.get('method') == 'GET') {
         _.extend(this.collection.options.data, this.ctx.getDateRange());
       } else {
@@ -81,19 +139,104 @@ App.View.Widgets.Table = Backbone.View.extend({
       }
     }
 
-    this.collection.fetch({ reset: true, data: this.collection.options.data });
+    this.collection.fetch({
+      reset: true,
+      data: this.collection.options.data
+    });
 
     return this;
   },
 
+  /**
+   * draw the table at the beginnig
+   */
   _drawTable: function () {
-    this.$el.html(this._template({ m: this.model, elements: this.collection.toJSON()}));
+
+    this.$el.html(this._template({
+      m: this.model,
+      // "elements" are included to use in old "views"
+      elements: this.collection.toJSON()
+    }));
+
+    // add loading (after first render)
+    this.$el.append(App.widgetLoading());
 
     if (this.model.get('scrollTopBar') === true) {
       this.setScrollTopBarDOM();
     }
 
     this.delegateEvents(this.events);
+
+    // Load first page
+    this._loadElements();
+  },
+
+  /**
+   * Draw each page of items
+   */
+  _loadElements: function () {
+    // show loading
+    this.$el.find('.loading.widgetL').removeClass('hide');
+
+    var currentPage = this.model.get('page');
+    var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
+    var totalPages = Number.parseInt(this.collection.toJSON().length/currentItemsPerPage, 10);
+
+    var currentPageDOM = this.$el.find('.bottom-options .paginator-counter .current-page');
+    var totalPagesDOM = this.$el.find('.bottom-options .paginator-counter .total-pages');
+    var elementsTotalDOM = this.$el.find('.bottom-options .paginator-counter .total');
+    var arrowInitDOM = this.$el.find('.bottom-options .paginator-nav .arrow.init');
+    var arrowPrevDOM = this.$el.find('.bottom-options .paginator-nav .arrow.prev');
+    var arrowNextDOM = this.$el.find('.bottom-options .paginator-nav .arrow.next');
+    var arrowLastDOM = this.$el.find('.bottom-options .paginator-nav .arrow.last');
+    var tableDOM = this.$el.find('.table table tbody');
+    
+    var elements = this.model.get('paginator')
+      ? this._getItesmPages()
+      : this.collection.toJSON();
+
+    // Set paginator data in model
+    this.model.set('totalPages', totalPages);
+
+    // draw elements in table
+    tableDOM.html(this._template_content({
+      currentPage: currentPage,
+      currentItemsPerPage: currentItemsPerPage,
+      formats: this.model.get('columns_format'),
+      elements: elements,
+      showOrder: this.model.get('showOrder')
+    }));
+
+    // Set DOM elements
+    $(currentPageDOM).html(currentPage + 1);
+    $(totalPagesDOM).html(totalPages + 1);
+    $(elementsTotalDOM).html(this.collection.toJSON().length);
+
+    // Disabled arrow in paginator
+    $(arrowInitDOM).toggleClass('disabled', currentPage <= 0);
+    $(arrowPrevDOM).toggleClass('disabled', currentPage <= 0);
+    $(arrowNextDOM).toggleClass('disabled', currentPage == totalPages);
+    $(arrowLastDOM).toggleClass('disabled', currentPage == totalPages);
+
+    // hide loading
+    this.$el.find('.loading.widgetL').addClass('hide');
+  },
+
+  /**
+   * Get the items page
+   *
+   * @return {Array} - items page
+   */
+  _getItesmPages: function () {
+    var items = this.collection.toJSON();
+    var currentPage = this.model.get('page');
+    var currentItemsPerPage = this.model.get('itemsPerPageCurrent');
+    var initialItemCurrentPage = currentPage * this.model.get('itemsPerPageCurrent');
+
+    return _.filter(items, function (item, key) {
+      return key >= initialItemCurrentPage &&
+        key < initialItemCurrentPage + currentItemsPerPage;
+    }.bind(this));
   },
 
   _downloadCsv: function () {
@@ -107,7 +250,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
     // Merge the "collection" options with "csv" options
     this._tableToCsv.options = _.extend({}, this._tableToCsv.options, this.collection.options);
-    
+
     // Add  the neccesary attributes to "data"
     this._tableToCsv.options.data = _.extend({}, this._tableToCsv.options.data, {
       format: this._tableToCsv.options.format,
@@ -138,13 +281,13 @@ App.View.Widgets.Table = Backbone.View.extend({
     if (table.length && scrollTopBar.length) {
       $(scrollTopBar[0]).on('scroll', _.bind(this.handleTopScrollBar, this));
       scrollable.on('scroll', _.bind(this.setPositionScrollTopBar, this));
-      
+
       // scroll bar content width
       this.setScrollTopBarWidth()
     }
   },
 
-  setScrollTopBarWidth: function(){
+  setScrollTopBarWidth: function () {
     var scrollTopBar = this.$el.find('#top-scroll-bar');
     var table = this.$el.find('table');
 
@@ -153,13 +296,13 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   /**
    * Set position in Scroll Top Bar
-   * 
+   *
    * @param {Object | Event} event
    */
   setPositionScrollTopBar: function (event) {
     var scrollTopBar = this.$el.find('#top-scroll-bar');
     var moveLeft = $(event.currentTarget).scrollLeft();
-    
+
     // Move scrollTopBar
     if (scrollTopBar.length) {
       $(scrollTopBar[0]).scrollLeft(moveLeft);
@@ -168,21 +311,21 @@ App.View.Widgets.Table = Backbone.View.extend({
 
   /**
    * handler scroll top bar
-   * 
+   *
    * @param {Object | Event} event
    */
   handleTopScrollBar: function (event) {
-    
+
     var moveLeft = $(event.currentTarget).scrollLeft();
     var scrollable = this.$el.find('.scrollable');
-    
+
     scrollable.scrollLeft(moveLeft);
   },
 
   onClose: function () {
     this.stopListening();
-    
-    if(this.model.get('scrollTopBar')){
+
+    if (this.model.get('scrollTopBar')) {
       $(window).off('resize', this.setScrollTopBarWidth)
     }
   }
@@ -201,7 +344,7 @@ App.View.Widgets.TableCustomFilters = App.View.Widgets.Table.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    this.listenTo(this.collection, "reset", this._drawTable);
+    this.listenTo(this.collection, 'reset', this._drawTable);
 
     if (options['template']) {
       this._template = options['template'];
@@ -231,7 +374,7 @@ App.View.Widgets.TableNewCSV = App.View.Widgets.Table.extend({
     this.collection = options.data;
     this.ctx = options.context;
 
-    this.listenTo(this.collection, "reset", this._drawTable);
+    this.listenTo(this.collection, 'reset', this._drawTable);
 
     if (options['template']) {
       this._template = options['template'];

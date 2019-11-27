@@ -25,7 +25,7 @@ App.View.Widgets.VariableValue = App.View.Widgets.Deprecated.Context.extend({
 
   initialize: function(options) {
 
-    App.View.Widgets.Deprecated.Context.prototype.initialize.call(this,options);
+    App.View.Widgets.Deprecated.Context.prototype.initialize.call(this, options);
 
     this.model = options.model;
     this.listenTo(this.model,"change:agg",function(){
@@ -57,6 +57,17 @@ App.View.Widgets.VariableValue = App.View.Widgets.Deprecated.Context.extend({
 
   _changeAgg:function(e){
     this.model.set('agg',$(e.currentTarget).attr('data-agg'));
-  }
+  },
+
+  /**
+   * TODO - Este método existe en los widgets actuales
+   * no en los antiguos, como este, solo creo este
+   * método vacío para poder usar estos widgets dentro
+   * de los paneles "modernos" -> "App.View.Panels.Splitted"
+   * 
+   */
+  hasPermissions: function () {
+    return true;
+  },
 
 });

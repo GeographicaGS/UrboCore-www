@@ -56,11 +56,18 @@ App.View.MapBoxSearch = App.View.MapSearch.extend({
     this.$('#search_map').addClass('searching');
     this.$('input[type=text]').val('');
     this.$('ul').removeClass('active');
-    var elem = this._collection.findWhere({ 'id_entity': $(e.currentTarget).attr('element_id') });
+    var elem = this._collection.findWhere({ 
+      id_entity: $(e.currentTarget).attr('element_id') 
+    });
     var bbox = elem.get('geometry');
     var maxZoom = 18;
-    if (elem.get('type') == 'device') {
+    if (elem.get('type') === 'device') {
       maxZoom = 19;
+    }
+
+    // When attribute 'geometry' is an Array (Polygon and anothers)
+    if (Array.isArray(bbox[0]) && bbox[0][0].length === 2) {
+      bbox = bbox[0][0];
     }
 
     this._marker.setLngLat([bbox[0], bbox[1]])
