@@ -17,7 +17,12 @@
       <% } %>
     </div>
 
-    <span class='value'><%= App.nbf(m.value) %></span>
+    <% if (m.config && m.config.display === 'small') { %>
+      <span class='value small'>
+    <% } else { %>
+      <span class='value'>
+    <% } %>
+    <%= App.nbf(m.value) %></span>
     <span class='unit'><%=  m.units != 'null' ? m.units:'' %></span>
   </div>
 </li>
