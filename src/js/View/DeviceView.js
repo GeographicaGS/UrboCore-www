@@ -170,7 +170,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get metadata from entity variables
-   * 
+   *
    * @return {Array} metadata
    */
   getMetadataVariables: function () {
@@ -188,7 +188,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get model to multivariableChart
-   * 
+   *
    * @return {Object} setup options
    */
   getMultiVariableChartModel: function () {
@@ -217,7 +217,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get data from multiVariableChart
-   * 
+   *
    * @return {Object} data collection
    */
   getMultiVariableDataCollection: function () {
@@ -243,7 +243,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get the table variables to draw it
-   * 
+   *
    * @return {Array} - the definition to each field
    */
   getTableVariables: function () {
@@ -710,6 +710,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
       var model = new App.Model.Post({
         id: this.entityVariables[i],
         aggs: meta.var_agg,
+        config: meta.config,
         current_agg: meta.var_agg[0],
         device: this.model.get('id'),
         name: meta.name,

@@ -16,7 +16,13 @@ if (withIndicator) {
   <div class='co_chart'>
     <div class='chart'></div>
     <div class='co_value'>
-      <p class='value big'><%= m.var_value == 'null' ? App.nbf(null) : App.nbf(m.var_value) %><span><%= metaData.units%></span></p>
+      <% if (metaData.config && metaData.config.display && metaData.config.display === 'small') { %>
+      <p class='value small'>
+      <% } else {  %>
+      <p class='value big'>
+      <% }  %>
+        <%= m.var_value == 'null' ? App.nbf(null) : App.nbf(m.var_value) %><span><%= metaData.units%></span>
+      </p>
     </div>
     <% if (withIndicator) { %>
       <div class='co_status'>
