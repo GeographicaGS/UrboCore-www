@@ -83,10 +83,18 @@ App.View.Admin.ScopeList = Backbone.View.extend({
    * @param {Object} e - triggered event
    */
   handlerScopeCreated: function(e) {
+    var _this =this;
     if(e && e.data && e.data.id) {
       this.collection.fetch({
         success: function(){
-          App.router.navigate('/admin/scope/' + e.data.id, { trigger: true });
+          
+          var modalView_alert = new App.View.Modal({
+            modalContent: __('Àmbito creado'),
+            showModalButtonCancel: false
+          });
+          //    this.modalView.op
+          _this.render();
+          // App.router.navigate('/admin/scope/' + e.data.id, { trigger: true });
         }
       });
     } else {
