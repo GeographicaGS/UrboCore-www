@@ -71,9 +71,8 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
   },
 
   parse: function(data, opts) {
-    
     if(opts.parse === false) return this.attributes;
-
+    if(typeof data !== 'object' || data === null) return this.attributes;
     var scope = {
       id: data.id,
       name: data.name,
@@ -88,15 +87,16 @@ App.Model.Metadata.Scope = Backbone.Model.extend({
       categories: data.categories
     };
 
-    if (!data.childs){
-      data.childs = [];
-    }
 
-    scope.childs = new App.Collection.Metadata.Scope(data.childs, {
-      parse: true,
-      id_scope: data.id
-    });
-
+      if (!data.childs){
+        data.childs = [];
+      }
+      scope.childs = new App.Collection.Metadata.Scope(data.childs, {
+        parse: true,
+        id_scope: data.id
+      });
+      
+    
     return scope;
   },
 

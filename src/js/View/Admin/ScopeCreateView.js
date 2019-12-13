@@ -38,6 +38,11 @@ App.View.Admin.ScopeCreate = App.View.FormView.extend({
   // View's Funcions
 
   initialize: function(options) {
+    if(options){
+      this.parentScope = options.parentScope || null;
+    }else{
+      this.parentScope = null;
+    }
     this.options = options || {};
     App.View.FormView.prototype.initialize.call(this, { model: new App.Model.Scope() });
   },
@@ -48,7 +53,7 @@ App.View.Admin.ScopeCreate = App.View.FormView.extend({
    * @return {Object} this - to chain other 'render' functions
    */
   render: function() {
-    this.$el.html(this.template({ parentScope: this.options.parentScope || null }));
+    this.$el.html(this.template({ parentScope: this.parentScope || null }));
     return this;
   },
 
@@ -95,8 +100,8 @@ App.View.Admin.ScopeCreate = App.View.FormView.extend({
     dataForm.location[1] = dataForm.location[1].replace(',', '.');
 
     // Other data to model
-    if (this.options.parentScope) {
-      dataForm.parent_id = this.options.parentScope;
+    if (this.parentScope) {
+      dataForm.parent_id = this.parentScope;
     }
 
     // validate data

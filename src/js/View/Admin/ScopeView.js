@@ -259,7 +259,6 @@ App.View.Admin.Scope = Backbone.View.extend({
 
   _createScope: function(e) {
     e.preventDefault();
-
     if(this._popUpView == undefined) {
       this._popUpView = new App.View.PopUp();
     }
@@ -268,20 +267,32 @@ App.View.Admin.Scope = Backbone.View.extend({
 
     this.$el.append(this._popUpView.render().$el);
 
-    this.listenTo(createScopeView, 'close', this._onCreateScopeClosed);
+    this.listenTo(createScopeView, 'form:close', ()=>{
+    });
+    this.listenTo(createScopeView, 'form:save', function (e){
+      this._onCreateScopeClosed(e);
+    });
 
     this._popUpView.show();
   },
 
-  _onCreateScopeClosed: function(e){
+  _onCreateScopeClosed: function(){
     this._popUpView.closePopUp();
     var _this = this;
-    this.model.fetch({success: function(){
-      if(e.data && e.data.id){
-        App.router.navigate('/admin/scope/' + e.data.id, {trigger: true});
-      }else{
-        _this.render();
-      }
+    new App.View.Modal({
+      modalContent: __('Àmbito creado'),
+      showModalButtonCancel: false
+    });
+    this.model.fetch({success: function(e){
+     // TODO REPARE App.router.navigate issue and remove this
+     window.location.reload();
+   
+      // App.router.navigate('/admin/scope/' + e.id, {trigger: true});
+    /*   if(e.data && e.data.id){
+      }else{ 
+        _this.model.fetch({ success: function(){ _this.render(); }});
+          }
+      */
     }});
   },
 
