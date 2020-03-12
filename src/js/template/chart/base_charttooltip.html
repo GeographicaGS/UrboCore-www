@@ -30,8 +30,13 @@
           <%= data.series[i].yAxisFunction(data.series[i].value) %>
         <% } else if (utils.yAxisFunction) { %>
           <%= utils.yAxisFunction(data.series[i].value) %>
-        <% } else { %>
-          <%= App.nbf(data.series[i].value) %>
+        <% } else { 
+            let val = App.nbf(data.series[i].value, {decimals:2, compact:false});
+            var parts = val.toString().split(",");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            val = parts.join(",");
+          %>
+          <%= val %>
           <%= (data.series[i].realKey && App.mv().getVariable(data.series[i].realKey)) 
             ? App.mv().getVariable(data.series[i].realKey).get('units') 
             : '' %>
