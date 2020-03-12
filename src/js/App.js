@@ -357,7 +357,9 @@ App.nbf = function (n, options){
 
   _.defaults(options,default_opts);
 
-  var lang = App.lang || 'es';
+  /* var lang = App.lang || 'de-DE'; */
+  // Force format
+  var lang = 'de-DE';
   if (n===null){
       return "--";
   }
