@@ -13,6 +13,8 @@
       // Styles to circle
       var circleStyle = 'background-color:' + colorLabel + ';border: 1px solid ' + colorLabel;
       if (dato.classed && dato.classed === 'dashed') {
+        circleStyle = 'background-color: transparent;border: 2px dashed ' + colorLabel;
+      } else if (dato.classed && dato.classed === 'dotted') {
         circleStyle = 'background-color: transparent;border: 2px dotted ' + colorLabel;
       }
   %>

@@ -60,7 +60,12 @@
   </div>
   <% if(!disable_button){ %>
   <div class="footer">
-    <a jslink class="more" href="/<%=scope%>/<%=entity_id%>/<%=device_id%>"><%= __('Ver') %> <%= button_label ? button_label : __('sensor') %></a>
+   
+    <% if (url) { %>
+      <a jslink class="more" href="<%=url%>"><%= __('Ver') %> <%= button_label ? button_label : __('sensor') %></a>
+      <% } else{%>
+        <a jslink class="more" href="/<%=scope%>/<%=entity_id%>/<%=device_id%>"><%= __('Ver') %> <%= button_label ? button_label : __('sensor') %></a>
+    <% } %>
   </lang>
   <% } %>
 </div>

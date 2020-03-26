@@ -64,12 +64,6 @@ App.View.DevicePeriod = Backbone.View.extend({
 
   render: function () {
 
-    var entity = App.mv().getEntity(this.model.get('entity'));
-
-    if (entity.get('id') === 'indoor_air.quality') {
-      this._template = _.template($('#indoor_air-custom_device_period_template').html());
-    }
-
     this.$el.html(this._template({ m: this.model.toJSON() }));
 
     this._summaryView = new App.View.DeviceSumary({ el: this.$('#summary'), model: this.model });
@@ -84,64 +78,47 @@ App.View.DevicePeriod = Backbone.View.extend({
       varAgg[entityVariables[i].id] = agg.toLowerCase();
     }
 
-    // TODO: REFACTOR!
-    if (entity.get('id') === 'indoor_air.quality') {
-      this._chartView = new App.View.Widgets.Indoor_air.VariableVsTemperature({
-        el: this.$('#chart'),
-        id_scope: this.model.get('scope'),
-        device: this.model.get('id'),
-      }).render();
+    var multiVariableModel = new Backbone.Model({
+      category: '',
+      title: __('Evolución'),
+      aggDefaultValues: varAgg
+    });
 
-      this._chartView = new App.View.Widgets.Indoor_air.VariableVsHumidity({
-        el: this.$('#chart2'),
-        id_scope: this.model.get('scope'),
-        device: this.model.get('id')
-      }).render();
-
-    } else {
-      var multiVariableModel = new Backbone.Model({
-        category: '',
-        title: __('Evolución'),
-        aggDefaultValues: varAgg
-      });
-
-      // Get variables domains
-      var yDomains = {};
-      _.each(entityVariables, function (elem) {
-        if (elem.config && elem.config.local_domain)
-          yDomains[elem.id] = elem.config.local_domain;
-      });
-      if (Object.keys(yDomains > 0)) {
-        multiVariableModel.set({ yAxisDomain: yDomains });
-      }
-
-      var stepModel = new Backbone.Model({
-        'step': '1d'
-      });
-
-      var entityVariablesIds = _.map(entityVariables, function (el) { return el.id });
-      this.entityVariablesIds = entityVariablesIds;
-
-      var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([], {
-        scope: this.model.get('scope'),
-        entity: this.model.get('entity'),
-        device: this.model.get('id'),
-        vars: entityVariablesIds,
-        id: this.model.get('id'),
-        step: '1h',
-        data: {
-          time: {}
-        }
-      });
-
-      this._chartView = new App.View.Widgets.MultiVariableChart({
-        el: this.$('#chart'),
-        collection: multiVariableCollection,
-        multiVariableModel: multiVariableModel,
-        stepModel: stepModel
-      });
-
+    // Get variables domains
+    var yDomains = {};
+    _.each(entityVariables, function (elem) {
+      if (elem.config && elem.config.local_domain)
+        yDomains[elem.id] = elem.config.local_domain;
+    });
+    if (Object.keys(yDomains > 0)) {
+      multiVariableModel.set({ yAxisDomain: yDomains });
     }
+
+    var stepModel = new Backbone.Model({
+      'step': '1d'
+    });
+
+    var entityVariablesIds = _.map(entityVariables, function (el) { return el.id });
+    this.entityVariablesIds = entityVariablesIds;
+
+    var multiVariableCollection = new App.Collection.DeviceTimeSerieChart([], {
+      scope: this.model.get('scope'),
+      entity: this.model.get('entity'),
+      device: this.model.get('id'),
+      vars: entityVariablesIds,
+      id: this.model.get('id'),
+      step: '1h',
+      data: {
+        time: {}
+      }
+    });
+
+    this._chartView = new App.View.Widgets.MultiVariableChart({
+      el: this.$('#chart'),
+      collection: multiVariableCollection,
+      multiVariableModel: multiVariableModel,
+      stepModel: stepModel
+    });
 
     return this;
   },
@@ -193,7 +170,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get metadata from entity variables
-   * 
+   *
    * @return {Array} metadata
    */
   getMetadataVariables: function () {
@@ -211,7 +188,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get model to multivariableChart
-   * 
+   *
    * @return {Object} setup options
    */
   getMultiVariableChartModel: function () {
@@ -240,7 +217,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get data from multiVariableChart
-   * 
+   *
    * @return {Object} data collection
    */
   getMultiVariableDataCollection: function () {
@@ -266,7 +243,7 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   /**
    * Get the table variables to draw it
-   * 
+   *
    * @return {Array} - the definition to each field
    */
   getTableVariables: function () {
@@ -282,7 +259,7 @@ App.View.DeviceRaw = Backbone.View.extend({
     ];
 
     return _.reduce(metadataVariables, function (sumVariables, variable) {
-      sumVariables.push( {
+      sumVariables.push({
         id: variable.id,
         title: variable.name,
         format: {
@@ -295,11 +272,11 @@ App.View.DeviceRaw = Backbone.View.extend({
 
   onClose: function () {
     this.stopListening();
-    
+
     if (this._chartView) {
       this._chartView.close();
     }
-    
+
     if (this._tableView) {
       this._tableView.close();
     }
@@ -746,7 +723,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
     this.entityVariables = _.filter(this.metadata, function (el) {
       return el.config ? el.config.active : el.units;
     });
-    
+
     this.entityVariables = _.map(this.entityVariables, function (el) { return el.id }).sort();
 
     this.collection = new Backbone.Collection();
@@ -755,6 +732,7 @@ App.View.DeviceSumary = App.View.DeviceTimeWidget.extend({
       var model = new App.Model.Post({
         id: this.entityVariables[i],
         aggs: meta.var_agg,
+        config: meta.config,
         current_agg: meta.var_agg[0],
         device: this.model.get('id'),
         name: meta.name,

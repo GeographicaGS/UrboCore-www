@@ -42,7 +42,7 @@ deps.JS = [
 
   // Utils
   srcJS + 'Utils.js@finish-main-block',
-  //srcJS + 'Utils.js',
+  // srcJS + 'Utils.js',
 
   // Views
   srcJS + 'View/BaseView.js',
@@ -138,6 +138,7 @@ deps.JS = [
   srcJS + 'View/widgets/WidgetAlertsVariable.js',
   srcJS + 'View/widgets/WidgetMultipleVariable.js',
   srcJS + 'View/widgets/WidgetMultiVariableChart.js',
+  srcJS + 'View/widgets/WidgetMultiVariableSelectedChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableBarChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableHorizontalChart.js',
   srcJS + 'View/widgets/WidgetMultiVariableStackedChart.js',

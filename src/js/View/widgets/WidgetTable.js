@@ -40,6 +40,7 @@ App.View.Widgets.Table = Backbone.View.extend({
 
     // model options
     this.model.set(_.extend({}, {
+      showOrder: false,
       paginator: false,
       page: 0,
       totalPages: 0, // total pages number
@@ -56,7 +57,7 @@ App.View.Widgets.Table = Backbone.View.extend({
     this.ctx = this.options.context;
 
     // Re-draw table if context changes
-    if (this._listenContext) {
+    if (this._listenContext && !this.collection.options.data) {
       this.collection.options.data = {};
     }
 
@@ -200,8 +201,10 @@ App.View.Widgets.Table = Backbone.View.extend({
     // draw elements in table
     tableDOM.html(this._template_content({
       currentPage: currentPage,
+      currentItemsPerPage: currentItemsPerPage,
       formats: this.model.get('columns_format'),
       elements: elements,
+      showOrder: this.model.get('showOrder')
     }));
 
     // Set DOM elements
