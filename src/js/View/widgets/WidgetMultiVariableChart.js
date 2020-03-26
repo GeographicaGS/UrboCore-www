@@ -745,7 +745,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.chart
         .yAxis1
         .axisLabel(
-          metadata.name +
+          ((metadata.config && metadata.config.labelaxisY) || metadata.name) +
           (metadata.units ? ' (' + metadata.units + ')' : '')
         )
         .tickFormat(fnYAxis1TickFormat);
