@@ -497,6 +497,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       if (!model.has('type') || types.indexOf(model.get('type')) === -1) {
         model.set('type', 'line');
       }
+      // Default units
+      if (!model.has('unit')) {
+        model.set('unit', '');
+      }
       // Default type = "lines"
       if (!model.has('yAxis')) {
         model.set('yAxis', 1);
@@ -967,6 +971,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               if (model.has('realKey')) {
                 s.realKey = model.get('realKey');
               }
+              
+              if (model.has('unit')) {
+                s.unit = model.get('unit');
+              }
 
               if (model.has('classed')) {
                 s.classed = model.get('classed');
@@ -981,7 +989,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             }
 
           }.bind(this));
-
+          
           return this.popupTemplate({
             data: data,
             utils: {
