@@ -22,7 +22,7 @@
           <% if (typeof currentData.badge !== 'undefined' && currentData.badge !== false) { %>
           <span class="wrapper">
             <!-- Variable badge -->
-            <span class="badge <%= currentData.badge && currentData.badge.value > 0 ? 'badge-good' : 'badge-bad' %>">
+            <span class="badge <%= currentData.badge && currentData.badge.value > 0 ? 'badge-good' : (currentData.badge && currentData.badge.value < 0) ? 'badge-bad' : 'badge-zero' %>">
               <span class="value with-arrow">
                 <%= App.nbf(Math.abs(currentData.badge.value)) %>
               </span>
