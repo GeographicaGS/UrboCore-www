@@ -1,0 +1,15 @@
+<a class="popup_widget agg" href='#'>
+  <span class="currentAggSelected">
+    <%= App.getAggStr(aggSelected) %>
+  </span>
+  <div class='varsel'>
+    <ul>
+      <% _.each(aggsMenuOptions, function(agg) { %>
+      <li data-agg='<%= agg %>'
+          class='<%= aggSelected === agg ? 'selected' : '' %>'>
+        <%= App.getAggStr(agg.toLocaleLowerCase()) %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+</a>

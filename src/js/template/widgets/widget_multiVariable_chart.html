@@ -1,11 +1,24 @@
 <div class="widget chartContent widget_multiVariable_chart  <%= m.className %>">
 
   <div class="date_tooltip">
+    <% if (m.timeMode === 'now') { %>
+    <!-- Now -->
+    <span class="tooltipIcon realTime">
+      <div class="text">
+        <span>
+          <%= __('Ahora') %>
+          <span></span>
+        </span>
+      </div>
+    </span>
+    <% } else if (m.timeMode === 'date') { %>
     <button></button>
+    <!-- Date -->
     <div class="date">
       <span><%=App.formatDate(App.ctx.get('start'))%></span>
       <span><%=App.formatDate(App.ctx.get('finish'))%></span>
     </div>
+    <% } %>
   </div>
 
   <% if (m.title) { %>
