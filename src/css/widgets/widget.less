@@ -223,6 +223,7 @@
     overflow: hidden;
     opacity: 0;
     font-size: 12px;
+    color: #FFF;
     span{
       font-weight: 600;
       text-transform: uppercase;
@@ -1401,6 +1402,20 @@
     }
 
     .nv-x .tick line { display: none; }
+    .nvd3.multiChart {
+      .nv-y2 {
+        .nv-axis {
+          > g {
+            .tick {
+              line {
+                display: none;
+              }
+            }
+          }
+        }
+
+      }
+    }
     .nvd3 .nv-axis line{
       stroke:#30687a;
     }
@@ -1502,6 +1517,21 @@
     }
     .title {
       padding-left: 0;
+      // Aggregation menu
+      .popup_widget {
+        &.agg {
+          margin: 0 0 0 10px;
+          font-size: 13px;
+          &::before {
+            content: ' - ';
+            display: inline-block;
+            margin-right: 5px;
+          }
+          .currentAggSelected {
+            font-size: 13px;
+          }
+        }
+      }
       img {
         float: left;
       }

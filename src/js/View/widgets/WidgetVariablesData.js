@@ -29,11 +29,11 @@ App.View.Widgets.VariablesData = Backbone.View.extend({
 
   initialize: function (options) {
     // default values
-    options = _.defaults(options, {});
+    this.options = _.defaults(options || {}, {});
 
     // The data come from a Model
-    if (options.model) {
-      this.model = options.model;
+    if (this.options.model) {
+      this.model = this.options.model;
       // Launch the request
       this.model.fetch({
         data: this.model.get('data') || {}
@@ -43,8 +43,8 @@ App.View.Widgets.VariablesData = Backbone.View.extend({
     }
 
     // The data come from a Collection
-    if (options.collection) {
-      this.collection = options.collection;
+    if (this.options.collection) {
+      this.collection = this.options.collection;
       // Launch the request
       this.collection.fetch({ 
         reset: true,
@@ -58,9 +58,14 @@ App.View.Widgets.VariablesData = Backbone.View.extend({
   },
 
   render: function () {
-    this.model
-      ? this.$el.html(this._template(this.model.toJSON()))
-      : this.$el.html(this._template(this.collection.toJSON()[0]));
+    var isModelChanged = this.model && Object.keys(this.model.changed).length > 0;
+    var isCollectionChanged = this.collection && this.collection.models.length > 0;
+
+    if (isModelChanged || isCollectionChanged) {
+      this.model
+        ? this.$el.html(this._template(this.model.toJSON()))
+        : this.$el.html(this._template(this.collection.toJSON()[0]));
+    }
 
     return this;
   }

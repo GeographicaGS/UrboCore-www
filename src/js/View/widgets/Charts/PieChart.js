@@ -22,7 +22,7 @@
 
 /**
  * Draw a "pie" chart
- * 
+ *
  * Some options:
  * <img> (String, optional): Path to an image to place in the middle of the chart
  * <showTotal> (Boolean, optional): Shows the total value in the middle of the chart, below the image. Default: false
@@ -35,7 +35,9 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     if (!options.opts.has('img')) options.opts.set({ img: '' });
     if (!options.opts.has('showTotal')) options.opts.set({ showTotal: false });
     if (!options.opts.has('showLabels')) options.opts.set({ showLabels: false });
+
     _.bindAll(this, '_centerChart');
+
     App.View.Widgets.Charts.Base.prototype.initialize.call(this, options);
   },
 
@@ -53,7 +55,9 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     var _this = this;
     _.each(this.collection.toJSON(), function (elem) {
       _this.data.push({
-        key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.name) ? _this.options.get('legendNameFunc')(elem.name) : elem.name,
+        key: _this.options.get('legendNameFunc') && _this.options.get('legendNameFunc')(elem.name)
+          ? _this.options.get('legendNameFunc')(elem.name)
+          : elem.name,
         y: parseFloat(elem.value) || 0
       });
     });
@@ -68,14 +72,16 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
       .donutRatio(0.62)
       .showLabels(this.options.get('showLabels'))
       .labelThreshold(.05) //Configure the minimum slice size for labels to show up
-      .labelType("value")
+      .labelType('value')
       .labelsOutside(true)
       .labelFormat(this.options.get('yAxisFunction') ? this.options.get('yAxisFunction') : App.nbf)
       .height(320) //Force height
       .growOnHover(false)
       .noData(this.options.get('noDataMessage'));
 
-    this._chart.dispatch.on('renderEnd', this._centerChart); // Force center on each refresh
+    this._chart.dispatch.on('renderEnd', function () {
+      this._centerChart(); // Force center on each refresh
+    }.bind(this));
   },
 
   _initTooltips: function () {
@@ -114,9 +120,10 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
     var svg = d3.select(this.$('.chart')[0]);
     var svgNode = svg.node();
     var clientSize = svgNode.getClientRects();
+
     if (clientSize.length > 0) {
       // Draw icon
-      if (this.options.get('img')) {
+      if (this.options.get('img') && !this.$('.chart > image')[0]) {
         var logoSize = { height: 32, width: 32 };
         var logoOffset = { top: 5, left: 0 };
 
@@ -136,24 +143,29 @@ App.View.Widgets.Charts.Pie = App.View.Widgets.Charts.Base.extend({
       // Draw total
       if (this.options.get('showTotal')) {
         var valueOffset = { top: 35, left: 0 };
-        if (this.options.get('img'))
-          valueOffset.top = 15;
-        var total = _.reduce(this.data, function (sum, elem) { return sum + elem.y; }, 0);
-        var valueFunc = this.options.get('yAxisFunction') ? this.options.get('yAxisFunction') : App.nbf;
-
-        // var labelTotal
+        var total = _.reduce(this.data, function (sum, elem) {
+          return sum + elem.y;
+        }, 0);
+        var valueFunc = this.options.get('yAxisFunction')
+          ? this.options.get('yAxisFunction')
+          : App.nbf;
         var labelTotal = svg.select('p.extraContent span');
+
+        if (this.options.get('img')) {
+          valueOffset.top = 15;
+        }
+
         if (labelTotal[0][0] === null) {
           var textEl = svg.insert('foreignObject', '.nv-wrap')
-          .attr('x', clientSize[0].width / 4)
-          .attr('y', clientSize[0].height / 2)
-          .attr('width', clientSize[0].width / 2)
-          .attr('height', clientSize[0].height / 4)
-          .attr('transform', 'translate(-' + valueOffset.left +
-            ',-' + valueOffset.top + ')')
-          .append('xhtml:p')
-          .attr('class', 'extraContent')
-          .html(__('Total') + ' ');
+            .attr('x', clientSize[0].width / 4)
+            .attr('y', clientSize[0].height / 2)
+            .attr('width', clientSize[0].width / 2)
+            .attr('height', clientSize[0].height / 4)
+            .attr('transform', 'translate(-' + valueOffset.left +
+              ',-' + valueOffset.top + ')')
+            .append('xhtml:p')
+            .attr('class', 'extraContent')
+            .html(__('Total') + ' ');
 
           textEl
             .append('xhtml:span')

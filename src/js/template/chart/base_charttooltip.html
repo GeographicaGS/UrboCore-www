@@ -37,9 +37,9 @@
             val = parts.join(",");
           %>
           <%= val %>
-          <%= (data.series[i].realKey && App.mv().getVariable(data.series[i].realKey)) 
+          <%=  (data.series[i].unit) ? data.series[i].unit : ((data.series[i].realKey && App.mv().getVariable(data.series[i].realKey)) 
             ? App.mv().getVariable(data.series[i].realKey).get('units') 
-            : '' %>
+            : '' )%>
         <% } %>
       </span>
       <% if (utils.total) { %>
