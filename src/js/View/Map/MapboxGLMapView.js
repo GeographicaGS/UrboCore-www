@@ -121,7 +121,7 @@ App.View.Map.MapboxView = Backbone.View.extend({
             _.defaults(
               {
                 container: this.$el[0],
-                style: this.basemaps['positron'],
+                style: this.basemaps[this._currentBasemap],
               },
               this._mapOptions)
           );

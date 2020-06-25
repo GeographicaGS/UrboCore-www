@@ -58,8 +58,11 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
     disabledList: [],
     forceStep: null,
     hideStepSelector: false,
+    hideVarList: false,
+    margin: { right: 45 },
     normalized: true,
     sizeDiff: 'days',
+    timeMode: 'date',
     useInteractiveGuideline: true,
     xAxisFunctionTooltip: null,
     yAxis1Domain: null,
@@ -97,9 +100,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       ? this.mvModel.aggDefaultValues
       : [];
 
-    this.collection.options.agg = this.aggDefault
-      ? this.aggDefault
-      : this.collection.options.agg;
+    // Add options variable to object
+    // "options" if it doesn't exist
+    if (typeof this.collection.options === 'undefined') {
+      this.collection.options = {};
+    }
+
+    if (this.options.noAgg === false) {
+      this.collection.options.agg = this.aggDefault
+        ? this.aggDefault
+        : this.collection.options.agg;
+    }
 
     // Initial disabledList
     if (this.mvModel.disabledList && this.mvModel.disabledList.length > 0) {
@@ -387,7 +398,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         // Draw the chart with NVD3
         this.chart = nv.models.multiChart()
           .useInteractiveGuideline(this.mvModel.useInteractiveGuideline)
-          .margin({ right: 45 })
+          .margin(this.mvModel.margin)
           .height(268)
           .noData(this.mvModel.customNoDataMessage)
           .showLegend(false);
@@ -410,15 +421,17 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
         this.setupToolTip();
 
         // Colocamos nuestra leyenda personalizada
-        this.$('.var_list').html(
-          this.listVariablesTemplate({
-            colors: this.mvModel.colorsFn || App.getSensorVariableColorList(),
-            currentAggs: this.chartBehaviourData.currentAggs,
-            data: this.parseData.toJSON(),
-            disabledList: this.chartBehaviourData.disabledList,
-            noAgg: this.options.noAgg
-          })
-        );
+        if (this.mvModel.hideVarList === false) {
+          this.$('.var_list').html(
+            this.listVariablesTemplate({
+              colors: this.mvModel.colorsFn || App.getSensorVariableColorList(),
+              currentAggs: this.chartBehaviourData.currentAggs,
+              data: this.parseData.toJSON(),
+              disabledList: this.chartBehaviourData.disabledList,
+              noAgg: this.options.noAgg
+            })
+          );
+        }
 
         // Dibujamos el eje X
         this.setupXAxis();
@@ -483,6 +496,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       // Default type = "lines"
       if (!model.has('type') || types.indexOf(model.get('type')) === -1) {
         model.set('type', 'line');
+      }
+      // Default units
+      if (!model.has('unit')) {
+        model.set('unit', '');
       }
       // Default type = "lines"
       if (!model.has('yAxis')) {
@@ -732,7 +749,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
       this.chart
         .yAxis1
         .axisLabel(
-          metadata.name +
+          ((metadata.config && metadata.config.labelaxisY) || metadata.name) +
           (metadata.units ? ' (' + metadata.units + ')' : '')
         )
         .tickFormat(fnYAxis1TickFormat);
@@ -954,6 +971,10 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
               if (model.has('realKey')) {
                 s.realKey = model.get('realKey');
               }
+              
+              if (model.has('unit')) {
+                s.unit = model.get('unit');
+              }
 
               if (model.has('classed')) {
                 s.classed = model.get('classed');
@@ -968,7 +989,7 @@ App.View.Widgets.MultiVariableChart = Backbone.View.extend({
             }
 
           }.bind(this));
-
+          
           return this.popupTemplate({
             data: data,
             utils: {

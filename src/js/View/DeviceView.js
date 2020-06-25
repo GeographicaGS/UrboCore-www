@@ -486,7 +486,13 @@ App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
 
   _template: _.template($('#devices-lastdata_chart_complex_template').html()),
 
-  initialize: function (options) {
+  initialize: function () {
+
+    // Stop widget
+    if (!this.hasPermissions()) {
+      return;
+    }
+
     // Get metadata params
     // and we complete the parameters
     if (this.model.has('params')) {
@@ -515,6 +521,22 @@ App.View.LastDataWidgetComplex = App.View.LastDataWidgetSimple.extend({
       }
     }
 
+  },
+
+  /**
+   * Check if the current scope has permissions about
+   * entities or attributes to show into the widget
+   *
+   * @return {Boolean} ¿has permissions?
+   */
+  hasPermissions: function () {
+    if (this.model.get('permissions')) {
+      return App.mv().validateInMetadata(
+        this.model.get('permissions')
+      );
+    }
+
+    return true;
   },
 
   render: function () {

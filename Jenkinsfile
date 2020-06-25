@@ -30,6 +30,10 @@ node("docker") {
               sh "cp src/js/Config.dev.js src/js/Config.js"
               deploy_to = "dev"
             }
+            else if (branch_name == "dev-andalucia") {
+              sh "cp src/js/Config.dev-and.js src/js/Config.js"
+              deploy_to = "dev-andalucia"
+            }
             else{
               sh "cp src/js/Config.dev.js src/js/Config.js"
             }
@@ -72,6 +76,10 @@ node("docker") {
                   sh "docker push geographica/urbo_core_www:${git_commit}"
                   sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
                 }
+            } else if (branch_name == "dev-andalucia") {
+
+              stage "Deploying"
+                sh "ansible urbo-frontend-${deploy_to} -a '/data/app/UrboCore-www/deploy-and.sh ${branch_name}'"
             }
     }
 }
