@@ -137,7 +137,7 @@ App.View.Dashboard = Backbone.View.extend({
       }));
     }
     else if (section == 'watering'){
-      var breadcrumb = [    
+      var breadcrumb = [
         [
           {
             id:'master',
@@ -182,7 +182,7 @@ App.View.Dashboard = Backbone.View.extend({
           title: __(parentModel.get('name'))
         });
       }
-      
+
       App.getNavBar().set({
         section: section,
         breadcrumb : breadcrumb
@@ -202,7 +202,7 @@ App.View.Dashboard = Backbone.View.extend({
         color: '#00d5e7',
         timeMode:'now'
       });
-      
+
       this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
       this._widgets.push(new App.View.Widgets.Watering.Operation({
@@ -303,7 +303,7 @@ App.View.Dashboard = Backbone.View.extend({
         'className': 'lvigauge',
         'var_id': 'waste.ilv.indicator',
         // 'timeinstant':timeinstant
-        'date': scope === 'guadalajara' ? new Date(2020, 8, 1) : new Date(2018, 7, 1),
+        'date': scope === 'guadalajara' ? new Date(2020, 9, 1) : new Date(2018, 7, 1),
         'url': '/' + scope + '/waste/indicators',
         'extra_info': {
           'unit': '%',
