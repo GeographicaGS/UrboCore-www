@@ -387,6 +387,7 @@
       ],
       "Vías monitorizadas": ["Routes surveillées"],
       "Intensidad del tráfico (veh/h)": ["Intensité du trafic (véh/h)"],
+      "Intensidad del tráfico en la última hora (veh/h)": ["Intensité du trafic au cours de la dernière heure (véh/h)"],
       "Hora punta diaria": ["Heure de pointe quotidienne"],
       "Mostrar el valor medio de uso de bicicletas en un periodo de tiempo determinado.": [
         "Détecte les valeurs de bruit maximales enregistrées dans une période spécifique."
@@ -405,8 +406,11 @@
       "Intensidad": ["Intensité"],
       "Vía monitorizada": ["Route surveillée"],
       "Intensidad del tráfico": ["Intensité du trafic"],
+      "Intensidad del tráfico en la última hora": ["Intensité du trafic au cours de la dernière heure"],
       "Velocidad media": ["Vitesse moyenne"],
+      "Velocidad media en la última hora": ["Vitesse moyenne dans la dernière heure"],
       "Longitud media de vehículos": ["Longueur moyenne des véhicules"],
+      "Longitud media en la última hora": ["Longueur moyenne dans la dernière heure"],
       "Estado de la vía": ["État de la route"],
       "Apellidos": ["Nom de famille"],
       "Email": ["Email"],
